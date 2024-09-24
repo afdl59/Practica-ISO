@@ -1,6 +1,24 @@
 {
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.3",
+    "express": "^4.21.0",
     "mongoose": "^8.6.3"
-  }
+  },
+  "name": "practica-iso",
+  "description": "Practica de ISO año 3. Integrantes: Carlos Richante, Raquel Cerezo, Alejandro Figari, Ignacio Arvilla, Lorenzo Sanz y Raimundo Baca\r hbscshds",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/afdl59/Practica-ISO.git"
+  },
+  "keywords": [
+    "Futbol360"
+  ],
+  "author": "lorensation",
+  "license": "ISC"
 }
