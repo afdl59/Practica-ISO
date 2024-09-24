@@ -2,8 +2,8 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
-// Conectar a MongoDB (sin las opciones obsoletas)
-mongoose.connect('mongodb://127.0.0.1:27017/futbol360')
+// Conectar a MongoDB
+mongoose.connect('mongodb://88.1.89.44:27017/futbol360')
   .then(() => {
     console.log('Conectado a MongoDB');
   })
