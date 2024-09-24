@@ -1,0 +1,98 @@
+/* Estilos globales */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #121212; /* Fondo oscuro */
+  color: #ffffff; /* Texto claro para buen contraste */
+  font-family: 'Arial', sans-serif;
+  padding: 20px;
+  line-height: 1.6;
+}
+
+h1, h2 {
+  color: #ffcc00; /* Color vibrante para los títulos */
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+h1 {
+  font-size: 2.5em;
+}
+
+h2 {
+  font-size: 2em;
+}
+
+/* Estilo de los formularios */
+form {
+  background-color: #1e1e1e; /* Fondo oscuro del formulario */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Sombra suave */
+  max-width: 400px;
+  margin: 20px auto;
+}
+
+label {
+  font-weight: bold;
+  color: #ffcc00; /* Color vibrante para etiquetas */
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+  border: none;
+  background-color: #333333; /* Fondo de input oscuro */
+  color: #ffffff; /* Texto claro */
+  outline: none;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+  border: 2px solid #ffcc00; /* Resalta el input cuando esté en foco */
+}
+
+/* Botones */
+button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 15px;
+  border: none;
+  border-radius: 5px;
+  background-color: #ffcc00; /* Botón vibrante */
+  color: #121212; /* Contraste en el texto del botón */
+  font-size: 1.2em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #ffaa00; /* Cambio de color al pasar el ratón */
+}
+
+/* Enlaces */
+a {
+  color: #ffcc00;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Estilo de los mensajes de error */
+.error-message {
+  color: #ff4444; /* Color rojo brillante para errores */
+  text-align: center;
+  margin: 10px 0;
+}
