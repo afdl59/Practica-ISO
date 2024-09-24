@@ -2,15 +2,14 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
-// Conectar a MongoDB
-mongoose.connect('mongodb://localhost:27017/futbol360', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-}).then(() => {
-  console.log('Conectado a MongoDB');
-}).catch(err => {
-  console.error('Error al conectar a MongoDB:', err);
-});
+// Conectar a MongoDB (sin las opciones obsoletas)
+mongoose.connect('mongodb://localhost:27017/futbol360')
+  .then(() => {
+    console.log('Conectado a MongoDB');
+  })
+  .catch(err => {
+    console.error('Error al conectar a MongoDB:', err);
+  });
 
 // Definir el esquema de usuario
 const userSchema = new mongoose.Schema({
@@ -78,15 +77,8 @@ const buscarUsuario = async (username) => {
   }
 };
 
+// Crear un nuevo usuario
+crearUsuario('futbolfan123', 'futbolfan123@example.com', 'securepassword123');
 
-/**
- * ejemplos de uso
- * 
- * // Crear un nuevo usuario
- * crearUsuario('futbolfan123', 'futbolfan123@example.com', 'securepassword123');
- * 
- * // Buscar un usuario por su nombre de usuario
- * buscarUsuario('futbolfan123');
- */
-
-
+// Buscar un usuario por su nombre de usuario
+buscarUsuario('futbolfan123');
