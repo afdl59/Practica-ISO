@@ -77,8 +77,10 @@ const buscarUsuario = async (username) => {
   }
 };
 
+//Ejemplos de uso
+
 // Crear un nuevo usuario
-crearUsuario('futbolfan123', 'futbolfan123@example.com', 'securepassword123');
+//crearUsuario('futbolfan123', 'futbolfan123@example.com', 'securepassword123');
 
 // Buscar un usuario por su nombre de usuario
-buscarUsuario('futbolfan123');
+//buscarUsuario('futbolfan123');
