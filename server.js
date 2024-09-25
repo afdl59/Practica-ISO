@@ -5,10 +5,8 @@ const bodyParser = require('body-parser');
 const path = require('path');
 
 // Conectar a MongoDB
-mongoose.connect('mongodb://localhost:27017/futbol360', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-}).then(() => {
+mongoose.connect('mongodb://localhost:27017/futbol360')
+.then(() => {
     console.log('Conectado a MongoDB');
 }).catch(err => {
     console.error('Error al conectar a MongoDB:', err);
