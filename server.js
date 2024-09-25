@@ -2,9 +2,12 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser');
+const path = require('path');
 
 // Conectar a MongoDB
 mongoose.connect('mongodb://localhost:27017/futbol360', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
 }).then(() => {
     console.log('Conectado a MongoDB');
 }).catch(err => {
@@ -53,7 +56,22 @@ const app = express();
 // Middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(express.static('public'));  // Asegúrate de que el archivo index.html esté en /public
+app.use(express.static(path.join(__dirname, 'public'))); // Servir archivos estáticos desde /public
+
+// Ruta para servir la página principal
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// Ruta para servir la página de inicio de sesión
+app.get('/login', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'login.html'));
+});
+
+// Ruta para servir la página de registro
+app.get('/register', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'register.html'));
+});
 
 // Ruta para manejar el registro
 app.post('/register', async (req, res) => {
@@ -63,7 +81,8 @@ app.post('/register', async (req, res) => {
         // Crear un nuevo usuario
         const nuevoUsuario = new User({ username, email, password });
         await nuevoUsuario.save();
-        res.send('Usuario registrado exitosamente.');
+        // Redirigir a la página principal después del registro exitoso
+        res.redirect('/');
     } catch (err) {
         res.status(400).send('Error al registrar usuario: ' + err.message);
     }
@@ -86,7 +105,8 @@ app.post('/login', async (req, res) => {
             return res.status(400).send('Contraseña incorrecta');
         }
 
-        res.send('Inicio de sesión exitoso');
+        // Redirigir a la página principal después del inicio de sesión exitoso
+        res.redirect('/');
     } catch (err) {
         res.status(400).send('Error al iniciar sesión: ' + err.message);
     }
