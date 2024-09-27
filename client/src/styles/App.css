@@ -1,41 +1,52 @@
-.App {
-  text-align: center;
+/* src/styles/App.css */
+.app-container {
+  display: flex;
+  justify-content: space-between; /* Para que las barras laterales se distribuyan correctamente */
+  align-items: center;
+  height: 100vh;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.sidebar {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-evenly;
+  height: 100vh;
+  width: 150px;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro semi-transparente */
+}
+
+.content {
+  flex-grow: 1; /* El contenido principal ocupa el espacio restante */
+  display: flex;
+  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  height: 100vh;
+}
+
+.App-header {
+  background-color: transparent;
   color: white;
+  text-align: center;
+  font-size: calc(12px + 2vmin);
+}
+
+.sidebar-icon {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+}
+
+.sidebar-title {
+  color: #ffffff;
+  font-size: 1.2em;
+  margin-top: 10px;
 }
 
 .App-link {
   color: #61dafb;
 }
-
-/* src/styles/App.css */
-.app-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 100vh;
-}
-
 
 @keyframes App-logo-spin {
   from {
