@@ -54,21 +54,20 @@ const app = express();
 // Middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, 'public'))); // Servir archivos estáticos desde /public
+app.use(express.static(path.join(__dirname, 'client', 'build'))); // Servir archivos estáticos desde /build
 
 // Ruta para servir la página principal
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
 });
 
-// Ruta para servir la página de inicio de sesión
+// Rutas específicas (si las necesitas para autenticación, las puedes mantener)
 app.get('/login', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'login.html'));
+    res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
 });
 
-// Ruta para servir la página de registro
 app.get('/register', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'register.html'));
+    res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
 });
 
 // Ruta para manejar el registro
@@ -76,10 +75,8 @@ app.post('/register', async (req, res) => {
     const { username, email, password } = req.body;
 
     try {
-        // Crear un nuevo usuario
         const nuevoUsuario = new User({ username, email, password });
         await nuevoUsuario.save();
-        // Redirigir a la página principal después del registro exitoso
         res.redirect('/');
     } catch (err) {
         res.status(400).send('Error al registrar usuario: ' + err.message);
@@ -91,23 +88,25 @@ app.post('/login', async (req, res) => {
     const { email, password } = req.body;
 
     try {
-        // Buscar el usuario por correo
         const usuario = await User.findOne({ email });
         if (!usuario) {
             return res.status(400).send('Usuario no encontrado');
         }
 
-        // Comparar las contraseñas
         const passwordCorrecta = await bcrypt.compare(password, usuario.password);
         if (!passwordCorrecta) {
             return res.status(400).send('Contraseña incorrecta');
         }
 
-        // Redirigir a la página principal después del inicio de sesión exitoso
         res.redirect('/');
     } catch (err) {
         res.status(400).send('Error al iniciar sesión: ' + err.message);
     }
+});
+
+// Manejar rutas de React
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
 });
 
 // Iniciar el servidor
