@@ -3,9 +3,9 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-  }
-  
-  body {
+}
+
+body {
     background: url('../assets/background.jpg') no-repeat center center fixed; /* Imagen de fondo */
     background-size: cover;
     font-family: 'Arial', sans-serif;
@@ -15,77 +15,71 @@
     align-items: center;
     height: 100vh;
     margin: 0;
-  }
-  
-  /* Estilos del contenedor de las páginas */
-  .auth-container {
-    background-color: rgba(0, 0, 0, 0.8); /* Fondo oscuro semi-transparente */
-    padding: 40px;
+}
+
+/* Contenedor del formulario de autenticación */
+.auth-container {
+    background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro semi-transparente */
+    padding: 30px;
     border-radius: 10px;
-    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
     max-width: 400px;
     width: 100%;
     text-align: center;
-  }
-  
-  /* Título de las páginas */
-  .auth-container h1 {
-    font-size: 2.5em;
+}
+
+/* Título de las páginas */
+.auth-container h1 {
+    font-size: 2em;
     margin-bottom: 20px;
-    color: #ffcc00; /* Títulos en color vibrante */
-  }
-  
-  /* Inputs de formularios */
-  .auth-container input[type="email"],
-  .auth-container input[type="text"],
-  .auth-container input[type="password"] {
+    color: #ffffff; /* Color blanco */
+}
+
+/* Inputs de formularios */
+.auth-container input[type="email"],
+.auth-container input[type="text"],
+.auth-container input[type="password"] {
     width: 100%;
-    padding: 15px;
+    padding: 12px;
     margin: 10px 0;
     border-radius: 5px;
     border: none;
-    background-color: #333333;
-    color: #ffffff;
+    background-color: #f0f0f0; /* Fondo claro */
+    color: #333333; /* Texto oscuro */
     font-size: 1em;
     outline: none;
-  }
-  
-  .auth-container input:focus {
-    border: 2px solid #ffcc00; /* Resalta el input cuando está en foco */
-  }
-  
-  /* Botones */
-  .auth-container button {
+}
+
+/* Estilo de los botones */
+.auth-container button {
     width: 100%;
-    padding: 15px;
+    padding: 12px;
     border: none;
     border-radius: 5px;
-    background-color: #ffcc00;
-    color: #121212;
+    background-color: #3399ff; /* Azul vibrante */
+    color: #ffffff; /* Texto blanco */
     font-size: 1.2em;
-    font-weight: bold;
     cursor: pointer;
     margin-top: 20px;
     transition: background-color 0.3s ease;
-  }
-  
-  .auth-container button:hover {
-    background-color: #ffaa00;
-  }
-  
-  /* Links */
-  .auth-container a {
-    color: #ffcc00;
+}
+
+.auth-container button:hover {
+    background-color: #1a73e8; /* Azul más oscuro al pasar el ratón */
+}
+
+/* Links */
+.auth-container a {
+    color: #f0f0f0; /* Blanco suave */
     text-decoration: none;
-  }
-  
-  .auth-container a:hover {
+}
+
+.auth-container a:hover {
     text-decoration: underline;
-  }
-  
-  /* Mensaje de error */
-  .auth-container .error-message {
+}
+
+/* Mensaje de error */
+.auth-container .error-message {
     color: #ff4444;
     margin-top: 10px;
-  }
-  
+}

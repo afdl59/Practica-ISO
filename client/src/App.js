@@ -1,24 +1,19 @@
 // src/App.js
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './components/Home';
-import Login from './components/Login';
-import Register from './components/Register';
-import './styles/index.css';
+import Sidebar from './components/Sidebar';
+import './styles/App.css';
 
 function App() {
   return (
-    <Router>
-      <div className="app-container">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-        </Routes>
-      </div>
-    </Router>
+    <div className="app-container">
+      <Sidebar />
+      <Home />
+      <Sidebar />
+    </div>
   );
 }
 
 export default App;
+
 
