@@ -1,7 +1,6 @@
 // src/components/Login.js
-import React, { useState } from 'react';
-import React from 'react';
-import './styles/index.css';
+//import React, { useState } from 'react';
+import '../styles/index.css';
 
 function Login() {
   return (
