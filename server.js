@@ -71,7 +71,7 @@ app.get('/register', (req, res) => {
 });
 
 // Ruta para manejar el registro
-app.post('/register', async (req, res) => {
+app.post('/api/register', async (req, res) => {
     const { username, email, password } = req.body;
 
     try {
@@ -84,7 +84,7 @@ app.post('/register', async (req, res) => {
 });
 
 // Ruta para manejar el inicio de sesión
-app.post('/login', async (req, res) => {
+app.post('/api/login', async (req, res) => {
     const { email, password } = req.body;
 
     try {
