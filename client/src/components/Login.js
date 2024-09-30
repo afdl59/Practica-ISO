@@ -5,7 +5,7 @@ function Login() {
     return (
         <div className="auth-container">
             <h1>Iniciar Sesión en Futbol360</h1>
-            <form action="/login" method="POST">
+            <form action="/api/login" method="POST">
                 <input type="email" placeholder="Correo Electrónico" required />
                 <input type="password" placeholder="Contraseña" required />
                 <button type="submit">Iniciar Sesión</button>
