@@ -10,11 +10,8 @@ body {
     background-size: cover;
     font-family: 'Arial', sans-serif;
     color: #ffffff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
     margin: 0;
+    padding-top: 60px; /* Asegura espacio para la barra de navegación */
 }
 
 /* Contenedor del formulario de autenticación */
