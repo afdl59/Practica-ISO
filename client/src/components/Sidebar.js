@@ -5,22 +5,22 @@ import '../styles/Sidebar.css';
 
 function Sidebar() {
   return (
-    <div className="sidebar">
-      <Link to="/notificaciones">
-        <img src="/../assets/logo.jpeg" alt="Icono de sección" className="sidebar-icon" />
-        <h3 className="sidebar-title">Notificaciones personalizadas</h3>
+    <div className="navbar">
+      <Link to="/notificaciones" className="navbar-item">
+        <img src="/../assets/logo.jpeg" alt="Icono de sección" className="navbar-icon" />
+        <h3 className="navbar-title">Notificaciones personalizadas</h3>
       </Link>
-      <Link to="/estadisticas">
-        <img src="/../assets/logo.jpeg" alt="Icono de sección" className="sidebar-icon" />
-        <h3 className="sidebar-title">Estadísticas</h3>
+      <Link to="/estadisticas" className="navbar-item">
+        <img src="/../assets/logo.jpeg" alt="Icono de sección" className="navbar-icon" />
+        <h3 className="navbar-title">Estadísticas</h3>
       </Link>
-      <Link to="/foro">
-        <img src="/../assets/logo.jpeg" alt="Icono de sección" className="sidebar-icon" />
-        <h3 className="sidebar-title">Foro</h3>
+      <Link to="/foro" className="navbar-item">
+        <img src="/../assets/logo.jpeg" alt="Icono de sección" className="navbar-icon" />
+        <h3 className="navbar-title">Foro</h3>
       </Link>
-      <Link to="/minijuegos">
-        <img src="/../assets/logo.jpeg" alt="Icono de sección" className="sidebar-icon" />
-        <h3 className="sidebar-title">Minijuegos</h3>
+      <Link to="/minijuegos" className="navbar-item">
+        <img src="/../assets/logo.jpeg" alt="Icono de sección" className="navbar-icon" />
+        <h3 className="navbar-title">Minijuegos</h3>
       </Link>
     </div>
   );
