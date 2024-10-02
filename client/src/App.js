@@ -5,6 +5,7 @@ import Home from './components/Home';
 import Login from './components/Login';
 import Register from './components/Register';
 import Sidebar from './components/Sidebar'; // Asegúrate de importar Sidebar
+import Partidos from './components/Partidos';
 import './styles/App.css';
 
 function App() {
