@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Matches() {
+function Partidos() {
   return (
     <div className="partidos-container">
       <h1>Partidos de Fútbol</h1>
@@ -16,4 +16,4 @@ function Matches() {
   );
 }
 
-export default Matches;
+export default Partidos;
