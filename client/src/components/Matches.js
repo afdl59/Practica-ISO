@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Partidos() {
+function Matches() {
   return (
     <div className="partidos-container">
       <h1>Partidos de Fútbol</h1>
