@@ -1,6 +1,7 @@
 // src/components/Minijuegos.js
 import React from 'react';
-import '../styles/Minijuegos.css'; // Importa los estilos para los minijuegos
+import '../styles/Minijuegos.css';
+import { Link } from 'react-router-dom';
 
 function Minijuegos() {
   return (
