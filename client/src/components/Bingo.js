@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import '../styles/Bingo.css';
+import './Bingo.css';
 
 const Bingo = () => {
   const [grid, setGrid] = useState([]);
-  const [playerInputs, setPlayerInputs] = useState(Array(9).fill('')); // Para almacenar las entradas de los jugadores
-  const [isCorrect, setIsCorrect] = useState(Array(9).fill(false)); // Para marcar si la entrada es correcta
-  const [isGameOver, setIsGameOver] = useState(false);
+  const [playerInputs, setPlayerInputs] = useState(Array(9).fill('')); // Almacenar las entradas del jugador
+  const [isCorrect, setIsCorrect] = useState(Array(9).fill(false)); // Marcar si la entrada es correcta
   const [winMessage, setWinMessage] = useState('');
+  const [gameActive, setGameActive] = useState(true); // Controlar si el juego sigue activo
 
-  // Definiciones correspondientes a cada jugador
+  // Definiciones de los jugadores
   const playerDefinitions = [
     { name: 'Antoine Griezmann', definition: 'Delantero que ha jugado en La Liga y la selección francesa.' },
     { name: 'Isco Alarcon', definition: 'Centrocampista español, conocido por su creatividad y juego en el Real Madrid.' },
@@ -29,37 +29,39 @@ const Bingo = () => {
 
   const handleInputChange = (index, value) => {
     const updatedInputs = [...playerInputs];
-    updatedInputs[index] = value; // Actualizar la entrada del jugador en la cuadrícula
+    updatedInputs[index] = value;
     setPlayerInputs(updatedInputs);
 
-    // Verificar si la entrada es correcta cuando se completa
+    // Si el nombre es correcto, marcarlo como tal
     if (value.toLowerCase() === grid[index].name.toLowerCase()) {
       const updatedCorrect = [...isCorrect];
-      updatedCorrect[index] = true; // Marcar la respuesta como correcta
+      updatedCorrect[index] = true;
       setIsCorrect(updatedCorrect);
     } else {
       const updatedCorrect = [...isCorrect];
-      updatedCorrect[index] = false; // Marcar como incorrecta
+      updatedCorrect[index] = false;
       setIsCorrect(updatedCorrect);
     }
+
+    // Verificar si todas las casillas están llenas
+    checkWinCondition(updatedInputs);
   };
 
-  const checkWinCondition = () => {
-    const allFilled = playerInputs.every(input => input.length > 0); // Verificar que todas las celdas estén llenas
+  const checkWinCondition = (inputs) => {
+    // Verificar si todas las celdas están llenas
+    const allFilled = inputs.every(input => input.length > 0);
+    
     if (allFilled) {
-      const allCorrect = isCorrect.every(correct => correct); // Verificar que todas las respuestas sean correctas
-      setIsGameOver(true);
+      // Verificar si todas las respuestas son correctas
+      const allCorrect = isCorrect.every(correct => correct);
       if (allCorrect) {
         setWinMessage("¡Felicidades! Has completado el Bingo de Futbolistas correctamente.");
       } else {
         setWinMessage("Algunas respuestas no son correctas. ¡Intenta de nuevo!");
       }
+      setGameActive(false); // Terminar el juego
     }
   };
-
-  useEffect(() => {
-    checkWinCondition(); // Solo se llama cuando todas las casillas están llenas
-  }, [playerInputs]);
 
   return (
     <div className="bingo-container">
@@ -74,12 +76,13 @@ const Bingo = () => {
               placeholder="Escribe el nombre del jugador"
               value={playerInputs[index]}
               onChange={(e) => handleInputChange(index, e.target.value)}
+              disabled={!gameActive} // Desactivar el input si el juego ha terminado
             />
           </div>
         ))}
       </div>
-      {isGameOver && <div className="win-message">{winMessage}</div>}
-      {isGameOver && <button onClick={() => window.location.reload()}>Reiniciar Juego</button>}
+      {winMessage && <div className="win-message">{winMessage}</div>}
+      {!gameActive && <button onClick={() => window.location.reload()}>Reiniciar Juego</button>}
     </div>
   );
 };
