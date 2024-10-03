@@ -1,6 +1,6 @@
 // src/components/Bingo.js
 import React, { useState, useEffect } from 'react';
-import './Bingo.css'; // Asegúrate de tener estilos para el bingo
+import '../styles/Bingo.css'; // Asegúrate de tener estilos para el bingo
 
 const Bingo = () => {
   const [grid, setGrid] = useState([]);
