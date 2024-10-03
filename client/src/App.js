@@ -4,19 +4,20 @@ import { Routes, Route } from 'react-router-dom';
 import Home from './components/Home';
 import Login from './components/Login';
 import Register from './components/Register';
-import Sidebar from './components/Sidebar'; // Asegúrate de importar Sidebar
-import Partidos from './components/Partidos';
+import Minijuegos from './components/Minijuegos'; // Importa el nuevo componente
+import Sidebar from './components/Sidebar'; 
 import './styles/App.css';
 
 function App() {
   return (
     <div className="app-container">
-      <Sidebar /> {/* Añadir Sidebar al layout de la App */}
+      <Sidebar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/partidos" element={<Partidos  />} />
+        <Route path="/tiro-libre" element={<TiroLibre />} />
+
       </Routes>
     </div>
   );

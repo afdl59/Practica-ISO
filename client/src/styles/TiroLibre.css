@@ -1,0 +1,11 @@
+/* src/styles/TiroLibre.css */
+.tiro-libre-container {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  input {
+    margin: 10px;
+    padding: 5px;
+  }
+  
