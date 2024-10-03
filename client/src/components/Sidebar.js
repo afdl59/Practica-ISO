@@ -1,9 +1,15 @@
 // src/components/Sidebar.js
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/Sidebar.css';
 
 function Sidebar() {
+  const [minigamesOpen, setMinigamesOpen] = useState(false);
+
+  const toggleMinigames = () => {
+    setMinigamesOpen(!minigamesOpen);
+  };
+
   return (
     <div className="navbar">
       <Link to="/" className="navbar-item">
@@ -23,28 +29,30 @@ function Sidebar() {
         <h3 className="navbar-title">Partidos</h3>
       </Link>
 
-      {/* Sección para los minijuegos */}
-      <div className="navbar-item minigames-section">
+      {/* Minijuegos - Menú desplegable */}
+      <div className="navbar-item dropdown" onClick={toggleMinigames}>
+        <img src="/assets/logo.jpg" alt="Icon Minijuegos" className="navbar-icon" />
         <h3 className="navbar-title">Minijuegos</h3>
-        <Link to="/guess-the-player" className="navbar-item">
-          <img src="/assets/logo.jpg" alt="Icon Guess The Player" className="navbar-icon" />
-          <h3 className="navbar-title">Guess the Player</h3>
-        </Link>
-        <Link to="/tiro-libre" className="navbar-item">
-          <img src="/assets/logo.jpg" alt="Icon Tiro Libre" className="navbar-icon" />
-          <h3 className="navbar-title">Tiro Libre</h3>
-        </Link>
-        <Link to="/player-selector" className="navbar-item">
-          <img src="/assets/logo.jpg" alt="Icon Player Selector" className="navbar-icon" />
-          <h3 className="navbar-title">Player Selector</h3>
-        </Link>
-        <Link to="/bingo" className="navbar-item">
-          <img src="/assets/logo.jpg" alt="Icon Bingo" className="navbar-icon" />
-          <h3 className="navbar-title">Bingo</h3>
-        </Link>
+        {minigamesOpen && (
+          <div className="dropdown-content">
+            <Link to="/guess-the-player" className="dropdown-item">
+              Guess the Player
+            </Link>
+            <Link to="/tiro-libre" className="dropdown-item">
+              Tiro Libre
+            </Link>
+            <Link to="/player-selector" className="dropdown-item">
+              Player Selector
+            </Link>
+            <Link to="/bingo" className="dropdown-item">
+              Bingo
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );
 }
 
 export default Sidebar;
+
