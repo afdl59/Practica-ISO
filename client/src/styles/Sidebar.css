@@ -1,10 +1,10 @@
 .navbar {
   display: flex;
-  justify-content: flex-start; /* Alinea el navbar a la izquierda */
+  justify-content: center; /* Centra el navbar horizontalmente */
   align-items: center;
   position: fixed;
   top: 0;
-  left: 0; /* Asegúrate de que el navbar comience desde el borde izquierdo */
+  left: 0;
   height: 60px;
   background-color: #333;
   z-index: 1000;
@@ -40,11 +40,12 @@
 .minigames-section {
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* Alinea los minijuegos hacia la izquierda */
+  align-items: center; /* Alinea los minijuegos al centro */
   margin-left: 20px; /* Espacio entre los minijuegos y el resto de la barra */
 }
 
 .minigames-section .navbar-item {
   margin: 5px 0; /* Reduce el espacio entre los minijuegos */
 }
+
 
