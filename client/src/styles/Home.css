@@ -32,6 +32,7 @@
   background-color: #0056b3;
 }
 
+/* Estilos para la ventana de cookies */
 .cookie-banner {
   position: fixed;
   bottom: 20px;
@@ -55,11 +56,4 @@
   background-color: #28a745;
   color: white;
   border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-.btn-accept-cookies:hover {
-  background-color: #218838;
-}
+  padding: 10px 20
