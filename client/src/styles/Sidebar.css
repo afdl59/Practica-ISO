@@ -1,17 +1,15 @@
-/* src/styles/Sidebar.css */
 .navbar {
   display: flex;
-  justify-content: center; /* Centra el navbar horizontalmente */
+  justify-content: flex-start; /* Alinea el navbar a la izquierda */
   align-items: center;
   position: fixed;
   top: 0;
-  left: 50%; /* Centra el navbar */
-  transform: translateX(-50%); /* Ajuste para centrar el navbar */
+  left: 0; /* Asegúrate de que el navbar comience desde el borde izquierdo */
   height: 60px;
   background-color: #333;
   z-index: 1000;
   padding: 0 20px;
-  width: auto; /* Ajuste el ancho según el contenido */
+  width: 100%; /* Asegura que el navbar ocupe todo el ancho */
 }
 
 .navbar-item {
