@@ -34,6 +34,10 @@ function Sidebar() {
           <img src="/assets/logo.jpg" alt="Icon Tiro Libre" className="navbar-icon" />
           <h3 className="navbar-title">Tiro Libre</h3>
         </Link>
+        <Link to="/player-selector" className="navbar-item">
+          <img src="/assets/logo.jpg" alt="Icon Player Selector" className="navbar-icon" />
+          <h3 className="navbar-title">Player Selector</h3>
+        </Link>
         <Link to="/bingo" className="navbar-item">
           <img src="/assets/logo.jpg" alt="Icon Bingo" className="navbar-icon" />
           <h3 className="navbar-title">Bingo</h3>
@@ -44,4 +48,3 @@ function Sidebar() {
 }
 
 export default Sidebar;
-
