@@ -9,6 +9,7 @@ import Bingo from './components/Bingo'; // Asegúrate de importar el componente 
 import TiroLibre from './components/TiroLibre';
 import Sidebar from './components/Sidebar';
 import Partidos from './components/Partidos';
+import GuessThePlayer from './components/GuessThePlayer'; // Importa el nuevo componente
 import './styles/App.css';
 
 function App() {
@@ -23,11 +24,11 @@ function App() {
         <Route path="/minijuegos/bingo" element={<Bingo />} /> {/* Ruta para el Bingo */}
         <Route path="/tiro-libre" element={<TiroLibre />} /> {/* Ruta para el Tiro Libre */}
         <Route path="/partidos" element={<Partidos />} />
+        <Route path="/guess-the-player" element={<GuessThePlayer />} /> {/* Nueva ruta para Guess The Player */}
       </Routes>
     </div>
   );
 }
 
 export default App;
-
 
