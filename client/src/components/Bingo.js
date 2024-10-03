@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './Bingo.css';
+import '../styles/Bingo.css';
 
 const Bingo = () => {
   const [grid, setGrid] = useState([]);
