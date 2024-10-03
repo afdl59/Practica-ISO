@@ -1,18 +1,17 @@
 /* src/styles/Sidebar.css */
-
 .navbar {
   display: flex;
-  justify-content: center; /* Centra los elementos del navbar */
+  justify-content: center; /* Centra el navbar horizontalmente */
   align-items: center;
   position: fixed;
   top: 0;
-  left: 50%; /* Posiciona el navbar en el centro de la pantalla */
-  transform: translateX(-50%); /* Asegura que el navbar esté centrado correctamente */
-  width: auto; /* El ancho se ajustará al contenido */
+  left: 50%; /* Centra el navbar */
+  transform: translateX(-50%); /* Ajuste para centrar el navbar */
   height: 60px;
-  background-color: #333; /* Color de fondo de la barra */
-  z-index: 1000; /* Asegura que la barra esté siempre visible */
-  padding: 0 20px; /* Añade un poco de padding horizontal */
+  background-color: #333;
+  z-index: 1000;
+  padding: 0 20px;
+  width: auto; /* Ajuste el ancho según el contenido */
 }
 
 .navbar-item {
@@ -21,7 +20,7 @@
   align-items: center;
   color: white;
   text-decoration: none;
-  margin: 0 15px; /* Espacio entre los items del navbar */
+  margin: 0 15px; /* Espacio entre los elementos del navbar */
 }
 
 .navbar-icon {
@@ -35,6 +34,6 @@
 }
 
 .navbar-item:hover {
-  background-color: #444; /* Efecto al pasar el cursor */
+  background-color: #444;
   cursor: pointer;
 }
