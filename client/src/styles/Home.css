@@ -6,9 +6,11 @@
   justify-content: center; /* Centra verticalmente */
   align-items: center;      /* Centra horizontalmente */
   height: 100vh;            /* Ocupa toda la altura de la pantalla */
-  background-image: url('../assets/background.jpg');
+  background-image: url('../assets/background.jpg'); /* Asegúrate de que la ruta sea correcta */
   background-size: cover;
+  background-position: center; /* Asegura que la imagen esté centrada */
   color: #ffffff;
+  text-align: center;          /* Centra el texto */
 }
 
 h1 {
@@ -28,6 +30,7 @@ p {
 .auth-links {
   display: flex;
   gap: 20px; /* Espacio entre los botones */
+  justify-content: center; /* Asegura que los botones estén centrados */
 }
 
 .auth-links .btn {
