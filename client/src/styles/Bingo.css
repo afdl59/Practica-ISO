@@ -24,58 +24,58 @@
   }
 
   .bingo-container {
-    padding: 20px;
-    text-align: center;
-  }
-  
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 columnas */
-    gap: 10px; /* Espacio entre los elementos */
-    margin-top: 20px;
-  }
-  
-  .grid-item {
-    border: 1px solid #ccc;
-    padding: 10px;
-    text-align: center;
-    background-color: #f9f9f9; /* Color de fondo */
-    transition: background-color 0.3s;
-  }
-  
-  .grid-item.correct {
-    background-color: #a3e635; /* Verde para las respuestas correctas */
-  }
-  
-  .grid-item:hover {
-    background-color: #e0e0e0; /* Color al pasar el mouse */
-  }
-  
-  input {
-    margin-top: 10px;
-    padding: 5px;
-    width: 80%; /* Ancho del campo de entrada */
-  }
-  
-  .win-message {
-    margin-top: 20px;
-    font-size: 1.2em;
-    color: green;
-  }
-  
-  button {
-    margin-top: 20px;
-    padding: 10px 20px;
-    font-size: 1em;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #0056b3; /* Color al pasar el mouse */
-  }
+  padding: 20px;
+  text-align: center;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 columnas */
+  gap: 10px; /* Espacio entre los elementos */
+  margin-top: 20px;
+}
+
+.grid-item {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+  background-color: #f9f9f9; /* Color de fondo */
+  transition: background-color 0.3s;
+}
+
+.grid-item.correct {
+  background-color: #a3e635; /* Verde para las respuestas correctas */
+}
+
+.grid-item:hover {
+  background-color: #e0e0e0; /* Color al pasar el mouse */
+}
+
+input {
+  margin-top: 10px;
+  padding: 5px;
+  width: 80%; /* Ancho del campo de entrada */
+}
+
+.win-message {
+  margin-top: 20px;
+  font-size: 1.2em;
+  color: green;
+}
+
+button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 1em;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3; /* Color al pasar el mouse */
+}
   
   
