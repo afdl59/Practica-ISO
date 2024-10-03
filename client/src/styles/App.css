@@ -1,28 +1,16 @@
 /* src/styles/App.css */
 .app-container {
+  padding-top: 60px; /* Añade espacio suficiente para que el contenido no se superponga con el navbar */
   display: flex;
-  justify-content: space-between; /* Para que las barras laterales se distribuyan correctamente */
-  align-items: center;
-  height: 100vh;
-}
-
-.sidebar {
-  display: flex;
+  justify-content: flex-start;
   flex-direction: column;
-  align-items: center;
-  justify-content: space-evenly;
-  height: 100vh;
-  width: 150px;
-  padding: 20px;
-  background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro semi-transparente */
+  min-height: 100vh;
 }
 
 .content {
-  flex-grow: 1; /* El contenido principal ocupa el espacio restante */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
+  margin-top: 60px; /* Añade margen superior igual a la altura del navbar */
+  padding: 20px;
+  flex-grow: 1; /* El contenido crece para llenar el espacio disponible */
 }
 
 .App-header {
@@ -30,18 +18,6 @@
   color: white;
   text-align: center;
   font-size: calc(12px + 2vmin);
-}
-
-.sidebar-icon {
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
-}
-
-.sidebar-title {
-  color: #ffffff;
-  font-size: 1.2em;
-  margin-top: 10px;
 }
 
 .App-link {
