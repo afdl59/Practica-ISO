@@ -44,7 +44,7 @@ const TiroLibre = () => {
   };
 
   return (
-    <div className="tiro-libre-container">
+    <div className="tiro-libre-containe">
       <h1>Tiro Libre</h1>
       <div className="scoreboard">
         <p>Goles: {goals}</p>
