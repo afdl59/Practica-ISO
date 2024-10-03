@@ -17,11 +17,11 @@ function Minijuegos() {
           <h2>Tiro Libre</h2>
           <p>Demuestra tu habilidad con los tiros libres.</p>
         </Link>
-        {/* Aquí puedes agregar más minijuegos en el futuro */}
       </div>
     </div>
   );
 }
 
 export default Minijuegos;
+
 
