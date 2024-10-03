@@ -1,34 +1,38 @@
 // src/components/TiroLibre.js
 import React, { useState } from 'react';
+import './TiroLibre.css'; // Asegúrate de tener estilos para el componente
 
-function TiroLibre() {
-  const [angulo, setAngulo] = useState(0);
-  const [potencia, setPotencia] = useState(0);
+const TiroLibre = () => {
+  const [goles, setGoles] = useState(0);
+  const [resultado, setResultado] = useState('');
+  
+  const porteroPosicion = {
+    left: `${Math.random() * 70 + 15}%`, // Random position within the goal
+    top: '30%' // Fixed vertical position
+  };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Lógica para calcular el resultado del tiro
-    alert(`Tiro realizado con ángulo: ${angulo}° y potencia: ${potencia}`);
+  const realizarTiro = () => {
+    const gol = Math.random() > 0.5; // 50% de probabilidad de marcar un gol
+    if (gol) {
+      setGoles(goles + 1);
+      setResultado('¡Gol!');
+    } else {
+      setResultado('¡Fallaste!');
+    }
   };
 
   return (
     <div className="tiro-libre-container">
       <h1>Tiro Libre</h1>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Ángulo (0-90°):
-          <input type="number" value={angulo} onChange={(e) => setAngulo(e.target.value)} min="0" max="90" />
-        </label>
-        <br />
-        <label>
-          Potencia (1-100):
-          <input type="number" value={potencia} onChange={(e) => setPotencia(e.target.value)} min="1" max="100" />
-        </label>
-        <br />
-        <button type="submit">Tirar</button>
-      </form>
+      <div className="campo">
+        <div className="portero" style={porteroPosicion}></div>
+      </div>
+      <button onClick={realizarTiro}>Chutar</button>
+      <h2>Goles: {goles}</h2>
+      {resultado && <h3>{resultado}</h3>}
     </div>
   );
-}
+};
 
 export default TiroLibre;
+

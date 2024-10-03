@@ -1,11 +1,22 @@
 /* src/styles/TiroLibre.css */
 .tiro-libre-container {
-    padding: 20px;
-    text-align: center;
-  }
-  
-  input {
-    margin: 10px;
-    padding: 5px;
-  }
-  
+  text-align: center;
+}
+
+.campo {
+  position: relative;
+  width: 80%;
+  height: 400px;
+  background-color: green; /* Campo de fútbol */
+  margin: 20px auto;
+  border: 2px solid white; /* Línea de banda */
+}
+
+.portero {
+  position: absolute;
+  width: 60px;
+  height: 100px; /* Altura del portero */
+  background-color: yellow; /* Color del portero */
+  border-radius: 5px;
+  transition: left 0.5s; /* Animación de movimiento */
+}
