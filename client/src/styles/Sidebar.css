@@ -1,17 +1,15 @@
-/* src/styles/Sidebar.css */
 .navbar {
   display: flex;
-  justify-content: center; /* Centra el navbar horizontalmente */
+  justify-content: center;
   align-items: center;
   position: fixed;
   top: 0;
-  left: 50%; /* Centra el navbar */
-  transform: translateX(-50%); /* Ajuste para centrar el navbar */
+  left: 0;
   height: 60px;
   background-color: #333;
   z-index: 1000;
   padding: 0 20px;
-  width: auto; /* Ajuste el ancho según el contenido */
+  width: 100%;
 }
 
 .navbar-item {
@@ -20,7 +18,7 @@
   align-items: center;
   color: white;
   text-decoration: none;
-  margin: 0 15px; /* Espacio entre los elementos del navbar */
+  margin: 0 15px;
 }
 
 .navbar-icon {
@@ -36,4 +34,32 @@
 .navbar-item:hover {
   background-color: #444;
   cursor: pointer;
+}
+
+/* Estilos para el menú desplegable de minijuegos */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  background-color: #333;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  margin-top: 10px;
+}
+
+.dropdown-item {
+  color: white;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-item:hover {
+  background-color: #444;
 }
