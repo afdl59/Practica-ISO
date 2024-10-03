@@ -1,15 +1,15 @@
 /* src/styles/Home.css */
 .home-container {
   width: 100%;
-  height: 100vh; /* Mantén el fondo en toda la pantalla */
+  height: 100vh;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url('/path/to/your/background-image.jpg'); /* Reemplaza con la ruta correcta de tu imagen de fondo */
+  background-image: url('/path/to/your/background-image.jpg');
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Centra el contenido verticalmente */
-  align-items: center; /* Centra el contenido horizontalmente */
+  justify-content: center;
+  align-items: center;
 }
 
 .auth-links {
@@ -32,13 +32,34 @@
   background-color: #0056b3;
 }
 
-h1 {
-  color: white; /* Color del texto */
-  font-size: 2.5rem; /* Tamaño del título */
-  margin-bottom: 20px;
+.cookie-banner {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 15px 20px;
+  border-radius: 10px;
+  z-index: 1000;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-p {
-  color: white; /* Color del texto del párrafo */
-  font-size: 1.2rem;
+.cookie-banner p {
+  margin: 0;
+  padding-right: 20px;
+  display: inline;
+}
+
+.btn-accept-cookies {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.btn-accept-cookies:hover {
+  background-color: #218838;
 }
