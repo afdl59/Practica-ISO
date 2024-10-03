@@ -1,12 +1,11 @@
-// src/components/Bingo.js
 import React, { useState, useEffect } from 'react';
-import '../styles/Bingo.css'; // Asegúrate de tener estilos para el bingo
+import './Bingo.css';
 
 const Bingo = () => {
   const [grid, setGrid] = useState([]);
-  const [selectedPlayers, setSelectedPlayers] = useState([]);
+  const [playerInputs, setPlayerInputs] = useState(Array(9).fill('')); // Para almacenar las entradas de los jugadores
   const [isGameOver, setIsGameOver] = useState(false);
-  const [winMessage, setWinMessage] = useState(''); // Para almacenar el mensaje de victoria
+  const [winMessage, setWinMessage] = useState('');
 
   // Definiciones correspondientes a cada jugador
   const playerDefinitions = [
@@ -27,19 +26,17 @@ const Bingo = () => {
     setGrid(shuffledPlayers);
   }, []);
 
-  const handleSelectPlayer = (player) => {
-    if (selectedPlayers.length < 9) {
-      setSelectedPlayers([...selectedPlayers, player]);
-    }
+  const handleInputChange = (index, value) => {
+    const updatedInputs = [...playerInputs];
+    updatedInputs[index] = value; // Actualizar la entrada del jugador en la cuadrícula
+    setPlayerInputs(updatedInputs);
   };
 
   const checkWinCondition = () => {
-    if (selectedPlayers.length === 9) {
-      // Verificar si todas las selecciones son correctas
+    if (playerInputs.length === 9) {
       const correctAnswers = playerDefinitions.map(p => p.name);
-      const isWinner = selectedPlayers.every(name => correctAnswers.includes(name));
+      const isWinner = playerInputs.every(input => correctAnswers.includes(input));
       setIsGameOver(true);
-      // Mensaje de victoria
       if (isWinner) {
         setWinMessage("¡No está mal tu conocimiento futbolístico! Pero la próxima vez será más difícil.");
       } else {
@@ -50,7 +47,7 @@ const Bingo = () => {
 
   useEffect(() => {
     checkWinCondition();
-  }, [selectedPlayers]);
+  }, [playerInputs]);
 
   return (
     <div className="bingo-container">
@@ -58,15 +55,15 @@ const Bingo = () => {
       <p>Rellena las casillas con los jugadores correspondientes:</p>
       <div className="grid">
         {grid.map((player, index) => (
-          <div key={index} className="grid-item" onClick={() => handleSelectPlayer(player.name)}>
-            {player.definition}
+          <div key={index} className="grid-item">
+            <p>{player.definition}</p>
+            <input
+              type="text"
+              placeholder="Escribe el nombre del jugador"
+              value={playerInputs[index]}
+              onChange={(e) => handleInputChange(index, e.target.value)}
+            />
           </div>
-        ))}
-      </div>
-      <h2>Jugadores seleccionados:</h2>
-      <div className="selected-players">
-        {selectedPlayers.map((name, index) => (
-          <span key={index} className="selected-player">{name}</span>
         ))}
       </div>
       {isGameOver && <div className="win-message">{winMessage}</div>}
@@ -76,3 +73,4 @@ const Bingo = () => {
 };
 
 export default Bingo;
+
