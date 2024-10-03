@@ -1,76 +1,77 @@
-import React, { useState, useEffect } from 'react';
-import '../styles/Bingo.css';
+import React, { useState } from 'react';
+
+const jugadores = [
+  { nombre: "Harry Kane", definicion: "Delantero estrella del Tottenham y la selección inglesa." },
+  { nombre: "Sergio Ramos", definicion: "Defensa central, leyenda del Real Madrid y capitán de la selección española." },
+  { nombre: "Cristiano Ronaldo", definicion: "Delantero legendario, ha jugado en varias ligas, incluyendo La Liga y la Premier." },
+  { nombre: "Mohamed Salah", definicion: "Delantero egipcio que brilla en la Premier League con el Liverpool." },
+  { nombre: "Isco Alarcon", definicion: "Centrocampista español, conocido por su creatividad y juego en el Real Madrid." },
+  { nombre: "Francesco Totti", definicion: "Delantero que dedicó toda su carrera a la AS Roma en la Serie A." },
+  { nombre: "Antoine Griezmann", definicion: "Delantero que ha jugado en La Liga y la selección francesa." },
+  { nombre: "Iker Casillas", definicion: "Portero icónico del Real Madrid y la selección española." },
+  { nombre: "Santiago Cazorla", definicion: "Centrocampista con gran visión de juego, ha jugado en La Liga y Premier League." }
+];
 
 const Bingo = () => {
-  const [grid, setGrid] = useState([]);
-  const [playerInputs, setPlayerInputs] = useState(Array(9).fill('')); // Para almacenar las entradas de los jugadores
-  const [isGameOver, setIsGameOver] = useState(false);
-  const [winMessage, setWinMessage] = useState('');
+  const [inputs, setInputs] = useState(Array(jugadores.length).fill(""));
+  const [mensaje, setMensaje] = useState("");
 
-  // Definiciones correspondientes a cada jugador
-  const playerDefinitions = [
-    { name: 'Antoine Griezmann', definition: 'Delantero que ha jugado en La Liga y la selección francesa.' },
-    { name: 'Isco Alarcon', definition: 'Centrocampista español, conocido por su creatividad y juego en el Real Madrid.' },
-    { name: 'Sergio Ramos', definition: 'Defensa central, leyenda del Real Madrid y capitán de la selección española.' },
-    { name: 'Santiago Cazorla', definition: 'Centrocampista con gran visión de juego, ha jugado en La Liga y Premier League.' },
-    { name: 'Harry Kane', definition: 'Delantero estrella del Tottenham y la selección inglesa.' },
-    { name: 'Iker Casillas', definition: 'Portero icónico del Real Madrid y la selección española.' },
-    { name: 'Mohamed Salah', definition: 'Delantero egipcio que brilla en la Premier League con el Liverpool.' },
-    { name: 'Cristiano Ronaldo', definition: 'Delantero legendario, ha jugado en varias ligas, incluyendo La Liga y la Premier.' },
-    { name: 'Francesco Totti', definition: 'Delantero que dedicó toda su carrera a la AS Roma en la Serie A.' }
-  ];
-
-  useEffect(() => {
-    // Generar una cuadrícula de 9 casillas con definiciones aleatorias
-    const shuffledPlayers = playerDefinitions.sort(() => 0.5 - Math.random()).slice(0, 9);
-    setGrid(shuffledPlayers);
-  }, []);
-
+  // Maneja el cambio de cada input en la cuadrícula
   const handleInputChange = (index, value) => {
-    const updatedInputs = [...playerInputs];
-    updatedInputs[index] = value; // Actualizar la entrada del jugador en la cuadrícula
-    setPlayerInputs(updatedInputs);
+    const nuevosInputs = [...inputs];
+    nuevosInputs[index] = value;
+    setInputs(nuevosInputs);
+    setMensaje(""); // Resetear el mensaje mientras se escribe
   };
 
-  const checkWinCondition = () => {
-    if (playerInputs.length === 9) {
-      const correctAnswers = playerDefinitions.map(p => p.name);
-      const isWinner = playerInputs.every(input => correctAnswers.includes(input));
-      setIsGameOver(true);
-      if (isWinner) {
-        setWinMessage("¡No está mal tu conocimiento futbolístico! Pero la próxima vez será más difícil.");
-      } else {
-        alert("¡Perdiste! Intenta de nuevo.");
-      }
+  // Validar si todos los inputs son correctos
+  const validarGanador = () => {
+    const esGanador = inputs.every(
+      (input, index) => input.trim().toLowerCase() === jugadores[index].nombre.toLowerCase()
+    );
+    if (esGanador) {
+      setMensaje("¡Has ganado!");
+    } else {
+      setMensaje(""); // No mostrar mensaje hasta que se completen todas las casillas correctamente
     }
   };
 
-  useEffect(() => {
-    checkWinCondition();
-  }, [playerInputs]);
+  // Maneja el evento cuando se da Enter o se cambia el foco en el último input
+  const handleEnterPress = (index) => {
+    if (index === jugadores.length - 1) {
+      validarGanador(); // Solo validar cuando se complete el último input
+    }
+  };
 
   return (
-    <div className="bingo-container">
+    <div>
       <h1>Bingo de Futbolistas</h1>
-      <p>Rellena las casillas con los jugadores correspondientes:</p>
-      <div className="grid">
-        {grid.map((player, index) => (
-          <div key={index} className="grid-item">
-            <p>{player.definition}</p>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px", marginBottom: "20px" }}>
+        {jugadores.map((jugador, index) => (
+          <div key={index} style={{ border: "1px solid #ccc", padding: "10px", borderRadius: "5px" }}>
+            <p>{jugador.definicion}</p>
             <input
               type="text"
-              placeholder="Escribe el nombre del jugador"
-              value={playerInputs[index]}
+              value={inputs[index]}
               onChange={(e) => handleInputChange(index, e.target.value)}
+              onBlur={() => validarGanador()} // Validar al salir del input
+              onKeyDown={(e) => e.key === 'Enter' && handleEnterPress(index)} // Validar al presionar Enter en el último input
+              style={{
+                padding: "10px",
+                fontSize: "16px",
+                textTransform: "capitalize",
+                backgroundColor:
+                  inputs[index].trim().toLowerCase() === jugadores[index].nombre.toLowerCase()
+                    ? "lightgreen"
+                    : ""
+              }}
             />
           </div>
         ))}
       </div>
-      {isGameOver && <div className="win-message">{winMessage}</div>}
-      {isGameOver && <button onClick={() => window.location.reload()}>Reiniciar Juego</button>}
+      {mensaje && <div style={{ marginTop: "20px", fontSize: "18px", fontWeight: "bold" }}>{mensaje}</div>}
     </div>
   );
 };
 
 export default Bingo;
-
