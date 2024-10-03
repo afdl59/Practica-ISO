@@ -2,14 +2,17 @@
 
 .navbar {
   display: flex;
-  justify-content: space-around; /* Espacio igual entre los enlaces */
+  justify-content: center; /* Centra los elementos del navbar */
   align-items: center;
   position: fixed;
   top: 0;
-  width: 100%;
+  left: 50%; /* Posiciona el navbar en el centro de la pantalla */
+  transform: translateX(-50%); /* Asegura que el navbar esté centrado correctamente */
+  width: auto; /* El ancho se ajustará al contenido */
   height: 60px;
   background-color: #333; /* Color de fondo de la barra */
   z-index: 1000; /* Asegura que la barra esté siempre visible */
+  padding: 0 20px; /* Añade un poco de padding horizontal */
 }
 
 .navbar-item {
@@ -18,6 +21,7 @@
   align-items: center;
   color: white;
   text-decoration: none;
+  margin: 0 15px; /* Espacio entre los items del navbar */
 }
 
 .navbar-icon {
