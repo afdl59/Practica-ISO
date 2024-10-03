@@ -43,6 +43,10 @@
     transition: background-color 0.3s;
   }
   
+  .grid-item.correct {
+    background-color: #a3e635; /* Verde para las respuestas correctas */
+  }
+  
   .grid-item:hover {
     background-color: #e0e0e0; /* Color al pasar el mouse */
   }
