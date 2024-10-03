@@ -1,21 +1,17 @@
 // src/components/Home.js
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/Home.css';
 
 function Home() {
-  const [cookiesAccepted, setCookiesAccepted] = useState(false);
-
-  useEffect(() => {
-    const cookiesConsent = localStorage.getItem('cookiesAccepted');
-    if (cookiesConsent) {
-      setCookiesAccepted(true);
-    }
-  }, []);
+  const [cookiesAccepted, setCookiesAccepted] = useState(() => {
+    // Verifica si las cookies ya han sido aceptadas
+    return localStorage.getItem('cookiesAccepted') === 'true';
+  });
 
   const handleAcceptCookies = () => {
     setCookiesAccepted(true);
-    localStorage.setItem('cookiesAccepted', 'true');
+    localStorage.setItem('cookiesAccepted', true);
   };
 
   return (
