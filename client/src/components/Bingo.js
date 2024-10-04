@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import '../styles/Bingo.css';
 
 const jugadores = [
-  { nombre: "Harry Kane", definicion: "Delantero estrella del Tottenham y la selección inglesa." },
+  { nombre: "Harry Kane", definicion: "Delantero estrella del bayern de munchen y la selección inglesa." },
   { nombre: "Sergio Ramos", definicion: "Defensa central, leyenda del Real Madrid y capitán de la selección española." },
   { nombre: "Cristiano Ronaldo", definicion: "Delantero legendario, ha jugado en varias ligas, incluyendo La Liga y la Premier." },
   { nombre: "Mohamed Salah", definicion: "Delantero egipcio que brilla en la Premier League con el Liverpool." },
@@ -44,11 +45,11 @@ const Bingo = () => {
   };
 
   return (
-    <div>
+    <div className="bingo-container">
       <h1>Bingo de Futbolistas</h1>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px", marginBottom: "20px" }}>
+      <div className="grid">
         {jugadores.map((jugador, index) => (
-          <div key={index} style={{ border: "1px solid #ccc", padding: "10px", borderRadius: "5px" }}>
+          <div key={index} className={`grid-item ${inputs[index].trim().toLowerCase() === jugadores[index].nombre.toLowerCase() ? 'correct' : ''}`}>
             <p>{jugador.definicion}</p>
             <input
               type="text"
@@ -56,20 +57,11 @@ const Bingo = () => {
               onChange={(e) => handleInputChange(index, e.target.value)}
               onBlur={() => validarGanador()} // Validar al salir del input
               onKeyDown={(e) => e.key === 'Enter' && handleEnterPress(index)} // Validar al presionar Enter en el último input
-              style={{
-                padding: "10px",
-                fontSize: "16px",
-                textTransform: "capitalize",
-                backgroundColor:
-                  inputs[index].trim().toLowerCase() === jugadores[index].nombre.toLowerCase()
-                    ? "lightgreen"
-                    : ""
-              }}
             />
           </div>
         ))}
       </div>
-      {mensaje && <div style={{ marginTop: "20px", fontSize: "18px", fontWeight: "bold" }}>{mensaje}</div>}
+      {mensaje && <div className="win-message">{mensaje}</div>}
     </div>
   );
 };

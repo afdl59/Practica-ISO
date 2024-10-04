@@ -1,29 +1,4 @@
-/* src/styles/Bingo.css */
-.bingo-card {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-  }
-  
-  .bingo-cell {
-    border: 1px solid #ccc;
-    padding: 10px;
-    text-align: center;
-    position: relative;
-  }
-  
-  .bingo-cell.filled {
-    background-color: #d4edda; /* Color verde claro para las casillas llenas */
-
-    .win-message {
-        font-size: 1.5em;
-        color: green;
-        margin-top: 20px;
-      }
-
-  }
-
-  .bingo-container {
+.bingo-container {
   padding: 20px;
   text-align: center;
 }
@@ -77,5 +52,6 @@ button {
 button:hover {
   background-color: #0056b3; /* Color al pasar el mouse */
 }
+
   
   
