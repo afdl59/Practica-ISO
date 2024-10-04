@@ -10,6 +10,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding-bottom: 100px; /* Asegura que el contenido no se superponga con el banner */
 }
 
 .auth-links {
@@ -56,5 +57,17 @@
   background-color: #28a745;
   color: white;
   border: none;
-  padding: 10px 20
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-accept-cookies:hover {
+  background-color: #218838;
+}
+
+/* Para asegurar que el contenido no se superponga al banner */
+.home-container {
+  padding-bottom: 100px;
 }
