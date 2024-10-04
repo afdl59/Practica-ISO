@@ -33,7 +33,7 @@
   background-color: #0056b3;
 }
 
-/* Estilos para la ventana de cookies */
+/* Estilos para el banner de cookies */
 .cookie-banner {
   position: fixed;
   bottom: 20px;
@@ -41,25 +41,30 @@
   transform: translateX(-50%);
   background-color: rgba(0, 0, 0, 0.8);
   color: white;
-  padding: 15px 20px;
+  padding: 20px;
   border-radius: 10px;
   z-index: 1000;
+  width: 80%;
+  max-width: 600px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  text-align: center;
 }
 
-.cookie-banner p {
-  margin: 0;
-  padding-right: 20px;
-  display: inline;
+.cookie-buttons {
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-around;
 }
 
-.btn-accept-cookies {
+.btn-accept-cookies,
+.btn-reject-cookies,
+.btn-preferences-cookies {
   background-color: #28a745;
   color: white;
-  border: none;
   padding: 10px 20px;
-  cursor: pointer;
+  border: none;
   border-radius: 5px;
+  cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
@@ -67,7 +72,57 @@
   background-color: #218838;
 }
 
-/* Para asegurar que el contenido no se superponga al banner */
-.home-container {
-  padding-bottom: 100px;
+.btn-reject-cookies {
+  background-color: #dc3545;
+}
+
+.btn-reject-cookies:hover {
+  background-color: #c82333;
+}
+
+.btn-preferences-cookies {
+  background-color: #17a2b8;
+}
+
+.btn-preferences-cookies:hover {
+  background-color: #138496;
+}
+
+/* Ventana de preferencias de cookies */
+.cookie-preferences {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  color: black;
+  padding: 20px;
+  border-radius: 10px;
+  z-index: 1001;
+  width: 80%;
+  max-width: 500px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  text-align: center;
+}
+
+.cookie-options {
+  margin: 20px 0;
+}
+
+.cookie-options div {
+  margin: 10px 0;
+}
+
+.btn-save-preferences {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-save-preferences:hover {
+  background-color: #0056b3;
 }
