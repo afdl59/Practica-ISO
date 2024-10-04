@@ -1,17 +1,13 @@
-// src/components/Home.js
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/Home.css';
 
 function Home() {
-  const [cookiesAccepted, setCookiesAccepted] = useState(() => {
-    // Verifica si las cookies ya han sido aceptadas
-    return localStorage.getItem('cookiesAccepted') === 'true';
-  });
+  const [cookiesAccepted, setCookiesAccepted] = useState(false); // Inicializa siempre en false
 
   const handleAcceptCookies = () => {
     setCookiesAccepted(true);
-    localStorage.setItem('cookiesAccepted', true);
+    // No se almacena en localStorage, el banner aparecerá siempre al cargar la página
   };
 
   return (
@@ -35,4 +31,3 @@ function Home() {
 }
 
 export default Home;
-
