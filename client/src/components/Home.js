@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import '../styles/Home.css';
 
 function Home() {
@@ -35,53 +34,61 @@ function Home() {
       <h1>Bienvenido a Futbol360</h1>
       <p>Para acceder a todas las funcionalidades de Futbol360, inicia sesión o crea una cuenta.</p>
       <div className="auth-links">
-        <Link to="/login" className="btn">Iniciar Sesión</Link>
-        <Link to="/register" className="btn">Registrarse</Link>
+        <a href="/login" className="btn">Iniciar Sesión</a>
+        <a href="/register" className="btn">Registrarse</a>
       </div>
 
-      {/* Ventana de cookies */}
+      {/* Modal de cookies */}
       {!cookiesAccepted && (
-        <div className="cookie-banner">
-          <p>Utilizamos cookies para personalizar tu experiencia. Elige tus preferencias a continuación.</p>
-          <div className="cookie-buttons">
-            <button className="btn-accept-cookies" onClick={handleAcceptAll}>Aceptar todas</button>
-            <button className="btn-reject-cookies" onClick={handleRejectAll}>Rechazar todas</button>
-            <button className="btn-preferences-cookies" onClick={handleTogglePreferences}>Gestionar preferencias</button>
+        <div className="cookie-modal">
+          <div className="cookie-content">
+            <img src="/path-to-your-logo/logo.png" alt="Logo" className="cookie-logo" />
+            <h2>Aviso de privacidad</h2>
+            <p>
+              Utilizamos cookies para personalizar tu experiencia. Elige tus preferencias o acepta todas las cookies.
+            </p>
+            <div className="cookie-buttons">
+              <button className="btn-accept-cookies" onClick={handleAcceptAll}>Aceptar todas</button>
+              <button className="btn-reject-cookies" onClick={handleRejectAll}>Rechazar todas</button>
+              <button className="btn-preferences-cookies" onClick={handleTogglePreferences}>Gestionar preferencias</button>
+            </div>
           </div>
         </div>
       )}
 
       {/* Ventana de preferencias de cookies */}
       {showPreferences && (
-        <div className="cookie-preferences">
-          <h2>Preferencias de cookies</h2>
-          <p>Elige qué tipos de cookies deseas activar.</p>
-          <div className="cookie-options">
-            <div>
-              <input type="checkbox" checked disabled /> Cookies esenciales (siempre activas)
+        <div className="cookie-preferences-modal">
+          <div className="cookie-preferences-content">
+            <h2>Preferencias de cookies</h2>
+            <p>Elige qué tipos de cookies deseas activar.</p>
+            <div className="cookie-options">
+              <div>
+                <input type="checkbox" checked disabled /> Cookies esenciales (siempre activas)
+              </div>
+              <div>
+                <input
+                  type="checkbox"
+                  checked={cookiePreferences.analytics}
+                  onChange={() =>
+                    setCookiePreferences({ ...cookiePreferences, analytics: !cookiePreferences.analytics })
+                  }
+                />{' '}
+                Cookies de análisis
+              </div>
+              <div>
+                <input
+                  type="checkbox"
+                  checked={cookiePreferences.marketing}
+                  onChange={() =>
+                    setCookiePreferences({ ...cookiePreferences, marketing: !cookiePreferences.marketing })
+                  }
+                />{' '}
+                Cookies de marketing
+              </div>
             </div>
-            <div>
-              <input
-                type="checkbox"
-                checked={cookiePreferences.analytics}
-                onChange={() =>
-                  setCookiePreferences({ ...cookiePreferences, analytics: !cookiePreferences.analytics })
-                }
-              />{' '}
-              Cookies de análisis
-            </div>
-            <div>
-              <input
-                type="checkbox"
-                checked={cookiePreferences.marketing}
-                onChange={() =>
-                  setCookiePreferences({ ...cookiePreferences, marketing: !cookiePreferences.marketing })
-                }
-              />{' '}
-              Cookies de marketing
-            </div>
+            <button className="btn-save-preferences" onClick={handleSavePreferences}>Guardar preferencias</button>
           </div>
-          <button className="btn-save-preferences" onClick={handleSavePreferences}>Guardar preferencias</button>
         </div>
       )}
     </div>
