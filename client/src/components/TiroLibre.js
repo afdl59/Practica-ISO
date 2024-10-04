@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './TiroLibre.css';
+import '../styles/TiroLibre.css';
 
 const TiroLibre = () => {
   const [ballPosition, setBallPosition] = useState({ top: 400, left: 300 });
