@@ -79,3 +79,7 @@ const TiroLibre = () => {
 export default TiroLibre;
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 1c41991070c20597bf106dcc5a49e77ded710ab4

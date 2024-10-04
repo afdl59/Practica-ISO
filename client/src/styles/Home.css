@@ -1,15 +1,14 @@
 /* src/styles/Home.css */
 .home-container {
   width: 100%;
-  height: 100vh; /* Mantén el fondo en toda la pantalla */
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url('/path/to/your/background-image.jpg'); /* Reemplaza con la ruta correcta de tu imagen de fondo */
-  display: flex;
-  flex-direction: column;
-  justify-content: center; /* Centra el contenido verticalmente */
-  align-items: center; /* Centra el contenido horizontalmente */
 }
 
 .auth-links {
@@ -32,13 +31,103 @@
   background-color: #0056b3;
 }
 
-h1 {
-  color: white; /* Color del texto */
-  font-size: 2.5rem; /* Tamaño del título */
+/* Modal de cookies */
+.cookie-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.cookie-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 500px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cookie-logo {
+  width: 150px;
   margin-bottom: 20px;
 }
 
-p {
-  color: white; /* Color del texto del párrafo */
-  font-size: 1.2rem;
+.cookie-buttons {
+  margin-top: 20px;
+}
+
+.btn-accept-cookies {
+  background-color: #28a745;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-reject-cookies {
+  background-color: #dc3545;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-preferences-cookies {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Modal de preferencias de cookies */
+.cookie-preferences-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1001;
+}
+
+.cookie-preferences-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 500px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cookie-options {
+  margin: 20px 0;
+}
+
+.cookie-options div {
+  margin-bottom: 10px;
+}
+
+.btn-save-preferences {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
