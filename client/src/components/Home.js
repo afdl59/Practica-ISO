@@ -6,8 +6,7 @@ function Home() {
   const [cookiesAccepted, setCookiesAccepted] = useState(false); // Inicializa siempre en false
 
   const handleAcceptCookies = () => {
-    setCookiesAccepted(true);
-    // No se almacena en localStorage, el banner aparecerá siempre al cargar la página
+    setCookiesAccepted(true); // Solo cierra el banner al aceptar las cookies
   };
 
   return (
