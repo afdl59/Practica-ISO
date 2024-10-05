@@ -100,13 +100,16 @@ app.post('/api/register', async (req, res) => {
     }
 });
 
+const fs = require('fs');
+const logStream = fs.createWriteStream('server.log', { flags: 'a' });
+
 // Ruta para manejar el inicio de sesión
 app.post('/api/login', async (req, res) => {
     const { identifier, password } = req.body; // Puede ser email o username
 
     try {
-        console.log('Datos recibidos en la solicitud:', req.body);
-        console.log('Buscando usuario con identificador:', identifier);
+        logStream.write(`Datos recibidos en la solicitud: ${JSON.stringify(req.body)}\n`);
+        logStream.write(`Buscando usuario con identificador: ${identifier}\n`);
         const usuario = await User.findOne({
             $or: [
                 { email: identifier },
@@ -114,21 +117,21 @@ app.post('/api/login', async (req, res) => {
             ]
         });
         if (!usuario) {
-            console.error('Usuario no encontrado');
+            logStream.write('Usuario no encontrado\n');
             return res.status(400).json({ message: 'Usuario no encontrado' });
         }
 
-        console.log('Usuario encontrado:', usuario);
+        logStream.write(`Usuario encontrado: ${JSON.stringify(usuario)}\n`);
         const passwordCorrecta = await bcrypt.compare(password, usuario.password);
         if (!passwordCorrecta) {
-            console.error('Contraseña incorrecta');
+            logStream.write('Contraseña incorrecta\n');
             return res.status(400).json({ message: 'Contraseña incorrecta' });
         }
 
-        console.log('Inicio de sesión exitoso');
+        logStream.write('Inicio de sesión exitoso\n');
         res.status(200).json({ message: 'Inicio de sesión exitoso' });
     } catch (err) {
-        console.error('Error durante el proceso de inicio de sesión:', err);
+        logStream.write(`Error durante el proceso de inicio de sesión: ${err}\n`);
         res.status(400).json({ message: 'Error al iniciar sesión: ' + err.message });
     }
 });
