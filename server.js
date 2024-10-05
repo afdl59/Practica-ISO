@@ -1,4 +1,3 @@
-
 const express = require('express');
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
@@ -113,17 +112,17 @@ app.post('/api/login', async (req, res) => {
             ]
         });
         if (!usuario) {
-            return res.status(400).send('Usuario no encontrado');
+            return res.status(400).json({ message: 'Usuario no encontrado' });
         }
 
         const passwordCorrecta = await bcrypt.compare(password, usuario.password);
         if (!passwordCorrecta) {
-            return res.status(400).send('Contraseña incorrecta');
+            return res.status(400).json({ message: 'Contraseña incorrecta' });
         }
 
-        res.redirect('/');
+        res.status(200).json({ message: 'Inicio de sesión exitoso' });
     } catch (err) {
-        res.status(400).send('Error al iniciar sesión: ' + err.message);
+        res.status(400).json({ message: 'Error al iniciar sesión: ' + err.message });
     }
 });
 
