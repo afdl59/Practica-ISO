@@ -105,6 +105,7 @@ app.post('/api/login', async (req, res) => {
     const { identifier, password } = req.body; // Puede ser email o username
 
     try {
+        console.log('Datos recibidos en la solicitud:', req.body);
         console.log('Buscando usuario con identificador:', identifier);
         const usuario = await User.findOne({
             $or: [
