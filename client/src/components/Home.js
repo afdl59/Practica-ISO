@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+// Home.js - Página de inicio con Popup de selección de cookies
+import React, { useState, useEffect } from 'react';
 import '../styles/Home.css';
 
 function Home() {
@@ -10,17 +11,33 @@ function Home() {
     marketing: false
   });
 
+  useEffect(() => {
+    const cookieConsent = localStorage.getItem('cookieConsent');
+    if (cookieConsent) {
+      setCookiesAccepted(true);
+      setCookiePreferences(JSON.parse(localStorage.getItem('cookiePreferences')) || cookiePreferences);
+    }
+  }, []);
+
   const handleAcceptAll = () => {
-    setCookiePreferences({ essential: true, analytics: true, marketing: true });
+    const preferences = { essential: true, analytics: true, marketing: true };
+    localStorage.setItem('cookieConsent', 'accepted');
+    localStorage.setItem('cookiePreferences', JSON.stringify(preferences));
+    setCookiePreferences(preferences);
     setCookiesAccepted(true);
   };
 
   const handleRejectAll = () => {
-    setCookiePreferences({ essential: true, analytics: false, marketing: false });
+    const preferences = { essential: true, analytics: false, marketing: false };
+    localStorage.setItem('cookieConsent', 'rejected');
+    localStorage.setItem('cookiePreferences', JSON.stringify(preferences));
+    setCookiePreferences(preferences);
     setCookiesAccepted(true);
   };
 
   const handleSavePreferences = () => {
+    localStorage.setItem('cookieConsent', 'custom');
+    localStorage.setItem('cookiePreferences', JSON.stringify(cookiePreferences));
     setCookiesAccepted(true);
     setShowPreferences(false); // Oculta la ventana de preferencias
   };
@@ -96,4 +113,3 @@ function Home() {
 }
 
 export default Home;
-
