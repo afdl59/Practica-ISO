@@ -105,6 +105,7 @@ app.post('/api/login', async (req, res) => {
     const { identifier, password } = req.body; // Puede ser email o username
 
     try {
+        console.log('Buscando usuario con identificador:', identifier);
         const usuario = await User.findOne({
             $or: [
                 { email: identifier },
@@ -112,16 +113,21 @@ app.post('/api/login', async (req, res) => {
             ]
         });
         if (!usuario) {
+            console.error('Usuario no encontrado');
             return res.status(400).json({ message: 'Usuario no encontrado' });
         }
 
+        console.log('Usuario encontrado:', usuario);
         const passwordCorrecta = await bcrypt.compare(password, usuario.password);
         if (!passwordCorrecta) {
+            console.error('Contraseña incorrecta');
             return res.status(400).json({ message: 'Contraseña incorrecta' });
         }
 
+        console.log('Inicio de sesión exitoso');
         res.status(200).json({ message: 'Inicio de sesión exitoso' });
     } catch (err) {
+        console.error('Error durante el proceso de inicio de sesión:', err);
         res.status(400).json({ message: 'Error al iniciar sesión: ' + err.message });
     }
 });
