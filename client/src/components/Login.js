@@ -33,7 +33,7 @@ function Login() {
                 })
             });
             if (!response.ok) {
-                throw new Error('Error al iniciar sesión');
+                throw new Error('Error al iniciar sesión. Verifique sus credenciales.');
             }
             setSuccess('Inicio de sesión exitoso');
             // Redirigir a la página de inicio después del inicio de sesión exitoso
@@ -41,11 +41,7 @@ function Login() {
                 window.location.href = '/';
             }, 1000);
         } catch (err) {
-            setError('Error al iniciar sesión. Verifique sus credenciales.');
-            // Redirigir a la página principal después del intento fallido
-            setTimeout(() => {
-                window.location.href = '/';
-            }, 1000);
+            setError(err.message);
         }
     };
 

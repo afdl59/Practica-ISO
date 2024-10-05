@@ -126,6 +126,7 @@ app.post('/api/login', async (req, res) => {
     }
 });
 
+
 // Manejar rutas de React
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
