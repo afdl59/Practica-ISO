@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
 const path = require('path');
+const nodemailer = require('nodemailer');
+
 
 // Conectar a MongoDB
 mongoose.connect('mongodb://localhost:27017/futbol360')
@@ -75,8 +77,26 @@ app.post('/api/register', async (req, res) => {
     const { username, email, password } = req.body;
 
     try {
+        // Registrar el nuevo usuario en la base de datos
         const nuevoUsuario = new User({ username, email, password });
         await nuevoUsuario.save();
+
+        // Configurar el correo de bienvenida
+        const mailOptions = {
+            from: 'futbol360.client@gmail.com',
+            to: email, 
+            subject: 'Bienvenido a Futbol360',
+            text: `Hola ${username},\n\nGracias por registrarte en Futbol360. ¡Esperamos que disfrutes de la plataforma!\n\nSaludos,\nEl equipo de Futbol360`
+        };
+
+        // Enviar el correo de bienvenida
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                return console.error('Error al enviar el correo:', error);
+            }
+            console.log(`Correo enviado: ${info.response}`);
+        });
+
         res.redirect('/');
     } catch (err) {
         res.status(400).send('Error al registrar usuario: ' + err.message);
@@ -113,4 +133,12 @@ app.get('*', (req, res) => {
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Servidor escuchando en el puerto ${PORT}`);
+});
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'futbol360.client@gmail.com',
+        pass: 'Futbol-360-mail'
+    }
 });
