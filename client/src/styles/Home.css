@@ -145,4 +145,234 @@
   width: 90%;
   max-width: 500px;
   text-align: center;
-  box-shadow: 0
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra aumentada para destacar */
+}
+
+.cookie-options {
+  margin: 20px 0;
+}
+
+.cookie-options div {
+  margin-bottom: 10px;
+  font-size: 1.1rem; /* Tamaño de texto mayor para mejorar la legibilidad */
+}
+
+.btn-save-preferences {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease;
+}
+
+.btn-save-preferences:hover {
+  background-color: #0056b3;
+}
+
+h1 {
+  font-size: 3rem; /* Tamaño grande para el título */
+  margin-bottom: 20px;
+  color: #ffffff; /* Color blanco para mayor contraste */
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7); /* Sombra más pronunciada */
+}
+
+p {
+  font-size: 1.5rem; /* Tamaño de texto mayor para los párrafos */
+  color: #e0e0e0;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6); /* Sombra más ligera para los párrafos */
+  margin-bottom: 20px;
+}
+
+/* Cierre correcto de todos los bloques */
+.home-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  text-align: center;
+  color: #ffffff; /* Color blanco para contrastar con el fondo */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Sombra para mayor legibilidad */
+}
+
+.text-container {
+  background-color: rgba(0, 0, 0, 0.6); /* Fondo negro semitransparente */
+  padding: 20px;
+  border-radius: 10px; /* Esquinas redondeadas */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra suave */
+  text-align: center;
+  max-width: 80%; /* Ajustar el ancho del cuadro */
+  margin: 0 auto; /* Centrar el cuadro */
+}
+
+.auth-links {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.btn {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  margin: 10px;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 1.2rem; /* Tamaño de texto aumentado para mayor legibilidad */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Añadido un poco de sombra a los botones */
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #0056b3;
+}
+
+/* Modal de cookies */
+.cookie-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.cookie-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 500px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra aumentada para destacar el modal */
+}
+
+.cookie-logo {
+  width: 150px;
+  margin-bottom: 20px;
+}
+
+.cookie-buttons {
+  margin-top: 20px;
+}
+
+.btn-accept-cookies {
+  background-color: #28a745;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease;
+}
+
+.btn-accept-cookies:hover {
+  background-color: #218838;
+}
+
+.btn-reject-cookies {
+  background-color: #dc3545;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease;
+}
+
+.btn-reject-cookies:hover {
+  background-color: #c82333;
+}
+
+.btn-preferences-cookies {
+  background-color: #ffc107;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease;
+}
+
+.btn-preferences-cookies:hover {
+  background-color: #e0a800;
+}
+
+/* Modal de preferencias de cookies */
+.cookie-preferences-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1001;
+}
+
+.cookie-preferences-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 500px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra aumentada para destacar */
+}
+
+.cookie-options {
+  margin: 20px 0;
+}
+
+.cookie-options div {
+  margin-bottom: 10px;
+  font-size: 1.1rem; /* Tamaño de texto mayor para mejorar la legibilidad */
+}
+
+.btn-save-preferences {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease;
+}
+
+.btn-save-preferences:hover {
+  background-color: #0056b3;
+}
+
+h1 {
+  font-size: 3rem; /* Tamaño grande para el título */
+  margin-bottom: 20px;
+  color: #ffffff; /* Color blanco para mayor contraste */
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7); /* Sombra más pronunciada */
+}
+
+p {
+  font-size: 1.5rem; /* Tamaño de texto mayor para los párrafos */
+  color: #e0e0e0;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6); /* Sombra más ligera para los párrafos */
+  margin-bottom: 20px;
+}
+
+/* Cierre correcto de todos los bloques */
