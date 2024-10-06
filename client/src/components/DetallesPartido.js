@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
-function PartidoDetalle() {
+function DetallesPartido() {
   const { game_id } = useParams(); // Obtener el ID del partido desde la URL
   const [partido, setPartido] = useState(null);
 
