@@ -1,7 +1,8 @@
 // src/components/PartidoPrueba2.js
 import React from 'react';
-import espanaLogo from '../assets/espana_logo.png';  // Añade el logo de España
-import holandaLogo from '../assets/holanda_logo.png';  // Añade el logo de Holanda
+import espanaLogo from '../assets/espana_logo.png';
+import holandaLogo from '../assets/holanda_logo.png';
+import '../styles/PartidoPrueba.css';
 
 function PartidoPrueba2() {
   return (

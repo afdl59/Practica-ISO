@@ -9,7 +9,7 @@ function Partidos() {
   // Función para manejar la búsqueda
   const handleSearch = async () => {
     try {
-      const response = await fetch(`/api/partidos?home_club=${searchTerm}`);
+      const response = await fetch(`/api/partidos?equipo_local=${searchTerm}`);
       const data = await response.json();
       setResults(data);
     } catch (error) {
@@ -42,13 +42,13 @@ function Partidos() {
         </button>
       </div>
 
-      {/* Mostrar resultados de búsqueda */}
-      <ul className="results-list">
-        {results.map((partido) => (
-          <li key={partido.game_id} onClick={() => handlePartidoClick(partido.game_id)}>
-            {partido.home_club_name} vs {partido.away_club_name}
-          </li>
-        ))}
+      <ul>
+        <li>
+          <Link to="/partido-prueba1">Final Champions 2018: Real Madrid vs Liverpool</Link>
+        </li>
+        <li>
+          <Link to="/partido-prueba2">Final Mundial 2010: España vs Holanda</Link>
+        </li>
       </ul>
     </div>
   );

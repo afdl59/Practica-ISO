@@ -1,7 +1,8 @@
 // src/components/PartidoPrueba1.js
 import React from 'react';
-import realMadridLogo from '../assets/real_madrid_logo.png';  // Añade el logo del Real Madrid
-import liverpoolLogo from '../assets/liverpool_logo.png';     // Añade el logo del Liverpool
+import realMadridLogo from '../assets/real_madrid_logo.png';
+import liverpoolLogo from '../assets/liverpool_logo.png';
+import '../styles/PartidoPrueba.css';
 
 function PartidoPrueba1() {
   return (

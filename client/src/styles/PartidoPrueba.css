@@ -1,0 +1,121 @@
+/* Estilos generales */
+.partido-detalle {
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+    margin: 20px;
+    padding: 20px;
+    background-color: #f7f9fc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  /* Estilo para el marcador */
+  .marcador {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 30px 0;
+    font-size: 36px;
+    font-weight: bold;
+  }
+  
+  .marcador img {
+    margin: 0 20px;
+    width: 80px;
+    height: auto;
+  }
+  
+  .marcador span {
+    color: #333;
+    font-size: 48px;
+    margin: 0 10px;
+  }
+  
+  /* Estilo para los títulos */
+  h1, h2 {
+    color: #007BFF;
+    margin-bottom: 20px;
+  }
+  
+  h1 {
+    font-size: 32px;
+  }
+  
+  h2 {
+    font-size: 24px;
+    margin-top: 30px;
+    text-align: left;
+  }
+  
+  /* Estilo para las listas de estadísticas */
+  ul {
+    list-style-type: none;
+    padding: 0;
+    text-align: left;
+    margin: 0 auto;
+    max-width: 600px;
+  }
+  
+  ul li {
+    font-size: 18px;
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  ul li strong {
+    color: #007BFF;
+  }
+  
+  /* Estilo para la sección del video */
+  .video-resumen {
+    margin-top: 40px;
+  }
+  
+  .video-resumen iframe {
+    border-radius: 8px;
+    border: 1px solid #ddd;
+  }
+  
+  /* Botones de enlace (opcional) */
+  a {
+    color: #007BFF;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Estilos responsivos */
+  @media (max-width: 768px) {
+    .marcador {
+      font-size: 28px;
+    }
+  
+    .marcador img {
+      width: 60px;
+    }
+  
+    .marcador span {
+      font-size: 36px;
+    }
+  
+    h1 {
+      font-size: 28px;
+    }
+  
+    h2 {
+      font-size: 22px;
+    }
+  
+    ul li {
+      font-size: 16px;
+    }
+  }
+  
