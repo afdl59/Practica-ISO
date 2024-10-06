@@ -10,8 +10,10 @@ const transporter = nodemailer.createTransport({
     auth: {
         user: 'futbol360.client@gmail.com',
         pass: 'olwgyvrxjzdmjcaj'
-    }
-});
+    },
+    logger: true, // Activa el registro de nodemailer
+    debug: true  // Activa el modo de depuración
+}); 
 
 
 // Conectar a MongoDB
@@ -94,13 +96,23 @@ app.post('/api/register', async (req, res) => {
             subject: 'Bienvenido a Futbol360',
             text: `Hola ${username},\n\nGracias por registrarte en Futbol360. ¡Esperamos que disfrutes de la plataforma!\n\nSaludos,\nEl equipo de Futbol360`
         };
+        //verificar la conexión con el servidor de correo
+        transporter.verify((error, success) => {
+            if (error) {
+                console.error('Error al conectar con el servidor de correo:', error);
+            } else {
+                console.log('Servidor de correo listo para enviar mensajes');
+            }
+        });
 
         // Enviar el correo de bienvenida
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
-                return console.error('Error al enviar el correo:', error);
+                console.error('Error al enviar el correo:', error);
+                return res.status(500).send('Error al enviar el correo');
             }
             console.log(`Correo enviado: ${info.response}`);
+            res.status(200).send('Usuario registrado y correo enviado');
         });
 
         res.redirect('/');
