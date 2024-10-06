@@ -9,7 +9,7 @@ import Bingo from './components/Bingo';
 import TiroLibre from './components/TiroLibre';
 import Sidebar from './components/Sidebar';
 import Partidos from './components/Partidos';
-import GuessThePlayer from './components/GuessThePlayer'; // Importa el nuevo componente
+import GuessThePlayer from './components/GuessThePlayer';
 import './styles/App.css';
 
 function App() {
