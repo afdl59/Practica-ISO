@@ -1,4 +1,3 @@
-// Home.js - Página de inicio con Popup de selección de cookies
 import React, { useState, useEffect } from 'react';
 import '../styles/Home.css';
 
@@ -48,8 +47,10 @@ function Home() {
 
   return (
     <div className="home-container">
-      <h1>Bienvenido a Futbol360</h1>
-      <p>Para acceder a todas las funcionalidades de Futbol360, inicia sesión o crea una cuenta.</p>
+      <div className="text-container">
+        <h1>Bienvenido a Futbol360</h1>
+        <p>Para acceder a todas las funcionalidades de Futbol360, inicia sesión o crea una cuenta.</p>
+      </div>
       <div className="auth-links">
         <a href="/login" className="btn">Iniciar Sesión</a>
         <a href="/register" className="btn">Registrarse</a>

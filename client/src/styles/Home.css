@@ -13,6 +13,16 @@
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Sombra para mayor legibilidad */
 }
 
+.text-container {
+  background-color: rgba(0, 0, 0, 0.6); /* Fondo negro semitransparente */
+  padding: 20px;
+  border-radius: 10px; /* Esquinas redondeadas */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra suave */
+  text-align: center;
+  max-width: 80%; /* Ajustar el ancho del cuadro */
+  margin: 0 auto; /* Centrar el cuadro */
+}
+
 .auth-links {
   text-align: center;
   margin-top: 20px;
@@ -135,44 +145,4 @@
   width: 90%;
   max-width: 500px;
   text-align: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra aumentada para destacar */
-}
-
-.cookie-options {
-  margin: 20px 0;
-}
-
-.cookie-options div {
-  margin-bottom: 10px;
-  font-size: 1.1rem; /* Tamaño de texto mayor para mejorar la legibilidad */
-}
-
-.btn-save-preferences {
-  background-color: #007bff;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  transition: background-color 0.3s ease;
-}
-
-.btn-save-preferences:hover {
-  background-color: #0056b3;
-}
-
-h1 {
-  font-size: 3rem; /* Tamaño grande para el título */
-  margin-bottom: 20px;
-  color: #ffffff; /* Color blanco para mayor contraste */
-  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7); /* Sombra más pronunciada */
-}
-
-p {
-  font-size: 1.5rem; /* Tamaño de texto mayor para los párrafos */
-  color: #e0e0e0;
-  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6); /* Sombra más ligera para los párrafos */
-  margin-bottom: 20px;
-}
-
+  box-shadow: 0
