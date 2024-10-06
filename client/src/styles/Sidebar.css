@@ -1,27 +1,15 @@
 .navbar {
   display: flex;
-<<<<<<< HEAD
   justify-content: flex-start; /* Alinea el navbar a la izquierda */
   align-items: center;
   position: fixed;
   top: 0;
   left: 0; /* Asegúrate de que el navbar comience desde el borde izquierdo */
-=======
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  top: 0;
-  left: 0;
->>>>>>> 30433b0aa17ec6879cc431c6b8f071ec1d97f85b
   height: 60px;
   background-color: #333;
   z-index: 1000;
   padding: 0 20px;
-<<<<<<< HEAD
   width: 100%; /* Asegura que el navbar ocupe todo el ancho */
-=======
-  width: 100%;
->>>>>>> 30433b0aa17ec6879cc431c6b8f071ec1d97f85b
 }
 
 .navbar-item {

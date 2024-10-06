@@ -80,9 +80,4 @@ function GuessThePlayer() {
   );
 }
 
-<<<<<<< HEAD
 export default GuessThePlayer;
-//hola
-=======
-export default GuessThePlayer;
->>>>>>> 30433b0aa17ec6879cc431c6b8f071ec1d97f85b
