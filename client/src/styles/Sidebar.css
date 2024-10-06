@@ -1,16 +1,23 @@
 /* Estilos generales para la barra de navegación */
 .navbar-container {
   display: flex;
-  justify-content: flex-start; /* Alinea el navbar a la izquierda */
+  justify-content: center; /* Centra el navbar en el sidebar */
   align-items: center;
   position: fixed;
   top: 0;
-  left: 0; /* Asegúrate de que el navbar comience desde el borde izquierdo */
+  left: 0;
   height: 60px;
   background-color: #333;
   z-index: 1000;
   padding: 0 20px;
   width: 100%; /* Asegura que el navbar ocupe todo el ancho */
+}
+
+.navbar {
+  display: flex;
+  justify-content: center; /* Centra los íconos dentro del navbar */
+  align-items: center;
+  width: 100%;
 }
 
 .navbar-item {
@@ -67,3 +74,4 @@
 .dropdown:hover .dropdown-content {
   display: flex;
 }
+
