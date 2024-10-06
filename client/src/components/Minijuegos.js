@@ -9,13 +9,21 @@ function Minijuegos() {
       <h1>Minijuegos</h1>
       <p>¡Elige un minijuego para jugar!</p>
       <div className="minijuegos-list">
-        <Link to="/minijuegos/bingo" className="minijuego-item">
-          <h2>Bingo de Futbolistas</h2>
-          <p>¡Rellena las casillas con futbolistas conocidos!</p>
-        </Link>
-        <Link to="/tiro-libre" className="minijuego-item">
+      <Link to="/GuessThePlayer" className="minijuego-item">
           <h2>Tiro Libre</h2>
           <p>Demuestra tu habilidad con los tiros libres.</p>
+        </Link>
+        <Link to="/TiroLibre" className="minijuego-item">
+          <h2>Tiro Libre</h2>
+          <p>Demuestra tu habilidad con los tiros libres.</p>
+        </Link>
+        <Link to="/PlayerSelector" className="minijuego-item">
+          <h2>Tiro Libre</h2>
+          <p>Demuestra tu habilidad con los tiros libres.</p>
+        </Link>
+        <Link to="/Bingo" className="minijuego-item">
+          <h2>Bingo de Futbolistas</h2>
+          <p>¡Rellena las casillas con futbolistas conocidos!</p>
         </Link>
       </div>
     </div>
