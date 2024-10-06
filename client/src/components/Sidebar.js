@@ -18,7 +18,7 @@ function Sidebar() {
           <img src={logo} alt="Icon Inicio" className="navbar-icon" />
           <h3 className="navbar-title">Inicio</h3>
         </Link>
-        <Link to="/login" className="navbar-item">
+        <Link to="/perfil" className="navbar-item">
           <img src={logo} alt="Icon Perfil" className="navbar-icon" />
           <h3 className="navbar-title">Perfil</h3>
         </Link>

@@ -12,6 +12,7 @@ import Partidos from './components/Partidos';
 import GuessThePlayer from './components/GuessThePlayer';
 import DetallesPartido from './components/DetallesPartido';
 import PlayerSelector from './components/PlayerSelector';
+import Perfil from './components/Perfil';
 import './styles/App.css';
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/minijuegos" element={<Minijuegos />} />
+        <Route path="/perfil" element={<Perfil />} /> {/* Ruta para la página de perfil */}
         <Route path="/minijuegos/bingo" element={<Bingo />} /> {/* Ruta para Bingo */}
         <Route path="/minijuegos/tiro-libre" element={<TiroLibre />} /> {/* Ruta para Tiro Libre */}
         <Route path="/minijuegos/guess-the-player" element={<GuessThePlayer />} /> {/* Nueva ruta para Guess The Player */}
