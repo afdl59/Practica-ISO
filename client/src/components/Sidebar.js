@@ -22,7 +22,7 @@ function Sidebar() {
           <img src={logo} alt="Icon Perfil" className="navbar-icon" />
           <h3 className="navbar-title">Perfil</h3>
         </Link>
-        <Link to="/register" className="navbar-item">
+        <Link to="/foro" className="navbar-item">
           <img src={logo} alt="Icon Foro" className="navbar-icon" />
           <h3 className="navbar-title">Foro</h3>
         </Link>
