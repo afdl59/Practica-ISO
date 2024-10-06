@@ -1,27 +1,23 @@
-.navbar {
+/* Estilos generales para la barra de navegación */
+.navbar-container {
   display: flex;
-
-  justify-content: flex-start; /* Alinea el navbar a la izquierda */
+  justify-content: center; /* Centra todo el navbar en la pantalla */
   align-items: center;
-  position: fixed;
-  top: 0;
-  left: 0; /* Asegúrate de que el navbar comience desde el borde izquierdo */
-=======
-  justify-content: center;
-  align-items: center;
+  width: 100%;
+  background-color: #333; /* Color de fondo de la barra de navegación */
   position: fixed;
   top: 0;
   left: 0;
->>>>>>> 30433b0aa17ec6879cc431c6b8f071ec1d97f85b
-  height: 60px;
-  background-color: #333;
   z-index: 1000;
-  padding: 0 20px;
-<<<<<<< HEAD
-  width: 100%; /* Asegura que el navbar ocupe todo el ancho */
-=======
+}
+
+.navbar {
+  display: flex;
+  justify-content: center; /* Centra los ítems dentro de la barra de navegación */
+  align-items: center;
   width: 100%;
->>>>>>> 30433b0aa17ec6879cc431c6b8f071ec1d97f85b
+  padding: 0 20px;
+  height: 60px;
 }
 
 .navbar-item {
@@ -51,11 +47,10 @@
 /* Estilos para el menú desplegable de minijuegos */
 .dropdown {
   position: relative;
-  display: inline-block;
 }
 
 .dropdown-content {
-  display: flex;
+  display: none; /* Oculto por defecto */
   flex-direction: column;
   position: absolute;
   background-color: #333;
@@ -69,9 +64,14 @@
   color: white;
   padding: 12px 16px;
   text-decoration: none;
-  display: block;
 }
 
 .dropdown-item:hover {
   background-color: #444;
 }
+
+/* Mostrar el menú desplegable cuando el usuario pasa el cursor por encima */
+.dropdown:hover .dropdown-content {
+  display: flex;
+}
+
