@@ -10,8 +10,8 @@ import TiroLibre from './components/TiroLibre';
 import Sidebar from './components/Sidebar';
 import Partidos from './components/Partidos';
 import GuessThePlayer from './components/GuessThePlayer';
-import './styles/App.css';
 import DetallesPartido from './components/DetallesPartido';
+import './styles/App.css';
 
 function App() {
   return (
