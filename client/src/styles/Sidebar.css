@@ -15,9 +15,10 @@
 
 .navbar {
   display: flex;
-  justify-content: center; /* Centra los íconos dentro del navbar */
+  justify-content: space-between; /* Asegura que los íconos tengan el mismo espacio entre ellos */
   align-items: center;
-  width: 100%;
+  width: 100%; /* Para que ocupe el 100% del contenedor */
+  max-width: 1200px; /* Limitar el ancho máximo si deseas */
 }
 
 .navbar-item {
@@ -26,7 +27,7 @@
   align-items: center;
   color: white;
   text-decoration: none;
-  margin: 0 15px;
+  margin: 0 20px; /* Ajustar margen entre íconos si es necesario */
 }
 
 .navbar-icon {
