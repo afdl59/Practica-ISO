@@ -10,9 +10,13 @@ import TiroLibre from './components/TiroLibre';
 import Sidebar from './components/Sidebar';
 import Partidos from './components/Partidos';
 import GuessThePlayer from './components/GuessThePlayer';
-import DetallesPartido from './components/DetallesPartido';
 import PlayerSelector from './components/PlayerSelector';
+<<<<<<< HEAD
 import Perfil from './components/Perfil';
+=======
+import PartidoPrueba1 from './components/PartidoPrueba1';
+import PartidoPrueba2 from './components/PartidoPrueba2';
+>>>>>>> c8910a2dbf057c0f4b61523d001ee9cb170ee7d8
 import './styles/App.css';
 
 function App() {
@@ -30,7 +34,8 @@ function App() {
         <Route path="/minijuegos/guess-the-player" element={<GuessThePlayer />} /> {/* Nueva ruta para Guess The Player */}
         <Route path="/player-selector" element={<PlayerSelector />} />
         <Route path="/partidos" element={<Partidos />} />
-        <Route path="/partido/:partidoId" element={<DetallesPartido />} /> {/* Ruta para detalles del partido */}
+        <Route path="/partido-prueba1" element={<PartidoPrueba1 />} />
+        <Route path="/partido-prueba2" element={<PartidoPrueba2 />} />
       </Routes>
     </div>
   );
