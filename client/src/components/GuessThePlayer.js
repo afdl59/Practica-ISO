@@ -5,15 +5,15 @@ import '../styles/GuessThePlayer.css';
 const jugadores = [
   {
     nombre: 'Lionel Messi',
-    imagen: '/assets/messi.jpg',
+    imagen: '../assets/players/Messi.jpg',
   },
   {
     nombre: 'Cristiano Ronaldo',
-    imagen: '/assets/ronaldo.jpg',
+    imagen: '../assets/players/Cristiano.jpg',
   },
   {
     nombre: 'Neymar Jr',
-    imagen: '/assets/neymar.jpg',
+    imagen: '../assets/players/Neymar.jpg',
   },
   // Añade más jugadores según sea necesario
 ];
