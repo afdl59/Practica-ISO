@@ -1,6 +1,7 @@
 /* Estilos generales para la barra de navegación */
 .navbar-container {
   display: flex;
+<<<<<<< HEAD
   justify-content: center; /* Centra todo el navbar en la pantalla */
   align-items: center;
   width: 100%;
@@ -18,6 +19,18 @@
   width: 100%;
   padding: 0 20px;
   height: 60px;
+=======
+  justify-content: flex-start; /* Alinea el navbar a la izquierda */
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0; /* Asegúrate de que el navbar comience desde el borde izquierdo */
+  height: 60px;
+  background-color: #333;
+  z-index: 1000;
+  padding: 0 20px;
+  width: 100%; /* Asegura que el navbar ocupe todo el ancho */
+>>>>>>> bdf9023834fa6f12d7a42587b8cf308cb3e87a58
 }
 
 .navbar-item {
