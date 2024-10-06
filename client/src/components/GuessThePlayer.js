@@ -2,18 +2,22 @@
 import React, { useState } from 'react';
 import '../styles/GuessThePlayer.css';
 
+import Messi from '../assets/players/Messi.jpg';
+import Cristiano from '../assets/players/Cristiano.jpg';
+import Neymar from '../assets/players/Neymar.jpg';
+
 const jugadores = [
   {
-    nombre: 'Lionel Messi',
-    imagen: '/assets/messi.jpg',
+    nombres: ['Cristiano Ronaldo', 'Cristiano', 'Ronaldo'],
+    imagen: Cristiano,
   },
   {
-    nombre: 'Cristiano Ronaldo',
-    imagen: '/assets/ronaldo.jpg',
+    nombres: ['Lionel Messi', 'Messi'],
+    imagen: Messi,
   },
   {
-    nombre: 'Neymar Jr',
-    imagen: '/assets/neymar.jpg',
+    nombres: ['Neymar Jr', 'Neymar'],
+    imagen: Neymar,
   },
   // Añade más jugadores según sea necesario
 ];
@@ -27,12 +31,17 @@ function GuessThePlayer() {
 
   const handleIntento = (e) => {
     e.preventDefault();
-    if (intento.toLowerCase() === jugadorActual.nombre.toLowerCase()) {
+    const intentoLowerCase = intento.toLowerCase();
+    const esCorrecto = jugadorActual.nombres.some((nombre) =>
+      nombre.toLowerCase() === intentoLowerCase
+    );
+    
+    if (esCorrecto) {
       setMensaje('¡Correcto! Has adivinado el jugador.');
     } else {
       setMensaje('Incorrecto. Intenta de nuevo.');
       setPista(pista + 1);
-      setImagenBlur(imagenBlur - 2); // Reducimos el blur en cada intento
+      setImagenBlur(imagenBlur - 2); // Reducimos el blur en cada intento incorrecto
     }
     setIntento('');
   };
@@ -41,7 +50,7 @@ function GuessThePlayer() {
     setJugadorActual(jugadores[Math.floor(Math.random() * jugadores.length)]);
     setPista(0);
     setMensaje('');
-    setImagenBlur(10);
+    setImagenBlur(10); // Restablecemos el nivel de blur
   };
 
   return (
@@ -71,5 +80,9 @@ function GuessThePlayer() {
   );
 }
 
+<<<<<<< HEAD
 export default GuessThePlayer;
 //hola
+=======
+export default GuessThePlayer;
+>>>>>>> 30433b0aa17ec6879cc431c6b8f071ec1d97f85b
