@@ -25,7 +25,7 @@ function App() {
         <Route path="/minijuegos/bingo" element={<Bingo />} /> {/* Ruta para Bingo */}
         <Route path="/minijuegos/tiro-libre" element={<TiroLibre />} /> {/* Ruta para Tiro Libre */}
         <Route path="/minijuegos/guess-the-player" element={<GuessThePlayer />} /> {/* Nueva ruta para Guess The Player */}
-        <Route path="/minijuegos/player-selector" element={<PlayerSelector />} /> {/* Nueva ruta para Player Selector */}
+        <Route path="/player-selector" element={<PlayerSelector />} />
         <Route path="/partidos" element={<Partidos />} />
         <Route path="/partido/:partidoId" element={<DetallesPartido />} /> {/* Ruta para detalles del partido */}
       </Routes>

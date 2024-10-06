@@ -17,10 +17,6 @@ function Minijuegos() {
           <h2>Tiro Libre</h2>
           <p>Demuestra tu habilidad con los tiros libres.</p>
         </Link>
-        <Link to="/minijuegos/player-selector" className="minijuego-item">
-          <h2>Player Selector</h2>
-          <p>Selecciona jugadores para tu equipo ideal.</p>
-        </Link>
         <Link to="/minijuegos/bingo" className="minijuego-item">
           <h2>Bingo de Futbolistas</h2>
           <p>¡Rellena las casillas con futbolistas conocidos!</p>

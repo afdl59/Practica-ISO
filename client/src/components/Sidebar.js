@@ -35,16 +35,13 @@ function Sidebar() {
         <h3 className="navbar-title">Minijuegos</h3>
         {minigamesOpen && (
           <div className="dropdown-content">
-            <Link to="/guess-the-player" className="dropdown-item">
+            <Link to="/minijuegos/guess-the-player" className="dropdown-item">
               Guess the Player
             </Link>
-            <Link to="/tiro-libre" className="dropdown-item">
+            <Link to="/minijuegos/tiro-libre" className="dropdown-item">
               Tiro Libre
             </Link>
-            <Link to="/player-selector" className="dropdown-item">
-              Player Selector
-            </Link>
-            <Link to="/bingo" className="dropdown-item">
+            <Link to="/minijuegos/bingo" className="dropdown-item">
               Bingo
             </Link>
           </div>
