@@ -5,6 +5,15 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const nodemailer = require('nodemailer');
 
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'futbol360.client@gmail.com',
+        pass: 'olwgyvrxjzdmjcaj'
+    }
+});
+
+
 // Conectar a MongoDB
 mongoose.connect('mongodb://localhost:27017/futbol360')
     .then(() => {
@@ -148,10 +157,3 @@ app.listen(PORT, () => {
     console.log(`Servidor escuchando en el puerto ${PORT}`);
 });
 
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: 'futbol360.client@gmail.com',
-        pass: 'Futbol-360-mail'
-    }
-});
