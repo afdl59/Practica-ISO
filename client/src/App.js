@@ -23,9 +23,10 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/minijuegos" element={<Minijuegos />} />
         <Route path="/minijuegos/bingo" element={<Bingo />} /> {/* Ruta para Bingo */}
-        <Route path="/tiro-libre" element={<TiroLibre />} /> {/* Ruta para Tiro Libre */}
+        <Route path="/minijuegos/tiro-libre" element={<TiroLibre />} /> {/* Ruta para Tiro Libre */}
+        <Route path="/minijuegos/guess-the-player" element={<GuessThePlayer />} /> {/* Nueva ruta para Guess The Player */}
+        <Route path="/minijuegos/player-selector" element={<PlayerSelector />} /> {/* Nueva ruta para Player Selector */}
         <Route path="/partidos" element={<Partidos />} />
-        <Route path="/guess-the-player" element={<GuessThePlayer />} /> {/* Nueva ruta para Guess The Player */}
         <Route path="/partido/:partidoId" element={<DetallesPartido />} /> {/* Ruta para detalles del partido */}
       </Routes>
     </div>
