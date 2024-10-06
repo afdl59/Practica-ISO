@@ -19,16 +19,16 @@ function Sidebar() {
           <h3 className="navbar-title">Inicio</h3>
         </Link>
         <Link to="/login" className="navbar-item">
-          <img src={logo} alt="Icon Iniciar Sesión" className="navbar-icon" />
-          <h3 className="navbar-title">Iniciar Sesión</h3>
+          <img src={logo} alt="Icon Perfil" className="navbar-icon" />
+          <h3 className="navbar-title">Perfil</h3>
         </Link>
         <Link to="/register" className="navbar-item">
-          <img src={logo} alt="Icon Registrarse" className="navbar-icon" />
-          <h3 className="navbar-title">Registrarse</h3>
+          <img src={logo} alt="Icon Foro" className="navbar-icon" />
+          <h3 className="navbar-title">Foro</h3>
         </Link>
         <Link to="/partidos" className="navbar-item">
-          <img src={logo} alt="Icon Partidos" className="navbar-icon" />
-          <h3 className="navbar-title">Partidos</h3>
+          <img src={logo} alt="Icon Estadísticas" className="navbar-icon" />
+          <h3 className="navbar-title">Estadísticas</h3>
         </Link>
         {/* Minijuegos - Menú desplegable */}
         <div className="navbar-item dropdown" onClick={toggleMinigames}>
