@@ -7,13 +7,10 @@ const nodemailer = require('nodemailer');
 const mysql = require('mysql2');
 
 const transporter = nodemailer.createTransport({
-    service: 'outlook',
-    host: 'smtp-mail.outlook.com', 
-    port: 587,
-    secure: false, 
+    service: 'gmail',
     auth: {
-        user: 'futbol360.client@outlook.com',
-        pass: 'Futbol-360-mail'
+        user: 'futbol360.client@gmail.com',
+        pass: 'olwgyvrxjzdmjcaj'
     },
     logger: true, // Activa el registro de nodemailer para ver detalles
     debug: true   // Activa el modo de depuración para ver más detalles en consola
@@ -95,7 +92,7 @@ app.post('/api/register', async (req, res) => {
 
         // Configurar el correo de bienvenida
         const mailOptions = {
-            from: 'futbol360.client@outlook.com',
+            from: 'futbol360.client@gmail.com',
             to: email,
             subject: 'Bienvenido a Futbol360',
             text: `Hola ${username},\n\nGracias por registrarte en Futbol360. ¡Esperamos que disfrutes de la plataforma!\n\nSaludos,\nEl equipo de Futbol360`
