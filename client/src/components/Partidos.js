@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 function Partidos() {
   const [searchTerm, setSearchTerm] = useState('');
