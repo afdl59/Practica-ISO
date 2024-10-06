@@ -11,6 +11,7 @@ import Sidebar from './components/Sidebar';
 import Partidos from './components/Partidos';
 import GuessThePlayer from './components/GuessThePlayer';
 import DetallesPartido from './components/DetallesPartido';
+import PlayerSelector from './components/PlayerSelector';
 import './styles/App.css';
 
 function App() {
