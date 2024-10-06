@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
 const path = require('path');
 const nodemailer = require('nodemailer');
+const mysql = require('mysql2');
 
 const transporter = nodemailer.createTransport({
     service: 'outlook',
@@ -170,5 +171,36 @@ app.get('*', (req, res) => {
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Servidor escuchando en el puerto ${PORT}`);
+});
+
+// Configuración de conexión a la instancia de MySQL en AWS RDS
+const db = mysql.createConnection({
+    host: 'transfermarkt-futbol360.c7a8m6o067iu.us-east-1.rds.amazonaws.com',  // El endpoint de tu RDS
+    user: 'lorensation',  // Nombre de usuario de MySQL en RDS
+    password: 'Pr4ct1c4-1S0',  // Contraseña de MySQL en RDS
+    database: 'transfermarktFutbol360',  // Nombre de la base de datos
+    port: 3306  // El puerto por defecto de MySQL
+});
+
+// Conectar a MySQL
+db.connect((err) => {
+    if (err) {
+        console.error('Error al conectar a MySQL:', err);
+    } else {
+        console.log('Conectado a MySQL en AWS RDS');
+    }
+});
+
+// Ruta para buscar partidos por equipo local
+app.get('/api/partidos', (req, res) => {
+    const { home_club } = req.query; // Obtenemos el parámetro de búsqueda
+
+    const query = 'SELECT * FROM games WHERE home_club_name LIKE ?';
+    db.query(query, [`%${home_club}%`], (err, results) => {
+        if (err) {
+            return res.status(500).send('Error al buscar partidos: ' + err.message);
+        }
+        res.json(results); // Enviamos los resultados de la búsqueda como respuesta 
+    });
 });
 
