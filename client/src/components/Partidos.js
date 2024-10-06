@@ -9,7 +9,7 @@ function Partidos() {
   // Función para manejar la búsqueda
   const handleSearch = async () => {
     try {
-      const response = await fetch(`/api/partidos?equipo_local=${searchTerm}`);
+      const response = await fetch(`/api/partidos?home_club=${searchTerm}`);
       const data = await response.json();
       setResults(data);
     } catch (error) {
