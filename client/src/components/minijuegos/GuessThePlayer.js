@@ -2,9 +2,9 @@
 import React, { useState } from 'react';
 import '../../styles/GuessThePlayer.css';
 
-import Messi from '../assets/players/Messi.jpg';
-import Cristiano from '../assets/players/Cristiano.jpg';
-import Neymar from '../assets/players/Neymar.jpg';
+import Messi from '../../assets/players/Messi.jpg';
+import Cristiano from '../../assets/players/Cristiano.jpg';
+import Neymar from '../../assets/players/Neymar.jpg';
 
 const jugadores = [
   {
