@@ -34,7 +34,7 @@ function PartidoPrueba1() {
         <iframe
           width="560"
           height="315"
-          src="https://www.youtube.com/embed/2-qb3H-ZC1M"  // Video resumen de la final
+          src="https://www.youtube.com/watch?v=rtFGpfrdlMI"  // Video resumen de la final
           title="Resumen final Champions 2018"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
