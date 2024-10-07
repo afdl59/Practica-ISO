@@ -60,7 +60,7 @@ function Home() {
       {!cookiesAccepted && (
         <div className="cookie-modal">
           <div className="cookie-content">
-            <img src="/path-to-your-logo/logo.png" alt="Logo" className="cookie-logo" />
+            <img src="./assets/logo.png" alt="Logo" className="cookie-logo" />
             <h2>Aviso de privacidad</h2>
             <p>
               Utilizamos cookies para personalizar tu experiencia. Elige tus preferencias o acepta todas las cookies.
