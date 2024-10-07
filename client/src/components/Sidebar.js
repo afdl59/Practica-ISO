@@ -1,7 +1,7 @@
 // src/components/Sidebar.js bien
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import logo from '../../assets/logo.jpg';
+import logo from '../assets/logo.jpg';
 import '../styles/Sidebar.css';
 
 function Sidebar() {
@@ -14,24 +14,24 @@ function Sidebar() {
   return (
     <div className="navbar">
       <Link to="/" className="navbar-item">
-        <img src="/assets/icon-inicio.png" alt="Icon Inicio" className="navbar-icon" />
+        <img src={logo} alt="Icon Inicio" className="navbar-icon" />
         <h3 className="navbar-title">Inicio</h3>
       </Link>
       <Link to="/perfil" className="navbar-item">
-        <img src="/assets/icon-perfil.png" alt="Icon Perfil" className="navbar-icon" />
+        <img src={logo} alt="Icon Perfil" className="navbar-icon" />
         <h3 className="navbar-title">Perfil</h3>
       </Link>
       <Link to="/foro" className="navbar-item">
-        <img src="/assets/icon-foro.png" alt="Icon Foro" className="navbar-icon" />
+        <img src={logo} alt="Icon Foro" className="navbar-icon" />
         <h3 className="navbar-title">Foro</h3>
       </Link>
       <Link to="/estadisticas" className="navbar-item">
-        <img src="/assets/icon-estadisticas.png" alt="Icon Estadísticas" className="navbar-icon" />
+        <img src={logo} alt="Icon Estadísticas" className="navbar-icon" />
         <h3 className="navbar-title">Estadísticas</h3>
       </Link>
       
       <div className="navbar-item dropdown" onClick={toggleMinigames}>
-        <img src="/assets/icon-minijuegos.png" alt="Icon Minijuegos" className="navbar-icon" />
+        <img src={logo} alt="Icon Minijuegos" className="navbar-icon" />
         <h3 className="navbar-title">Minijuegos</h3>
         {minigamesOpen && (
           <div className="dropdown-content">
