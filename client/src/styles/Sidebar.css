@@ -1,78 +1,85 @@
 /* Estilos generales para la barra de navegación */
-.navbar-container {
-  display: flex;
-  justify-content: center; /* Centra el navbar en el sidebar */
-  align-items: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 60px;
-  background-color: #333;
-  z-index: 1000;
-  padding: 0 20px;
-  width: 100%; /* Asegura que el navbar ocupe todo el ancho */
-}
-
 .navbar {
   display: flex;
-  justify-content: space-between; /* Asegura que los íconos tengan el mismo espacio entre ellos */
+  flex-direction: row;
   align-items: center;
-  width: 100%; /* Para que ocupe el 100% del contenedor */
-  max-width: 1200px; /* Limitar el ancho máximo si deseas */
+  justify-content: space-between;
+  background-color: #333;
+  padding: 10px;
+  flex-wrap: wrap; /* Permite que los elementos se envuelvan en una nueva línea si no hay suficiente espacio */
 }
 
 .navbar-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: white;
-  text-decoration: none;
-  margin: 0 20px; /* Ajustar margen entre íconos si es necesario */
+  margin: 5px;
+  text-align: center;
 }
 
 .navbar-icon {
-  width: 30px;
-  height: 30px;
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
 }
 
-.navbar-title {
-  margin: 0;
-  font-size: 12px;
-}
-
-.navbar-item:hover {
-  background-color: #444;
+.dropdown {
+  position: relative;
   cursor: pointer;
 }
 
-/* Estilos para el menú desplegable de minijuegos */
-.dropdown {
-  position: relative;
-}
-
 .dropdown-content {
-  display: none; /* Oculto por defecto */
-  flex-direction: column;
+  display: none;
   position: absolute;
   background-color: #333;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  top: 100%;
+  left: 0;
+  min-width: 150px;
   z-index: 1;
-  margin-top: 10px;
+  border-radius: 5px;
 }
 
-.dropdown-item {
+.dropdown-content .dropdown-item {
+  padding: 5px;
   color: white;
-  padding: 12px 16px;
   text-decoration: none;
+  display: block;
 }
 
-.dropdown-item:hover {
+.dropdown-content .dropdown-item:hover {
   background-color: #444;
 }
 
-/* Mostrar el menú desplegable cuando el usuario pasa el cursor por encima */
 .dropdown:hover .dropdown-content {
-  display: flex;
+  display: block;
 }
 
+/* Estilos para dispositivos móviles */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .navbar-item {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    padding: 5px 0;
+  }
+
+  .dropdown-content {
+    position: static;
+    display: block;
+    width: 100%;
+    padding: 0;
+    margin-top: 5px;
+    background-color: #333;
+  }
+
+  .dropdown-content .dropdown-item {
+    width: 100%;
+    padding: 10px;
+  }
+}
