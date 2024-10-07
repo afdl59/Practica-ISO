@@ -1,33 +1,48 @@
-/* Estilos generales para la barra de navegación */
+/* Asegúrate de que el navbar ocupe toda la parte superior de la página */
 .navbar {
   display: flex;
-  flex-direction: row;
+  justify-content: space-around;
   align-items: center;
-  justify-content: space-between;
   background-color: #333;
   padding: 10px;
-  flex-wrap: wrap; /* Permite que los elementos se envuelvan en una nueva línea si no hay suficiente espacio */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
 }
 
+/* Estilo de cada item en el navbar */
 .navbar-item {
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-decoration: none;
+  color: white;
   margin: 5px;
   text-align: center;
 }
 
+/* Estilo de los íconos en el navbar */
 .navbar-icon {
   width: 50px;
   height: 50px;
   object-fit: contain;
+  margin-bottom: 5px;
 }
 
-.dropdown {
-  position: relative;
-  cursor: pointer;
+/* Estilo de los títulos del navbar (todos con el mismo color) */
+.navbar-title {
+  font-size: 14px;
+  color: white; /* Asegúrate de que todos los títulos tengan el mismo color */
 }
 
+/* Hover effect para todos los items */
+.navbar-item:hover .navbar-title {
+  color: #007bff;
+}
+
+/* Dropdown */
 .dropdown-content {
   display: none;
   position: absolute;
@@ -40,31 +55,30 @@
   border-radius: 5px;
 }
 
-.dropdown-content .dropdown-item {
-  padding: 5px;
-  color: white;
-  text-decoration: none;
-  display: block;
-}
-
-.dropdown-content .dropdown-item:hover {
-  background-color: #444;
-}
-
 .dropdown:hover .dropdown-content {
   display: block;
 }
 
-/* Estilos para dispositivos móviles */
+.dropdown-item {
+  color: white;
+  text-decoration: none;
+  padding: 5px;
+  display: block;
+}
+
+.dropdown-item:hover {
+  background-color: #444;
+}
+
+/* Ajustes para dispositivos móviles */
 @media (max-width: 768px) {
   .navbar {
     flex-direction: column;
-    align-items: flex-start;
+    padding: 5px;
   }
 
   .navbar-item {
     width: 100%;
-    display: flex;
     justify-content: flex-start;
     padding: 5px 0;
   }
@@ -77,9 +91,5 @@
     margin-top: 5px;
     background-color: #333;
   }
-
-  .dropdown-content .dropdown-item {
-    width: 100%;
-    padding: 10px;
-  }
 }
+
