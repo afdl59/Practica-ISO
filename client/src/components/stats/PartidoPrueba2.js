@@ -31,7 +31,7 @@ function PartidoPrueba2() {
         <iframe
           width="560"
           height="315"
-          src="https://www.youtube.com/embed/MveVP7ZOXcI?si=pKDdVgx2eZYaAdkA"  // Video resumen de la final
+          src="https://www.youtube.com/embed/MveVP7ZOXcI?si=hy3giSVt76OBcRa4"  // Video resumen de la final
           title="Resumen final Mundial 2010"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
