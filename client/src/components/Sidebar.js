@@ -25,7 +25,7 @@ function Sidebar() {
         <img src={logo} alt="Icon Foro" className="navbar-icon" />
         <h3 className="navbar-title">Foro</h3>
       </Link>
-      <Link to="/estadisticas" className="navbar-item">
+      <Link to="/partidos" className="navbar-item">
         <img src={logo} alt="Icon Estadísticas" className="navbar-icon" />
         <h3 className="navbar-title">Estadísticas</h3>
       </Link>

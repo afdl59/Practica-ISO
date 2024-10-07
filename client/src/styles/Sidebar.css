@@ -43,13 +43,18 @@
 }
 
 /* Dropdown */
+.dropdown {
+  position: relative;
+}
+
 .dropdown-content {
   display: none;
   position: absolute;
   background-color: #333;
   padding: 10px;
-  top: 100%;
-  left: 0;
+  top: 100%; /* Justo debajo del ítem "Minijuegos" */
+  left: 50%; /* Centrado horizontalmente */
+  transform: translateX(-50%); /* Ajuste para centrar */
   min-width: 150px;
   z-index: 1;
   border-radius: 5px;
@@ -73,14 +78,14 @@
 /* Ajustes para dispositivos móviles */
 @media (max-width: 768px) {
   .navbar {
-    flex-direction: column;
-    padding: 5px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
   }
 
   .navbar-item {
-    width: 100%;
-    justify-content: flex-start;
-    padding: 5px 0;
+    flex: 1;
+    justify-content: center;
   }
 
   .dropdown-content {
@@ -92,4 +97,3 @@
     background-color: #333;
   }
 }
-
