@@ -2,7 +2,7 @@
 import React from 'react';
 import espanaLogo from '../assets/espana_logo.png';
 import holandaLogo from '../assets/holanda_logo.png';
-import '../styles/PartidoPrueba.css';
+import '../../styles/PartidoPrueba.css';
 
 function PartidoPrueba2() {
   return (

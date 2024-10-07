@@ -1,7 +1,7 @@
 // src/components/Minijuegos.js
 import React from 'react';
 import { Link } from 'react-router-dom';
-import '../styles/Minijuegos.css'; 
+import '../../styles/Minijuegos.css'; 
 
 function Minijuegos() {
   return (

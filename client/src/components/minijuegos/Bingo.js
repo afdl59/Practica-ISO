@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../styles/Bingo.css';
+import '../../styles/Bingo.css';
 
 const jugadores = [
   { nombre: "Harry Kane", definicion: "Delantero estrella del bayern de munchen y la selección inglesa." },

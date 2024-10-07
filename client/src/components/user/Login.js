@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../styles/index.css'; // Importa los estilos globales
+import '../../styles/index.css'; // Importa los estilos globales
 
 function Login() {
     const [formData, setFormData] = useState({

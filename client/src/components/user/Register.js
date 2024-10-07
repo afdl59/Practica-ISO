@@ -1,6 +1,6 @@
 // Updated Register.js
 import React, { useState } from 'react';
-import '../styles/index.css'; // Importa los estilos globales
+import '../../styles/index.css'; // Importa los estilos globales
 
 function Register() {
     const [formData, setFormData] = useState({

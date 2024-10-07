@@ -1,6 +1,6 @@
 // src/components/GuessThePlayer.js
 import React, { useState } from 'react';
-import '../styles/GuessThePlayer.css';
+import '../../styles/GuessThePlayer.css';
 
 import Messi from '../assets/players/Messi.jpg';
 import Cristiano from '../assets/players/Cristiano.jpg';
