@@ -1,11 +1,10 @@
-/* Asegúrate de que el navbar ocupe toda la parte superior de la página */
-/* Asegúrate de que el navbar ocupe toda la parte superior de la página pero sea más delgado */
+/* Estilo del navbar */
 .navbar {
   display: flex;
   justify-content: space-around;
   align-items: center;
   background-color: #333;
-  padding: 5px; /* Reducido para hacer la barra más fina */
+  padding: 5px; /* Para hacerlo más delgado */
   position: fixed;
   top: 0;
   left: 0;
@@ -20,27 +19,23 @@
   align-items: center;
   text-decoration: none;
   color: white;
-  margin: 2px; /* Reducido el margen para que los iconos no ocupen tanto espacio */
+  margin: 2px;
   text-align: center;
+  position: relative; /* Necesario para centrar el dropdown */
 }
 
 /* Estilo de los íconos en el navbar */
 .navbar-icon {
-  width: 30px; /* Tamaño reducido */
-  height: 30px; /* Tamaño reducido */
+  width: 30px;
+  height: 30px;
   object-fit: contain;
   margin-bottom: 3px;
 }
 
 /* Estilo de los títulos del navbar */
 .navbar-title {
-  font-size: 12px; /* Tamaño reducido */
+  font-size: 12px;
   color: white;
-}
-
-/* Hover effect para todos los items */
-.navbar-item:hover .navbar-title {
-  color: #007bff;
 }
 
 /* Dropdown */
@@ -49,14 +44,15 @@
   position: absolute;
   background-color: #333;
   padding: 10px;
-  top: 100%; /* Justo debajo del ítem "Minijuegos" */
-  left: 50%; /* Centrado horizontalmente */
-  transform: translateX(-50%);
+  top: 40px; /* Espacio debajo del ítem "Minijuegos" */
+  left: 50%; /* Posiciona el dropdown al centro horizontalmente */
+  transform: translateX(-50%); /* Centra el dropdown respecto a su elemento padre */
   min-width: 150px;
   z-index: 1;
   border-radius: 5px;
 }
 
+/* Mostrar el dropdown al hacer hover */
 .dropdown:hover .dropdown-content {
   display: block;
 }
@@ -94,3 +90,4 @@
     background-color: #333;
   }
 }
+
