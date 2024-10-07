@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import logo from '../assets/logo.jpg';
 import '../styles/Home.css';
 
 function Home() {
@@ -60,7 +61,7 @@ function Home() {
       {!cookiesAccepted && (
         <div className="cookie-modal">
           <div className="cookie-content">
-            <img src="./assets/logo.png" alt="Logo" className="cookie-logo" />
+            <img src={logo} alt="Logo" className="cookie-logo" />
             <h2>Aviso de privacidad</h2>
             <p>
               Utilizamos cookies para personalizar tu experiencia. Elige tus preferencias o acepta todas las cookies.
