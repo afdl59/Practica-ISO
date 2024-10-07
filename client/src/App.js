@@ -2,18 +2,18 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Home from './components/Home';
-import Login from './components/Login';
-import Register from './components/Register';
-import Minijuegos from './components/Minijuegos';
+import Login from './components/user/Login';
+import Register from './components/user/Register';
+import Minijuegos from './components/minijuegos/Minijuegos';
 import Bingo from './components/Bingo'; 
 import TiroLibre from './components/TiroLibre';
 import Sidebar from './components/Sidebar';
-import Partidos from './components/Partidos';
-import GuessThePlayer from './components/GuessThePlayer';
-import PlayerSelector from './components/PlayerSelector';
-import Perfil from './components/Perfil';
-import PartidoPrueba1 from './components/PartidoPrueba1';
-import PartidoPrueba2 from './components/PartidoPrueba2';
+import Partidos from './components/stats/Partidos';
+import GuessThePlayer from './components/minijuegos/GuessThePlayer';
+import PlayerSelector from './components/stats/PlayerSelector';
+import Perfil from './components/user/Perfil';
+import PartidoPrueba1 from './components/stats/PartidoPrueba1';
+import PartidoPrueba2 from './components/stats/PartidoPrueba2';
 import './styles/App.css';
 
 function App() {
