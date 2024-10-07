@@ -1,10 +1,11 @@
 /* Asegúrate de que el navbar ocupe toda la parte superior de la página */
+/* Asegúrate de que el navbar ocupe toda la parte superior de la página pero sea más delgado */
 .navbar {
   display: flex;
   justify-content: space-around;
   align-items: center;
   background-color: #333;
-  padding: 10px;
+  padding: 5px; /* Reducido para hacer la barra más fina */
   position: fixed;
   top: 0;
   left: 0;
@@ -19,22 +20,22 @@
   align-items: center;
   text-decoration: none;
   color: white;
-  margin: 5px;
+  margin: 2px; /* Reducido el margen para que los iconos no ocupen tanto espacio */
   text-align: center;
 }
 
 /* Estilo de los íconos en el navbar */
 .navbar-icon {
-  width: 50px;
-  height: 50px;
+  width: 30px; /* Tamaño reducido */
+  height: 30px; /* Tamaño reducido */
   object-fit: contain;
-  margin-bottom: 5px;
+  margin-bottom: 3px;
 }
 
-/* Estilo de los títulos del navbar (todos con el mismo color) */
+/* Estilo de los títulos del navbar */
 .navbar-title {
-  font-size: 14px;
-  color: white; /* Asegúrate de que todos los títulos tengan el mismo color */
+  font-size: 12px; /* Tamaño reducido */
+  color: white;
 }
 
 /* Hover effect para todos los items */
@@ -43,10 +44,6 @@
 }
 
 /* Dropdown */
-.dropdown {
-  position: relative;
-}
-
 .dropdown-content {
   display: none;
   position: absolute;
@@ -54,7 +51,7 @@
   padding: 10px;
   top: 100%; /* Justo debajo del ítem "Minijuegos" */
   left: 50%; /* Centrado horizontalmente */
-  transform: translateX(-50%); /* Ajuste para centrar */
+  transform: translateX(-50%);
   min-width: 150px;
   z-index: 1;
   border-radius: 5px;
