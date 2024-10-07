@@ -5,7 +5,7 @@ import Home from './components/Home';
 import Login from './components/user/Login';
 import Register from './components/user/Register';
 import Minijuegos from './components/minijuegos/Minijuegos';
-import Bingo from './components/Bingo'; 
+import Bingo from './components/minijuegos/Bingo'; 
 import TiroLibre from './components/TiroLibre';
 import Sidebar from './components/Sidebar';
 import Partidos from './components/stats/Partidos';
