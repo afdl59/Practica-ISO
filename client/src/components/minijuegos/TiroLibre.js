@@ -17,17 +17,20 @@ const players = {
   ferran: { leftNear: 0.4, leftFar: 0.3, rightNear: 0.3, rightFar: 0.2, image: ferran2022 }
 };
 
-const sides = ['izquierda', 'derecha'];
-const distances = ['cerca', 'lejos'];
+const sides = ['left', 'right'];
+const distances = ['near', 'far'];
 
 function TiroLibre() {
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   const [result, setResult] = useState('');
-  const [side, setSide] = useState('');  
-  const [distance, setDistance] = useState('');  
-  const [ballPosition, setBallPosition] = useState({ x: 200, y: 200 });  
-  const [shooting, setShooting] = useState(false);  
+  const [side, setSide] = useState('');
+  const [distance, setDistance] = useState('');
+  const [ballPosition, setBallPosition] = useState({ x: 200, y: 200 });
+  const [shooting, setShooting] = useState(false);
+  const [goalTarget, setGoalTarget] = useState({ x: 250, y: 50 }); // Posición del chute en la portería
+  const [power, setPower] = useState(50); // Potencia inicial (0-100)
 
+  // Genera aleatoriamente el lado y la distancia antes de la selección del jugador
   useEffect(() => {
     const randomSide = sides[Math.floor(Math.random() * sides.length)];
     const randomDistance = distances[Math.floor(Math.random() * distances.length)];
@@ -46,18 +49,44 @@ function TiroLibre() {
     setBallPosition(newBallPosition);
   }, []);
 
+  // Función para calcular la probabilidad según el lugar de chute y la potencia
+  const calculateProbability = (baseProbability) => {
+    const { x, y } = goalTarget;
+    const centerOffset = Math.abs(x - 250); // Cuanto más cerca del centro, más fácil será marcar
+    const verticalOffset = Math.abs(y - 50); // Cuanto más abajo, más fácil para el portero
+
+    let positionFactor = 1 - (centerOffset / 200) * 0.5 - (verticalOffset / 100) * 0.5; // Penaliza tiros alejados del centro
+    positionFactor = Math.max(0.5, positionFactor); // Asegura que la penalización nunca sea mayor al 50%
+
+    let powerFactor = 1 - (power / 100) * 0.3; // A mayor potencia, menor precisión
+    powerFactor = Math.max(0.7, powerFactor); // No reduce más allá del 30%
+
+    return baseProbability * positionFactor * powerFactor;
+  };
+
   const shoot = () => {
     if (!selectedPlayer) return;
 
-    const successProbability = players[selectedPlayer][`${side}${distance === 20 ? 'Near' : 'Far'}`];
-    const isGoal = Math.random() < successProbability;
+    const baseProbability = players[selectedPlayer][`${side}${distance === 20 ? 'Near' : 'Far'}`];
+    const finalProbability = calculateProbability(baseProbability);
+
+    const isGoal = Math.random() < finalProbability;
 
     setResult(isGoal ? '¡Gol!' : '¡Parada de Casillas!');
 
+    // Mueve el balón con la animación
     setShooting(true);
     setTimeout(() => {
       setShooting(false);
     }, 1000);
+  };
+
+  // Función para seleccionar la posición de chute
+  const handleGoalClick = (e) => {
+    const rect = e.target.getBoundingClientRect();
+    const x = e.clientX - rect.left; // X relativa a la portería
+    const y = e.clientY - rect.top;  // Y relativa a la portería
+    setGoalTarget({ x, y });
   };
 
   return (
@@ -77,26 +106,44 @@ function TiroLibre() {
         ))}
       </div>
 
+      {/* Barra de selección de potencia */}
+      <div className="power-bar">
+        <label className="power-label">Potencia: {power}%</label>
+        <input
+          type="range"
+          min="0"
+          max="100"
+          value={power}
+          onChange={(e) => setPower(e.target.value)}
+        />
+      </div>
+
       <button onClick={shoot} className="shoot-btn">Lanzar</button>
 
       <div className="result">{result}</div>
 
       <div className="field">
-        <div className={`ball ${shooting ? 'shooting' : ''}`} 
-          style={{ left: `${ballPosition.x}px`, top: `${ballPosition.y}px` }}>
+        <div className="goal" onClick={handleGoalClick}></div>
+
+        {/* Muestra la posición de la pelota en la portería */}
+        <div
+          className={`ball ${shooting ? 'shooting' : ''}`}
+          style={{
+            left: `${goalTarget.x}px`,
+            top: `${goalTarget.y}px`,
+          }}
+        >
           ⚽
         </div>
 
         <div className="goalkeeper"></div>
-
-        <div className={`side-indicator ${side}`}></div>
-        <div className={`distance-indicator ${distance === 20 ? 'near' : 'far'}`}></div>
       </div>
     </div>
   );
 }
 
 export default TiroLibre;
+
 
 
 
