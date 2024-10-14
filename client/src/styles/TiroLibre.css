@@ -1,4 +1,4 @@
-/* Estilos generales del contenedor del jueggo */
+/* Estilos generales del contenedor del juego */
 .game-container {
   text-align: center;
   font-family: Arial, sans-serif;
@@ -130,7 +130,8 @@
     transform: scale(1.2);
   }
   100% {
-    transform: scale(1);
+    transform: scale(0.8); /* Cambié el valor final para darle más suavidad */
+  }
 }
 
 /* Estilos del portero (si quieres agregarlo visualmente) */
@@ -156,6 +157,7 @@
     transform: translate(200px, -200px);
   }
 }
+
 
 
 
