@@ -108,7 +108,7 @@ h1 {
   }
 }
 
-/* Indicadores de lado (left o right) y distancia (near o far) */
+/* Indicadores de lado (left o right) y distancia (cerca o lejos) */
 .side-indicator {
   position: absolute;
   top: 50%;
@@ -141,42 +141,10 @@ h1 {
   z-index: 2;
 }
 
-.distance-indicator.near {
+.distance-indicator.cerca {
   color: green;
 }
 
-.distance-indicator.far {
+.distance-indicator.lejos {
   color: orange;
 }
-
-/* Portero */
-.goalkeeper {
-  position: absolute;
-  bottom: 10px;
-  left: 50%;
-  width: 50px;
-  height: 80px;
-  background-color: #000;
-  border-radius: 50%;
-  animation: moveGoalkeeper 0.5s ease-in-out infinite alternate;
-  z-index: 1;
-}
-
-@keyframes moveGoalkeeper {
-  0% { transform: translateX(-50%) translateY(0); }
-  50% { transform: translateX(-50%) translateY(-50px); }
-  100% { transform: translateX(-50%) translateY(0); }
-}
-
-/* Animaciones y transiciones */
-@keyframes moveGoalkeeper {
-  0% { transform: translateX(-50%); }
-  50% { transform: translateX(20px); }
-  100% { transform: translateX(-50%); }
-}
-
-
-.scoreboard p {
-  margin: 5px;
-}
-
