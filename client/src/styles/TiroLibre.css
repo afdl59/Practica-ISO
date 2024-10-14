@@ -137,12 +137,13 @@
   left: 230px;
   width: 40px;
   height: 40px;
-  background-image: url('../../assets/casillas2012.jpg'); /* Imagen del portero */
+  background-image: url('/casillas2012.jpg'); /* Nueva ruta dentro de public */
   background-size: cover;
   background-position: center;
   border-radius: 50%;
   transition: left 1s ease, bottom 1s ease;
 }
+
 
 
 
