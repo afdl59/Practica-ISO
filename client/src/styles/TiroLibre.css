@@ -1,4 +1,5 @@
-/* Contenedor principal del juego */
+/* TiroLibre.css */
+
 .game-container {
   text-align: center;
   padding: 20px;
@@ -9,7 +10,6 @@ h1 {
   margin-bottom: 20px;
 }
 
-/* Información del tiro (lado y distancia) */
 .info {
   margin-bottom: 20px;
   font-size: 1.2rem;
@@ -19,7 +19,6 @@ h1 {
   margin: 10px 0;
 }
 
-/* Estilos de los botones de los jugadores */
 .players {
   display: flex;
   justify-content: space-around;
@@ -44,7 +43,6 @@ h1 {
   transform: scale(1.1);
 }
 
-/* Botón para lanzar el tiro */
 .shoot-btn {
   padding: 10px 20px;
   background-color: #28a745;
@@ -60,14 +58,12 @@ h1 {
   background-color: #218838;
 }
 
-/* Mostrar el resultado del tiro */
 .result {
   margin-top: 20px;
   font-size: 24px;
   font-weight: bold;
 }
 
-/* Campo de juego */
 .field {
   position: relative;
   width: 500px;
@@ -80,12 +76,12 @@ h1 {
   position: relative;
 }
 
-/* El balón en el campo */
 .ball {
   position: absolute;
   width: 30px;
   height: 30px;
-  border-radius: 50%;
+  background-color: transparent;
+  font-size: 30px;
   top: 200px;
   left: 200px;
   transition: top 1s ease, left 1s ease;
@@ -107,7 +103,6 @@ h1 {
   }
 }
 
-/* Indicadores de lado (left o right) y distancia (cerca o lejos) */
 .side-indicator {
   position: absolute;
   top: 50%;
@@ -140,22 +135,22 @@ h1 {
   z-index: 2;
 }
 
-.distance-indicator.cerca {
+.distance-indicator.near {
   color: green;
 }
 
-.distance-indicator.lejos {
+.distance-indicator.far {
   color: orange;
 }
 
-/* Portero con la imagen de Casillas */
+/* El portero es Casillas */
 .goalkeeper {
   position: absolute;
   bottom: 10px;
   left: 50%;
   width: 60px;
   height: 100px;
-  background-image: url('../../assets/casillas2012.jpg');
+  background-image: url('/casillas2012.jpg'); /* Ruta desde 'public' */
   background-size: cover;
   background-position: center;
   animation: moveGoalkeeper 0.5s ease-in-out infinite alternate;
@@ -163,9 +158,15 @@ h1 {
 }
 
 @keyframes moveGoalkeeper {
-  0% { transform: translateX(-50%); }
-  50% { transform: translateX(20px); }
-  100% { transform: translateX(-50%); }
+  0% {
+    transform: translateX(-50%);
+  }
+  50% {
+    transform: translateX(20px);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 
