@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import '../../styles/TiroLibre.css';
 
-// Importar imágenes
+// Importar las imágenes directamente
 import falcao2012 from '../../assets/falcao2012.jpg';
 import cristiano2012 from '../../assets/cristiano2012.jpg';
 import messi2012 from '../../assets/messi2012.jpg';
 import griezmann2016 from '../../assets/griezmann2016.jpg';
 import ferran2022 from '../../assets/ferran2022.jpg';
-import casillas2012 from '../../assets/casillas2012.jpg';
-import soccerBall from '../../assets/ball.png';  // Imagen del balón
 
 // Mapeo de jugadores con probabilidades y rutas de imágenes
 const players = {
@@ -25,42 +23,42 @@ const distances = ['near', 'far'];
 function TiroLibre() {
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   const [result, setResult] = useState('');
-  const [goals, setGoals] = useState(0);
-  const [misses, setMisses] = useState(0);
-  const [ballPosition, setBallPosition] = useState({ side: '', distance: '' });
+  const [side, setSide] = useState('');  // Para almacenar el lado (left o right)
+  const [distance, setDistance] = useState('');  // Para almacenar la distancia (near o far)
+  const [ballPosition, setBallPosition] = useState({ x: 200, y: 200 }); // Posición inicial del balón
+  const [shooting, setShooting] = useState(false);  // Para animar el tiro
 
+  // Genera aleatoriamente el lado y la distancia antes de la selección del jugador
   useEffect(() => {
-    // Inicializar la posición del balón
-    generateBallPosition();
-  }, []);
+    const randomSide = sides[Math.floor(Math.random() * sides.length)];
+    const randomDistance = distances[Math.floor(Math.random() * distances.length)];
+    setSide(randomSide);
+    setDistance(randomDistance);
 
-  const generateBallPosition = () => {
-    // Generar lado y distancia aleatorios
-    const side = sides[Math.floor(Math.random() * sides.length)];
-    const distance = distances[Math.floor(Math.random() * distances.length)];
-    setBallPosition({ side, distance });
-  };
+    // Actualiza la posición del balón en el campo dependiendo de la distancia y lado
+    const newBallPosition = randomSide === 'left'
+      ? randomDistance === 'near'
+        ? { x: 100, y: 200 }
+        : { x: 100, y: 100 }
+      : randomDistance === 'near'
+      ? { x: 300, y: 200 }
+      : { x: 300, y: 100 };
+    setBallPosition(newBallPosition);
+  }, []);  // Ejecutar una vez al montar el componente
 
   const shoot = () => {
     if (!selectedPlayer) return;
 
-    setResult('');
+    // Calcula la probabilidad de éxito basada en el jugador, el lado y la distancia
+    const successProbability = players[selectedPlayer][`${side}${distance.charAt(0).toUpperCase() + distance.slice(1)}`];
+    const isGoal = Math.random() < successProbability;
 
+    setResult(isGoal ? '¡Gol!' : '¡Parada de Casillas!');
+
+    // Mueve el balón con la animación
+    setShooting(true);
     setTimeout(() => {
-      const { side, distance } = ballPosition;
-      const successProbability = players[selectedPlayer][`${side}${distance.charAt(0).toUpperCase() + distance.slice(1)}`];
-      const isGoal = Math.random() < successProbability;
-
-      if (isGoal) {
-        setGoals(goals + 1);
-        setResult('¡Gol!');
-      } else {
-        setMisses(misses + 1);
-        setResult('¡Parada de Casillas!');
-      }
-
-      // Regenerar la posición del balón
-      generateBallPosition();
+      setShooting(false);  // Detiene la animación del tiro después de un tiempo
     }, 1000);
   };
 
@@ -68,18 +66,13 @@ function TiroLibre() {
     <div className="game-container">
       <h1>Tiro Libre</h1>
 
-      {/* Mostrar la posición actual del balón */}
-      <div className="ball-position-info">
-        <p>Posición del balón: {ballPosition.side === 'left' ? 'Izquierda' : 'Derecha'}, {ballPosition.distance === 'near' ? 'Cerca' : 'Lejos'}</p>
+      {/* Muestra el lado y la distancia antes de que el jugador sea seleccionado */}
+      <div className="info">
+        <p>El tiro será desde el lado: <strong>{side}</strong></p>
+        <p>La distancia es: <strong>{distance}</strong></p>
       </div>
 
-      {/* Campo y portería */}
-      <div className="field">
-        <img src={casillas2012} alt="casillas" className="goalkeeper" />
-        <div className={`ball ${ballPosition.side}-${ballPosition.distance}`}></div>
-      </div>
-
-      {/* Mostrar los jugadores */}
+      {/* Selección de jugadores */}
       <div className="players">
         {Object.keys(players).map((player) => (
           <button key={player} onClick={() => setSelectedPlayer(player)}>
@@ -88,21 +81,32 @@ function TiroLibre() {
         ))}
       </div>
 
+      {/* Botón para lanzar el tiro */}
       <button onClick={shoot} className="shoot-btn">Lanzar</button>
 
-      {/* Contadores */}
-      <div className="scoreboard">
-        <p>Goles: {goals}</p>
-        <p>Fallos: {misses}</p>
-      </div>
-
-      {/* Resultado del tiro */}
+      {/* Mostrar el resultado */}
       <div className="result">{result}</div>
+
+      {/* Campo de juego */}
+      <div className="field">
+        {/* Balón */}
+        <div className={`ball ${shooting ? 'shooting' : ''}`} 
+          style={{ left: `${ballPosition.x}px`, top: `${ballPosition.y}px` }}>
+        </div>
+
+        {/* Portero en movimiento */}
+        <div className="goalkeeper"></div>
+
+        {/* Indicaciones visuales para el lado y distancia */}
+        <div className={`side-indicator ${side}`}></div>
+        <div className={`distance-indicator ${distance}`}></div>
+      </div>
     </div>
   );
 }
 
 export default TiroLibre;
+
 
 
 
