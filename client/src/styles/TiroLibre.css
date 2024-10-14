@@ -1,7 +1,25 @@
+/* Contenedor principal del juego */
 .game-container {
   text-align: center;
+  padding: 20px;
 }
 
+h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+/* Información del tiro (lado y distancia) */
+.info {
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+}
+
+.info p {
+  margin: 10px 0;
+}
+
+/* Estilos de los botones de los jugadores */
 .players {
   display: flex;
   justify-content: space-around;
@@ -17,8 +35,16 @@
 .players img {
   width: 100px;
   height: auto;
+  border-radius: 8px;
+  border: 2px solid #ccc;
+  transition: transform 0.2s ease-in-out;
 }
 
+.players img:hover {
+  transform: scale(1.1);
+}
+
+/* Botón para lanzar el tiro */
 .shoot-btn {
   padding: 10px 20px;
   background-color: #28a745;
@@ -26,76 +52,129 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  font-size: 1.1rem;
+  transition: background-color 0.3s ease;
 }
 
 .shoot-btn:hover {
   background-color: #218838;
 }
 
+/* Mostrar el resultado del tiro */
 .result {
   margin-top: 20px;
   font-size: 24px;
   font-weight: bold;
 }
 
-/* Animación CSS para mover al portero */
-@keyframes moveGoalkeeper {
-  0% { transform: translateX(0); }
-  50% { transform: translateX(100px); }
-  100% { transform: translateX(0); }
-}
-
-.goalkeeper {
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100px;
-  animation: moveGoalkeeper 1s ease-in-out infinite;
-}
-
-/* Campo y balón */
+/* Campo de juego */
 .field {
   position: relative;
-  width: 100%;
-  height: 200px;
-  background-color: green;
-  margin-bottom: 20px;
+  width: 500px;
+  height: 300px;
+  background-color: #f0f0f0;
+  border: 2px solid #000;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 10px;
+  position: relative;
 }
 
+/* El balón en el campo */
 .ball {
   position: absolute;
-  width: 20px;
-  height: 20px;
-  background: url('../../assets/ball.png') no-repeat center center;
-  background-size: contain;
+  width: 30px;
+  height: 30px;
+  background-color: #ff0; /* Color amarillo para el balón */
+  border-radius: 50%;
+  top: 200px;  /* Posición inicial del balón */
+  left: 200px;
+  transition: top 1s ease, left 1s ease; /* Animación suave para el movimiento */
 }
 
-/* Posición del balón dependiendo del lado y distancia */
-.ball.left-near {
-  left: 20%;
-  bottom: 30px;
+.shooting {
+  animation: shootBall 1s ease forwards;
 }
 
-.ball.left-far {
-  left: 20%;
-  bottom: 120px;
+@keyframes shootBall {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(0.8);
+  }
 }
 
-.ball.right-near {
-  left: 80%;
-  bottom: 30px;
+/* Indicadores de lado (left o right) y distancia (near o far) */
+.side-indicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 2rem;
+  font-weight: bold;
+  transform: translate(-50%, -50%);
+  color: white;
+  z-index: 2;
 }
 
-.ball.right-far {
-  left: 80%;
-  bottom: 120px;
+.side-indicator.left {
+  color: red;
+  left: 10%; /* Indicador para el lado izquierdo */
 }
 
-.scoreboard {
-  margin-top: 20px;
-  font-size: 18px;
+.side-indicator.right {
+  color: blue;
+  right: 10%; /* Indicador para el lado derecho */
 }
+
+.distance-indicator {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  font-size: 2rem;
+  font-weight: bold;
+  transform: translateX(-50%);
+  color: white;
+  z-index: 2;
+}
+
+.distance-indicator.near {
+  color: green;
+}
+
+.distance-indicator.far {
+  color: orange;
+}
+
+/* Portero */
+.goalkeeper {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  width: 50px;
+  height: 80px;
+  background-color: #000;
+  border-radius: 50%;
+  animation: moveGoalkeeper 0.5s ease-in-out infinite alternate;
+  z-index: 1;
+}
+
+@keyframes moveGoalkeeper {
+  0% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-50px); }
+  100% { transform: translateX(-50%) translateY(0); }
+}
+
+/* Animaciones y transiciones */
+@keyframes moveGoalkeeper {
+  0% { transform: translateX(-50%); }
+  50% { transform: translateX(20px); }
+  100% { transform: translateX(-50%); }
+}
+
 
 .scoreboard p {
   margin: 5px;
