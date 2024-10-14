@@ -1,5 +1,3 @@
-/* TiroLibre.css */
-
 /* Estilos generales del contenedor del juego */
 .game-container {
   text-align: center;
@@ -34,6 +32,12 @@
   height: 100px;
   border-radius: 50%;
   transition: transform 0.3s ease;
+}
+
+/* Estilo para resaltar el jugador seleccionado */
+.players button.selected img {
+  border: 4px solid #28a745; /* Resalta el jugador seleccionado con un borde verde */
+  transform: scale(1.1);
 }
 
 .players button img:hover {
@@ -75,7 +79,7 @@
   overflow: hidden;
   border-radius: 10px;
   position: relative;
-  cursor: crosshair; /* Muestra un cursor de cruz para indicar que se puede seleccionar el lugar */
+  cursor: crosshair;
 }
 
 /* Estilos de la portería */
@@ -98,7 +102,7 @@
   height: 30px;
   background-color: transparent;
   font-size: 30px;
-  transition: top 1s ease, left 1s ease;
+  transition: left 1s ease, top 1s ease; /* El balón se moverá suavemente */
 }
 
 .shooting {
@@ -127,22 +131,32 @@
   }
   100% {
     transform: scale(1);
-  }
 }
 
 /* Estilos del portero (si quieres agregarlo visualmente) */
 .goalkeeper {
   position: absolute;
   bottom: 10px;
-  left: 230px;
-  width: 40px;
-  height: 40px;
-  background-image: url('/casillas2012.jpg'); /* Nueva ruta dentro de public */
+  left: 220px;
+  width: 60px; /* Más grande para mayor visibilidad */
+  height: 80px;
+  background-image: url('/casillas2012.jpg'); /* Ruta correcta en public */
   background-size: cover;
   background-position: center;
   border-radius: 50%;
-  transition: left 1s ease, bottom 1s ease;
+  transition: left 1s ease, bottom 1s ease; /* Mueve el portero suavemente */
 }
+
+/* Animación para cuando el balón está en movimiento */
+@keyframes ballMove {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(200px, -200px);
+  }
+}
+
 
 
 
