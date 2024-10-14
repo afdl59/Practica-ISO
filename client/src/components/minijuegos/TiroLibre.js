@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import '../../styles/TiroLibre.css';
 
-// Importar las imágenes directamente
+// Importar imágenes
 import falcao2012 from '../../assets/falcao2012.jpg';
 import cristiano2012 from '../../assets/cristiano2012.jpg';
 import messi2012 from '../../assets/messi2012.jpg';
 import griezmann2016 from '../../assets/griezmann2016.jpg';
 import ferran2022 from '../../assets/ferran2022.jpg';
+import casillas2012 from '../../assets/casillas2012.jpg';
+import soccerBall from '../../assets/ball.png';  // Imagen del balón
 
 // Mapeo de jugadores con probabilidades y rutas de imágenes
 const players = {
@@ -23,22 +25,61 @@ const distances = ['near', 'far'];
 function TiroLibre() {
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   const [result, setResult] = useState('');
+  const [goals, setGoals] = useState(0);
+  const [misses, setMisses] = useState(0);
+  const [ballPosition, setBallPosition] = useState({ side: '', distance: '' });
+
+  useEffect(() => {
+    // Inicializar la posición del balón
+    generateBallPosition();
+  }, []);
+
+  const generateBallPosition = () => {
+    // Generar lado y distancia aleatorios
+    const side = sides[Math.floor(Math.random() * sides.length)];
+    const distance = distances[Math.floor(Math.random() * distances.length)];
+    setBallPosition({ side, distance });
+  };
 
   const shoot = () => {
     if (!selectedPlayer) return;
 
-    const randomSide = sides[Math.floor(Math.random() * sides.length)];
-    const randomDistance = distances[Math.floor(Math.random() * distances.length)];
+    setResult('');
 
-    const successProbability = players[selectedPlayer][`${randomSide}${randomDistance.charAt(0).toUpperCase() + randomDistance.slice(1)}`];
-    const isGoal = Math.random() < successProbability;
+    setTimeout(() => {
+      const { side, distance } = ballPosition;
+      const successProbability = players[selectedPlayer][`${side}${distance.charAt(0).toUpperCase() + distance.slice(1)}`];
+      const isGoal = Math.random() < successProbability;
 
-    setResult(isGoal ? '¡Gol!' : '¡Parada de Casillas!');
+      if (isGoal) {
+        setGoals(goals + 1);
+        setResult('¡Gol!');
+      } else {
+        setMisses(misses + 1);
+        setResult('¡Parada de Casillas!');
+      }
+
+      // Regenerar la posición del balón
+      generateBallPosition();
+    }, 1000);
   };
 
   return (
     <div className="game-container">
       <h1>Tiro Libre</h1>
+
+      {/* Mostrar la posición actual del balón */}
+      <div className="ball-position-info">
+        <p>Posición del balón: {ballPosition.side === 'left' ? 'Izquierda' : 'Derecha'}, {ballPosition.distance === 'near' ? 'Cerca' : 'Lejos'}</p>
+      </div>
+
+      {/* Campo y portería */}
+      <div className="field">
+        <img src={casillas2012} alt="casillas" className="goalkeeper" />
+        <div className={`ball ${ballPosition.side}-${ballPosition.distance}`}></div>
+      </div>
+
+      {/* Mostrar los jugadores */}
       <div className="players">
         {Object.keys(players).map((player) => (
           <button key={player} onClick={() => setSelectedPlayer(player)}>
@@ -46,12 +87,22 @@ function TiroLibre() {
           </button>
         ))}
       </div>
+
       <button onClick={shoot} className="shoot-btn">Lanzar</button>
+
+      {/* Contadores */}
+      <div className="scoreboard">
+        <p>Goles: {goals}</p>
+        <p>Fallos: {misses}</p>
+      </div>
+
+      {/* Resultado del tiro */}
       <div className="result">{result}</div>
     </div>
   );
 }
 
 export default TiroLibre;
+
 
 
