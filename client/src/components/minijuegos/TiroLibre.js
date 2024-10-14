@@ -28,6 +28,7 @@ function TiroLibre() {
   const [shooting, setShooting] = useState(false);
   const [power, setPower] = useState(50); // Potencia del disparo
   const [targetPosition, setTargetPosition] = useState({ x: 0, y: 0 }); // Posición seleccionada en la portería
+  const [keeperPosition, setKeeperPosition] = useState({ x: 220, y: 10 }); // Posición inicial del portero
 
   useEffect(() => {
     const randomSide = sides[Math.floor(Math.random() * sides.length)];
@@ -61,9 +62,22 @@ function TiroLibre() {
   const shoot = () => {
     if (!selectedPlayer) return;
 
+    // Calcula la probabilidad de éxito basándose en el jugador, la posición y la potencia
     const successProbability = players[selectedPlayer][`${side}${distance.charAt(0).toUpperCase() + distance.slice(1)}`];
 
-    const isGoal = Math.random() < successProbability;
+    // Factores que aumentan o disminuyen la probabilidad en función de la potencia
+    const adjustedProbability = successProbability * (power / 100);
+
+    // Casillas puede moverse en función del tiro
+    const randomKeeperMovement = Math.random() < 0.5 ? 'left' : 'right'; // Simulación del movimiento de Casillas
+    if (randomKeeperMovement === 'left') {
+      setKeeperPosition({ x: 180, y: 20 });
+    } else {
+      setKeeperPosition({ x: 260, y: 20 });
+    }
+
+    // Verifica si el tiro es gol o parada
+    const isGoal = Math.random() < adjustedProbability;
     setResult(isGoal ? '¡Gol!' : '¡Parada de Casillas!');
 
     setShooting(true);
@@ -114,13 +128,16 @@ function TiroLibre() {
           ⚽
         </div>
         <div className="goal" onClick={handleGoalClick}></div>
-        <div className="goalkeeper"></div>
+        <div className="goalkeeper"
+          style={{ left: `${keeperPosition.x}px`, bottom: `${keeperPosition.y}px` }}>
+        </div>
       </div>
     </div>
   );
 }
 
 export default TiroLibre;
+
 
 
 
