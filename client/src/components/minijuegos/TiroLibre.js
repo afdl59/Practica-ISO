@@ -79,8 +79,14 @@ function TiroLibre() {
     // Probabilidad ajustada: Si el valor es mayor que un valor aleatorio, es gol; sino es parada
     const isGoal = Math.random() < adjustedProbability;
 
+    // Ahora si el portero está en la dirección correcta (izquierda o derecha), tiene una probabilidad de detener el tiro
+    const keeperInterventionProbability = randomKeeperMovement === side ? 0.7 : 0.3; // Casillas tiene más probabilidad de parar si está en el lado correcto
+
+    // Si el portero interviene y la probabilidad de intervención es mayor que la probabilidad ajustada, es una parada
+    const isStop = Math.random() < keeperInterventionProbability && !isGoal;
+
     // Definir el resultado: Si es gol, es gol, si no, Casillas ha parado
-    setResult(isGoal ? '¡Gol!' : '¡Parada de Casillas!');
+    setResult(isStop ? '¡Parada de Casillas!' : '¡Gol!');
 
     setShooting(true);
     setTimeout(() => {
@@ -139,6 +145,7 @@ function TiroLibre() {
 }
 
 export default TiroLibre;
+
 
 
 
