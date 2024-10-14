@@ -63,8 +63,14 @@ function TiroLibre() {
   const shoot = () => {
     if (!selectedPlayer) return;
 
-    const successProbability = players[selectedPlayer][`${side}${distance.charAt(0).toUpperCase() + distance.slice(1)}`];
-    const isGoal = Math.random() < successProbability;
+    // Calcula la probabilidad inicial según el lado y la distancia
+    const baseSuccessProbability = players[selectedPlayer][`${side}${distance.charAt(0).toUpperCase() + distance.slice(1)}`];
+
+    // Ajusta la probabilidad por la potencia del tiro
+    const adjustedSuccessProbability = Math.min(baseSuccessProbability + (power / 100), 1);  // Asegura que la probabilidad no sea mayor a 1
+
+    // Determina si es un gol o no
+    const isGoal = Math.random() < adjustedSuccessProbability;
 
     setResult(isGoal ? '¡Gol!' : '¡Parada de Casillas!');
 
@@ -117,14 +123,15 @@ function TiroLibre() {
           ⚽
         </div>
 
-        {/* Portero (Casillas) */}
-        <div className="goalkeeper"></div>
+        {/* Portero (Casillas): Se mueve en la portería */}
+        <div className="goalkeeper" style={{ left: `calc(50% - 25px)`, top: '70px' }}></div>
       </div>
     </div>
   );
 }
 
 export default TiroLibre;
+
 
 
 
