@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../../styles/TiroLibre.css';
 
-// Imágenes de los jugadores
 import falcao2012 from '../../assets/falcao2012.jpg';
 import cristiano2012 from '../../assets/cristiano2012.jpg';
 import messi2012 from '../../assets/messi2012.jpg';
@@ -17,45 +16,44 @@ const players = {
   ferran: { leftNear: 0.4, leftFar: 0.3, rightNear: 0.3, rightFar: 0.2, image: ferran2022 }
 };
 
-const sides = ['izquierda', 'derecha'];
-const distances = ['cerca', 'lejos'];
+const sides = ['left', 'right'];
+const distances = ['near', 'far'];
 
 function TiroLibre() {
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   const [result, setResult] = useState('');
   const [side, setSide] = useState('');
   const [distance, setDistance] = useState('');
-  const [ballPosition, setBallPosition] = useState({ x: 250, y: 150 });
+  const [ballPosition, setBallPosition] = useState({ x: 200, y: 200 });
   const [shooting, setShooting] = useState(false);
   const [power, setPower] = useState(50); // Potencia del disparo
-  const [targetPosition, setTargetPosition] = useState({ x: 0, y: 0 }); // Posición seleccionada para disparar
+  const [targetPosition, setTargetPosition] = useState({ x: 0, y: 0 }); // Posición seleccionada en la portería
 
-  // Genera aleatoriamente el lado y la distancia
   useEffect(() => {
     const randomSide = sides[Math.floor(Math.random() * sides.length)];
     const randomDistance = distances[Math.floor(Math.random() * distances.length)];
     setSide(randomSide);
     setDistance(randomDistance);
 
-    const newBallPosition = randomSide === 'izquierda'
-      ? randomDistance === 'cerca'
+    const newBallPosition = randomSide === 'left'
+      ? randomDistance === 'near'
         ? { x: 100, y: 200 }
         : { x: 100, y: 100 }
-      : randomDistance === 'cerca'
+      : randomDistance === 'near'
       ? { x: 300, y: 200 }
       : { x: 300, y: 100 };
     setBallPosition(newBallPosition);
   }, []);
 
   const handleGoalClick = (e) => {
-    // Calcula las coordenadas relativas a todo el campo de juego
-    const field = e.target.getBoundingClientRect();
-    const x = e.clientX - field.left;
-    const y = e.clientY - field.top;
+    // Calcula las coordenadas relativas a la portería
+    const goal = e.target.getBoundingClientRect();
+    const x = e.clientX - goal.left;
+    const y = e.clientY - goal.top;
 
-    // Limita la posición del balón a que no salga del área del campo (500px ancho x 300px alto)
-    const limitedX = Math.min(Math.max(x, 0), 500);
-    const limitedY = Math.min(Math.max(y, 0), 300);
+    // Limita el balón dentro del área de la portería (200px ancho x 100px alto)
+    const limitedX = Math.min(Math.max(x, 0), 200);
+    const limitedY = Math.min(Math.max(y, 0), 100);
 
     setTargetPosition({ x: limitedX, y: limitedY });
   };
@@ -63,15 +61,9 @@ function TiroLibre() {
   const shoot = () => {
     if (!selectedPlayer) return;
 
-    // Calcula la probabilidad inicial según el lado y la distancia
-    const baseSuccessProbability = players[selectedPlayer][`${side}${distance.charAt(0).toUpperCase() + distance.slice(1)}`];
+    const successProbability = players[selectedPlayer][`${side}${distance.charAt(0).toUpperCase() + distance.slice(1)}`];
 
-    // Ajusta la probabilidad por la potencia del tiro
-    const adjustedSuccessProbability = Math.min(baseSuccessProbability + (power / 100), 1);  // Asegura que la probabilidad no sea mayor a 1
-
-    // Determina si es un gol o no
-    const isGoal = Math.random() < adjustedSuccessProbability;
-
+    const isGoal = Math.random() < successProbability;
     setResult(isGoal ? '¡Gol!' : '¡Parada de Casillas!');
 
     setShooting(true);
@@ -116,15 +108,13 @@ function TiroLibre() {
       <button onClick={shoot} className="shoot-btn">Lanzar</button>
       <div className="result">{result}</div>
 
-      <div className="field" onClick={handleGoalClick}>
-        {/* Balón: se mueve a la posición seleccionada */}
+      <div className="field">
         <div className={`ball ${shooting ? 'shooting' : ''}`}
-          style={{ left: `${targetPosition.x}px`, top: `${targetPosition.y}px` }}>
+          style={{ left: `${targetPosition.x + 150}px`, top: `${targetPosition.y}px` }}>
           ⚽
         </div>
-
-        {/* Portero (Casillas): Se mueve en la portería */}
-        <div className="goalkeeper" style={{ left: `calc(50% - 25px)`, top: '70px' }}></div>
+        <div className="goal" onClick={handleGoalClick}></div>
+        <div className="goalkeeper"></div>
       </div>
     </div>
   );
