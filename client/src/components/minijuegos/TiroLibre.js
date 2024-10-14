@@ -62,13 +62,13 @@ function TiroLibre() {
   const shoot = () => {
     if (!selectedPlayer) return;
 
-    // Calcula la probabilidad de éxito basándose en el jugador, la posición y la potencia
+    // Calcula la probabilidad base de éxito según el jugador, la distancia y el lado
     const successProbability = players[selectedPlayer][`${side}${distance.charAt(0).toUpperCase() + distance.slice(1)}`];
 
-    // Factores que aumentan o disminuyen la probabilidad en función de la potencia
+    // Ajusta la probabilidad con la potencia (a mayor potencia, más fácil es hacer gol)
     const adjustedProbability = successProbability * (power / 100);
 
-    // Casillas puede moverse en función del tiro
+    // Casillas se mueve aleatoriamente a un lado o a otro
     const randomKeeperMovement = Math.random() < 0.5 ? 'left' : 'right'; // Simulación del movimiento de Casillas
     if (randomKeeperMovement === 'left') {
       setKeeperPosition({ x: 180, y: 20 });
@@ -76,8 +76,10 @@ function TiroLibre() {
       setKeeperPosition({ x: 260, y: 20 });
     }
 
-    // Verifica si el tiro es gol o parada
+    // Probabilidad ajustada: Si el valor es mayor que un valor aleatorio, es gol; sino es parada
     const isGoal = Math.random() < adjustedProbability;
+
+    // Definir el resultado: Si es gol, es gol, si no, Casillas ha parado
     setResult(isGoal ? '¡Gol!' : '¡Parada de Casillas!');
 
     setShooting(true);
@@ -137,6 +139,7 @@ function TiroLibre() {
 }
 
 export default TiroLibre;
+
 
 
 
