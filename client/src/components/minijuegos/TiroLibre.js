@@ -16,8 +16,8 @@ const players = {
   ferran: { leftNear: 0.4, leftFar: 0.3, rightNear: 0.3, rightFar: 0.2, image: ferran2022 }
 };
 
-const sides = ['left', 'right'];
-const distances = ['near', 'far'];
+const sides = ['izquierda', 'derecha'];
+const distances = ['cerca', 'lejos'];
 
 function TiroLibre() {
   const [selectedPlayer, setSelectedPlayer] = useState(null);
@@ -35,11 +35,11 @@ function TiroLibre() {
     setSide(randomSide);
     setDistance(randomDistance);
 
-    const newBallPosition = randomSide === 'left'
-      ? randomDistance === 'near'
+    const newBallPosition = randomSide === 'izquierda'
+      ? randomDistance === 'cerca'
         ? { x: 100, y: 200 }
         : { x: 100, y: 100 }
-      : randomDistance === 'near'
+      : randomDistance === 'cerca'
       ? { x: 300, y: 200 }
       : { x: 300, y: 100 };
     setBallPosition(newBallPosition);
