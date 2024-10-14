@@ -3,7 +3,6 @@ import '../../styles/TiroLibre.css';
 
 // Importar las imágenes directamente
 import falcao2012 from '../assets/falcao2012.jpg';
-import cristiano2012 from '../assets/cristiano2012.jpg';
 import messi2012 from '../assets/messi2012.jpg';
 import griezmann2016 from '../assets/griezmann2016.jpg';
 import ferran2022 from '../assets/ferran2022.jpg';
