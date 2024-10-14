@@ -1,80 +1,48 @@
 import React, { useState, useEffect } from 'react';
 import '../../styles/TiroLibre.css';
 
-const TiroLibre = () => {
-  const [ballPosition, setBallPosition] = useState({ top: 400, left: 300 });
-  const [goalkeeperPosition, setGoalkeeperPosition] = useState(250);
-  const [isShooting, setIsShooting] = useState(false);
-  const [goals, setGoals] = useState(0);
-  const [misses, setMisses] = useState(0);
-  const [shotDirection, setShotDirection] = useState(0); // 0 es centro, -1 izquierda, 1 derecha
+const players = {
+  falcao: { leftNear: 0.9, leftFar: 0.7, rightNear: 0.6, rightFar: 0.4, image: 'falcao2012.jpg' },
+  cristiano: { leftNear: 0.95, leftFar: 0.95, rightNear: 0.95, rightFar: 0.95, image: 'cristiano2012.jpg' },
+  messi: { leftNear: 0.9, leftFar: 0.85, rightNear: 0.9, rightFar: 0.85, image: 'messi2012.jpg' },
+  griezmann: { leftNear: 0.6, leftFar: 0.8, rightNear: 0.8, rightFar: 0.9, image: 'griezmann2016.jpg' },
+  ferran: { leftNear: 0.4, leftFar: 0.3, rightNear: 0.3, rightFar: 0.2, image: 'ferran2022.jpg' },
+};
 
-  // Mover al portero de lado a lado
-  useEffect(() => {
-    const moveGoalkeeper = setInterval(() => {
-      const newGoalkeeperPosition = Math.random() * (500 - 100) + 100; // Posición aleatoria del portero dentro de los postes
-      setGoalkeeperPosition(newGoalkeeperPosition);
-    }, 1500); // Cambia la posición cada 1.5 segundos
+const sides = ['left', 'right'];
+const distances = ['near', 'far'];
 
-    return () => clearInterval(moveGoalkeeper);
-  }, []);
+function TiroLibre() {
+  const [selectedPlayer, setSelectedPlayer] = useState(null);
+  const [result, setResult] = useState('');
 
-  // Control del disparo
-  const handleShoot = (direction) => {
-    setShotDirection(direction);  // -1 izquierda, 0 centro, 1 derecha
-    setIsShooting(true);
+  const shoot = () => {
+    if (!selectedPlayer) return;
 
-    setTimeout(() => {
-      checkIfGoal(direction);
-      setIsShooting(false);
-    }, 1000);  // Animación del disparo tarda 1 segundo
-  };
+    const randomSide = sides[Math.floor(Math.random() * sides.length)];
+    const randomDistance = distances[Math.floor(Math.random() * distances.length)];
 
-  const checkIfGoal = (direction) => {
-    const shotPosition = ballPosition.left + direction * 100;
-    if (shotPosition > goalkeeperPosition - 50 && shotPosition < goalkeeperPosition + 50) {
-      // El portero ataja el balón
-      setMisses(misses + 1);
-      alert('¡El portero atajó el disparo!');
-    } else {
-      // El balón entra en el arco
-      setGoals(goals + 1);
-      alert('¡Gol!');
-    }
+    const successProbability = players[selectedPlayer][`${randomSide}${randomDistance.charAt(0).toUpperCase() + randomDistance.slice(1)}`];
+    const isGoal = Math.random() < successProbability;
+
+    setResult(isGoal ? '¡Gol!' : '¡Parada de Casillas!');
   };
 
   return (
-    <div className="tiro-libre-containe">
+    <div className="game-container">
       <h1>Tiro Libre</h1>
-      <div className="scoreboard">
-        <p>Goles: {goals}</p>
-        <p>Fallos: {misses}</p>
+      <div className="players">
+        {Object.keys(players).map((player) => (
+          <button key={player} onClick={() => setSelectedPlayer(player)}>
+            <img src={require(`../assets/${players[player].image}`)} alt={player} />
+          </button>
+        ))}
       </div>
-
-      <div className="field">
-        <div
-          className="goalkeeper"
-          style={{ left: `${goalkeeperPosition}px` }}
-        >
-          🧤
-        </div>
-
-        <div
-          className="ball"
-          style={{ top: `${ballPosition.top}px`, left: `${ballPosition.left}px` }}
-        >
-          ⚽
-        </div>
-      </div>
-
-      <div className="controls">
-        <button onClick={() => handleShoot(-1)}>Disparar Izquierda</button>
-        <button onClick={() => handleShoot(0)}>Disparar Centro</button>
-        <button onClick={() => handleShoot(1)}>Disparar Derecha</button>
-      </div>
+      <button onClick={shoot} className="shoot-btn">Lanzar</button>
+      <div className="result">{result}</div>
     </div>
   );
-};
+}
 
 export default TiroLibre;
 
