@@ -1,162 +1,129 @@
-/* Estilos generales del contenedor del juego */
 .game-container {
   text-align: center;
-  font-family: Arial, sans-serif;
+  padding: 20px;
+  font-family: 'Arial', sans-serif;
 }
 
-/* Información sobre el lado y la distancia del chute */
-.info {
+h1 {
+  font-size: 2rem;
   margin-bottom: 20px;
 }
 
-.info p {
+.info {
+  margin-bottom: 20px;
   font-size: 1.2rem;
 }
 
-/* Estilos de los botones de jugadores */
+.info p {
+  margin: 10px 0;
+}
+
 .players {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   margin-bottom: 20px;
 }
 
 .players button {
-  background: none;
+  background-color: transparent;
   border: none;
-  margin: 0 10px;
   cursor: pointer;
+  padding: 10px;
 }
 
-.players button img {
+.players img {
   width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  transition: transform 0.3s ease;
+  height: auto;
+  border-radius: 8px;
+  transition: transform 0.2s;
 }
 
-/* Estilo para resaltar el jugador seleccionado */
 .players button.selected img {
-  border: 4px solid #28a745; /* Resalta el jugador seleccionado con un borde verde */
   transform: scale(1.1);
 }
 
-.players button img:hover {
-  transform: scale(1.1);
+.power-bar {
+  margin: 20px 0;
 }
 
-/* Estilo del botón para lanzar */
+.power-bar label {
+  font-size: 1rem;
+  margin-right: 10px;
+}
+
+.power-bar input {
+  width: 300px;
+}
+
 .shoot-btn {
-  background-color: #28a745;
+  padding: 10px 20px;
+  font-size: 1rem;
+  background-color: #4CAF50;
   color: white;
   border: none;
-  padding: 10px 20px;
-  font-size: 1.2rem;
-  border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
   margin-bottom: 20px;
 }
 
 .shoot-btn:hover {
-  background-color: #218838;
+  background-color: #45a049;
 }
 
-/* Contenedor para mostrar el resultado */
 .result {
   font-size: 1.5rem;
-  margin-bottom: 20px;
+  margin: 20px;
   font-weight: bold;
+  color: #000;
 }
 
-/* Campo de juego */
 .field {
   position: relative;
   width: 500px;
   height: 300px;
-  background-color: #f0f0f0;
+  background-color: #e1e1e1;
   border: 2px solid #000;
   margin: 0 auto;
-  overflow: hidden;
-  border-radius: 10px;
   position: relative;
-  cursor: crosshair;
+  overflow: hidden;
 }
 
-/* Estilos de la portería */
-.goal {
-  position: absolute;
-  bottom: 0;
-  left: 150px;
-  width: 200px;
-  height: 100px;
-  background-color: transparent;
-  border: 2px solid #fff;
-  border-radius: 5px;
-  cursor: crosshair;
-}
-
-/* Estilos del balón */
 .ball {
   position: absolute;
-  width: 30px;
-  height: 30px;
-  background-color: transparent;
-  font-size: 30px;
-  transition: left 1s ease, top 1s ease; /* El balón se moverá suavemente */
-}
-
-.shooting {
-  animation: shootBall 1s ease forwards;
-}
-
-/* Estilos de la barra de potencia */
-.power-bar {
-  margin: 20px auto;
-  width: 300px;
-}
-
-.power-label {
-  font-size: 1.2rem;
-  margin-bottom: 10px;
+  width: 40px;
+  height: 40px;
+  background-color: white;
+  border-radius: 50%;
   text-align: center;
+  line-height: 40px;
+  font-size: 1.5rem;
+  transition: all 0.5s ease;
 }
 
-/* Animación del disparo */
-@keyframes shootBall {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.2);
-  }
-  100% {
-    transform: scale(0.8); /* Cambié el valor final para darle más suavidad */
-  }
-}
-
-/* Estilos del portero (si quieres agregarlo visualmente) */
 .goalkeeper {
   position: absolute;
-  bottom: 10px;
-  left: 220px;
-  width: 60px; /* Más grande para mayor visibilidad */
-  height: 80px;
-  background-image: url('/casillas2012.jpg'); /* Ruta correcta en public */
+  width: 70px;
+  height: 70px;
+  background-image: url('/casillas2012.jpg'); /* Ubicación de la imagen de Casillas */
   background-size: cover;
-  background-position: center;
   border-radius: 50%;
-  transition: left 1s ease, bottom 1s ease; /* Mueve el portero suavemente */
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 20px;
 }
 
-/* Animación para cuando el balón está en movimiento */
-@keyframes ballMove {
+@keyframes shootBall {
   0% {
     transform: translate(0, 0);
   }
   100% {
-    transform: translate(200px, -200px);
+    transform: translate(var(--ball-x), var(--ball-y));
   }
 }
+
+.shooting {
+  animation: shootBall 1s forwards;
+}
+
 
 
 
