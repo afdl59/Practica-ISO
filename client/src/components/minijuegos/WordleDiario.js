@@ -73,17 +73,20 @@ function WordleDiario() {
   };
 
   const handleSubmit = () => {
-    const jugadorSinEspacios = jugadorDelDia.replace(/\s+/g, '');  // Remover espacios del jugador
-    const inputSinEspacios = inputUsuario.replace(/\s+/g, '');     // Remover espacios del input
+  const inputNormalizado = inputUsuario.toUpperCase().trim(); // Asegurarse que todo sea en mayúscula y quitar espacios solo al inicio y al final
+  const jugadorNormalizado = jugadorDelDia.toUpperCase();
 
-    if (inputSinEspacios.length !== jugadorSinEspacios.length) {
-      alert('La longitud del nombre debe coincidir con la del jugador (ignorando espacios).');
-      return;
-    }
-    const nuevoIntento = validarIntento(inputSinEspacios);
-    setIntentos([...intentos, nuevoIntento]);
-    setInputUsuario('');
-  };
+  // Comprobar si la longitud de las cadenas coincide
+  if (inputNormalizado.length !== jugadorNormalizado.length) {
+    alert('La longitud del nombre debe coincidir con la del jugador (ignorando espacios).');
+    return;
+  }
+
+  const nuevoIntento = validarIntento(inputNormalizado); // Pasamos el input normalizado
+  setIntentos([...intentos, nuevoIntento]);
+  setInputUsuario('');
+};
+
 
   const validarIntento = (input) => {
     const resultado = [];
