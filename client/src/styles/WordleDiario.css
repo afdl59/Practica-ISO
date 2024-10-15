@@ -11,6 +11,11 @@
   margin-bottom: 10px;
 }
 
+/* Espacio entre el nombre y apellido */
+.espacio {
+  width: 20px; /* Espacio entre las casillas del nombre y del apellido */
+}
+
 /* Casillas individuales */
 .casilla {
   width: 50px;
@@ -25,6 +30,13 @@
   text-transform: uppercase; /* Convertir letras a mayúsculas */
   box-sizing: border-box;
   color: white;
+}
+
+/* Casilla vacía para mostrar la longitud del nombre antes del primer intento */
+.casilla.vacia {
+  background-color: white;
+  border-color: #ddd;
+  color: #ddd; /* Color gris claro para mostrar casillas vacías */
 }
 
 /* Casilla con letra correcta y posición correcta */
