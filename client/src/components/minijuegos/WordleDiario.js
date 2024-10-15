@@ -57,73 +57,31 @@ const jugadores = [
 ];
 
 // Función para obtener el jugador del día
-const obtenerJugadorDelDia = () => {
-  const fechaActual = new Date();
-  const inicioDelAño = new Date(fechaActual.getFullYear(), 0, 0);
-  const diferencia = fechaActual - inicioDelAño;
-  const dia = Math.floor(diferencia / (1000 * 60 * 60 * 24));
-  return jugadores[dia % jugadores.length];
-};
-
-const WordleDiario = () => {
+function WordleDiario() {
   const [jugadorDelDia, setJugadorDelDia] = useState('');
   const [intentos, setIntentos] = useState([]);
-  const [inputValue, setInputValue] = useState('');
-  const [resultadoFinal, setResultadoFinal] = useState('');
+  const maxIntentos = 6;
 
   useEffect(() => {
+    // Aquí puedes configurar el jugador del día
     const jugador = obtenerJugadorDelDia().toUpperCase();
     setJugadorDelDia(jugador);
   }, []);
 
-  const manejarEnvio = () => {
-    const intento = inputValue.toUpperCase();
-    if (intento === jugadorDelDia) {
-      setResultadoFinal('¡Correcto! Has adivinado el jugador.');
-    } else if (intentos.length >= 5) {
-      setResultadoFinal(`Lo siento, te has quedado sin intentos. El jugador era: ${jugadorDelDia}`);
-    } else {
+  const handleIntento = (intento) => {
+    // Lógica para manejar los intentos
+    if (intentos.length < maxIntentos) {
       setIntentos([...intentos, intento]);
     }
-    setInputValue('');
-  };
-
-  const obtenerClaseCasilla = (letra, index) => {
-    const nombreJugador = jugadorDelDia.replace(/\s/g, ''); // Quitar espacios
-    if (letra === nombreJugador[index]) {
-      return 'casilla verde'; // Letra y posición correcta
-    } else if (nombreJugador.includes(letra)) {
-      return 'casilla amarillo'; // Letra correcta, posición incorrecta
-    } else {
-      return 'casilla gris'; // Letra incorrecta
-    }
-  };
-
-  const mostrarIntentos = () => {
-    const nombreJugador = jugadorDelDia.replace(/\s/g, ''); // Quitar espacios
-
-    return intentos.map((intento, intentoIndex) => (
-      <div className="fila-intento" key={intentoIndex}>
-        {intento.split('').map((letra, letraIndex) => (
-          <div key={letraIndex} className={obtenerClaseCasilla(letra, letraIndex)}>
-            {letra}
-          </div>
-        ))}
-      </div>
-    ));
   };
 
   const mostrarCasillasIniciales = () => {
-    const nombreJugador = jugadorDelDia.split(' '); // Separar el nombre y el apellido
-
+    // Aquí generas las casillas según la longitud del nombre del jugador
+    const nombreSinEspacios = jugadorDelDia.replace(/\s/g, '');
     return (
-      <div className="fila-intento">
-        {nombreJugador[0].split('').map((_, index) => (
-          <div key={index} className="casilla vacia"></div>
-        ))}
-        <div className="espacio"></div>
-        {nombreJugador[1].split('').map((_, index) => (
-          <div key={index} className="casilla vacia"></div>
+      <div className="wordle-grid">
+        {nombreSinEspacios.split('').map((letra, index) => (
+          <div key={index} className="wordle-cell"></div>
         ))}
       </div>
     );
@@ -132,21 +90,17 @@ const WordleDiario = () => {
   return (
     <div className="wordle-container">
       <h1>Wordle Diario: Adivina el Jugador</h1>
-      {mostrarCasillasIniciales()}
-      {mostrarIntentos()}
-      <div className="input-container">
-        <input
-          type="text"
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-          maxLength={jugadorDelDia.replace(/\s/g, '').length}
-          placeholder="Escribe tu intento"
-        />
-        <button onClick={manejarEnvio}>Enviar</button>
-      </div>
-      {resultadoFinal && <div className="resultado">{resultadoFinal}</div>}
+      {jugadorDelDia ? mostrarCasillasIniciales() : <p>Cargando jugador del día...</p>}
+      {/* Aquí puedes añadir lógica para mostrar los intentos y el input */}
     </div>
   );
-};
+}
+
+// Función para obtener el jugador del día
+function obtenerJugadorDelDia() {
+  const fecha = new Date();
+  const diaDelAno = fecha.getDay();
+  return jugadores[diaDelAno % jugadores.length];
+}
 
 export default WordleDiario;
