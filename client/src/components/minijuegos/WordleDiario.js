@@ -73,18 +73,45 @@ function WordleDiario() {
   };
 
   const handleSubmit = () => {
-    const jugadorSinEspacios = jugadorDelDia.replace(/\s+/g, '');  // Remover espacios del nombre del jugador
-    const inputSinEspacios = inputUsuario.replace(/\s+/g, '');     // Remover espacios del input del usuario
+    const inputUsuarioConMayusculas = inputUsuario.toUpperCase();  // Convertir input a mayúsculas para comparación
 
-    // No hace falta comparar la longitud exacta, se puede asumir que el jugador y el input ya están validados
-    if (inputSinEspacios.length !== jugadorSinEspacios.length) {
-        alert('La longitud del nombre debe coincidir con la del jugador (ignorando espacios).');
+    // Comprobar si la longitud del input del usuario (con espacios) coincide con la del jugador del día
+    if (inputUsuarioConMayusculas.length !== jugadorDelDia.length) {
+        alert('La longitud del nombre debe coincidir con la del jugador.');
         return;
     }
 
-    const nuevoIntento = validarIntento(inputUsuario);  // Pasamos el input del usuario como está, sin modificar
+    const nuevoIntento = validarIntento(inputUsuarioConMayusculas);  // Pasamos el input tal cual, sin remover espacios
     setIntentos([...intentos, nuevoIntento]);
     setInputUsuario('');
+};
+
+const validarIntento = (input) => {
+    const resultado = [];
+    const nombreJugador = jugadorDelDia.toUpperCase().split('');  // Convertimos el nombre del jugador en array
+
+    // Paso 1: Marcar las letras que están en la posición correcta (verde)
+    for (let i = 0; i < input.length; i++) {
+        if (input[i] === nombreJugador[i]) {
+            resultado.push({ letra: input[i], estado: 'verde' });  // Letra correcta y en la posición correcta
+        } else {
+            resultado.push({ letra: input[i], estado: 'gris' });  // Inicialmente gris, luego veremos si cambia a amarillo
+        }
+    }
+
+    // Paso 2: Marcar las letras que están en el nombre pero en una posición incorrecta (amarillo)
+    for (let i = 0; i < input.length; i++) {
+        if (resultado[i].estado === 'gris') {  // Si aún no está marcada como verde
+            for (let j = 0; j < nombreJugador.length; j++) {
+                if (input[i] === nombreJugador[j] && resultado[j]?.estado !== 'verde') {
+                    resultado[i].estado = 'amarillo';  // Marcar como amarillo
+                    break;  // Salir del loop una vez que encontramos una coincidencia
+                }
+            }
+        }
+    }
+
+    return resultado;
 };
 
 
