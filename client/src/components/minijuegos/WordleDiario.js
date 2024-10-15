@@ -87,23 +87,32 @@ function WordleDiario() {
 
   const validarIntento = (input) => {
     const resultado = [];
-    const nombreJugador = jugadorDelDia.replace(/\s+/g, '').toUpperCase();  // Jugador sin espacios
-    
-    let j = 0; // Índice para la comparación, que salta los espacios en el nombre del jugador
-    for (let i = 0; i < jugadorDelDia.length; i++) {
-      if (jugadorDelDia[i] === ' ') {
-        resultado.push({ letra: ' ', estado: 'espacio' });  // Representar visualmente el espacio
-      } else {
-        if (input[j] === nombreJugador[j]) {
-          resultado.push({ letra: input[j], estado: 'verde' }); // Correcta posición
-        } else if (nombreJugador.includes(input[j])) {
-          resultado.push({ letra: input[j], estado: 'amarillo' }); // Letra está pero en posición incorrecta
+    const nombreJugador = jugadorDelDia.toUpperCase().split('');  // Convertimos el nombre del jugador en un array de letras
+    const letrasUsadas = Array(nombreJugador.length).fill(false);  // Seguimiento de letras ya usadas
+
+    // Paso 1: Marcar las letras que están en la posición correcta (verde)
+    for (let i = 0; i < input.length; i++) {
+        if (input[i] === nombreJugador[i]) {
+            resultado.push({ letra: input[i], estado: 'verde' });
+            letrasUsadas[i] = true;  // Marcar la letra como usada
         } else {
-          resultado.push({ letra: input[j], estado: 'gris' }); // No está en el nombre
+            resultado.push({ letra: input[i], estado: 'gris' });  // Inicialmente gris, luego veremos si cambia a amarillo
         }
-        j++;  // Solo avanzar cuando no es un espacio
-      }
     }
+
+    // Paso 2: Marcar las letras que están en el nombre pero en una posición incorrecta (amarillo)
+    for (let i = 0; i < input.length; i++) {
+        if (resultado[i].estado === 'gris') {  // Si aún no está marcada como verde
+            for (let j = 0; j < nombreJugador.length; j++) {
+                if (!letrasUsadas[j] && input[i] === nombreJugador[j]) {
+                    resultado[i].estado = 'amarillo';  // Marcar como amarillo
+                    letrasUsadas[j] = true;  // Marcar esta letra como usada
+                    break;  // Salir del loop una vez que encontramos una coincidencia
+                }
+            }
+        }
+    }
+
     return resultado;
   };
 
