@@ -59,48 +59,78 @@ const jugadores = [
 // Función para obtener el jugador del día
 function WordleDiario() {
   const [jugadorDelDia, setJugadorDelDia] = useState('');
+  const [inputUsuario, setInputUsuario] = useState('');
   const [intentos, setIntentos] = useState([]);
-  const maxIntentos = 6;
-
+  
   useEffect(() => {
-    // Aquí puedes configurar el jugador del día
-    const jugador = obtenerJugadorDelDia().toUpperCase();
-    setJugadorDelDia(jugador);
+    // Calcular el día del año para seleccionar un jugador basado en la fecha actual
+    const diaDelAno = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
+    setJugadorDelDia(jugadores[diaDelAno % jugadores.length]); // Rotar entre los 365 jugadores
   }, []);
 
-  const handleIntento = (intento) => {
-    // Lógica para manejar los intentos
-    if (intentos.length < maxIntentos) {
-      setIntentos([...intentos, intento]);
-    }
+  const handleInputChange = (e) => {
+    setInputUsuario(e.target.value.toUpperCase()); // Asegurarse que todo sea mayúscula
   };
 
-  const mostrarCasillasIniciales = () => {
-    // Aquí generas las casillas según la longitud del nombre del jugador
-    const nombreSinEspacios = jugadorDelDia.replace(/\s/g, '');
-    return (
-      <div className="wordle-grid">
-        {nombreSinEspacios.split('').map((letra, index) => (
-          <div key={index} className="wordle-cell"></div>
-        ))}
-      </div>
-    );
+  const handleSubmit = () => {
+    if (inputUsuario.length !== jugadorDelDia.length) {
+      alert('La longitud del nombre debe coincidir con la del jugador');
+      return;
+    }
+    const nuevoIntento = validarIntento(inputUsuario);
+    setIntentos([...intentos, nuevoIntento]);
+    setInputUsuario('');
+  };
+
+  const validarIntento = (input) => {
+    const resultado = [];
+    const nombreJugador = jugadorDelDia.toUpperCase();
+    
+    // Creamos un array con el estado de cada letra (verde, amarillo, gris)
+    for (let i = 0; i < input.length; i++) {
+      if (input[i] === nombreJugador[i]) {
+        resultado.push({ letra: input[i], estado: 'verde' }); // Correcta posición
+      } else if (nombreJugador.includes(input[i])) {
+        resultado.push({ letra: input[i], estado: 'amarillo' }); // Letra está pero en posición incorrecta
+      } else {
+        resultado.push({ letra: input[i], estado: 'gris' }); // No está en el nombre
+      }
+    }
+    return resultado;
   };
 
   return (
     <div className="wordle-container">
-      <h1>Wordle Diario: Adivina el Jugador</h1>
-      {jugadorDelDia ? mostrarCasillasIniciales() : <p>Cargando jugador del día...</p>}
-      {/* Aquí puedes añadir lógica para mostrar los intentos y el input */}
+      <h1>Wordle Diario - Adivina el Jugador</h1>
+      <div className="intentos">
+        {intentos.map((intento, index) => (
+          <div key={index} className="fila-intento">
+            {intento.map((letra, idx) => (
+              <div key={idx} className={`casilla ${letra.estado}`}>
+                {letra.letra}
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+      {intentos.length < 6 && (
+        <div className="input-container">
+          <input 
+            type="text" 
+            value={inputUsuario} 
+            onChange={handleInputChange} 
+            maxLength={jugadorDelDia.length} 
+          />
+          <button onClick={handleSubmit}>Enviar</button>
+        </div>
+      )}
+      {intentos.length >= 6 && (
+        <div className="resultado">
+          <p>¡Se acabaron los intentos! El jugador era: {jugadorDelDia}</p>
+        </div>
+      )}
     </div>
   );
-}
-
-// Función para obtener el jugador del día
-function obtenerJugadorDelDia() {
-  const fecha = new Date();
-  const diaDelAno = fecha.getDay();
-  return jugadores[diaDelAno % jugadores.length];
 }
 
 export default WordleDiario;
