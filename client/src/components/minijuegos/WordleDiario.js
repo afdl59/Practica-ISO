@@ -57,71 +57,78 @@ const jugadores = [
 ];
 
 // Función para obtener el jugador del día
-const obtenerJugadorDelDia = () => {
-  const fechaActual = new Date();
-  const diaDelAño = Math.floor((fechaActual - new Date(fechaActual.getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));
-  return jugadores[diaDelAño % jugadores.length];
-};
-
 function WordleDiario() {
   const [jugadorDelDia, setJugadorDelDia] = useState('');
-  const [intento, setIntento] = useState('');
-  const [intentosRestantes, setIntentosRestantes] = useState(6); // Como en el Wordle original
-  const [mensaje, setMensaje] = useState('');
-  const [historial, setHistorial] = useState([]);
-
+  const [inputUsuario, setInputUsuario] = useState('');
+  const [intentos, setIntentos] = useState([]);
+  
   useEffect(() => {
-    const jugador = obtenerJugadorDelDia();
-    setJugadorDelDia(jugador);
+    // Calcular el día del año para seleccionar un jugador basado en la fecha actual
+    const diaDelAno = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
+    setJugadorDelDia(jugadores[diaDelAno % jugadores.length]); // Rotar entre los 365 jugadores
   }, []);
 
-  const manejarIntento = () => {
-    if (intento.toLowerCase() === jugadorDelDia.toLowerCase()) {
-      setMensaje('¡Correcto! Has adivinado el jugador.');
-      setHistorial([...historial, intento]);
-    } else {
-      const intentosRestantesActualizados = intentosRestantes - 1;
-      setIntentosRestantes(intentosRestantesActualizados);
-      setHistorial([...historial, intento]);
+  const handleInputChange = (e) => {
+    setInputUsuario(e.target.value.toUpperCase()); // Asegurarse que todo sea mayúscula
+  };
 
-      if (intentosRestantesActualizados <= 0) {
-        setMensaje(`Te has quedado sin intentos. El jugador era ${jugadorDelDia}.`);
+  const handleSubmit = () => {
+    if (inputUsuario.length !== jugadorDelDia.length) {
+      alert('La longitud del nombre debe coincidir con la del jugador');
+      return;
+    }
+    const nuevoIntento = validarIntento(inputUsuario);
+    setIntentos([...intentos, nuevoIntento]);
+    setInputUsuario('');
+  };
+
+  const validarIntento = (input) => {
+    const resultado = [];
+    const nombreJugador = jugadorDelDia.toUpperCase();
+    
+    // Creamos un array con el estado de cada letra (verde, amarillo, gris)
+    for (let i = 0; i < input.length; i++) {
+      if (input[i] === nombreJugador[i]) {
+        resultado.push({ letra: input[i], estado: 'verde' }); // Correcta posición
+      } else if (nombreJugador.includes(input[i])) {
+        resultado.push({ letra: input[i], estado: 'amarillo' }); // Letra está pero en posición incorrecta
       } else {
-        setMensaje('Incorrecto. Intenta de nuevo.');
+        resultado.push({ letra: input[i], estado: 'gris' }); // No está en el nombre
       }
     }
-    setIntento('');  // Limpiar el campo de entrada
+    return resultado;
   };
 
   return (
     <div className="wordle-container">
-      <h1>Wordle Diario</h1>
-      <p>Adivina el jugador histórico del día</p>
-
-      <div className="intentos-restantes">
-        Intentos restantes: {intentosRestantes}
-      </div>
-
-      <div className="input-container">
-        <input
-          type="text"
-          value={intento}
-          onChange={(e) => setIntento(e.target.value)}
-          placeholder="Introduce el nombre del jugador"
-          disabled={intentosRestantes === 0 || mensaje.includes('Correcto')}
-        />
-        <button onClick={manejarIntento} disabled={intentosRestantes === 0 || mensaje.includes('Correcto')}>
-          Probar
-        </button>
-      </div>
-
-      <div className="historial">
-        {historial.map((intento, index) => (
-          <p key={index}>{intento}</p>
+      <h1>Wordle Diario - Adivina el Jugador</h1>
+      <div className="intentos">
+        {intentos.map((intento, index) => (
+          <div key={index} className="fila-intento">
+            {intento.map((letra, idx) => (
+              <div key={idx} className={`casilla ${letra.estado}`}>
+                {letra.letra}
+              </div>
+            ))}
+          </div>
         ))}
       </div>
-
-      {mensaje && <div className="mensaje">{mensaje}</div>}
+      {intentos.length < 6 && (
+        <div className="input-container">
+          <input 
+            type="text" 
+            value={inputUsuario} 
+            onChange={handleInputChange} 
+            maxLength={jugadorDelDia.length} 
+          />
+          <button onClick={handleSubmit}>Enviar</button>
+        </div>
+      )}
+      {intentos.length >= 6 && (
+        <div className="resultado">
+          <p>¡Se acabaron los intentos! El jugador era: {jugadorDelDia}</p>
+        </div>
+      )}
     </div>
   );
 }
