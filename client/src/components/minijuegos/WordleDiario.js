@@ -114,39 +114,6 @@ const validarIntento = (input) => {
     return resultado;
 };
 
-
-
-  const validarIntento = (input) => {
-    const resultado = [];
-    const nombreJugador = jugadorDelDia.toUpperCase().split('');  // Convertimos el nombre del jugador en un array de letras
-    const letrasUsadas = Array(nombreJugador.length).fill(false);  // Seguimiento de letras ya usadas
-
-    // Paso 1: Marcar las letras que están en la posición correcta (verde)
-    for (let i = 0; i < input.length; i++) {
-        if (input[i] === nombreJugador[i]) {
-            resultado.push({ letra: input[i], estado: 'verde' });
-            letrasUsadas[i] = true;  // Marcar la letra como usada
-        } else {
-            resultado.push({ letra: input[i], estado: 'gris' });  // Inicialmente gris, luego veremos si cambia a amarillo
-        }
-    }
-
-    // Paso 2: Marcar las letras que están en el nombre pero en una posición incorrecta (amarillo)
-    for (let i = 0; i < input.length; i++) {
-        if (resultado[i].estado === 'gris') {  // Si aún no está marcada como verde
-            for (let j = 0; j < nombreJugador.length; j++) {
-                if (!letrasUsadas[j] && input[i] === nombreJugador[j]) {
-                    resultado[i].estado = 'amarillo';  // Marcar como amarillo
-                    letrasUsadas[j] = true;  // Marcar esta letra como usada
-                    break;  // Salir del loop una vez que encontramos una coincidencia
-                }
-            }
-        }
-    }
-
-    return resultado;
-};
-
   // Mostrar casillas vacías para el nombre del jugador antes de adivinar
   const mostrarCasillasIniciales = () => {
     const casillas = [];
