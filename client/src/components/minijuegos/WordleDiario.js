@@ -114,7 +114,7 @@ function WordleDiario() {
     }
 
     return resultado;
-  };
+};
 
   // Mostrar casillas vacías para el nombre del jugador antes de adivinar
   const mostrarCasillasIniciales = () => {
@@ -143,7 +143,7 @@ function WordleDiario() {
         {intentos.map((intento, index) => (
           <div key={index} className="fila-intento">
             {intento.map((letra, idx) => (
-              <div key={idx} className={casilla ${letra.estado}}>
+              <div key={idx} className={`casilla ${letra.estado}`}>
                 {letra.letra === ' ' ? '\u00A0' : letra.letra} {/* Mostrar espacios correctamente */}
               </div>
             ))}
