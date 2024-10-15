@@ -1,4 +1,4 @@
-// src/components/Sidebar.js bien
+// src/components/Sidebar.js
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../assets/logo.jpg';
@@ -38,11 +38,16 @@ function Sidebar() {
             <Link to="/minijuegos/guess-the-player" className="dropdown-item">Guess the Player</Link>
             <Link to="/minijuegos/tiro-libre" className="dropdown-item">Tiro Libre</Link>
             <Link to="/minijuegos/bingo" className="dropdown-item">Bingo</Link>
+            {/* Añadir enlace al nuevo minijuego Wordle Diario */}
+            <Link to="/minijuegos/wordle-diario" className="dropdown-item">Wordle Diario</Link>
           </div>
         )}
       </div>
     </div>
   );
 }
+
+export default Sidebar;
+
 
 export default Sidebar;
