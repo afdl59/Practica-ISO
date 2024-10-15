@@ -73,22 +73,22 @@ function WordleDiario() {
   };
 
   const handleSubmit = () => {
-    const inputUsuarioConMayusculas = inputUsuario.toUpperCase();  // Convertir input a mayúsculas para comparación
+    const inputUsuarioConMayusculas = inputUsuario.toUpperCase().trim();  // Convertir input a mayúsculas y quitar espacios adicionales al inicio/final
 
-    // Comprobar si la longitud del input del usuario (con espacios) coincide con la del jugador del día
+    // Comprobar si la longitud del input del usuario coincide con la del jugador del día
     if (inputUsuarioConMayusculas.length !== jugadorDelDia.length) {
         alert('La longitud del nombre debe coincidir con la del jugador.');
         return;
     }
 
-    const nuevoIntento = validarIntento(inputUsuarioConMayusculas);  // Pasamos el input tal cual, sin remover espacios
+    const nuevoIntento = validarIntento(inputUsuarioConMayusculas);  // Pasamos el input con espacios eliminados solo al inicio/final
     setIntentos([...intentos, nuevoIntento]);
-    setInputUsuario('');
+    setInputUsuario('');  // Limpiamos el input después del submit
 };
 
 const validarIntento = (input) => {
     const resultado = [];
-    const nombreJugador = jugadorDelDia.toUpperCase().split('');  // Convertimos el nombre del jugador en array
+    const nombreJugador = jugadorDelDia.toUpperCase().split('');  // Convertimos el nombre del jugador en array de letras
 
     // Paso 1: Marcar las letras que están en la posición correcta (verde)
     for (let i = 0; i < input.length; i++) {
@@ -113,6 +113,7 @@ const validarIntento = (input) => {
 
     return resultado;
 };
+
 
   // Mostrar casillas vacías para el nombre del jugador antes de adivinar
   const mostrarCasillasIniciales = () => {
