@@ -1,4 +1,3 @@
-/* Contenedor principal del juego */
 .wordle-container {
   text-align: center;
   font-family: Arial, sans-serif;
@@ -27,6 +26,13 @@
   color: white;
 }
 
+/* Casilla vacía (gris claro) para mostrar la longitud inicial */
+.casilla.vacia {
+  background-color: #f3f3f3; /* Gris claro */
+  border-color: #ddd;  /* Bordes grises */
+  color: transparent;  /* Ocultar texto */
+}
+
 /* Casilla con letra correcta y posición correcta */
 .casilla.verde {
   background-color: #6aaa64; /* Verde para letra correcta en la posición correcta */
@@ -43,6 +49,12 @@
 .casilla.gris {
   background-color: #787c7e; /* Gris para letra incorrecta */
   border-color: #787c7e;
+}
+
+/* Casilla para los espacios (visual) */
+.casilla.espacio {
+  background-color: transparent;  /* Sin color de fondo */
+  border: none;  /* Sin bordes */
 }
 
 /* Contenedor de la entrada del usuario */
@@ -85,5 +97,6 @@ button:hover {
   font-size: 18px;
   color: #333;
 }
+
 
 
