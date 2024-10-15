@@ -14,6 +14,7 @@ import PlayerSelector from './components/stats/PlayerSelector';
 import Perfil from './components/user/Perfil';
 import PartidoPrueba1 from './components/stats/PartidoPrueba1';
 import PartidoPrueba2 from './components/stats/PartidoPrueba2';
+import WordleDiario from './components/minijuegos/WordleDiario';
 import './styles/App.css';
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
         <Route path="/perfil" element={<Perfil />} /> {/* Ruta para la página de perfil */}
         <Route path="/minijuegos/bingo" element={<Bingo />} /> {/* Ruta para Bingo */}
         <Route path="/minijuegos/tiro-libre" element={<TiroLibre />} /> {/* Ruta para Tiro Libre */}
+        <Route path="/minijuegos/wordle-diario" element={<WordleDiario />} /> {/* Nueva ruta para Wordle Diario */}
         <Route path="/minijuegos/guess-the-player" element={<GuessThePlayer />} /> {/* Nueva ruta para Guess The Player */}
         <Route path="/player-selector" element={<PlayerSelector />} />
         <Route path="/partidos" element={<Partidos />} />
