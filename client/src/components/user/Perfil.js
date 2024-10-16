@@ -6,22 +6,42 @@ function Perfil() {
   const [apellido, setApellido] = useState('');
   const [fotoPerfil, setFotoPerfil] = useState(null);
   const [ultimoLogin, setUltimoLogin] = useState('');
+  const [equipoFavorito, setEquipoFavorito] = useState('');  // Nuevo estado
+  const [intereses, setIntereses] = useState([]);             // Nuevo estado para los intereses
 
-  // Cargar los datos del usuario desde localStorage cuando el componente se monte
+  // Equipos de fútbol para que el usuario elija
+  const equipos = ['Real Madrid', 'Barcelona', 'Manchester United', 'Liverpool', 'Juventus'];
+
+  // Intereses relacionados al fútbol
+  const posiblesIntereses = ['Partidos', 'Fichajes', 'Estadísticas', 'Noticias'];
+
   useEffect(() => {
     const savedNombre = localStorage.getItem('nombre');
     const savedApellido = localStorage.getItem('apellido');
     const savedFoto = localStorage.getItem('fotoPerfil');
     const savedLogin = localStorage.getItem('ultimoLogin');
-    
+    const savedEquipo = localStorage.getItem('equipoFavorito');
+    const savedIntereses = JSON.parse(localStorage.getItem('intereses')) || [];
+
     if (savedNombre) setNombre(savedNombre);
     if (savedApellido) setApellido(savedApellido);
     if (savedFoto) setFotoPerfil(savedFoto);
     if (savedLogin) setUltimoLogin(savedLogin);
+    if (savedEquipo) setEquipoFavorito(savedEquipo);
+    if (savedIntereses) setIntereses(savedIntereses);
   }, []);
 
   const handleNombreChange = (e) => setNombre(e.target.value);
   const handleApellidoChange = (e) => setApellido(e.target.value);
+  const handleEquipoChange = (e) => setEquipoFavorito(e.target.value);
+
+  const handleInteresChange = (interes) => {
+    if (intereses.includes(interes)) {
+      setIntereses(intereses.filter(i => i !== interes));
+    } else {
+      setIntereses([...intereses, interes]);
+    }
+  };
 
   const handleFotoChange = (e) => {
     const file = e.target.files[0];
@@ -35,12 +55,12 @@ function Perfil() {
   };
 
   const handleActualizar = () => {
-    // Guardar los datos actualizados en localStorage
     localStorage.setItem('nombre', nombre);
     localStorage.setItem('apellido', apellido);
-    if (fotoPerfil) localStorage.setItem('fotoPerfil', fotoPerfil);
+    localStorage.setItem('fotoPerfil', fotoPerfil);
+    localStorage.setItem('equipoFavorito', equipoFavorito);
+    localStorage.setItem('intereses', JSON.stringify(intereses));
 
-    // Actualizar la fecha del último login
     const loginFecha = new Date().toLocaleString();
     localStorage.setItem('ultimoLogin', loginFecha);
     setUltimoLogin(loginFecha);
@@ -71,6 +91,32 @@ function Perfil() {
           <input type="text" value={apellido} onChange={handleApellidoChange} />
         </label>
 
+        <label>
+          Equipo Favorito:
+          <select value={equipoFavorito} onChange={handleEquipoChange}>
+            <option value="">Selecciona un equipo</option>
+            {equipos.map(equipo => (
+              <option key={equipo} value={equipo}>{equipo}</option>
+            ))}
+          </select>
+        </label>
+
+        <label>
+          Intereses:
+          <div>
+            {posiblesIntereses.map(interes => (
+              <div key={interes}>
+                <input
+                  type="checkbox"
+                  checked={intereses.includes(interes)}
+                  onChange={() => handleInteresChange(interes)}
+                />
+                {interes}
+              </div>
+            ))}
+          </div>
+        </label>
+
         <button onClick={handleActualizar}>Actualizar</button>
       </div>
 
@@ -79,6 +125,10 @@ function Perfil() {
       </div>
     </div>
   );
+}
+
+export default Perfil;
+
 }
 
 export default Perfil;
