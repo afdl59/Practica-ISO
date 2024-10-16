@@ -2,7 +2,7 @@
 import React from 'react';
 import realMadridLogo from '../../assets/real_madrid_logo.png';
 import liverpoolLogo from '../../assets/liverpool_logo.png';
-import '../../styles/PartidoPrueba.css';
+import '../../styles/stats/PartidoPrueba.css';
 
 function PartidoPrueba1() {
   return (

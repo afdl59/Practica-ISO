@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../../styles/WordleDiario.css';  // Importa la hoja de estilos
+import '../../styles/minijuegos/WordleDiario.css';  // Importa la hoja de estilos
 
 const jugadores = [
   'Pele', 'Maradona', 'Zidane', 'Ronaldo', 'Ronaldinho', 'Messi', 'Cristiano Ronaldo', 'Johan Cruyff', 

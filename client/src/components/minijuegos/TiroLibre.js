@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../../styles/TiroLibre.css';
+import '../../styles/minijuegos/TiroLibre.css';
 
 import falcao2012 from '../../assets/falcao2012.jpg';
 import cristiano2012 from '../../assets/cristiano2012.jpg';
