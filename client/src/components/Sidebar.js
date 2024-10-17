@@ -4,9 +4,14 @@ import logo from '../assets/logo.jpg';
 import '../styles/Sidebar.css';
 
 function Sidebar() {
+  const [minigamesOpen, setMinigamesOpen] = useState(false);
   const [notificaciones, setNotificaciones] = useState([]);
   const [equipoFavorito, setEquipoFavorito] = useState('');
   const [intereses, setIntereses] = useState([]);
+
+  const toggleMinigames = () => {
+    setMinigamesOpen(!minigamesOpen);
+  };
 
   useEffect(() => {
     // Cargar equipo e intereses del localStorage
@@ -48,19 +53,6 @@ function Sidebar() {
         <img src={logo} alt="Icon Estadísticas" className="navbar-icon" />
         <h3 className="navbar-title">Estadísticas</h3>
       </Link>
-
-      <div className="navbar-item dropdown" onClick={toggleMinigames}>
-        <img src={logo} alt="Icon Minijuegos" className="navbar-icon" />
-        <h3 className="navbar-title">Minijuegos</h3>
-        {minigamesOpen && (
-          <div className="dropdown-content">
-            <Link to="/minijuegos/guess-the-player" className="dropdown-item">Guess the Player</Link>
-            <Link to="/minijuegos/tiro-libre" className="dropdown-item">Tiro Libre</Link>
-            <Link to="/minijuegos/bingo" className="dropdown-item">Bingo</Link>
-            <Link to="/minijuegos/wordle-diario" className="dropdown-item">Wordle Diario</Link>
-          </div>
-        )}
-      </div>
 
       <div className="navbar-item notifications">
         <h3 className="navbar-title">Notificaciones</h3>
