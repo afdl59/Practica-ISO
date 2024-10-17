@@ -16,6 +16,7 @@ import PartidoPrueba1 from './components/stats/PartidoPrueba1';
 import PartidoPrueba2 from './components/stats/PartidoPrueba2';
 import WordleDiario from './components/minijuegos/WordleDiario';
 import foro from './components/foro/foro';
+import PartidoDetalle from './components/stats/PartidoDetalle';
 import './styles/App.css';
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
         <Route path="/partido-prueba1" element={<PartidoPrueba1 />} />
         <Route path="/partido-prueba2" element={<PartidoPrueba2 />} />
         <Route path="/foro" element={<foro />} />
+        <Route path="/PartidoDetalle" element={<PartidoDetalle/>} />
       </Routes>
     </div>
   );
