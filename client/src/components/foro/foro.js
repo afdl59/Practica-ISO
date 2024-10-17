@@ -1,4 +1,7 @@
 
+import React, { useState, useEffect } from 'react';
+import './styles/foro/foro.css';
+
 
 // Importar el cliente de Socket.IO
 const socket = io();
