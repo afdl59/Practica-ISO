@@ -35,7 +35,12 @@ function Login() {
             if (!response.ok) {
                 throw new Error('Error al iniciar sesión. Verifique sus credenciales.');
             }
+            const data = await response.json();
             setSuccess('Inicio de sesión exitoso');
+
+            // Guardar el nombre de usuario en localStorage
+            localStorage.setItem('username', formData.identifier);
+
             // Redirigir a la página de inicio después del inicio de sesión exitoso
             setTimeout(() => {
                 window.location.href = '/';

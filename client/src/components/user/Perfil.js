@@ -6,29 +6,33 @@ function Perfil() {
   const [apellido, setApellido] = useState('');
   const [fotoPerfil, setFotoPerfil] = useState(null);
   const [ultimoLogin, setUltimoLogin] = useState('');
-  const [equipoFavorito, setEquipoFavorito] = useState('');  // Nuevo estado
-  const [intereses, setIntereses] = useState([]);             // Nuevo estado para los intereses
+  const [equipoFavorito, setEquipoFavorito] = useState('');
+  const [intereses, setIntereses] = useState([]);
 
-  // Equipos de fútbol para que el usuario elija
   const equipos = ['Real Madrid', 'Barcelona', 'Manchester United', 'Liverpool', 'Juventus'];
-
-  // Intereses relacionados al fútbol
   const posiblesIntereses = ['Partidos', 'Fichajes', 'Estadísticas', 'Noticias'];
 
   useEffect(() => {
-    const savedNombre = localStorage.getItem('nombre');
-    const savedApellido = localStorage.getItem('apellido');
-    const savedFoto = localStorage.getItem('fotoPerfil');
-    const savedLogin = localStorage.getItem('ultimoLogin');
-    const savedEquipo = localStorage.getItem('equipoFavorito');
-    const savedIntereses = JSON.parse(localStorage.getItem('intereses')) || [];
-
-    if (savedNombre) setNombre(savedNombre);
-    if (savedApellido) setApellido(savedApellido);
-    if (savedFoto) setFotoPerfil(savedFoto);
-    if (savedLogin) setUltimoLogin(savedLogin);
-    if (savedEquipo) setEquipoFavorito(savedEquipo);
-    if (savedIntereses) setIntereses(savedIntereses);
+    const fetchUserData = async () => {
+      const username = localStorage.getItem('username');
+      if (username) {
+        try {
+          const response = await fetch(`/api/users/${username}`);
+          if (response.ok) {
+            const data = await response.json();
+            setNombre(data.firstName);
+            setApellido(data.lastName);
+            setFotoPerfil(data.fotoPerfil);
+            setEquipoFavorito(data.equipoFavorito);
+            setIntereses(data.intereses);
+            setUltimoLogin(data.ultimoLogin || 'Nunca');
+          }
+        } catch (error) {
+          console.error('Error al obtener los datos del usuario:', error);
+        }
+      }
+    };
+    fetchUserData();
   }, []);
 
   const handleNombreChange = (e) => setNombre(e.target.value);
@@ -37,7 +41,7 @@ function Perfil() {
 
   const handleInteresChange = (interes) => {
     if (intereses.includes(interes)) {
-      setIntereses(intereses.filter(i => i !== interes));
+      setIntereses(intereses.filter((i) => i !== interes));
     } else {
       setIntereses([...intereses, interes]);
     }
@@ -48,24 +52,50 @@ function Perfil() {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setFotoPerfil(reader.result); // Guardamos la imagen en formato base64
+        setFotoPerfil(reader.result);
       };
       reader.readAsDataURL(file);
     }
   };
 
   const handleActualizar = () => {
-    localStorage.setItem('nombre', nombre);
-    localStorage.setItem('apellido', apellido);
-    localStorage.setItem('fotoPerfil', fotoPerfil);
-    localStorage.setItem('equipoFavorito', equipoFavorito);
-    localStorage.setItem('intereses', JSON.stringify(intereses));
+    const username = localStorage.getItem('username');
+    if (username) {
+      const userData = {
+        firstName: nombre,
+        lastName: apellido,
+        fotoPerfil,
+        equipoFavorito,
+        intereses,
+        ultimoLogin: new Date().toLocaleString(),
+      };
 
-    const loginFecha = new Date().toLocaleString();
-    localStorage.setItem('ultimoLogin', loginFecha);
-    setUltimoLogin(loginFecha);
+      fetch(`/api/users/${username}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      })
+        .then((response) => response.json())
+        .then(() => {
+          localStorage.setItem('nombre', nombre);
+          localStorage.setItem('apellido', apellido);
+          localStorage.setItem('fotoPerfil', fotoPerfil);
+          localStorage.setItem('equipoFavorito', equipoFavorito);
+          localStorage.setItem('intereses', JSON.stringify(intereses));
+          setUltimoLogin(userData.ultimoLogin);
+          alert('Datos actualizados correctamente');
+        })
+        .catch((error) => {
+          console.error('Error al actualizar los datos del usuario:', error);
+        });
+    }
+  };
 
-    alert('Datos actualizados correctamente');
+  const handleLogout = () => {
+    localStorage.removeItem('username');
+    window.location.href = '/login';
   };
 
   return (
@@ -95,8 +125,10 @@ function Perfil() {
           Equipo Favorito:
           <select value={equipoFavorito} onChange={handleEquipoChange}>
             <option value="">Selecciona un equipo</option>
-            {equipos.map(equipo => (
-              <option key={equipo} value={equipo}>{equipo}</option>
+            {equipos.map((equipo) => (
+              <option key={equipo} value={equipo}>
+                {equipo}
+              </option>
             ))}
           </select>
         </label>
@@ -104,7 +136,7 @@ function Perfil() {
         <label>
           Intereses:
           <div>
-            {posiblesIntereses.map(interes => (
+            {posiblesIntereses.map((interes) => (
               <div key={interes}>
                 <input
                   type="checkbox"
@@ -121,12 +153,12 @@ function Perfil() {
       </div>
 
       <div className="ultimo-login">
-        <p>Último inicio de sesión: {ultimoLogin ? ultimoLogin : 'Nunca'}</p>
+        <p>Último inicio de sesión: {ultimoLogin}</p>
       </div>
+
+      <button onClick={handleLogout}>Cerrar Sesión</button>
     </div>
   );
 }
 
 export default Perfil;
-
-

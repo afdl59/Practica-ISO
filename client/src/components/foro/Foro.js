@@ -6,10 +6,16 @@ let socket;
 
 function Foro() {
   const [mensajes, setMensajes] = useState([]);
-  const [username, setUsername] = useState('');
   const [content, setContent] = useState('');
+  const [username, setUsername] = useState('');
 
   useEffect(() => {
+    // Obtener el usuario del localStorage
+    const savedUsername = localStorage.getItem('username');
+    if (savedUsername) {
+      setUsername(savedUsername);
+    }
+
     socket = io();
 
     // Cargar mensajes iniciales
@@ -49,23 +55,19 @@ function Foro() {
     <div className="foro">
       <h1>Foro</h1>
       <div id="foro">
-        {mensajes.map((mensaje, index) => (
-          <div key={index}>
-            <strong>{mensaje.username}</strong>: {mensaje.content}
-            <small style={{ float: 'right' }}>{new Date(mensaje.date).toLocaleString()}</small>
-            <hr />
-          </div>
-        ))}
+        {mensajes.length === 0 ? (
+          <p>No hay mensajes aún. ¡Sé el primero en enviar uno!</p>
+        ) : (
+          mensajes.map((mensaje, index) => (
+            <div key={index}>
+              <strong>{mensaje.username}</strong>: {mensaje.content}
+              <small style={{ float: 'right' }}>{new Date(mensaje.date).toLocaleString()}</small>
+              <hr />
+            </div>
+          ))
+        )}
       </div>
       <form id="formMensaje" onSubmit={handleSubmit}>
-        <input
-          id="username"
-          type="text"
-          placeholder="Nombre de usuario"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-        />
         <input
           id="content"
           type="text"
@@ -81,5 +83,3 @@ function Foro() {
 }
 
 export default Foro;
-
-
