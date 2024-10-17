@@ -258,13 +258,16 @@ app.post('/api/login', async (req, res) => {
 // Ruta para obtener los datos de un usuario específico por su nombre de usuario
 app.get('/api/users/:username', async (req, res) => {
     const { username } = req.params;
+    console.log('Solicitud recibida para obtener datos del usuario:', username);
 
     try {
         const usuario = await User.findOne({ username });
         if (!usuario) {
+            console.log('Usuario no encontrado:', username);
             return res.status(404).json({ message: 'Usuario no encontrado' });
         }
 
+        console.log('Usuario encontrado:', usuario);
         res.status(200).json({
             firstName: usuario.firstName,
             lastName: usuario.lastName,
@@ -274,9 +277,11 @@ app.get('/api/users/:username', async (req, res) => {
             ultimoLogin: usuario.createdAt,  
         });
     } catch (err) {
+        console.error('Error al obtener los datos del usuario:', err);
         res.status(500).json({ message: 'Error al obtener los datos del usuario: ' + err.message });
     }
 });
+
 
 
 
