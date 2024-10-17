@@ -48,18 +48,22 @@ document.getElementById('formMensaje').addEventListener('submit', (e) => {
 });
 
 // Cargar los mensajes iniciales cuando la página cargue
-cargarMensajes();
+function Foro () {
+    useEffect(() => {
+        cargarMensajes();
+    }, []);
 
-return (
-    <div className="foro">
-        <h1>Foro</h1>
-        <div id="foro"></div>
-        <form id="formMensaje">
-            <input id="username" type="text" placeholder="Nombre de usuario" required />
-            <input id="content" type="text" placeholder="Mensaje" required />
-            <button type="submit">Enviar</button>
-        </form>
-    </div>
-);
+    return (
+        <div className="foro">
+            <h1>Foro</h1>
+            <div id="foro"></div>
+            <form id="formMensaje">
+                <input id="username" type="text" placeholder="Nombre de usuario" required />
+                <input id="content" type="text" placeholder="Mensaje" required />
+                <button type="submit">Enviar</button>
+            </form>
+        </div>
+    );
+}
 
 export default Foro;
