@@ -1,4 +1,5 @@
 
+/*
 import React, { useState, useEffect } from 'react';
 import '../../styles/foro/foro.css';
 
@@ -53,3 +54,4 @@ document.getElementById('formMensaje').addEventListener('submit', (e) => {
 
 // Cargar los mensajes iniciales cuando la página cargue
 cargarMensajes();
+*/
