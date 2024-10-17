@@ -2,13 +2,16 @@ import React, { useState, useEffect } from 'react';
 import '../../styles/foro/Foro.css';
 import io from 'socket.io-client';
 
+let socket;
+
 function Foro() {
   const [mensajes, setMensajes] = useState([]);
   const [username, setUsername] = useState('');
   const [content, setContent] = useState('');
-  const socket = io();
 
   useEffect(() => {
+    socket = io();
+
     // Cargar mensajes iniciales
     const cargarMensajes = async () => {
       try {
@@ -31,7 +34,7 @@ function Foro() {
     return () => {
       socket.disconnect();
     };
-  }, [socket]);
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -78,4 +81,5 @@ function Foro() {
 }
 
 export default Foro;
+
 
