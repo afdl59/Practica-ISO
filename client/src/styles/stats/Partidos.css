@@ -1,42 +1,39 @@
-/* src/styles/Partidos.css */
 .partidos-container {
-    text-align: center;
-    padding: 20px;
-  }
-  
-  .search-container {
-    margin: 20px auto;
-    width: 300px;
-    display: flex;
-    align-items: center;
-  }
-  
-  .search-input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px 0 0 4px;
-    outline: none;
-    font-size: 16px;
-  }
-  
-  .search-button {
-    padding: 10px;
-    background-color: #007bff;
-    border: none;
-    color: white;
-    cursor: pointer;
-    border-radius: 0 4px 4px 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .search-button i {
-    font-size: 18px;
-  }
-  
-  .search-button:hover {
-    background-color: #0056b3;
-  }
-  
+  margin: 20px;
+}
+
+.partido {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.partido img {
+  width: 50px;
+  height: 50px;
+}
+
+.pagination {
+  margin-top: 20px;
+}
+
+.pagination button {
+  margin: 0 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.partido-detalle-container {
+  margin: 20px;
+}
+
+.estadisticas, .eventos {
+  margin-top: 20px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
