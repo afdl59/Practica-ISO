@@ -8,6 +8,7 @@ function Perfil() {
   const [ultimoLogin, setUltimoLogin] = useState('');
   const [equipoFavorito, setEquipoFavorito] = useState('');
   const [intereses, setIntereses] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const equipos = ['Real Madrid', 'Barcelona', 'Manchester United', 'Liverpool', 'Juventus'];
   const posiblesIntereses = ['Partidos', 'Fichajes', 'Estadísticas', 'Noticias'];
@@ -26,10 +27,16 @@ function Perfil() {
             setEquipoFavorito(data.equipoFavorito);
             setIntereses(data.intereses);
             setUltimoLogin(data.ultimoLogin || 'Nunca');
+            setIsLoggedIn(true);
+          } else {
+            setIsLoggedIn(false);
           }
         } catch (error) {
           console.error('Error al obtener los datos del usuario:', error);
+          setIsLoggedIn(false);
         }
+      } else {
+        setIsLoggedIn(false);
       }
     };
     fetchUserData();
@@ -77,7 +84,12 @@ function Perfil() {
         },
         body: JSON.stringify(userData),
       })
-        .then((response) => response.json())
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Error al actualizar los datos del usuario');
+          }
+          return response.json();
+        })
         .then(() => {
           localStorage.setItem('nombre', nombre);
           localStorage.setItem('apellido', apellido);
@@ -97,6 +109,10 @@ function Perfil() {
     localStorage.removeItem('username');
     window.location.href = '/login';
   };
+
+  if (!isLoggedIn) {
+    return <p>Cargando datos del usuario o no has iniciado sesión...</p>;
+  }
 
   return (
     <div className="perfil-container">

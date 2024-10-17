@@ -54,6 +54,18 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    fotoPerfil: {
+        type: String,  // Guardará la imagen como una cadena en formato base64 o una URL
+        default: null,
+    },
+    equipoFavorito: {
+        type: String,
+        default: '',
+    },
+    intereses: {
+        type: [String],  // Almacena los intereses del usuario como un array de strings
+        default: [],
+    },
     createdAt: {
         type: Date,
         default: Date.now,
@@ -65,6 +77,7 @@ const userSchema = new mongoose.Schema({
         }
     ]
 });
+
 
 // Cifrar la contraseña antes de guardar
 userSchema.pre('save', async function (next) {
@@ -241,6 +254,30 @@ app.post('/api/login', async (req, res) => {
         res.status(400).json({ message: 'Error al iniciar sesión: ' + err.message });
     }
 });
+
+// Ruta para obtener los datos de un usuario específico por su nombre de usuario
+app.get('/api/users/:username', async (req, res) => {
+    const { username } = req.params;
+
+    try {
+        const usuario = await User.findOne({ username });
+        if (!usuario) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+
+        res.status(200).json({
+            firstName: usuario.firstName,
+            lastName: usuario.lastName,
+            fotoPerfil: usuario.fotoPerfil || null,
+            equipoFavorito: usuario.equipoFavorito || '',
+            intereses: usuario.intereses || [],
+            ultimoLogin: usuario.createdAt,  
+        });
+    } catch (err) {
+        res.status(500).json({ message: 'Error al obtener los datos del usuario: ' + err.message });
+    }
+});
+
 
 
 // Manejar rutas de React
