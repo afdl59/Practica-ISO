@@ -31,7 +31,7 @@ function Foro() {
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, [socket]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -78,3 +78,4 @@ function Foro() {
 }
 
 export default Foro;
+
