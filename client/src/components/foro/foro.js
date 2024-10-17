@@ -1,10 +1,7 @@
-
-/*
 import React, { useState, useEffect } from 'react';
 import '../../styles/foro/Foro.css';
 import io from 'socket.io-client';
-*/
-/*
+
 // Importar el cliente de Socket.IO
 const socket = io();
 
@@ -53,8 +50,7 @@ document.getElementById('formMensaje').addEventListener('submit', (e) => {
 
 // Cargar los mensajes iniciales cuando la página cargue
 cargarMensajes();
-*/
-/*
+
 return (
     <div className="foro">
         <h1>Foro</h1>
@@ -68,4 +64,3 @@ return (
 );
 
 export default Foro;
-*/
