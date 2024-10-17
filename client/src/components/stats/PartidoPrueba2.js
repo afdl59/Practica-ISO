@@ -1,7 +1,7 @@
 // src/components/PartidoPrueba2.js
 import React from 'react';
-import espanaLogo from '../../assets/espana_logo.png';
-import holandaLogo from '../../assets/holanda_logo.png';
+import espanaLogo from '../../assets/logoTeams/espana_logo.png';
+import holandaLogo from '../../assets/logoTeams/holanda_logo.png';
 import '../../styles/stats/PartidoPrueba.css';
 
 function PartidoPrueba2() {

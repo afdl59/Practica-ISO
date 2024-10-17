@@ -1,7 +1,7 @@
 // src/components/PartidoPrueba1.js
 import React from 'react';
-import realMadridLogo from '../../assets/real_madrid_logo.png';
-import liverpoolLogo from '../../assets/liverpool_logo.png';
+import realMadridLogo from '../../assets/logoTeams/real_madrid_logo.png';
+import liverpoolLogo from '../../assets/logoTeams/liverpool_logo.png';
 import '../../styles/stats/PartidoPrueba.css';
 
 function PartidoPrueba1() {
