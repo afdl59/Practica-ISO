@@ -1,69 +1,80 @@
 import React, { useState, useEffect } from 'react';
 import '../../styles/foro/Foro.css';
 import io from 'socket.io-client';
-//prueba
-// Importar el cliente de Socket.IO
-const socket = io();
 
-// Escuchar el evento de mensajes recibidos
-socket.on('mensajeRecibido', (mensaje) => {
-    mostrarMensaje(mensaje);
-});
+function Foro() {
+  const [mensajes, setMensajes] = useState([]);
+  const [username, setUsername] = useState('');
+  const [content, setContent] = useState('');
+  const socket = io();
 
-// Función para cargar mensajes iniciales desde el backend
-async function cargarMensajes() {
-    const response = await fetch('/api/foro/mensajes');  // Hacemos una solicitud GET a la API
-    const mensajes = await response.json();  // Convertimos la respuesta a formato JSON
+  useEffect(() => {
+    // Cargar mensajes iniciales
+    const cargarMensajes = async () => {
+      try {
+        const response = await fetch('/api/foro/mensajes');
+        const data = await response.json();
+        setMensajes(data);
+      } catch (error) {
+        console.error('Error cargando los mensajes:', error);
+      }
+    };
 
-    mensajes.forEach(mensaje => {
-        mostrarMensaje(mensaje);  // Mostramos cada mensaje en el foro
+    cargarMensajes();
+
+    // Configurar Socket.io
+    socket.on('mensajeRecibido', (mensaje) => {
+      setMensajes((prevMensajes) => [...prevMensajes, mensaje]);
     });
-}
 
-// Función para mostrar un mensaje en el foro
-function mostrarMensaje(mensaje) {
-    const foroDiv = document.getElementById('foro');
-    const nuevoMensaje = `
-        <div>
-            <strong>${mensaje.username}</strong>: ${mensaje.content}
-            <small style="float:right;">${new Date(mensaje.date).toLocaleString()}</small>
-        </div>
-        <hr/>
-    `;
-    foroDiv.innerHTML += nuevoMensaje;  // Agregamos el nuevo mensaje al contenedor del foro
-    foroDiv.scrollTop = foroDiv.scrollHeight;  // Hacemos auto-scroll hacia abajo para mostrar el último mensaje
-}
+    // Limpiar socket cuando el componente se desmonte
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
-// Enviar un nuevo mensaje
-document.getElementById('formMensaje').addEventListener('submit', (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
+    if (username && content) {
+      const nuevoMensaje = { username, content, date: new Date() };
+      socket.emit('nuevoMensaje', nuevoMensaje);
+      setContent('');
+    }
+  };
 
-    const username = document.getElementById('username').value;
-    const content = document.getElementById('content').value;
-
-    // Emitir el evento de nuevo mensaje al servidor
-    socket.emit('nuevoMensaje', { username, content });
-    // Limpiar el campo de texto
-    document.getElementById('content').value = '';
-});
-
-// Cargar los mensajes iniciales cuando la página cargue
-function Foro () {
-    useEffect(() => {
-        cargarMensajes();
-    }, []);
-
-    return (
-        <div className="foro">
-            <h1>Foro</h1>
-            <div id="foro"></div>
-            <form id="formMensaje">
-                <input id="username" type="text" placeholder="Nombre de usuario" required />
-                <input id="content" type="text" placeholder="Mensaje" required />
-                <button type="submit">Enviar</button>
-            </form>
-        </div>
-    );
+  return (
+    <div className="foro">
+      <h1>Foro</h1>
+      <div id="foro">
+        {mensajes.map((mensaje, index) => (
+          <div key={index}>
+            <strong>{mensaje.username}</strong>: {mensaje.content}
+            <small style={{ float: 'right' }}>{new Date(mensaje.date).toLocaleString()}</small>
+            <hr />
+          </div>
+        ))}
+      </div>
+      <form id="formMensaje" onSubmit={handleSubmit}>
+        <input
+          id="username"
+          type="text"
+          placeholder="Nombre de usuario"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          required
+        />
+        <input
+          id="content"
+          type="text"
+          placeholder="Mensaje"
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          required
+        />
+        <button type="submit">Enviar</button>
+      </form>
+    </div>
+  );
 }
 
 export default Foro;
