@@ -5,6 +5,9 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const nodemailer = require('nodemailer');
 const mysql = require('mysql2');
+const http = require('http');
+const { Server } = require('socket.io');
+
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -55,6 +58,12 @@ const userSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
+    messages: [
+        {
+            content: { type: String, required: true },
+            date: { type: Date, default: Date.now },
+        }
+    ]
 });
 
 // Cifrar la contraseña antes de guardar
@@ -71,11 +80,86 @@ const User = mongoose.model('User', userSchema);
 
 // Inicializar Express
 const app = express();
+const server = http.createServer(app);
+const io = new Server(server);
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'client', 'build'))); // Servir archivos estáticos desde /build
+
+
+// Socket.io: manejo de mensajes en tiempo real
+io.on('connection', (socket) => {
+    console.log('Nuevo usuario conectado');
+
+    // Escuchar evento de nuevo mensaje y guardar en la base de datos
+    socket.on('nuevoMensaje', async ({ username, content }) => {
+        try {
+            const usuario = await User.findOne({ username });
+            if (!usuario) {
+                return socket.emit('error', 'Usuario no encontrado');
+            }
+
+            const nuevoMensaje = { content };
+            usuario.messages.push(nuevoMensaje);
+            await usuario.save();
+
+            // Emitir el nuevo mensaje a todos los conectados
+            io.emit('mensajeRecibido', {
+                username,
+                content,
+                date: nuevoMensaje.date
+            });
+        } catch (err) {
+            socket.emit('error', 'Error al enviar el mensaje');
+        }
+    });
+
+    socket.on('disconnect', () => {
+        console.log('Usuario desconectado');
+    });
+});
+
+// Ruta para obtener todos los mensajes de la comunidad
+app.get('/api/foro/mensajes', async (req, res) => {
+    try {
+        // Obtener todos los mensajes de todos los usuarios
+        const users = await User.find({}, 'username messages');
+        const mensajes = users.flatMap(user => user.messages.map(msg => ({
+            username: user.username,
+            content: msg.content,
+            date: msg.date
+        })));
+
+        res.status(200).json(mensajes);
+    } catch (err) {
+        res.status(500).json({ message: 'Error al obtener los mensajes: ' + err.message });
+    }
+});
+
+// Ruta para enviar un nuevo mensaje
+app.post('/api/foro/mensajes', async (req, res) => {
+    const { username, content } = req.body;
+
+    try {
+        // Buscar el usuario y agregar el nuevo mensaje
+        const usuario = await User.findOne({ username });
+        if (!usuario) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+
+        usuario.messages.push({ content });
+        await usuario.save();
+
+        res.status(200).json({ message: 'Mensaje enviado correctamente' });
+
+    } catch (err) {
+        res.status(500).json({ message: 'Error al enviar el mensaje: ' + err.message });
+    }
+});
+
+
 
 // Ruta para servir la página principal
 app.get('/', (req, res) => {
