@@ -3,9 +3,11 @@
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.3",
     "express": "^4.21.0",
+    "http": "^0.0.1-security",
     "mongoose": "^8.6.3",
     "mysql2": "^3.11.3",
-    "nodemailer": "^6.9.15"
+    "nodemailer": "^6.9.15",
+    "socket.io": "^4.8.0"
   },
   "name": "practica-iso",
   "description": "Practica de ISO año 3. Integrantes: Carlos Richante, Raquel Cerezo, Alejandro Figari, Ignacio Arvilla, Lorenzo Sanz y Raimundo Baca\r hbscshds",
