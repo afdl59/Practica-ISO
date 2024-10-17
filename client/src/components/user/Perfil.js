@@ -9,6 +9,7 @@ function Perfil() {
   const [equipoFavorito, setEquipoFavorito] = useState('');
   const [intereses, setIntereses] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loadingError, setLoadingError] = useState('');
 
   const equipos = ['Real Madrid', 'Barcelona', 'Manchester United', 'Liverpool', 'Juventus'];
   const posiblesIntereses = ['Partidos', 'Fichajes', 'Estadísticas', 'Noticias'];
@@ -16,11 +17,14 @@ function Perfil() {
   useEffect(() => {
     const fetchUserData = async () => {
       const username = localStorage.getItem('username');
+      console.log('Username from localStorage:', username);
       if (username) {
         try {
-          const response = await fetch(`/api/users/${username}`);
+          const response = await fetch(`${window.location.origin}/api/users/${username}`);
+          console.log('API Response status:', response.status);
           if (response.ok) {
             const data = await response.json();
+            console.log('User data:', data);
             setNombre(data.firstName);
             setApellido(data.lastName);
             setFotoPerfil(data.fotoPerfil);
@@ -29,13 +33,16 @@ function Perfil() {
             setUltimoLogin(data.ultimoLogin || 'Nunca');
             setIsLoggedIn(true);
           } else {
+            setLoadingError('Error al obtener los datos del usuario. Recurso no encontrado.');
             setIsLoggedIn(false);
           }
         } catch (error) {
           console.error('Error al obtener los datos del usuario:', error);
+          setLoadingError('Error al obtener los datos del usuario: ' + error.message);
           setIsLoggedIn(false);
         }
       } else {
+        setLoadingError('No se encontró información del usuario en la sesión.');
         setIsLoggedIn(false);
       }
     };
@@ -77,7 +84,7 @@ function Perfil() {
         ultimoLogin: new Date().toLocaleString(),
       };
 
-      fetch(`/api/users/${username}`, {
+      fetch(`${window.location.origin}/api/users/${username}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -111,7 +118,7 @@ function Perfil() {
   };
 
   if (!isLoggedIn) {
-    return <p>Cargando datos del usuario o no has iniciado sesión...</p>;
+    return <p>{loadingError || 'Cargando datos del usuario o no has iniciado sesión...'}</p>;
   }
 
   return (
@@ -178,3 +185,4 @@ function Perfil() {
 }
 
 export default Perfil;
+
