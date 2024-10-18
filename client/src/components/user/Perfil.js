@@ -11,6 +11,7 @@ function Perfil() {
   const [intereses, setIntereses] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loadingError, setLoadingError] = useState('');
+  const [showPreferencesForm, setShowPreferencesForm] = useState(false); // Para mostrar el formulario
 
   const navigate = useNavigate(); // Para redireccionar al login
 
@@ -41,6 +42,11 @@ function Perfil() {
           setIntereses(data.intereses);
           setUltimoLogin(data.ultimoLogin || 'Nunca');
           setIsLoggedIn(true);
+
+          // Verificar si faltan los datos de equipo favorito o intereses
+          if (!data.equipoFavorito || data.intereses.length === 0) {
+            setShowPreferencesForm(true); // Mostrar el formulario de selección
+          }
         } else {
           setLoadingError('Error al obtener los datos del usuario. Recurso no encontrado.');
           setIsLoggedIn(false);
@@ -55,7 +61,7 @@ function Perfil() {
     fetchUserData();
   }, [navigate]);
 
-  // Definición de las funciones que faltaban
+  // Definir las funciones de manejo de cambios
   const handleFotoChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -112,6 +118,7 @@ function Perfil() {
           localStorage.setItem('intereses', JSON.stringify(intereses));
           setUltimoLogin(userData.ultimoLogin);
           alert('Datos actualizados correctamente');
+          setShowPreferencesForm(false); // Ocultar el formulario
         })
         .catch((error) => {
           console.error('Error al actualizar los datos del usuario:', error);
@@ -124,6 +131,45 @@ function Perfil() {
     window.location.href = '/login';
   };
 
+  // Mostrar el formulario si no se ha seleccionado el equipo favorito o intereses
+  if (showPreferencesForm) {
+    return (
+      <div className="perfil-container">
+        <h1>Personaliza tus preferencias</h1>
+        <label>
+          Equipo Favorito:
+          <select value={equipoFavorito} onChange={handleEquipoChange}>
+            <option value="">Selecciona un equipo</option>
+            {equipos.map((equipo) => (
+              <option key={equipo} value={equipo}>
+                {equipo}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <label>
+          Intereses:
+          <div>
+            {posiblesIntereses.map((interes) => (
+              <div key={interes}>
+                <input
+                  type="checkbox"
+                  checked={intereses.includes(interes)}
+                  onChange={() => handleInteresChange(interes)}
+                />
+                {interes}
+              </div>
+            ))}
+          </div>
+        </label>
+
+        <button onClick={handleActualizar}>Guardar preferencias</button>
+      </div>
+    );
+  }
+
+  // Mostrar el perfil si ya tiene equipo favorito e intereses
   if (!isLoggedIn) {
     return <p>{loadingError || 'Cargando datos del usuario o no has iniciado sesión...'}</p>;
   }
@@ -192,6 +238,7 @@ function Perfil() {
 }
 
 export default Perfil;
+
 
 
 
