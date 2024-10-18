@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import '../styles/PartidoDetalle.css';
+import '../styles/stats/PartidoDetalle.css';
 
 function PartidoDetalle() {
   const { idPartido } = useParams(); // Obtenemos el id del partido desde la URL
