@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../styles/Partidos.css';
 
 function Partidos() {
   const [partidos, setPartidos] = useState([]);
