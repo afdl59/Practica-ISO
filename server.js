@@ -7,7 +7,7 @@ const nodemailer = require('nodemailer');
 const mysql = require('mysql2');
 const http = require('http');
 const { Server } = require('socket.io');
-
+//prueba en rama stats
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',
