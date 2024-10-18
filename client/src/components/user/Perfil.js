@@ -21,7 +21,7 @@ function Perfil() {
     const fetchUserData = async () => {
       const username = localStorage.getItem('username');
       console.log('Username from localStorage:', username);
-      
+
       if (!username) {
         setLoadingError('No se encontró información del usuario en la sesión.');
         navigate('/login'); // Redirige al login si no hay usuario en la sesión
@@ -55,7 +55,74 @@ function Perfil() {
     fetchUserData();
   }, [navigate]);
 
-  // ... (resto del código no cambia)
+  // Definición de las funciones que faltaban
+  const handleFotoChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFotoPerfil(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleNombreChange = (e) => setNombre(e.target.value);
+  const handleApellidoChange = (e) => setApellido(e.target.value);
+  const handleEquipoChange = (e) => setEquipoFavorito(e.target.value);
+
+  const handleInteresChange = (interes) => {
+    if (intereses.includes(interes)) {
+      setIntereses(intereses.filter((i) => i !== interes));
+    } else {
+      setIntereses([...intereses, interes]);
+    }
+  };
+
+  const handleActualizar = () => {
+    const username = localStorage.getItem('username');
+    if (username) {
+      const userData = {
+        firstName: nombre,
+        lastName: apellido,
+        fotoPerfil,
+        equipoFavorito,
+        intereses,
+        ultimoLogin: new Date().toLocaleString(),
+      };
+
+      fetch(`${window.location.origin}/api/users/${username}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Error al actualizar los datos del usuario');
+          }
+          return response.json();
+        })
+        .then(() => {
+          localStorage.setItem('nombre', nombre);
+          localStorage.setItem('apellido', apellido);
+          localStorage.setItem('fotoPerfil', fotoPerfil);
+          localStorage.setItem('equipoFavorito', equipoFavorito);
+          localStorage.setItem('intereses', JSON.stringify(intereses));
+          setUltimoLogin(userData.ultimoLogin);
+          alert('Datos actualizados correctamente');
+        })
+        .catch((error) => {
+          console.error('Error al actualizar los datos del usuario:', error);
+        });
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('username');
+    window.location.href = '/login';
+  };
 
   if (!isLoggedIn) {
     return <p>{loadingError || 'Cargando datos del usuario o no has iniciado sesión...'}</p>;
@@ -125,5 +192,6 @@ function Perfil() {
 }
 
 export default Perfil;
+
 
 
