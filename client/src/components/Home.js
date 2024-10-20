@@ -17,7 +17,7 @@ function Home() {
       setCookiesAccepted(true);
       setCookiePreferences(JSON.parse(localStorage.getItem('cookiePreferences')) || cookiePreferences);
     }
-  }, []);
+  });
 
   const handleAcceptAll = () => {
     const preferences = { essential: true, analytics: true, marketing: true };
