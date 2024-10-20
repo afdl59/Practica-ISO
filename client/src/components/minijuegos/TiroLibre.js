@@ -24,7 +24,7 @@ function TiroLibre() {
   const [result, setResult] = useState('');
   const [side, setSide] = useState('');
   const [distance, setDistance] = useState('');
-  const [ballPosition, setBallPosition] = useState({ x: 200, y: 200 });
+  const [setBallPosition] = useState({ x: 200, y: 200 });
   const [shooting, setShooting] = useState(false);
   const [power, setPower] = useState(50); // Potencia del disparo
   const [targetPosition, setTargetPosition] = useState({ x: 0, y: 0 }); // Posición seleccionada en la portería
@@ -131,10 +131,12 @@ function TiroLibre() {
       <div className="result">{result}</div>
 
       <div className="field">
-        <div className={`ball ${shooting ? 'shooting' : ''}`}
+        <span role="img" aria-label="emoji-balon">
+          <div className={`ball ${shooting ? 'shooting' : ''}`}
           style={{ left: `${targetPosition.x + 150}px`, top: `${targetPosition.y}px` }}>
           ⚽
-        </div>
+          </div>
+        </span>
         <div className="goal" onClick={handleGoalClick}></div>
         <div className="goalkeeper"
           style={{ left: `${keeperPosition.x}px`, bottom: `${keeperPosition.y}px` }}>
