@@ -6,8 +6,8 @@ import '../styles/Sidebar.css';
 function Sidebar() {
   const [minigamesOpen, setMinigamesOpen] = useState(false);
   const [notificaciones, setNotificaciones] = useState([]);
-  const [setEquipoFavorito] = useState('');
-  const [setIntereses] = useState([]);
+  const [equipoFavorito, setEquipoFavorito] = useState('');
+  const [intereses, setIntereses] = useState([]);
 
   const toggleMinigames = () => {
     setMinigamesOpen(!minigamesOpen);
