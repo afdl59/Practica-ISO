@@ -61,68 +61,66 @@ function WordleDiario() {
   const [jugadorDelDia, setJugadorDelDia] = useState('');
   const [inputUsuario, setInputUsuario] = useState('');
   const [intentos, setIntentos] = useState([]);
-  
+
   useEffect(() => {
-    // Calcular el día del año para seleccionar un jugador basado en la fecha actual
     const diaDelAno = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
-    setJugadorDelDia(jugadores[diaDelAno % jugadores.length]); // Rotar entre los 365 jugadores
+    setJugadorDelDia(jugadores[diaDelAno % jugadores.length]); // Rotar entre los jugadores
   }, []);
 
   const handleInputChange = (e) => {
-    setInputUsuario(e.target.value.toUpperCase()); // Asegurarse que todo sea mayúscula
+    setInputUsuario(e.target.value.toUpperCase()); // Asegurarse de que todo sea mayúscula
   };
 
   const handleSubmit = () => {
-    const inputUsuarioConMayusculas = inputUsuario.toUpperCase();  // Convertir input a mayúsculas y quitar espacios adicionales al inicio/final
+    const inputUsuarioSinEspacios = inputUsuario.replace(/\s+/g, '').toUpperCase(); // Quitar espacios adicionales y convertir a mayúsculas
+    const jugadorDelDiaSinEspacios = jugadorDelDia.replace(/\s+/g, '').toUpperCase(); // Hacer lo mismo con el nombre del jugador del día
 
-    // Comprobar si la longitud del input del usuario coincide con la del jugador del día
-    if (inputUsuarioConMayusculas.length !== jugadorDelDia.length) {
-        alert('La longitud del nombre debe coincidir con la del jugador.');
-        return;
+    // Comprobar si la longitud del input del usuario coincide con la del jugador del día sin contar espacios
+    if (inputUsuarioSinEspacios.length !== jugadorDelDiaSinEspacios.length) {
+      alert('La longitud del nombre debe coincidir con la del jugador.');
+      return;
     }
 
-    const nuevoIntento = validarIntento(inputUsuarioConMayusculas);  // Pasamos el input con espacios eliminados solo al inicio/final
+    const nuevoIntento = validarIntento(inputUsuarioSinEspacios);
     setIntentos([...intentos, nuevoIntento]);
-    setInputUsuario('');  // Limpiamos el input después del submit
-};
+    setInputUsuario(''); // Limpiar el input después del submit
+  };
 
-const validarIntento = (input) => {
+  const validarIntento = (input) => {
     const resultado = [];
-    const nombreJugador = jugadorDelDia.toUpperCase().split('');  // Convertimos el nombre del jugador en array de letras
+    const nombreJugador = jugadorDelDia.toUpperCase().split(''); // Convertimos el nombre del jugador en array de letras
 
     // Paso 1: Marcar las letras que están en la posición correcta (verde)
     for (let i = 0; i < input.length; i++) {
-        if (input[i] === nombreJugador[i]) {
-            resultado.push({ letra: input[i], estado: 'verde' });  // Letra correcta y en la posición correcta
-        } else {
-            resultado.push({ letra: input[i], estado: 'gris' });  // Inicialmente gris, luego veremos si cambia a amarillo
-        }
+      if (input[i] === nombreJugador[i]) {
+        resultado.push({ letra: input[i], estado: 'verde' });
+      } else {
+        resultado.push({ letra: input[i], estado: 'gris' });
+      }
     }
 
     // Paso 2: Marcar las letras que están en el nombre pero en una posición incorrecta (amarillo)
     for (let i = 0; i < input.length; i++) {
-        if (resultado[i].estado === 'gris') {  // Si aún no está marcada como verde
-            for (let j = 0; j < nombreJugador.length; j++) {
-                if (input[i] === nombreJugador[j] && resultado[j]?.estado !== 'verde') {
-                    resultado[i].estado = 'amarillo';  // Marcar como amarillo
-                    break;  // Salir del loop una vez que encontramos una coincidencia
-                }
-            }
+      if (resultado[i].estado === 'gris') {
+        for (let j = 0; j < nombreJugador.length; j++) {
+          if (input[i] === nombreJugador[j] && resultado[j]?.estado !== 'verde') {
+            resultado[i].estado = 'amarillo';
+            break;
+          }
         }
+      }
     }
 
     return resultado;
-};
+  };
 
-
-  // Mostrar casillas vacías para el nombre del jugador antes de adivinar
   const mostrarCasillasIniciales = () => {
     const casillas = [];
     for (let i = 0; i < jugadorDelDia.length; i++) {
       if (jugadorDelDia[i] === ' ') {
-        casillas.push(<div key={i} className="casilla espacio">{'\u00A0'}</div>);  // Mostrar espacio
+        casillas.push(<div key={i} className="casilla espacio">{'\u00A0'}</div>); // Mostrar espacio
       } else {
-        casillas.push(<div key={i} className="casilla vacia">{'\u00A0'}</div>);  // Mostrar casilla vacía
+        casillas.push(<div key={i} className="casilla vacia">{'\u00A0'}</div>); // Mostrar casilla vacía
       }
     }
     return casillas;
@@ -131,14 +129,14 @@ const validarIntento = (input) => {
   return (
     <div className="wordle-container">
       <h1>Wordle Diario - Adivina el Jugador</h1>
-      
+
       <div className="intentos">
         {intentos.length === 0 && (
           <div className="fila-intento">
             {mostrarCasillasIniciales()} {/* Mostrar casillas vacías al inicio */}
           </div>
         )}
-        
+
         {intentos.map((intento, index) => (
           <div key={index} className="fila-intento">
             {intento.map((letra, idx) => (
@@ -152,11 +150,11 @@ const validarIntento = (input) => {
 
       {intentos.length < 6 && (
         <div className="input-container">
-          <input 
-            type="text" 
-            value={inputUsuario} 
-            onChange={handleInputChange} 
-            maxLength={jugadorDelDia.replace(/\s+/g, '').length}  // Ajustar longitud sin contar espacios
+          <input
+            type="text"
+            value={inputUsuario}
+            onChange={handleInputChange}
+            maxLength={jugadorDelDia.replace(/\s+/g, '').length} // Ajustar longitud sin contar espacios
           />
           <button onClick={handleSubmit}>Enviar</button>
         </div>
@@ -171,4 +169,4 @@ const validarIntento = (input) => {
   );
 }
 
-export default WordleDiario; 
+export default WordleDiario;
