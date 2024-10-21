@@ -21,6 +21,10 @@ function Minijuegos() {
           <h2>Bingo de Futbolistas</h2>
           <p>¡Rellena las casillas con futbolistas conocidos!</p>
         </Link>
+        <Link to="/minijuegos/WordleDiario" className="minijuego-item">
+          <h2>Wordle Diario</h2>
+          <p>¡Adivina la palabra diaria con pequeñas pistas!</p>
+        </Link>
       </div>
     </div>
   );
