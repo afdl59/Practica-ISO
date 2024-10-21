@@ -29,7 +29,7 @@ function Minijuegos() {
     </div>
   );
 }
-
+//segunda prueba
 export default Minijuegos;
 
 
