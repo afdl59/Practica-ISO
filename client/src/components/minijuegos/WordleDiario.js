@@ -158,7 +158,7 @@ function WordleDiario() {
             type="text"
             value={inputUsuario}
             onChange={handleInputChange}
-            maxLength={jugadorDelDia.replace(/\s+/g, '').length} // Ajustar longitud sin contar espacios
+            maxLength={jugadorDelDia.length} // Ajustar longitud sin contar espacios
           />
           <button onClick={handleSubmit}>Enviar</button>
         </div>
