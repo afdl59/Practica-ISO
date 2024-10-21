@@ -92,31 +92,36 @@ function WordleDiario() {
 
     const validarIntento = (input) => {
       const resultado = [];
-      const nombreJugador = jugadorDelDia.toUpperCase().split('');  // Convertimos el nombre del jugador en array de letras
+      const nombreJugador = jugadorDelDia.toUpperCase().split('');
+      const inputArray = input.split('');
   
       // Paso 1: Marcar las letras que están en la posición correcta (verde)
-      for (let i = 0; i < input.length; i++) {
-          if (input[i] === nombreJugador[i]) {
-              resultado.push({ letra: input[i], estado: 'verde' });  // Letra correcta y en la posición correcta
-          } else {
-              resultado.push({ letra: input[i], estado: 'gris' });  // Inicialmente gris, luego veremos si cambia a amarillo
-          }
+      for (let i = 0; i < inputArray.length; i++) {
+        if (inputArray[i] === nombreJugador[i]) {
+          resultado.push({ letra: inputArray[i], estado: 'verde' });
+        } else {
+          resultado.push({ letra: inputArray[i], estado: 'gris' });
+        }
       }
   
       // Paso 2: Marcar las letras que están en el nombre pero en una posición incorrecta (amarillo)
-      for (let i = 0; i < input.length; i++) {
-          if (resultado[i].estado === 'gris' && input[i] !== ' ') {  // Si aún no está marcada como verde y no es un espacio
-              for (let j = 0; j < nombreJugador.length; j++) {
-                  if (input[i] === nombreJugador[j] && resultado[j]?.estado !== 'verde' && resultado.some(r => r.letra === nombreJugador[j] && r.estado === 'amarillo') === false) {
-                      resultado[i].estado = 'amarillo';  // Marcar como amarillo
-                      break;  // Salir del loop una vez que encontramos una coincidencia
-                  }
-              }
+      for (let i = 0; i < inputArray.length; i++) {
+        if (resultado[i].estado === 'gris' && inputArray[i] !== ' ') {
+          for (let j = 0; j < nombreJugador.length; j++) {
+            if (
+              inputArray[i] === nombreJugador[j] &&
+              resultado[j]?.estado !== 'verde' &&
+              !resultado.some((r, index) => r.letra === nombreJugador[j] && r.estado === 'amarillo' && index !== i)
+            ) {
+              resultado[i].estado = 'amarillo';
+              break;
+            }
           }
+        }
       }
   
       return resultado;
-  };
+    };
   
 
   const mostrarCasillasIniciales = () => {
