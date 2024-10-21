@@ -35,7 +35,7 @@ function Login() {
             if (!response.ok) {
                 throw new Error('Error al iniciar sesión. Verifique sus credenciales.');
             }
-            const data = await response.json(); //no se usa
+            //const data = await response.json(); //variable no usada
             setSuccess('Inicio de sesión exitoso');
 
             // Guardar el nombre de usuario en localStorage
