@@ -73,7 +73,7 @@ function WordleDiario() {
   };
 
   const handleSubmit = () => {
-    const inputUsuarioConMayusculas = inputUsuario.toUpperCase().trim();  // Convertir input a mayúsculas y quitar espacios adicionales al inicio/final
+    const inputUsuarioConMayusculas = inputUsuario.toUpperCase();  // Convertir input a mayúsculas y quitar espacios adicionales al inicio/final
 
     // Comprobar si la longitud del input del usuario coincide con la del jugador del día
     if (inputUsuarioConMayusculas.length !== jugadorDelDia.length) {
