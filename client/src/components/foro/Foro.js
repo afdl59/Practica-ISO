@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../../styles/foro/Foro.css';
 import io from 'socket.io-client';
-
+//prueba foro
 let socket;
 
 function Foro() {
