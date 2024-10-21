@@ -11,6 +11,7 @@ const { Server } = require('socket.io');
 
 
 //prueba rama perfil
+//prueba rama minijuegos
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
