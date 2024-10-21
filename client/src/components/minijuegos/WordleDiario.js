@@ -74,19 +74,21 @@ function WordleDiario() {
   };
 
   const handleSubmit = () => {
-    const inputUsuarioSinEspacios = inputUsuario.replace(/\s+/g, '').toUpperCase(); // Quitar espacios adicionales y convertir a mayúsculas
-    const jugadorDelDiaSinEspacios = jugadorDelDia.replace(/\s+/g, '').toUpperCase(); // Hacer lo mismo con el nombre del jugador del día
+    const inputUsuarioConMayusculas = inputUsuario.toUpperCase().replace(/\s+/g, '');  // Convertir input a mayúsculas y eliminar espacios
 
-    // Comprobar si la longitud del input del usuario coincide con la del jugador del día sin contar espacios
-    if (inputUsuarioSinEspacios.length !== jugadorDelDiaSinEspacios.length) {
-      alert('La longitud del nombre debe coincidir con la del jugador.');
-      return;
+    // Comprobar si la longitud del input del usuario coincide con la del jugador del día, ignorando espacios
+    const jugadorSinEspacios = jugadorDelDia.toUpperCase().replace(/\s+/g, '');
+
+    if (inputUsuarioConMayusculas.length !== jugadorSinEspacios.length) {
+        alert('La longitud del nombre debe coincidir con la del jugador, sin contar espacios.');
+        return;
     }
 
-    const nuevoIntento = validarIntento(inputUsuarioSinEspacios);
+    const nuevoIntento = validarIntento(inputUsuarioConMayusculas);
     setIntentos([...intentos, nuevoIntento]);
-    setInputUsuario(''); // Limpiar el input después del submit
-  };
+    setInputUsuario('');  // Limpiar el input después del submit
+};
+
 
   const validarIntento = (input) => {
     const resultado = [];
