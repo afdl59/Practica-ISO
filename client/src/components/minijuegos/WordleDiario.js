@@ -64,7 +64,9 @@ function WordleDiario() {
 
   useEffect(() => {
     const diaDelAno = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
-    setJugadorDelDia(jugadores[diaDelAno % jugadores.length]); // Rotar entre los jugadores
+    const jugador = jugadores[diaDelAno % jugadores.length];
+    console.log("Jugador del Día:", jugador);
+    setJugadorDelDia(jugador);
   }, []);
 
   const handleInputChange = (e) => {
