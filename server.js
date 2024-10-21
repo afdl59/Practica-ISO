@@ -9,6 +9,9 @@ const http = require('http');
 const { Server } = require('socket.io');
 //prueba en rama stats
 
+
+//prueba rama perfil
+//prueba rama minijuegos
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
