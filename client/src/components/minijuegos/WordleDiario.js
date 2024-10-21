@@ -63,10 +63,9 @@ function WordleDiario() {
   const [intentos, setIntentos] = useState([]);
 
   useEffect(() => {
+    // Calcular el día del año para seleccionar un jugador basado en la fecha actual
     const diaDelAno = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
-    const jugador = jugadores[diaDelAno % jugadores.length];
-    console.log("Jugador del Día:", jugador);
-    setJugadorDelDia(jugador);
+    setJugadorDelDia(jugadores[diaDelAno % jugadores.length]); // Rotar entre los jugadores disponibles
   }, []);
 
   const handleInputChange = (e) => {
@@ -74,57 +73,63 @@ function WordleDiario() {
   };
 
   const handleSubmit = () => {
-    const inputUsuarioConMayusculas = inputUsuario.toUpperCase().replace(/\s+/g, '');  // Convertir input a mayúsculas y eliminar espacios
-
-    // Comprobar si la longitud del input del usuario coincide con la del jugador del día, ignorando espacios
-    const jugadorSinEspacios = jugadorDelDia.toUpperCase().replace(/\s+/g, '');
-
-    if (inputUsuarioConMayusculas.length !== jugadorSinEspacios.length) {
-        alert('La longitud del nombre debe coincidir con la del jugador, sin contar espacios.');
-        return;
+    if (!jugadorDelDia) {
+      alert('El jugador del día aún no está disponible. Por favor, espera un momento.');
+      return;
     }
 
-    const nuevoIntento = validarIntento(inputUsuarioConMayusculas);
+    // Limpiar espacios en blanco del input del usuario y del jugador del día
+    const inputUsuarioConMayusculas = inputUsuario.replace(/\s+/g, '').toUpperCase();
+    const jugadorDelDiaSinEspacios = jugadorDelDia.replace(/\s+/g, '').toUpperCase();
+
+    // Comprobar si la longitud del input del usuario coincide con la del jugador del día sin contar espacios
+    if (inputUsuarioConMayusculas.length !== jugadorDelDiaSinEspacios.length) {
+      alert('La longitud del nombre debe coincidir con la del jugador (sin contar espacios).');
+      return;
+    }
+
+    const nuevoIntento = validarIntento(inputUsuarioConMayusculas, jugadorDelDiaSinEspacios);
     setIntentos([...intentos, nuevoIntento]);
-    setInputUsuario('');  // Limpiar el input después del submit
-    };
+    setInputUsuario('');
+  };
 
+  const validarIntento = (input, nombreJugador) => {
+    const resultado = [];
+    const nombreJugadorArray = nombreJugador.split('');
+    const inputArray = input.split('');
 
-    const validarIntento = (input) => {
-      const resultado = [];
-      const nombreJugador = jugadorDelDia.toUpperCase().split('');
-      const inputArray = input.split('');
-  
-      // Paso 1: Marcar las letras que están en la posición correcta (verde)
-      for (let i = 0; i < inputArray.length; i++) {
-        if (inputArray[i] === nombreJugador[i]) {
-          resultado.push({ letra: inputArray[i], estado: 'verde' });
-        } else {
-          resultado.push({ letra: inputArray[i], estado: 'gris' });
-        }
+    // Paso 1: Marcar las letras que están en la posición correcta (verde)
+    for (let i = 0; i < inputArray.length; i++) {
+      if (inputArray[i] === nombreJugadorArray[i]) {
+        resultado.push({ letra: inputArray[i], estado: 'verde' });
+      } else {
+        resultado.push({ letra: inputArray[i], estado: 'gris' });
       }
-  
-      // Paso 2: Marcar las letras que están en el nombre pero en una posición incorrecta (amarillo)
-      for (let i = 0; i < inputArray.length; i++) {
-        if (resultado[i].estado === 'gris' && inputArray[i] !== ' ') {
-          for (let j = 0; j < nombreJugador.length; j++) {
-            if (
-              inputArray[i] === nombreJugador[j] &&
-              resultado[j]?.estado !== 'verde' &&
-              !resultado.some((r, index) => r.letra === nombreJugador[j] && r.estado === 'amarillo' && index !== i)
-            ) {
-              resultado[i].estado = 'amarillo';
-              break;
-            }
+    }
+
+    // Paso 2: Marcar las letras que están en el nombre pero en una posición incorrecta (amarillo)
+    for (let i = 0; i < inputArray.length; i++) {
+      if (resultado[i].estado === 'gris' && inputArray[i] !== ' ') {
+        for (let j = 0; j < nombreJugadorArray.length; j++) {
+          if (
+            inputArray[i] === nombreJugadorArray[j] &&
+            resultado[j]?.estado !== 'verde' &&
+            !resultado.some((r, index) => r.letra === nombreJugadorArray[j] && r.estado === 'amarillo' && index !== i)
+          ) {
+            resultado[i].estado = 'amarillo';
+            break;
           }
         }
       }
-  
-      return resultado;
-    };
-  
+    }
 
+    return resultado;
+  };
+
+  // Mostrar casillas vacías para el nombre del jugador antes de adivinar
   const mostrarCasillasIniciales = () => {
+    if (!jugadorDelDia) return null; // Si jugadorDelDia aún no está listo, no renderizamos casillas
+
     const casillas = [];
     for (let i = 0; i < jugadorDelDia.length; i++) {
       if (jugadorDelDia[i] === ' ') {
@@ -143,7 +148,7 @@ function WordleDiario() {
       <div className="intentos">
         {intentos.length === 0 && (
           <div className="fila-intento">
-            {mostrarCasillasIniciales()} {/* Mostrar casillas vacías al inicio */}
+            {mostrarCasillasIniciales()}
           </div>
         )}
 
@@ -151,20 +156,20 @@ function WordleDiario() {
           <div key={index} className="fila-intento">
             {intento.map((letra, idx) => (
               <div key={idx} className={`casilla ${letra.estado}`}>
-                {letra.letra === ' ' ? '\u00A0' : letra.letra} {/* Mostrar espacios correctamente */}
+                {letra.letra === ' ' ? '\u00A0' : letra.letra}
               </div>
             ))}
           </div>
         ))}
       </div>
 
-      {intentos.length < 6 && (
+      {jugadorDelDia && intentos.length < 6 && (
         <div className="input-container">
           <input
             type="text"
             value={inputUsuario}
             onChange={handleInputChange}
-            maxLength={jugadorDelDia.length} // Ajustar longitud sin contar espacios
+            maxLength={jugadorDelDia.length}
           />
           <button onClick={handleSubmit}>Enviar</button>
         </div>
