@@ -18,7 +18,7 @@ const transporter = nodemailer.createTransport({
     logger: true, // Activa el registro de nodemailer para ver detalles
     debug: true   // Activa el modo de depuración para ver más detalles en consola
 });
-
+//prueba rama perfil 2
 
 // Conectar a MongoDB
 mongoose.connect('mongodb://localhost:27017/futbol360')
