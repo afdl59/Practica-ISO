@@ -260,7 +260,7 @@ app.get('/api/check-session', (req, res) => {
     if (req.session && req.session.user) {
         res.json({ 
             isAuthenticated: true, 
-            username: req.session.user
+            username: req.session.username
         });
     } else {
         res.json({ isAuthenticated: false });
