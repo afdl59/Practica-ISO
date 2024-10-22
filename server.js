@@ -10,6 +10,7 @@ const http = require('http');
 const { Server } = require('socket.io');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
+const fs = require('fs');
 
 //Conectar servicio de mail
 const transporter = nodemailer.createTransport({
@@ -106,7 +107,7 @@ app.use(session({
     saveUninitialized: false,
     store: MongoStore.create({
         mongoUrl: 'mongodb://localhost:27017/futbol360',
-        collection: 'sessions'
+        collectionName: 'userSessions',
     }),
     cookie: {
         maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
@@ -145,45 +146,6 @@ io.on('connection', (socket) => {
         console.log('Usuario desconectado');
     });
 });
-
-// Ruta para obtener todos los mensajes de la comunidad
-app.get('/api/foro/mensajes', async (req, res) => {
-    try {
-        // Obtener todos los mensajes de todos los usuarios
-        const users = await User.find({}, 'username messages');
-        const mensajes = users.flatMap(user => user.messages.map(msg => ({
-            username: user.username,
-            content: msg.content,
-            date: msg.date
-        })));
-
-        res.status(200).json(mensajes);
-    } catch (err) {
-        res.status(500).json({ message: 'Error al obtener los mensajes: ' + err.message });
-    }
-});
-
-// Ruta para enviar un nuevo mensaje
-app.post('/api/foro/mensajes', async (req, res) => {
-    const { username, content } = req.body;
-
-    try {
-        // Buscar el usuario y agregar el nuevo mensaje
-        const usuario = await User.findOne({ username });
-        if (!usuario) {
-            return res.status(404).json({ message: 'Usuario no encontrado' });
-        }
-
-        usuario.messages.push({ content });
-        await usuario.save();
-
-        res.status(200).json({ message: 'Mensaje enviado correctamente' });
-
-    } catch (err) {
-        res.status(500).json({ message: 'Error al enviar el mensaje: ' + err.message });
-    }
-});
-
 
 
 // Ruta para servir la página principal
@@ -231,8 +193,6 @@ app.post('/api/register', async (req, res) => {
     }
 });
 
-const fs = require('fs');
-const logStream = fs.createWriteStream('server.log', { flags: 'a' });
 
 // Ruta para manejar el inicio de sesión
 app.post('/api/login', async (req, res) => {
@@ -246,43 +206,68 @@ app.post('/api/login', async (req, res) => {
             ]
         });
 
-        if (!usuario) {
-            return res.status(400).json({ message: 'Usuario no encontrado' });
-        }
-
         const passwordCorrecta = await bcrypt.compare(password, usuario.password);
-        if (!passwordCorrecta) {
-            return res.status(400).json({ message: 'Contraseña incorrecta' });
+
+        if (!usuario || !passwordCorrecta) {
+            return res.status(400).json({ message: 'Usuario o contraseña incorrectos' });
         }
 
         // Set session data
         req.session.userId = usuario._id;
         req.session.username = usuario.username;
-        
-        res.status(200).json({
-            message: 'Inicio de sesión exitoso',
-            user: {
-                username: usuario.username,
-                firstName: usuario.firstName,
-                lastName: usuario.lastName
+        req.session.user = {
+            id: usuario._id,
+            username: usuario.username,
+            email: usuario.email,
+            firstName: usuario.firstName,
+            lastName: usuario.lastName,
+            equipoFavorito: usuario.equipoFavorito,
+            intereses: usuario.intereses,
+            fotoPerfil: usuario.fotoPerfil,
+            messages: usuario.messages
+        };
+
+        req.session.save((err) => {
+            if (err) {
+                return res.status(500).json({ message: 'Error al guardar la sesión' });
             }
+
+            res.status(200).json({
+                message: 'Inicio de sesión exitoso',
+                user: {
+                    username: usuario.username,
+                    firstName: usuario.firstName,
+                    lastName: usuario.lastName,
+                    email: usuario.email,
+                    fotoPerfil: usuario.fotoPerfil,
+                    equipoFavorito: usuario.equipoFavorito,
+                    intereses: usuario.intereses,
+                    createdAt: usuario.createdAt,
+                    messages: usuario.messages
+                }
+            });
+            
         });
+        
     } catch (err) {
         res.status(400).json({ message: 'Error al iniciar sesión: ' + err.message });
     }
 });
 
+
+//Ruta para checkear la sesion iniciada
 app.get('/api/check-session', (req, res) => {
-    if (req.session.userId) {
+    if (req.session && req.session.user) {
         res.json({ 
             isAuthenticated: true, 
-            username: req.session.username 
+            username: req.session.user
         });
     } else {
         res.json({ isAuthenticated: false });
     }
 });
 
+// Ruta para cerrar sesión
 app.post('/api/logout', (req, res) => {
     req.session.destroy((err) => {
         if (err) {
@@ -316,6 +301,44 @@ app.get('/api/users/:username', async (req, res) => {
         });
     } catch (err) {
         res.status(500).json({ message: 'Error al obtener los datos del usuario: ' + err.message });
+    }
+});
+
+// Ruta para obtener todos los mensajes de la comunidad
+app.get('/api/foro/mensajes', async (req, res) => {
+    try {
+        // Obtener todos los mensajes de todos los usuarios
+        const users = await User.find({}, 'username messages');
+        const mensajes = users.flatMap(user => user.messages.map(msg => ({
+            username: user.username,
+            content: msg.content,
+            date: msg.date
+        })));
+
+        res.status(200).json(mensajes);
+    } catch (err) {
+        res.status(500).json({ message: 'Error al obtener los mensajes: ' + err.message });
+    }
+});
+
+// Ruta para enviar un nuevo mensaje
+app.post('/api/foro/mensajes', async (req, res) => {
+    const { username, content } = req.body;
+
+    try {
+        // Buscar el usuario y agregar el nuevo mensaje
+        const usuario = await User.findOne({ username });
+        if (!usuario) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+
+        usuario.messages.push({ content });
+        await usuario.save();
+
+        res.status(200).json({ message: 'Mensaje enviado correctamente' });
+
+    } catch (err) {
+        res.status(500).json({ message: 'Error al enviar el mensaje: ' + err.message });
     }
 });
 
