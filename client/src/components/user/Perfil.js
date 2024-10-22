@@ -110,9 +110,9 @@ function Perfil() {
         equipoFavorito: editedData.equipoFavorito,
         intereses: editedData.intereses,
       };
-      console.log('userData antes del fetch:', userData);
+      console.log('userData antes del fetch:', editedData);
       console.log('updatedData:', updatedData);
-      const response = await fetch(`/api/users/${userData.username}`, {
+      const response = await fetch(`/api/users/${editedData.username}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
