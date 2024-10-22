@@ -93,25 +93,13 @@ userSchema.pre('save', async function (next) {
 // Crear el modelo de Usuario
 const User = mongoose.model('User', userSchema);
 
-// Configurar multer para almacenar archivos en la carpeta 'uploads'
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, path.join(__dirname, 'uploads')); // Asegúrate de que 'uploads' exista
-    },
-    filename: (req, file, cb) => {
-      cb(null, `${Date.now()}-${file.originalname}`);
-    }
-  });
-  
-const upload = multer({ storage });
-
 // Inicializar Express
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
 // Middleware
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'client', 'build'))); // Servir archivos estáticos desde /build
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Servir archivos subidos desde /uploads
@@ -129,6 +117,18 @@ app.use(session({
         secure: process.env.NODE_ENV === 'production'
     }
 }));
+
+// Configurar multer para almacenar archivos en la carpeta 'uploads'
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, path.join(__dirname, 'uploads')); // Asegúrate de que 'uploads' exista
+    },
+    filename: (req, file, cb) => {
+      cb(null, `${Date.now()}-${file.originalname}`);
+    }
+  });
+  
+const upload = multer({ storage });
 
 // Socket.io: manejo de mensajes en tiempo real
 io.on('connection', (socket) => {
