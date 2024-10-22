@@ -260,7 +260,7 @@ app.get('/api/check-session', (req, res) => {
     if (req.session && req.session.user) {
         res.json({ 
             isAuthenticated: true, 
-            username: req.session.username
+            username: req.session.user.username
         });
     } else {
         res.json({ isAuthenticated: false });
@@ -347,12 +347,6 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
 });
 
-// Iniciar el servidor
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Servidor escuchando en el puerto ${PORT}`);
-});
-
 // Configuración de conexión a la instancia de MySQL en AWS RDS
 const db = mysql.createConnection({
     host: 'transfermarkt-futbol360.c7a8m6o067iu.us-east-1.rds.amazonaws.com',  // El endpoint de tu RDS
@@ -384,3 +378,8 @@ app.get('/api/partidos', (req, res) => {
     });
 });
 
+// Iniciar el servidor
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Servidor escuchando en el puerto ${PORT}`);
+});
