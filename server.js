@@ -106,8 +106,8 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({
-        mongoUrl: 'mongodb://localhost:27017/futbol360',
-        collectionName: 'userSessions',
+        mongoUrl: process.env.MONGODB_URI,
+        collection: 'sessions'
     }),
     cookie: {
         maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
@@ -257,15 +257,19 @@ app.post('/api/login', async (req, res) => {
 
 //Ruta para checkear la sesion iniciada
 app.get('/api/check-session', (req, res) => {
+    console.log('Check session endpoint hit');
     if (req.session && req.session.user) {
-        res.json({ 
-            isAuthenticated: true, 
+        console.log('User session exists:', req.session.user);
+        res.json({
+            isAuthenticated: true,
             username: req.session.user.username
         });
     } else {
+        console.log('No user session found');
         res.json({ isAuthenticated: false });
     }
 });
+
 
 // Ruta para cerrar sesión
 app.post('/api/logout', (req, res) => {
