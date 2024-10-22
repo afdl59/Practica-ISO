@@ -67,39 +67,66 @@ function Perfil() {
     setEditedData({ ...editedData, [name]: value });
   };
 
-  const handleFotoChange = (e) => {
+  const handleFotoChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setEditedData({ ...editedData, fotoPerfil: reader.result });
-      };
-      reader.readAsDataURL(file);
+      const formData = new FormData();
+      formData.append('fotoPerfil', file);
+      formData.append('username', userData.username); // Asegúrate de enviar el nombre de usuario
+  
+      try {
+        const response = await fetch('/api/upload', {
+          method: 'POST',
+          body: formData
+        });
+  
+        if (!response.ok) {
+          throw new Error('Error al subir la imagen');
+        }
+  
+        const data = await response.json();
+        setUserData((prevUserData) => ({
+          ...prevUserData,
+          fotoPerfil: data.imageUrl
+        }));
+  
+        alert('Imagen subida correctamente');
+      } catch (error) {
+        console.error('Error al subir la imagen:', error);
+      }
     }
   };
+  
 
   const handleSaveChanges = async () => {
     try {
+      const updatedData = {
+        firstName: editedData.firstName,
+        lastName: editedData.lastName,
+        equipoFavorito: editedData.equipoFavorito,
+        intereses: editedData.intereses,
+      };
+  
       const response = await fetch(`/api/users/${userData.username}`, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify(editedData),
+        body: JSON.stringify(updatedData)
       });
-
-      if (response.ok) {
-        const updatedUserData = await response.json();
-        setUserData(updatedUserData);
-        alert('Datos actualizados correctamente');
-      } else {
+  
+      if (!response.ok) {
         throw new Error('Error al actualizar los datos del usuario');
       }
+  
+      const updatedUserData = await response.json();
+      setUserData(updatedUserData);
+      alert('Datos actualizados correctamente');
     } catch (error) {
       console.error('Error al actualizar los datos del usuario:', error);
-      alert('Hubo un error al actualizar los datos.');
     }
   };
+  
 
   if (loading) {
     return <div>Cargando...</div>;
