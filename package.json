@@ -6,6 +6,7 @@
     "http": "^0.0.1-security",
     "mongoose": "^8.6.3",
     "mysql2": "^3.11.3",
+    "ngrok": "^5.0.0-beta.2",
     "nodemailer": "^6.9.15",
     "socket.io": "^4.8.0"
   },
