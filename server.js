@@ -308,6 +308,51 @@ app.get('/api/users/:username', async (req, res) => {
     }
 });
 
+// Ruta para actualizar los datos de un usuario específico por su nombre de usuario
+app.put('/api/users/:username', async (req, res) => {
+    if (!req.session.userId) {
+        return res.status(401).json({ message: 'No autorizado' });
+    }
+
+    const { username } = req.params;
+    const { firstName, lastName, fotoPerfil, equipoFavorito, intereses } = req.body;
+
+    try {
+        // Buscar el usuario por su nombre de usuario
+        const usuario = await User.findOne({ username });
+        if (!usuario) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+
+        // Actualizar los campos
+        usuario.firstName = firstName || usuario.firstName;
+        usuario.lastName = lastName || usuario.lastName;
+        usuario.fotoPerfil = fotoPerfil || usuario.fotoPerfil;
+        usuario.equipoFavorito = equipoFavorito || usuario.equipoFavorito;
+        usuario.intereses = intereses || usuario.intereses;
+
+        // Guardar los cambios en la base de datos
+        await usuario.save();
+
+        // Devolver los datos actualizados
+        res.status(200).json({
+            message: 'Datos actualizados correctamente',
+            user: {
+                username: usuario.username,
+                firstName: usuario.firstName,
+                lastName: usuario.lastName,
+                fotoPerfil: usuario.fotoPerfil,
+                equipoFavorito: usuario.equipoFavorito,
+                intereses: usuario.intereses,
+                createdAt: usuario.createdAt,
+            }
+        });
+    } catch (err) {
+        res.status(500).json({ message: 'Error al actualizar los datos del usuario: ' + err.message });
+    }
+});
+
+
 // Ruta para obtener todos los mensajes de la comunidad
 app.get('/api/foro/mensajes', async (req, res) => {
     try {
