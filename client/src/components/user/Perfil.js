@@ -106,7 +106,8 @@ function Perfil() {
         equipoFavorito: editedData.equipoFavorito,
         intereses: editedData.intereses,
       };
-  
+      console.log('userData antes del fetch:', userData);
+      console.log('updatedData:', updatedData);
       const response = await fetch(`/api/users/${userData.username}`, {
         method: 'PUT',
         headers: {

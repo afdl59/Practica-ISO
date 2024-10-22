@@ -277,7 +277,7 @@ app.get('/api/check-session', (req, res) => {
         console.log('User session exists:', req.session.user);
         res.json({
             isAuthenticated: true,
-            username: req.session.user.username
+            username: req.session.username
         });
     } else {
         console.log('No user session found');
