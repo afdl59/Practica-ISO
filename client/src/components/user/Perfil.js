@@ -3,6 +3,159 @@ import { useNavigate } from 'react-router-dom';
 import '../../styles/user/Perfil.css';
 
 function Perfil() {
+  const navigate = useNavigate();
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const response = await fetch('/api/check-session');
+        const data = await response.json();
+
+        if (!data.isAuthenticated) {
+          navigate('/login');
+          return;
+        }
+
+        const userResponse = await fetch(`/api/users/${data.username}`);
+        if (!userResponse.ok) {
+          throw new Error('Error al obtener datos del usuario');
+        }
+
+        const userData = await userResponse.json();
+        setUserData(userData);
+      } catch (error) {
+        console.error('Error:', error);
+        navigate('/login');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkAuth();
+  }, [navigate]);
+
+  const handleLogout = async () => {
+    try {
+      const response = await fetch('/api/logout', {
+        method: 'POST'
+      });
+
+      if (response.ok) {
+        navigate('/login');
+      }
+    } catch (error) {
+      console.error('Error al cerrar sesión:', error);
+    }
+  };
+
+  if (loading) {
+    return <div>Cargando...</div>;
+  }
+
+  if (!userData) {
+    return <div>Error al cargar los datos del usuario.</div>;
+  }
+
+  return (
+    <div className="perfil-container">
+      <h1>Perfil de {userData.username}</h1>
+      <div className="perfil-photo">
+        {userData.fotoPerfil ? (
+          <img src={userData.fotoPerfil} alt="Foto de perfil" className="profile-image" />
+        ) : (
+          <div className="placeholder-image">No profile photo</div>
+        )}
+        <input type="file" accept="image/*" />
+      </div>
+
+      <div className="perfil-info">
+        <label>
+          Nombre: {userData.firstName}
+        </label>
+
+        <label>
+          Apellido: {userData.lastName}
+        </label>
+
+        <label>
+          Equipo Favorito: {userData.equipoFavorito || 'No especificado'}
+        </label>
+
+        <label>
+          Intereses: {userData.intereses && userData.intereses.length > 0 ? userData.intereses.join(', ') : 'No especificados'}
+        </label>
+      </div>
+
+      <div className="ultimo-login">
+        <p>Último inicio de sesión: {userData.ultimoLogin || 'Nunca'}</p>
+      </div>
+
+      <button onClick={handleLogout}>Cerrar Sesión</button>
+    </div>
+  );
+}
+
+export default Perfil;
+
+/*
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import '../../styles/user/Perfil.css';
+
+function Perfil() {
+  const navigate = useNavigate();
+    const [userData, setUserData] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const checkAuth = async () => {
+            try {
+                const response = await fetch('/api/check-session');
+                const data = await response.json();
+                
+                if (!data.isAuthenticated) {
+                    navigate('/login');
+                    return;
+                }
+
+                const userResponse = await fetch(`/api/users/${data.username}`);
+                if (!userResponse.ok) {
+                    throw new Error('Error al obtener datos del usuario');
+                }
+
+                const userData = await userResponse.json();
+                setUserData(userData);
+            } catch (error) {
+                console.error('Error:', error);
+                navigate('/login');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        checkAuth();
+    }, [navigate]);
+
+    const handleLogout = async () => {
+        try {
+            const response = await fetch('/api/logout', {
+                method: 'POST'
+            });
+            
+            if (response.ok) {
+                navigate('/login');
+            }
+        } catch (error) {
+            console.error('Error al cerrar sesión:', error);
+        }
+    };
+
+    if (loading) {
+        return <div>Cargando...</div>;
+    }
+  /*
   const [nombre, setNombre] = useState('');
   const [apellido, setApellido] = useState('');
   const [fotoPerfil, setFotoPerfil] = useState(null);
@@ -60,6 +213,7 @@ function Perfil() {
 
     fetchUserData();
   }, [navigate]);
+  
 
   // Definir las funciones de manejo de cambios
   const handleFotoChange = (e) => {
@@ -130,6 +284,7 @@ function Perfil() {
     localStorage.removeItem('username');
     window.location.href = '/login';
   };
+  
 
   // Mostrar el formulario si no se ha seleccionado el equipo favorito o intereses
   if (showPreferencesForm) {
@@ -238,7 +393,7 @@ function Perfil() {
 }
 
 export default Perfil;
-
+*/
 
 
 

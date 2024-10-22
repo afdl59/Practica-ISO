@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
@@ -7,29 +8,24 @@ const nodemailer = require('nodemailer');
 const mysql = require('mysql2');
 const http = require('http');
 const { Server } = require('socket.io');
-//prueba en rama stats
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
 
-
-//prueba rama perfil
-//prueba rama minijuegos
+//Conectar servicio de mail
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    service: process.env.EMAIL_SERVICE,
     auth: {
-        user: 'futbol360.client@gmail.com',
-        pass: 'olwgyvrxjzdmjcaj'
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASSWORD
     },
-    logger: true, // Activa el registro de nodemailer para ver detalles
-    debug: true   // Activa el modo de depuración para ver más detalles en consola
+    logger: true,
+    debug: true
 });
 
-
 // Conectar a MongoDB
-mongoose.connect('mongodb://localhost:27017/futbol360')
-    .then(() => {
-        console.log('Conectado a MongoDB');
-    }).catch(err => {
-        console.error('Error al conectar a MongoDB:', err);
-    });
+mongoose.connect(process.env.MONGODB_URI)
+    .then(() => console.log('Connected to MongoDB'))
+    .catch(err => console.error('MongoDB connection error:', err));
 
 // Definir el esquema de usuario
 const userSchema = new mongoose.Schema({
@@ -104,6 +100,19 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'client', 'build'))); // Servir archivos estáticos desde /build
 
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({
+        mongoUrl: 'mongodb://localhost:27017/futbol360',
+        collection: 'sessions'
+    }),
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
+        secure: process.env.NODE_ENV === 'production'
+    }
+}));
 
 // Socket.io: manejo de mensajes en tiempo real
 io.on('connection', (socket) => {
@@ -227,66 +236,88 @@ const logStream = fs.createWriteStream('server.log', { flags: 'a' });
 
 // Ruta para manejar el inicio de sesión
 app.post('/api/login', async (req, res) => {
-    const { identifier, password } = req.body; // Puede ser email o username
+    const { identifier, password } = req.body;
 
     try {
-        logStream.write(`Datos recibidos en la solicitud: ${JSON.stringify(req.body)}\n`);
-        logStream.write(`Buscando usuario con identificador: ${identifier}\n`);
         const usuario = await User.findOne({
             $or: [
                 { email: identifier },
                 { username: identifier }
             ]
         });
+
         if (!usuario) {
-            logStream.write('Usuario no encontrado\n');
             return res.status(400).json({ message: 'Usuario no encontrado' });
         }
 
-        logStream.write(`Usuario encontrado: ${JSON.stringify(usuario)}\n`);
         const passwordCorrecta = await bcrypt.compare(password, usuario.password);
         if (!passwordCorrecta) {
-            logStream.write('Contraseña incorrecta\n');
             return res.status(400).json({ message: 'Contraseña incorrecta' });
         }
 
-        logStream.write('Inicio de sesión exitoso\n');
-        res.status(200).json({ message: 'Inicio de sesión exitoso' });
+        // Set session data
+        req.session.userId = usuario._id;
+        req.session.username = usuario.username;
+        
+        res.status(200).json({
+            message: 'Inicio de sesión exitoso',
+            user: {
+                username: usuario.username,
+                firstName: usuario.firstName,
+                lastName: usuario.lastName
+            }
+        });
     } catch (err) {
-        logStream.write(`Error durante el proceso de inicio de sesión: ${err}\n`);
         res.status(400).json({ message: 'Error al iniciar sesión: ' + err.message });
     }
 });
 
+app.get('/api/check-session', (req, res) => {
+    if (req.session.userId) {
+        res.json({ 
+            isAuthenticated: true, 
+            username: req.session.username 
+        });
+    } else {
+        res.json({ isAuthenticated: false });
+    }
+});
+
+app.post('/api/logout', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            return res.status(500).json({ message: 'Error al cerrar sesión' });
+        }
+        res.clearCookie('connect.sid');
+        res.json({ message: 'Sesión cerrada correctamente' });
+    });
+});
+
 // Ruta para obtener los datos de un usuario específico por su nombre de usuario
 app.get('/api/users/:username', async (req, res) => {
-    const { username } = req.params;
-    console.log('Solicitud recibida para obtener datos del usuario:', username);
+    if (!req.session.userId) {
+        return res.status(401).json({ message: 'No autorizado' });
+    }
 
+    const { username } = req.params;
     try {
         const usuario = await User.findOne({ username });
         if (!usuario) {
-            console.log('Usuario no encontrado:', username);
             return res.status(404).json({ message: 'Usuario no encontrado' });
         }
 
-        console.log('Usuario encontrado:', usuario);
         res.status(200).json({
             firstName: usuario.firstName,
             lastName: usuario.lastName,
             fotoPerfil: usuario.fotoPerfil || null,
             equipoFavorito: usuario.equipoFavorito || '',
             intereses: usuario.intereses || [],
-            ultimoLogin: usuario.createdAt,  
+            ultimoLogin: usuario.createdAt
         });
     } catch (err) {
-        console.error('Error al obtener los datos del usuario:', err);
         res.status(500).json({ message: 'Error al obtener los datos del usuario: ' + err.message });
     }
 });
-
-
-
 
 // Manejar rutas de React
 app.get('*', (req, res) => {
