@@ -311,6 +311,7 @@ app.get('/api/users/:username', async (req, res) => {
         }
 
         res.status(200).json({
+            username: usuario.username,
             firstName: usuario.firstName,
             lastName: usuario.lastName,
             fotoPerfil: usuario.fotoPerfil || null,

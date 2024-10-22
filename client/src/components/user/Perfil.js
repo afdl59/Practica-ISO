@@ -18,23 +18,26 @@ function Perfil() {
       try {
         const response = await fetch('/api/check-session');
         const data = await response.json();
-
+  
         if (!data.isAuthenticated) {
           navigate('/login');
           return;
         }
-
+  
         const userResponse = await fetch(`/api/users/${data.username}`);
         if (!userResponse.ok) {
           throw new Error('Error al obtener datos del usuario');
         }
-
+  
         const userData = await userResponse.json();
         setUserData(userData);
+  
         setEditedData({
+          username: userData.username, 
           firstName: userData.firstName,
           lastName: userData.lastName,
           equipoFavorito: userData.equipoFavorito,
+          intereses: userData.intereses,
           fotoPerfil: userData.fotoPerfil,
         });
       } catch (error) {
@@ -44,9 +47,10 @@ function Perfil() {
         setLoading(false);
       }
     };
-
+  
     checkAuth();
   }, [navigate]);
+  
 
   const handleLogout = async () => {
     try {
