@@ -6,6 +6,12 @@ function Perfil() {
   const navigate = useNavigate();
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [editedData, setEditedData] = useState({
+    firstName: '',
+    lastName: '',
+    equipoFavorito: '',
+    fotoPerfil: null
+  });
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -25,6 +31,12 @@ function Perfil() {
 
         const userData = await userResponse.json();
         setUserData(userData);
+        setEditedData({
+          firstName: userData.firstName,
+          lastName: userData.lastName,
+          equipoFavorito: userData.equipoFavorito,
+          fotoPerfil: userData.fotoPerfil,
+        });
       } catch (error) {
         console.error('Error:', error);
         navigate('/login');
@@ -50,6 +62,45 @@ function Perfil() {
     }
   };
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setEditedData({ ...editedData, [name]: value });
+  };
+
+  const handleFotoChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setEditedData({ ...editedData, fotoPerfil: reader.result });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleSaveChanges = async () => {
+    try {
+      const response = await fetch(`/api/users/${userData.username}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(editedData),
+      });
+
+      if (response.ok) {
+        const updatedUserData = await response.json();
+        setUserData(updatedUserData);
+        alert('Datos actualizados correctamente');
+      } else {
+        throw new Error('Error al actualizar los datos del usuario');
+      }
+    } catch (error) {
+      console.error('Error al actualizar los datos del usuario:', error);
+      alert('Hubo un error al actualizar los datos.');
+    }
+  };
+
   if (loading) {
     return <div>Cargando...</div>;
   }
@@ -62,279 +113,8 @@ function Perfil() {
     <div className="perfil-container">
       <h1>Perfil de {userData.username}</h1>
       <div className="perfil-photo">
-        {userData.fotoPerfil ? (
-          <img src={userData.fotoPerfil} alt="Foto de perfil" className="profile-image" />
-        ) : (
-          <div className="placeholder-image">No profile photo</div>
-        )}
-        <input type="file" accept="image/*" />
-      </div>
-
-      <div className="perfil-info">
-        <label>
-          Nombre: {userData.firstName}
-        </label>
-
-        <label>
-          Apellido: {userData.lastName}
-        </label>
-
-        <label>
-          Equipo Favorito: {userData.equipoFavorito || 'No especificado'}
-        </label>
-
-        <label>
-          Intereses: {userData.intereses && userData.intereses.length > 0 ? userData.intereses.join(', ') : 'No especificados'}
-        </label>
-      </div>
-
-      <div className="ultimo-login">
-        <p>Último inicio de sesión: {userData.ultimoLogin || 'Nunca'}</p>
-      </div>
-
-      <button onClick={handleLogout}>Cerrar Sesión</button>
-    </div>
-  );
-}
-
-export default Perfil;
-
-/*
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import '../../styles/user/Perfil.css';
-
-function Perfil() {
-  const navigate = useNavigate();
-    const [userData, setUserData] = useState(null);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        const checkAuth = async () => {
-            try {
-                const response = await fetch('/api/check-session');
-                const data = await response.json();
-                
-                if (!data.isAuthenticated) {
-                    navigate('/login');
-                    return;
-                }
-
-                const userResponse = await fetch(`/api/users/${data.username}`);
-                if (!userResponse.ok) {
-                    throw new Error('Error al obtener datos del usuario');
-                }
-
-                const userData = await userResponse.json();
-                setUserData(userData);
-            } catch (error) {
-                console.error('Error:', error);
-                navigate('/login');
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        checkAuth();
-    }, [navigate]);
-
-    const handleLogout = async () => {
-        try {
-            const response = await fetch('/api/logout', {
-                method: 'POST'
-            });
-            
-            if (response.ok) {
-                navigate('/login');
-            }
-        } catch (error) {
-            console.error('Error al cerrar sesión:', error);
-        }
-    };
-
-    if (loading) {
-        return <div>Cargando...</div>;
-    }
-  /*
-  const [nombre, setNombre] = useState('');
-  const [apellido, setApellido] = useState('');
-  const [fotoPerfil, setFotoPerfil] = useState(null);
-  const [ultimoLogin, setUltimoLogin] = useState('');
-  const [equipoFavorito, setEquipoFavorito] = useState('');
-  const [intereses, setIntereses] = useState([]);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [loadingError, setLoadingError] = useState('');
-  const [showPreferencesForm, setShowPreferencesForm] = useState(false); // Para mostrar el formulario
-
-  const navigate = useNavigate(); // Para redireccionar al login
-
-  const equipos = ['Real Madrid', 'Barcelona', 'Manchester United', 'Liverpool', 'Juventus'];
-  const posiblesIntereses = ['Partidos', 'Fichajes', 'Estadísticas', 'Noticias'];
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-      const username = localStorage.getItem('username');
-      console.log('Username from localStorage:', username);
-
-      if (!username) {
-        setLoadingError('No se encontró información del usuario en la sesión.');
-        navigate('/login'); // Redirige al login si no hay usuario en la sesión
-        return;
-      }
-
-      try {
-        const response = await fetch(`${window.location.origin}/api/users/${username}`);
-        console.log('API Response status:', response.status);
-        if (response.ok) {
-          const data = await response.json();
-          console.log('User data:', data);
-          setNombre(data.firstName);
-          setApellido(data.lastName);
-          setFotoPerfil(data.fotoPerfil);
-          setEquipoFavorito(data.equipoFavorito);
-          setIntereses(data.intereses);
-          setUltimoLogin(data.ultimoLogin || 'Nunca');
-          setIsLoggedIn(true);
-
-          // Verificar si faltan los datos de equipo favorito o intereses
-          if (!data.equipoFavorito || data.intereses.length === 0) {
-            setShowPreferencesForm(true); // Mostrar el formulario de selección
-          }
-        } else {
-          setLoadingError('Error al obtener los datos del usuario. Recurso no encontrado.');
-          setIsLoggedIn(false);
-        }
-      } catch (error) {
-        console.error('Error al obtener los datos del usuario:', error);
-        setLoadingError('Error al obtener los datos del usuario: ' + error.message);
-        setIsLoggedIn(false);
-      }
-    };
-
-    fetchUserData();
-  }, [navigate]);
-  
-
-  // Definir las funciones de manejo de cambios
-  const handleFotoChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setFotoPerfil(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleNombreChange = (e) => setNombre(e.target.value);
-  const handleApellidoChange = (e) => setApellido(e.target.value);
-  const handleEquipoChange = (e) => setEquipoFavorito(e.target.value);
-
-  const handleInteresChange = (interes) => {
-    if (intereses.includes(interes)) {
-      setIntereses(intereses.filter((i) => i !== interes));
-    } else {
-      setIntereses([...intereses, interes]);
-    }
-  };
-
-  const handleActualizar = () => {
-    const username = localStorage.getItem('username');
-    if (username) {
-      const userData = {
-        firstName: nombre,
-        lastName: apellido,
-        fotoPerfil,
-        equipoFavorito,
-        intereses,
-        ultimoLogin: new Date().toLocaleString(),
-      };
-
-      fetch(`${window.location.origin}/api/users/${username}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(userData),
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error('Error al actualizar los datos del usuario');
-          }
-          return response.json();
-        })
-        .then(() => {
-          localStorage.setItem('nombre', nombre);
-          localStorage.setItem('apellido', apellido);
-          localStorage.setItem('fotoPerfil', fotoPerfil);
-          localStorage.setItem('equipoFavorito', equipoFavorito);
-          localStorage.setItem('intereses', JSON.stringify(intereses));
-          setUltimoLogin(userData.ultimoLogin);
-          alert('Datos actualizados correctamente');
-          setShowPreferencesForm(false); // Ocultar el formulario
-        })
-        .catch((error) => {
-          console.error('Error al actualizar los datos del usuario:', error);
-        });
-    }
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem('username');
-    window.location.href = '/login';
-  };
-  
-
-  // Mostrar el formulario si no se ha seleccionado el equipo favorito o intereses
-  if (showPreferencesForm) {
-    return (
-      <div className="perfil-container">
-        <h1>Personaliza tus preferencias</h1>
-        <label>
-          Equipo Favorito:
-          <select value={equipoFavorito} onChange={handleEquipoChange}>
-            <option value="">Selecciona un equipo</option>
-            {equipos.map((equipo) => (
-              <option key={equipo} value={equipo}>
-                {equipo}
-              </option>
-            ))}
-          </select>
-        </label>
-
-        <label>
-          Intereses:
-          <div>
-            {posiblesIntereses.map((interes) => (
-              <div key={interes}>
-                <input
-                  type="checkbox"
-                  checked={intereses.includes(interes)}
-                  onChange={() => handleInteresChange(interes)}
-                />
-                {interes}
-              </div>
-            ))}
-          </div>
-        </label>
-
-        <button onClick={handleActualizar}>Guardar preferencias</button>
-      </div>
-    );
-  }
-
-  // Mostrar el perfil si ya tiene equipo favorito e intereses
-  if (!isLoggedIn) {
-    return <p>{loadingError || 'Cargando datos del usuario o no has iniciado sesión...'}</p>;
-  }
-
-  return (
-    <div className="perfil-container">
-      <h1>Perfil</h1>
-      <div className="perfil-photo">
-        {fotoPerfil ? (
-          <img src={fotoPerfil} alt="Foto de perfil" className="profile-image" />
+        {editedData.fotoPerfil ? (
+          <img src={editedData.fotoPerfil} alt="Foto de perfil" className="profile-image" />
         ) : (
           <div className="placeholder-image">No profile photo</div>
         )}
@@ -344,56 +124,43 @@ function Perfil() {
       <div className="perfil-info">
         <label>
           Nombre:
-          <input type="text" value={nombre} onChange={handleNombreChange} />
+          <input
+            type="text"
+            name="firstName"
+            value={editedData.firstName}
+            onChange={handleInputChange}
+          />
         </label>
 
         <label>
           Apellido:
-          <input type="text" value={apellido} onChange={handleApellidoChange} />
+          <input
+            type="text"
+            name="lastName"
+            value={editedData.lastName}
+            onChange={handleInputChange}
+          />
         </label>
 
         <label>
           Equipo Favorito:
-          <select value={equipoFavorito} onChange={handleEquipoChange}>
-            <option value="">Selecciona un equipo</option>
-            {equipos.map((equipo) => (
-              <option key={equipo} value={equipo}>
-                {equipo}
-              </option>
-            ))}
-          </select>
+          <input
+            type="text"
+            name="equipoFavorito"
+            value={editedData.equipoFavorito}
+            onChange={handleInputChange}
+          />
         </label>
-
-        <label>
-          Intereses:
-          <div>
-            {posiblesIntereses.map((interes) => (
-              <div key={interes}>
-                <input
-                  type="checkbox"
-                  checked={intereses.includes(interes)}
-                  onChange={() => handleInteresChange(interes)}
-                />
-                {interes}
-              </div>
-            ))}
-          </div>
-        </label>
-
-        <button onClick={handleActualizar}>Actualizar</button>
       </div>
 
       <div className="ultimo-login">
-        <p>Último inicio de sesión: {ultimoLogin}</p>
+        <p>Último inicio de sesión: {userData.ultimoLogin || 'Nunca'}</p>
       </div>
 
+      <button onClick={handleSaveChanges}>Guardar Cambios</button>
       <button onClick={handleLogout}>Cerrar Sesión</button>
     </div>
   );
 }
 
 export default Perfil;
-*/
-
-
-
