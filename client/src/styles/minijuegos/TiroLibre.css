@@ -141,7 +141,7 @@
   left: 220px;
   width: 60px; /* Más grande para mayor visibilidad */
   height: 80px;
-  background-image: url('../../../public/casillas2012.jpg'); /* Ruta correcta en public */
+  background-image: url('../../public/casillas2012.jpg'); /* Ruta correcta en public */
   background-size: cover;
   background-position: center;
   border-radius: 50%;
