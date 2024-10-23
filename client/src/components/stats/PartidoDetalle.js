@@ -8,7 +8,7 @@ function PartidoDetalle() {
   const [estadisticas, setEstadisticas] = useState([]);
   const [eventos, setEventos] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false); // Para manejar errores
+  const [error, setError] = useState(false); // Manejo de errores
 
   useEffect(() => {
     const fetchDetalles = async () => {
