@@ -366,7 +366,7 @@ app.post('/api/upload', upload.single('fotoPerfil'), async (req, res) => {
       }
   
       // Construir la URL de la imagen
-      const imageUrl = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
+      const imageUrl = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`.replace('http:', 'https:');
   
       // Guardar la URL en la base de datos si es necesario
       const { username } = req.body; // El cliente debe enviar el nombre de usuario para identificar al usuario
