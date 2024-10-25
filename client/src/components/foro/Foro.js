@@ -7,15 +7,15 @@ function Foro() {
   const [content, setContent] = useState('');
   const [username, setUsername] = useState('');
 
+  // Inicializar la conexión de Socket.IO
+  const socket = io('https://futbol360.ddns.net:3000');
+
   useEffect(() => {
     // Obtener el usuario del localStorage
     const savedUsername = localStorage.getItem('username');
     if (savedUsername) {
       setUsername(savedUsername);
     }
-
-    // Inicializar la conexión de Socket.IO
-    const socket = io();
 
     // Cargar mensajes iniciales
     const cargarMensajes = async () => {
