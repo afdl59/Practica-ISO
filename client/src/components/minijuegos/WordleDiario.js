@@ -129,6 +129,7 @@ function WordleDiario() {
   // Mostrar casillas vacías para el nombre del jugador antes de adivinar
   const mostrarCasillasIniciales = () => {
     if (!jugadorDelDia) return null; // Si jugadorDelDia aún no está listo, no renderizamos casillas
+    console.log(jugadorDelDia);
 
     const casillas = [];
     for (let i = 0; i < jugadorDelDia.length; i++) {
