@@ -4,6 +4,7 @@ import realMadridLogo from '../../assets/logoTeams/real_madrid_logo.png';
 import liverpoolLogo from '../../assets/logoTeams/liverpool_logo.png';
 import '../../styles/stats/PartidoPrueba.css';
 
+//prueba rama stats
 function PartidoPrueba1() {
   return (
     <div className="partido-detalle">

@@ -16,7 +16,7 @@ function Foro() {
       setUsername(savedUsername);
     }
 
-    socket = io();
+    socket = io('https://futbol360.ddns.net');
 
     // Cargar mensajes iniciales
     const cargarMensajes = async () => {
@@ -48,6 +48,11 @@ function Foro() {
       const nuevoMensaje = { username, content, date: new Date() };
       socket.emit('nuevoMensaje', nuevoMensaje);
       setContent('');
+      socket.on('mensajeRecibido', (mensaje) => {
+        console.log('Nuevo mensaje recibido del servidor:', mensaje);
+        setMensajes((prevMensajes) => [...prevMensajes, mensaje]);
+      });
+      
     }
   };
 
