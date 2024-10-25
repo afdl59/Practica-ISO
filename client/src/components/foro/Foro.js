@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../../styles/foro/Foro.css';
 import io from 'socket.io-client';
-//prueba foro
-let socket;
 
 function Foro() {
   const [mensajes, setMensajes] = useState([]);
@@ -16,7 +14,8 @@ function Foro() {
       setUsername(savedUsername);
     }
 
-    socket = io('https://futbol360.ddns.net');
+    // Inicializar la conexión de Socket.IO
+    const socket = io();
 
     // Cargar mensajes iniciales
     const cargarMensajes = async () => {
@@ -28,16 +27,16 @@ function Foro() {
         console.error('Error cargando los mensajes:', error);
       }
     };
-
     cargarMensajes();
 
-    // Configurar Socket.io
+    // Configurar Socket.IO para escuchar los mensajes nuevos
     socket.on('mensajeRecibido', (mensaje) => {
       setMensajes((prevMensajes) => [...prevMensajes, mensaje]);
     });
 
     // Limpiar socket cuando el componente se desmonte
     return () => {
+      socket.off('mensajeRecibido');
       socket.disconnect();
     };
   }, []);
@@ -46,8 +45,9 @@ function Foro() {
     e.preventDefault();
     if (username && content) {
       const nuevoMensaje = { username, content, date: new Date() };
+      // Emitir el evento de nuevo mensaje al servidor
       socket.emit('nuevoMensaje', nuevoMensaje);
-      setContent('');
+      setContent('');  // Limpiar el campo de texto
     }
   };
 
@@ -83,3 +83,4 @@ function Foro() {
 }
 
 export default Foro;
+
