@@ -12,7 +12,7 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const fs = require('fs');
 const multer = require('multer');
-
+const cors = require('cors');
 
 //Conectar servicio de mail
 const transporter = nodemailer.createTransport({
@@ -103,6 +103,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'client', 'build'))); // Servir archivos estáticos desde /build
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Servir archivos subidos desde /uploads
+app.use(cors());
 
 app.use(session({
     secret: process.env.SESSION_SECRET,
