@@ -470,7 +470,7 @@ app.get('/api/foro/salas', async (req, res) => {
 app.post('/api/foro/salas', async (req, res) => {
     const { title, description, createdBy } = req.body;
     try {
-        const newChatRoom = new ChatRoom({ title, description, createdBy });
+        const newChatRoom = new ChatRoom({ title, description, createdBy: mongoose.Types.ObjectId(createdBy) });
         await newChatRoom.save();
         res.status(201).json({ message: 'Sala creada exitosamente', newChatRoom });
     } catch (err) {
