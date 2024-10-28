@@ -80,6 +80,22 @@ const userSchema = new mongoose.Schema({
     ]
 });
 
+// Definir el esquema de la sala de chat
+const chatRoomSchema = new mongoose.Schema({
+    title: { type: String, required: true },
+    description: { type: String, required: true },
+    createdAt: { type: Date, default: Date.now },
+    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }
+});
+
+// Definir el esquema del mensaje
+const messageSchema = new mongoose.Schema({
+    content: { type: String, required: true },
+    date: { type: Date, default: Date.now },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    chatRoom: { type: mongoose.Schema.Types.ObjectId, ref: 'ChatRoom', required: true }
+});
+
 
 // Cifrar la contraseña antes de guardar
 userSchema.pre('save', async function (next) {
@@ -92,6 +108,9 @@ userSchema.pre('save', async function (next) {
 
 // Crear el modelo de Usuario
 const User = mongoose.model('User', userSchema);
+// Crear los modelos de Sala de Chat y Mensaje
+const ChatRoom = mongoose.model('ChatRoom', chatRoomSchema);
+const Message = mongoose.model('Message', messageSchema);
 
 // Inicializar Express
 const app = express();
@@ -135,25 +154,40 @@ const upload = multer({ storage });
 io.on('connection', (socket) => {
     console.log('Nuevo usuario conectado');
 
+    // Escuchar evento de unirse a una sala
+    socket.on('unirseASala', (salaId) => {
+        socket.join(salaId);
+        console.log(`Usuario se unió a la sala: ${salaId}`);
+    });
+
     // Escuchar evento de nuevo mensaje y guardar en la base de datos
-    socket.on('nuevoMensaje', async ({ username, content }) => {
+    socket.on('nuevoMensaje', async ({ salaId, userId, content }) => {
         try {
-            const usuario = await User.findOne({ username });
-            if (!usuario) {
-                return socket.emit('error', 'Usuario no encontrado');
+            // Buscar la sala de chat a la cual pertenece el mensaje
+            const sala = await ChatRoom.findById(salaId);
+            if (!sala) {
+                return socket.emit('error', 'Sala no encontrada');
             }
 
-            const nuevoMensaje = { content };
-            usuario.messages.push(nuevoMensaje);
-            await usuario.save();
-
-            // Emitir el nuevo mensaje a todos los conectados
-            io.emit('mensajeRecibido', {
-                username,
+            // Crear el nuevo mensaje
+            const nuevoMensaje = new Message({
                 content,
-                date: nuevoMensaje.date
+                user: userId,
+                chatRoom: salaId
             });
+            await nuevoMensaje.save();
+
+            // Emitir el nuevo mensaje a todos los usuarios en la sala
+            io.to(salaId).emit('mensajeRecibido', {
+                username: userId, // Podrías cambiar esto para enviar el nombre de usuario directamente
+                content,
+                date: nuevoMensaje.date,
+                chatRoom: salaId
+            });
+
+            console.log(`Nuevo mensaje en la sala ${salaId}: ${content}`);
         } catch (err) {
+            console.error('Error al enviar el mensaje:', err);
             socket.emit('error', 'Error al enviar el mensaje');
         }
     });
@@ -162,6 +196,7 @@ io.on('connection', (socket) => {
         console.log('Usuario desconectado');
     });
 });
+
 
 
 // Ruta para servir la página principal
@@ -386,45 +421,6 @@ app.post('/api/upload', upload.single('fotoPerfil'), async (req, res) => {
       res.status(500).json({ message: 'Error al subir la imagen' });
     }
   });
-  
-
-// Ruta para obtener todos los mensajes de la comunidad
-app.get('/api/foro/mensajes', async (req, res) => {
-    try {
-        // Obtener todos los mensajes de todos los usuarios
-        const users = await User.find({}, 'username messages');
-        const mensajes = users.flatMap(user => user.messages.map(msg => ({
-            username: user.username,
-            content: msg.content,
-            date: msg.date
-        })));
-
-        res.status(200).json(mensajes);
-    } catch (err) {
-        res.status(500).json({ message: 'Error al obtener los mensajes: ' + err.message });
-    }
-});
-
-// Ruta para enviar un nuevo mensaje
-app.post('/api/foro/mensajes', async (req, res) => {
-    const { username, content } = req.body;
-
-    try {
-        // Buscar el usuario y agregar el nuevo mensaje
-        const usuario = await User.findOne({ username });
-        if (!usuario) {
-            return res.status(404).json({ message: 'Usuario no encontrado' });
-        }
-
-        usuario.messages.push({ content });
-        await usuario.save();
-
-        res.status(200).json({ message: 'Mensaje enviado correctamente' });
-
-    } catch (err) {
-        res.status(500).json({ message: 'Error al enviar el mensaje: ' + err.message });
-    }
-});
 
 // Manejar rutas de React
 app.get('*', (req, res) => {
@@ -460,6 +456,63 @@ app.get('/api/partidos', (req, res) => {
         }
         res.json(results); // Enviamos los resultados de la búsqueda como respuesta 
     });
+});
+
+
+// Ruta para obtener todas las salas de chat
+app.get('/api/foro/salas', async (req, res) => {
+    try {
+        const salas = await ChatRoom.find();
+        res.status(200).json(salas);
+    } catch (err) {
+        res.status(500).json({ message: 'Error al obtener las salas de chat: ' + err.message });
+    }
+});
+
+// Ruta para crear una nueva sala de chat
+app.post('/api/foro/salas', async (req, res) => {
+    const { title, description, createdBy } = req.body;
+    try {
+        const newChatRoom = new ChatRoom({ title, description, createdBy });
+        await newChatRoom.save();
+        res.status(201).json({ message: 'Sala creada exitosamente', newChatRoom });
+    } catch (err) {
+        res.status(500).json({ message: 'Error al crear la sala de chat: ' + err.message });
+    }
+});
+
+// Ruta para obtener los mensajes de una sala específica
+app.get('/api/foro/salas/:id/mensajes', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const mensajes = await Message.find({ chatRoom: id }).populate('user', 'username');
+        res.status(200).json(mensajes);
+    } catch (err) {
+        res.status(500).json({ message: 'Error al obtener los mensajes: ' + err.message });
+    }
+});
+
+// Ruta para enviar un mensaje a una sala de chat específica
+app.post('/api/foro/salas/:id/mensajes', async (req, res) => {
+    const { id } = req.params;
+    const { userId, content } = req.body;
+
+    try {
+        const newMessage = new Message({ content, user: userId, chatRoom: id });
+        await newMessage.save();
+
+        // Emitir mensaje a todos los conectados
+        io.emit('mensajeRecibido', {
+            content,
+            user: userId,
+            chatRoom: id,
+            date: newMessage.date
+        });
+
+        res.status(201).json({ message: 'Mensaje enviado exitosamente', newMessage });
+    } catch (err) {
+        res.status(500).json({ message: 'Error al enviar el mensaje: ' + err.message });
+    }
 });
 
 // Iniciar el servidor
