@@ -461,7 +461,7 @@ app.post('/api/foro/salas', async (req, res) => {
 app.get('/api/foro/salas/:id/mensajes', async (req, res) => {
     const { id } = req.params;
     try {
-        const mensajes = await Message.find({ chatRoom: id }).populate('user', 'username');
+        const mensajes = await Message.find({ chatRoom: id });
         res.status(200).json(mensajes);
     } catch (err) {
         res.status(500).json({ message: 'Error al obtener los mensajes: ' + err.message });
@@ -471,20 +471,19 @@ app.get('/api/foro/salas/:id/mensajes', async (req, res) => {
 // Ruta para enviar un mensaje a una sala de chat específica
 app.post('/api/foro/salas/:id/mensajes', async (req, res) => {
     const { id } = req.params;
-    const { userId, content } = req.body;
+    const { username, content } = req.body;
 
     try {
-        const newMessage = new Message({ content, user: userId, chatRoom: id });
+        const newMessage = new Message({ content, user: username, chatRoom: id });
         await newMessage.save();
 
         // Emitir mensaje a todos los conectados
         io.emit('mensajeRecibido', {
             content,
-            user: userId,
+            user: username,
             chatRoom: id,
             date: newMessage.date
         });
-
         res.status(201).json({ message: 'Mensaje enviado exitosamente', newMessage });
     } catch (err) {
         res.status(500).json({ message: 'Error al enviar el mensaje: ' + err.message });
