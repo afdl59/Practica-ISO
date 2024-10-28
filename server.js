@@ -122,7 +122,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'client', 'build'))); // Servir archivos estáticos desde /build
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Servir archivos subidos desde /uploads
-app.use(cors());
+app.use(cors({
+    origin: 'https://futbol360.ddns.net',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+}));
+
 
 app.use(session({
     secret: process.env.SESSION_SECRET,
