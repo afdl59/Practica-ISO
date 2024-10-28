@@ -85,7 +85,7 @@ const chatRoomSchema = new mongoose.Schema({
     title: { type: String, required: true },
     description: { type: String, required: true },
     createdAt: { type: Date, default: Date.now },
-    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }
+    createdBy: { type: String, ref: 'User', required: true }
 });
 
 // Definir el esquema del mensaje
@@ -468,24 +468,23 @@ app.get('/api/foro/salas', async (req, res) => {
 
 // Ruta para crear una nueva sala de chat
 app.post('/api/foro/salas', async (req, res) => {
-    const { title, description, createdBy } = req.body;
+    const { title, description, createdBy } = req.body; // `createdBy` será el username
+  
     try {
-        if (!mongoose.isValidObjectId(createdBy)) {
-            return res.status(400).json({ message: 'ID del creador inválido' });
-        }
-
-        const newChatRoom = new ChatRoom({
-            title,
-            description,
-            createdBy
-        });
-        await newChatRoom.save();
-        res.status(201).json({ message: 'Sala creada exitosamente', newChatRoom });
+      // Verificar si el usuario existe en la colección de usuarios
+      const user = await User.findOne({ username: createdBy });
+      if (!user) {
+        return res.status(400).json({ message: 'Usuario creador no válido' });
+      }
+  
+      // Crear una nueva instancia de ChatRoom con el username del creador
+      const newChatRoom = new ChatRoom({ title, description, createdBy });
+      await newChatRoom.save();
+      res.status(201).json({ message: 'Sala creada exitosamente', newChatRoom });
     } catch (err) {
-        res.status(500).json({ message: 'Error al crear la sala de chat: ' + err.message });
+      res.status(500).json({ message: 'Error al crear la sala de chat: ' + err.message });
     }
-});
-
+  });
 
 // Ruta para obtener los mensajes de una sala específica
 app.get('/api/foro/salas/:id/mensajes', async (req, res) => {
