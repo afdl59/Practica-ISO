@@ -470,13 +470,22 @@ app.get('/api/foro/salas', async (req, res) => {
 app.post('/api/foro/salas', async (req, res) => {
     const { title, description, createdBy } = req.body;
     try {
-        const newChatRoom = new ChatRoom({ title, description, createdBy: mongoose.Types.ObjectId(createdBy) });
+        if (!mongoose.isValidObjectId(createdBy)) {
+            return res.status(400).json({ message: 'ID del creador inválido' });
+        }
+
+        const newChatRoom = new ChatRoom({
+            title,
+            description,
+            createdBy
+        });
         await newChatRoom.save();
         res.status(201).json({ message: 'Sala creada exitosamente', newChatRoom });
     } catch (err) {
         res.status(500).json({ message: 'Error al crear la sala de chat: ' + err.message });
     }
 });
+
 
 // Ruta para obtener los mensajes de una sala específica
 app.get('/api/foro/salas/:id/mensajes', async (req, res) => {
