@@ -21,7 +21,7 @@ function Foro() {
       try {
         // Verificar si el usuario está autenticado
         console.log('Verificando autenticación...');
-        const response = await fetch('https://futbol360.ddns.net/api/check-session', {
+        const response = await fetch('/api/check-session', {
           headers: {
             'Cache-Control': 'no-cache', // Evitar el caché en la solicitud
           }
@@ -48,7 +48,7 @@ function Foro() {
 
         // Cargar las salas de chat iniciales
         console.log('Cargando salas de chat...');
-        const responseSalas = await fetch('https://futbol360.ddns.net/api/foro/salas', {
+        const responseSalas = await fetch('/api/foro/salas', {
           headers: {
             'Cache-Control': 'no-cache', // Evitar el caché en la solicitud
           }
