@@ -419,30 +419,7 @@ app.post('/api/upload', upload.single('fotoPerfil'), async (req, res) => {
     }
   });
 
-// Manejar rutas de React
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
-});
-
-// Configuración de conexión a la instancia de MySQL en AWS RDS
-const db = mysql.createConnection({
-    host: 'transfermarkt-futbol360.c7a8m6o067iu.us-east-1.rds.amazonaws.com',  // El endpoint de tu RDS
-    user: 'lorensation',  // Nombre de usuario de MySQL en RDS
-    password: 'Pr4ct1c4-1S0',  // Contraseña de MySQL en RDS
-    database: 'transfermarktFutbol360',  // Nombre de la base de datos
-    port: 3306  // El puerto por defecto de MySQL
-});
-
-// Conectar a MySQL
-db.connect((err) => {
-    if (err) {
-        console.error('Error al conectar a MySQL:', err);
-    } else {
-        console.log('Conectado a MySQL en AWS RDS');
-    }
-});
-
-// Ruta para buscar partidos por equipo local
+  // Ruta para buscar partidos por equipo local
 app.get('/api/partidos', (req, res) => {
     const { home_club } = req.query; // Obtenemos el parámetro de búsqueda
 
@@ -517,6 +494,29 @@ app.post('/api/foro/salas/:id/mensajes', async (req, res) => {
         res.status(201).json({ message: 'Mensaje enviado exitosamente', newMessage });
     } catch (err) {
         res.status(500).json({ message: 'Error al enviar el mensaje: ' + err.message });
+    }
+});
+
+// Manejar rutas de React
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+});
+
+// Configuración de conexión a la instancia de MySQL en AWS RDS
+const db = mysql.createConnection({
+    host: 'transfermarkt-futbol360.c7a8m6o067iu.us-east-1.rds.amazonaws.com',  // El endpoint de tu RDS
+    user: 'lorensation',  // Nombre de usuario de MySQL en RDS
+    password: 'Pr4ct1c4-1S0',  // Contraseña de MySQL en RDS
+    database: 'transfermarktFutbol360',  // Nombre de la base de datos
+    port: 3306  // El puerto por defecto de MySQL
+});
+
+// Conectar a MySQL
+db.connect((err) => {
+    if (err) {
+        console.error('Error al conectar a MySQL:', err);
+    } else {
+        console.log('Conectado a MySQL en AWS RDS');
     }
 });
 
