@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import '../../styles/foro/Foro.css';
 import io from 'socket.io-client';
+import { useNavigate } from 'react-router-dom';
 
 function Foro() {
   const [mensajes, setMensajes] = useState([]);
   const [content, setContent] = useState('');
   const [username, setUsername] = useState('');
-  const [salas, setSalas] = useState([]); // Almacena las salas disponibles
-  const [currentSala, setCurrentSala] = useState(''); // Almacena la sala seleccionada
-  const [newSala, setNewSala] = useState(''); // Almacena el nombre de la nueva sala
-
+  const [salas, setSalas] = useState([]); // Lista de salas disponibles
+  const [currentSala, setCurrentSala] = useState(''); // Sala seleccionada
+  const [newSalaTitle, setNewSalaTitle] = useState(''); // Título para una nueva sala
+  const [newSalaDescription, setNewSalaDescription] = useState(''); // Descripción para la nueva sala
+  const navigate = useNavigate();
+  
   // Inicializar la conexión de Socket.IO
   const socket = io('https://futbol360.ddns.net');
 
@@ -53,27 +56,44 @@ function Foro() {
     };
   }, [currentSala]);
 
-  const handleSalaChange = (sala) => {
-    setCurrentSala(sala);
+  const handleSalaChange = async (sala) => {
+    setCurrentSala(sala._id);
     setMensajes([]); // Limpiar mensajes cuando se cambia de sala
+
+    // Unirse a la nueva sala con Socket.IO
+    socket.emit('unirseASala', sala._id);
+
+    // Cargar mensajes de la nueva sala
+    try {
+      const responseMensajes = await fetch(`/api/foro/salas/${sala._id}/mensajes`);
+      const dataMensajes = await responseMensajes.json();
+      setMensajes(dataMensajes);
+    } catch (error) {
+      console.error('Error al cargar los mensajes de la sala:', error);
+    }
   };
 
   const handleCreateSala = async (e) => {
     e.preventDefault();
-    if (newSala) {
+    if (newSalaTitle && newSalaDescription) {
       try {
         const response = await fetch('/api/foro/salas', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ nombre: newSala }),
+          body: JSON.stringify({
+            title: newSalaTitle,
+            description: newSalaDescription,
+            createdBy: username,
+          }),
         });
 
         if (response.ok) {
           const nuevaSala = await response.json();
-          setSalas((prevSalas) => [...prevSalas, nuevaSala]);
-          setNewSala(''); // Limpiar el campo de texto
+          setSalas((prevSalas) => [...prevSalas, nuevaSala.newChatRoom]);
+          setNewSalaTitle('');
+          setNewSalaDescription('');
         }
       } catch (error) {
         console.error('Error creando la nueva sala:', error);
@@ -84,10 +104,9 @@ function Foro() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (username && content && currentSala) {
-      const nuevoMensaje = { username, content, chatRoom: currentSala, date: new Date() };
-      // Emitir el evento de nuevo mensaje al servidor
+      const nuevoMensaje = { userId: username, content, chatRoom: currentSala, date: new Date() };
       socket.emit('nuevoMensaje', nuevoMensaje);
-      setContent(''); // Limpiar el campo de texto
+      setContent('');
     }
   };
 
@@ -99,18 +118,25 @@ function Foro() {
         {salas.length === 0 ? (
           <p>No hay salas disponibles. ¡Crea una nueva!</p>
         ) : (
-          salas.map((sala, index) => (
-            <button key={index} onClick={() => handleSalaChange(sala.nombre)}>
-              {sala.nombre}
+          salas.map((sala) => (
+            <button key={sala._id} onClick={() => handleSalaChange(sala)}>
+              {sala.title}
             </button>
           ))
         )}
         <form onSubmit={handleCreateSala}>
           <input
             type="text"
-            placeholder="Nueva sala"
-            value={newSala}
-            onChange={(e) => setNewSala(e.target.value)}
+            placeholder="Título de la nueva sala"
+            value={newSalaTitle}
+            onChange={(e) => setNewSalaTitle(e.target.value)}
+            required
+          />
+          <input
+            type="text"
+            placeholder="Descripción de la nueva sala"
+            value={newSalaDescription}
+            onChange={(e) => setNewSalaDescription(e.target.value)}
             required
           />
           <button type="submit">Crear Sala</button>
@@ -124,7 +150,7 @@ function Foro() {
           ) : (
             mensajes.map((mensaje, index) => (
               <div key={index}>
-                <strong>{mensaje.username}</strong>: {mensaje.content}
+                <strong>{mensaje.user.username}</strong>: {mensaje.content}
                 <small style={{ float: 'right' }}>{new Date(mensaje.date).toLocaleString()}</small>
                 <hr />
               </div>
