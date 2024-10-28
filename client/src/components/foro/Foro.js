@@ -157,6 +157,7 @@ function Foro() {
     e.preventDefault();
     if (username && content && currentSala) {
       const nuevoMensaje = { content, user: username, chatRoom: currentSala };
+      console.log('Enviando mensaje:', nuevoMensaje);
       socket.emit('nuevoMensaje', nuevoMensaje);
       setContent('');
     }
