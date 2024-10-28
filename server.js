@@ -92,8 +92,8 @@ const chatRoomSchema = new mongoose.Schema({
 const messageSchema = new mongoose.Schema({
     content: { type: String, required: true },
     date: { type: Date, default: Date.now },
-    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-    chatRoom: { type: mongoose.Schema.Types.ObjectId, ref: 'ChatRoom', required: true }
+    user: { type: String, required: true },
+    chatRoom: { type: String, ref: 'ChatRoom', required: true }
 });
 
 
@@ -168,25 +168,26 @@ io.on('connection', (socket) => {
     // Escuchar evento de nuevo mensaje y guardar en la base de datos
     socket.on('nuevoMensaje', async ({ salaId, userId, content }) => {
         try {
-            // Buscar la sala de chat a la cual pertenece el mensaje
-            const sala = await ChatRoom.findById(salaId);
-            if (!sala) {
-                return socket.emit('error', 'Sala no encontrada');
+            // Buscar al usuario por su `username`
+            const usuario = await User.findOne({ username: userId });
+            if (!usuario) {
+                return socket.emit('error', 'Usuario no encontrado');
             }
-
+    
             // Crear el nuevo mensaje
             const nuevoMensaje = new Message({
                 content,
-                user: userId,
+                user: usuario.username,  // Asignar el username del usuario en lugar del _id
                 chatRoom: salaId
             });
+            
             await nuevoMensaje.save();
-
+            
             // Emitir el nuevo mensaje a todos los usuarios en la sala
             io.to(salaId).emit('mensajeRecibido', {
-                username: userId, // Podrías cambiar esto para enviar el nombre de usuario directamente
                 content,
                 date: nuevoMensaje.date,
+                username: usuario.username,
                 chatRoom: salaId
             });
 
@@ -195,7 +196,7 @@ io.on('connection', (socket) => {
             console.error('Error al enviar el mensaje:', err);
             socket.emit('error', 'Error al enviar el mensaje');
         }
-    });
+    });    
 
     socket.on('disconnect', () => {
         console.log('Usuario desconectado');

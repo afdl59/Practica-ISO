@@ -156,7 +156,7 @@ function Foro() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (username && content && currentSala) {
-      const nuevoMensaje = { userId: username, content, chatRoom: currentSala, date: new Date() };
+      const nuevoMensaje = { content, user: username, chatRoom: currentSala };
       socket.emit('nuevoMensaje', nuevoMensaje);
       setContent('');
     }
