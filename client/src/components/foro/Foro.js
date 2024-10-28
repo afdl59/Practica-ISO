@@ -20,30 +20,52 @@ function Foro() {
     const checkAuthAndLoadData = async () => {
       try {
         // Verificar si el usuario está autenticado
+        console.log('Verificando autenticación...');
         const response = await fetch('/api/check-session');
-        const data = await response.json();
-
-        if (!data.isAuthenticated) {
-          navigate('/login'); // Redirige al login si no está autenticado
+        const textData = await response.text(); // Primero obtenemos el texto en lugar de JSON para identificar si hay un error de formato
+    
+        try {
+          const data = JSON.parse(textData); // Intentamos parsear la respuesta como JSON
+          console.log('Respuesta de /api/check-session:', data);
+    
+          if (!data.isAuthenticated) {
+            console.warn('Usuario no autenticado, redirigiendo al login.');
+            navigate('/login'); // Redirige al login si no está autenticado
+            return;
+          }
+    
+          setUsername(data.username);
+        } catch (jsonError) {
+          console.error('Error al parsear la respuesta de /api/check-session:', jsonError);
+          console.error('Contenido de la respuesta:', textData);
+          navigate('/login');
           return;
         }
-
-        setUsername(data.username);
-
+    
         // Cargar las salas de chat iniciales
+        console.log('Cargando salas de chat...');
         const responseSalas = await fetch('/api/foro/salas');
-        if (responseSalas.ok) {
-          const dataSalas = await responseSalas.json();
-          setSalas(dataSalas);
-        } else {
-          // Si no hay salas, no setea ningún error, simplemente deja la lista vacía.
-          console.warn('No se encontraron salas disponibles.');
+        const textSalas = await responseSalas.text(); // Primero obtenemos el texto para identificar cualquier problema
+    
+        try {
+          const dataSalas = JSON.parse(textSalas);
+          console.log('Respuesta de /api/foro/salas:', dataSalas);
+    
+          if (responseSalas.ok) {
+            setSalas(dataSalas);
+          } else {
+            console.warn('No se encontraron salas disponibles o hubo un problema con la solicitud.');
+          }
+        } catch (jsonSalasError) {
+          console.error('Error al parsear la respuesta de /api/foro/salas:', jsonSalasError);
+          console.error('Contenido de la respuesta:', textSalas);
         }
       } catch (error) {
         console.error('Error verificando la sesión o cargando las salas:', error);
         navigate('/login');
       }
     };
+    
 
     checkAuthAndLoadData();
 
