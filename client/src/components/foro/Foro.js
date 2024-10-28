@@ -32,8 +32,13 @@ function Foro() {
 
         // Cargar las salas de chat iniciales
         const responseSalas = await fetch('/api/foro/salas');
-        const dataSalas = await responseSalas.json();
-        setSalas(dataSalas);
+        if (responseSalas.ok) {
+          const dataSalas = await responseSalas.json();
+          setSalas(dataSalas);
+        } else {
+          // Si no hay salas, no setea ningún error, simplemente deja la lista vacía.
+          console.warn('No se encontraron salas disponibles.');
+        }
       } catch (error) {
         console.error('Error verificando la sesión o cargando las salas:', error);
         navigate('/login');
@@ -66,8 +71,12 @@ function Foro() {
     // Cargar mensajes de la nueva sala
     try {
       const responseMensajes = await fetch(`/api/foro/salas/${sala._id}/mensajes`);
-      const dataMensajes = await responseMensajes.json();
-      setMensajes(dataMensajes);
+      if (responseMensajes.ok) {
+        const dataMensajes = await responseMensajes.json();
+        setMensajes(dataMensajes);
+      } else {
+        console.warn('No se encontraron mensajes en la sala.');
+      }
     } catch (error) {
       console.error('Error al cargar los mensajes de la sala:', error);
     }
@@ -94,6 +103,8 @@ function Foro() {
           setSalas((prevSalas) => [...prevSalas, nuevaSala.newChatRoom]);
           setNewSalaTitle('');
           setNewSalaDescription('');
+        } else {
+          console.error('Error al crear la nueva sala:', response.statusText);
         }
       } catch (error) {
         console.error('Error creando la nueva sala:', error);
@@ -116,59 +127,82 @@ function Foro() {
       <div className="salas">
         <h2>Salas de chat</h2>
         {salas.length === 0 ? (
-          <p>No hay salas disponibles. ¡Crea una nueva!</p>
+          <>
+            <p>No hay salas disponibles. ¡Crea una nueva!</p>
+            <form onSubmit={handleCreateSala}>
+              <input
+                type="text"
+                placeholder="Título de la nueva sala"
+                value={newSalaTitle}
+                onChange={(e) => setNewSalaTitle(e.target.value)}
+                required
+              />
+              <input
+                type="text"
+                placeholder="Descripción de la nueva sala"
+                value={newSalaDescription}
+                onChange={(e) => setNewSalaDescription(e.target.value)}
+                required
+              />
+              <button type="submit">Crear Sala</button>
+            </form>
+          </>
         ) : (
-          salas.map((sala) => (
-            <button key={sala._id} onClick={() => handleSalaChange(sala)}>
-              {sala.title}
-            </button>
-          ))
+          <>
+            {salas.map((sala) => (
+              <button key={sala._id} onClick={() => handleSalaChange(sala)}>
+                {sala.title}
+              </button>
+            ))}
+            <form onSubmit={handleCreateSala}>
+              <input
+                type="text"
+                placeholder="Título de la nueva sala"
+                value={newSalaTitle}
+                onChange={(e) => setNewSalaTitle(e.target.value)}
+                required
+              />
+              <input
+                type="text"
+                placeholder="Descripción de la nueva sala"
+                value={newSalaDescription}
+                onChange={(e) => setNewSalaDescription(e.target.value)}
+                required
+              />
+              <button type="submit">Crear Sala</button>
+            </form>
+          </>
         )}
-        <form onSubmit={handleCreateSala}>
-          <input
-            type="text"
-            placeholder="Título de la nueva sala"
-            value={newSalaTitle}
-            onChange={(e) => setNewSalaTitle(e.target.value)}
-            required
-          />
-          <input
-            type="text"
-            placeholder="Descripción de la nueva sala"
-            value={newSalaDescription}
-            onChange={(e) => setNewSalaDescription(e.target.value)}
-            required
-          />
-          <button type="submit">Crear Sala</button>
-        </form>
       </div>
-      <div className="foro">
-        <h2>Sala: {currentSala}</h2>
-        <div id="foro">
-          {mensajes.length === 0 ? (
-            <p>No hay mensajes aún. ¡Sé el primero en enviar uno!</p>
-          ) : (
-            mensajes.map((mensaje, index) => (
-              <div key={index}>
-                <strong>{mensaje.user.username}</strong>: {mensaje.content}
-                <small style={{ float: 'right' }}>{new Date(mensaje.date).toLocaleString()}</small>
-                <hr />
-              </div>
-            ))
-          )}
+      {currentSala && (
+        <div className="foro">
+          <h2>Sala: {currentSala}</h2>
+          <div id="foro">
+            {mensajes.length === 0 ? (
+              <p>No hay mensajes aún. ¡Sé el primero en enviar uno!</p>
+            ) : (
+              mensajes.map((mensaje, index) => (
+                <div key={index}>
+                  <strong>{mensaje.user.username}</strong>: {mensaje.content}
+                  <small style={{ float: 'right' }}>{new Date(mensaje.date).toLocaleString()}</small>
+                  <hr />
+                </div>
+              ))
+            )}
+          </div>
+          <form id="formMensaje" onSubmit={handleSubmit}>
+            <input
+              id="content"
+              type="text"
+              placeholder="Mensaje"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              required
+            />
+            <button type="submit">Enviar</button>
+          </form>
         </div>
-        <form id="formMensaje" onSubmit={handleSubmit}>
-          <input
-            id="content"
-            type="text"
-            placeholder="Mensaje"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            required
-          />
-          <button type="submit">Enviar</button>
-        </form>
-      </div>
+      )}
     </>
   );
 }
