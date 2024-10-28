@@ -106,9 +106,10 @@ function Foro() {
 
   const handleCreateSala = async (e) => {
     e.preventDefault();
-    if (newSalaTitle && newSalaDescription) {
+    if (newSalaTitle && newSalaDescription && username) {
+      console.log(newSalaTitle, newSalaDescription, username);
       try {
-        const response = await fetch('/api/foro/salas', {
+        const response = await fetch('https://futbol360.ddns.net/api/foro/salas', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
