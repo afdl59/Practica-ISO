@@ -166,37 +166,30 @@ io.on('connection', (socket) => {
     });
 
     // Escuchar evento de nuevo mensaje y guardar en la base de datos
-    socket.on('nuevoMensaje', async ({ salaId, userId, content }) => {
+    socket.on('nuevoMensaje', async ({ chatRoom, user, content }) => {
         try {
-            // Buscar al usuario por su `username`
-            const usuario = await User.findOne({ username: userId });
-            if (!usuario) {
-                return socket.emit('error', 'Usuario no encontrado');
-            }
-    
-            // Crear el nuevo mensaje
+            // Crear el nuevo mensaje con el username directamente
             const nuevoMensaje = new Message({
                 content,
-                user: usuario.username,  // Asignar el username del usuario en lugar del _id
-                chatRoom: salaId
+                user,
+                chatRoom
             });
-            
             await nuevoMensaje.save();
-            
+    
             // Emitir el nuevo mensaje a todos los usuarios en la sala
-            io.to(salaId).emit('mensajeRecibido', {
+            io.to(chatRoom).emit('mensajeRecibido', {
+                username: user,
                 content,
                 date: nuevoMensaje.date,
-                username: usuario.username,
-                chatRoom: salaId
+                chatRoom
             });
-
-            console.log(`Nuevo mensaje en la sala ${salaId}: ${content}`);
+    
+            console.log(`Nuevo mensaje en la sala ${chatRoom}: ${content}`);
         } catch (err) {
             console.error('Error al enviar el mensaje:', err);
             socket.emit('error', 'Error al enviar el mensaje');
         }
-    });    
+    });        
 
     socket.on('disconnect', () => {
         console.log('Usuario desconectado');
