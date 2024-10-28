@@ -459,7 +459,7 @@ app.get('/api/partidos', (req, res) => {
 // Ruta para obtener todas las salas de chat
 app.get('/api/foro/salas', async (req, res) => {
     try {
-        const salas = await ChatRoom.find();
+        const salas = await ChatRoom.find({});
         res.status(200).json(salas);
     } catch (err) {
         res.status(500).json({ message: 'Error al obtener las salas de chat: ' + err.message });
