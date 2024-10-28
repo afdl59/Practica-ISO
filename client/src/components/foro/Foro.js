@@ -16,24 +16,28 @@ function Foro() {
   // Inicializar la conexión de Socket.IO
   const socket = io('https://futbol360.ddns.net');
 
-  useEffect(() => {
+  useEffect(() => { 
     const checkAuthAndLoadData = async () => {
       try {
         // Verificar si el usuario está autenticado
         console.log('Verificando autenticación...');
-        const response = await fetch('https://futbol360.ddns.net/api/check-session');
+        const response = await fetch('https://futbol360.ddns.net/api/check-session', {
+          headers: {
+            'Cache-Control': 'no-cache', // Evitar el caché en la solicitud
+          }
+        });
         const textData = await response.text(); // Primero obtenemos el texto en lugar de JSON para identificar si hay un error de formato
-    
+
         try {
           const data = JSON.parse(textData); // Intentamos parsear la respuesta como JSON
           console.log('Respuesta de /api/check-session:', data);
-    
+
           if (!data.isAuthenticated) {
             console.warn('Usuario no autenticado, redirigiendo al login.');
             navigate('/login'); // Redirige al login si no está autenticado
             return;
           }
-    
+
           setUsername(data.username);
         } catch (jsonError) {
           console.error('Error al parsear la respuesta de /api/check-session:', jsonError);
@@ -41,20 +45,34 @@ function Foro() {
           navigate('/login');
           return;
         }
-    
+
         // Cargar las salas de chat iniciales
         console.log('Cargando salas de chat...');
-        const responseSalas = await fetch('https://futbol360.ddns.net/api/foro/salas');
+        const responseSalas = await fetch('https://futbol360.ddns.net/api/foro/salas', {
+          headers: {
+            'Cache-Control': 'no-cache', // Evitar el caché en la solicitud
+          }
+        });
+
+        // Verificar el estado de la respuesta para manejar los códigos HTTP
+        if (responseSalas.status === 304) {
+          console.warn('No hay cambios en las salas de chat desde la última solicitud.');
+          return; // No actualizar si no hay cambios
+        } else if (!responseSalas.ok) {
+          console.warn('Error al cargar las salas de chat. Código de estado:', responseSalas.status);
+          return;
+        }
+
         const textSalas = await responseSalas.text(); // Primero obtenemos el texto para identificar cualquier problema
-    
+
         try {
           const dataSalas = JSON.parse(textSalas);
           console.log('Respuesta de /api/foro/salas:', dataSalas);
-    
-          if (responseSalas.ok) {
+
+          if (Array.isArray(dataSalas)) {
             setSalas(dataSalas);
           } else {
-            console.warn('No se encontraron salas disponibles o hubo un problema con la solicitud.');
+            console.warn('La respuesta de /api/foro/salas no es un array válido.');
           }
         } catch (jsonSalasError) {
           console.error('Error al parsear la respuesta de /api/foro/salas:', jsonSalasError);
@@ -65,7 +83,6 @@ function Foro() {
         navigate('/login');
       }
     };
-    
 
     checkAuthAndLoadData();
 
@@ -82,6 +99,7 @@ function Foro() {
       socket.disconnect();
     };
   }, [currentSala]);
+
 
   const handleSalaChange = async (sala) => {
     setCurrentSala(sala._id);
