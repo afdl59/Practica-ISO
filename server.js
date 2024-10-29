@@ -493,24 +493,6 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
 });
 
-// Configuración de conexión a la instancia de MySQL en AWS RDS
-const db = mysql.createConnection({
-    host: 'transfermarkt-futbol360.c7a8m6o067iu.us-east-1.rds.amazonaws.com',  // El endpoint de tu RDS
-    user: 'lorensation',  // Nombre de usuario de MySQL en RDS
-    password: 'Pr4ct1c4-1S0',  // Contraseña de MySQL en RDS
-    database: 'transfermarktFutbol360',  // Nombre de la base de datos
-    port: 3306  // El puerto por defecto de MySQL
-});
-
-// Conectar a MySQL
-db.connect((err) => {
-    if (err) {
-        console.error('Error al conectar a MySQL:', err);
-    } else {
-        console.log('Conectado a MySQL en AWS RDS');
-    }
-});
-
 // Iniciar el servidor
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
