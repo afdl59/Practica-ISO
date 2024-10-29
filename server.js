@@ -266,7 +266,7 @@ app.post('/api/login', async (req, res) => {
 app.get('/api/check-session', (req, res) => {
     console.log('Check session endpoint hit');
     if (req.session && req.session.user) {
-        console.log('User session exists:', req.session.user);
+        console.log('User session exists:', req.session.username);
         res.json({
             isAuthenticated: true,
             username: req.session.username
