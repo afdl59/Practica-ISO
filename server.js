@@ -383,6 +383,46 @@ app.get('/api/partidos', (req, res) => {
     });
 });
 
+// Socket.io: manejo de mensajes en tiempo real
+io.on('connection', (socket) => {
+    console.log('Nuevo usuario conectado');
+
+    // Escuchar evento de unirse a una sala
+    socket.on('unirseASala', (salaId) => {
+        socket.join(salaId);
+        console.log(`Usuario se unió a la sala: ${salaId}`);
+    });
+
+    // Escuchar evento de nuevo mensaje y guardar en la base de datos
+    socket.on('nuevoMensaje', async ({ chatRoom, user, content }) => {
+        try {
+            // Crear el nuevo mensaje con el username directamente
+            const nuevoMensaje = new Message({
+                content,
+                user,
+                chatRoom
+            });
+            await nuevoMensaje.save();
+    
+            // Emitir el nuevo mensaje a todos los usuarios en la sala
+            io.to(chatRoom).emit('mensajeRecibido', {
+                username: user,
+                content,
+                date: nuevoMensaje.date,
+                chatRoom
+            });
+    
+            console.log(`Nuevo mensaje en la sala ${chatRoom}: ${content}`);
+        } catch (err) {
+            console.error('Error al enviar el mensaje:', err);
+            socket.emit('error', 'Error al enviar el mensaje');
+        }
+    });        
+
+    socket.on('disconnect', () => {
+        console.log('Usuario desconectado');
+    });
+});
 
 // Ruta para obtener todas las salas de chat
 app.get('/api/foro/salas', async (req, res) => {
@@ -445,47 +485,6 @@ app.post('/api/foro/salas/:id/mensajes', async (req, res) => {
     } catch (err) {
         res.status(500).json({ message: 'Error al enviar el mensaje: ' + err.message });
     }
-});
-
-// Socket.io: manejo de mensajes en tiempo real
-io.on('connection', (socket) => {
-    console.log('Nuevo usuario conectado');
-
-    // Escuchar evento de unirse a una sala
-    socket.on('unirseASala', (salaId) => {
-        socket.join(salaId);
-        console.log(`Usuario se unió a la sala: ${salaId}`);
-    });
-
-    // Escuchar evento de nuevo mensaje y guardar en la base de datos
-    socket.on('nuevoMensaje', async ({ chatRoom, user, content }) => {
-        try {
-            // Crear el nuevo mensaje con el username directamente
-            const nuevoMensaje = new Message({
-                content,
-                user,
-                chatRoom
-            });
-            await nuevoMensaje.save();
-    
-            // Emitir el nuevo mensaje a todos los usuarios en la sala
-            io.to(chatRoom).emit('mensajeRecibido', {
-                username: user,
-                content,
-                date: nuevoMensaje.date,
-                chatRoom
-            });
-    
-            console.log(`Nuevo mensaje en la sala ${chatRoom}: ${content}`);
-        } catch (err) {
-            console.error('Error al enviar el mensaje:', err);
-            socket.emit('error', 'Error al enviar el mensaje');
-        }
-    });        
-
-    socket.on('disconnect', () => {
-        console.log('Usuario desconectado');
-    });
 });
 
 // Manejar rutas de React
