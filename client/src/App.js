@@ -39,6 +39,7 @@ function App() {
         <Route path="/partido-prueba2" element={<PartidoPrueba2 />} />
         <Route path="/foro" element={<Foro />} />
         <Route path="/partido/:idPartido" element={<PartidoDetalle />} /> {/* Ruta para el detalle de un partido tras merge */}
+        <Route path="/partidos-directo" element={<PartidosDirecto />} />
       </Routes>
     </div>
   );
