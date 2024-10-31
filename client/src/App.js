@@ -17,6 +17,7 @@ import PartidoPrueba2 from './components/stats/PartidoPrueba2';
 import WordleDiario from './components/minijuegos/WordleDiario';
 import Foro from './components/foro/Foro';
 import PartidoDetalle from './components/stats/PartidoDetalle';
+import PartidosDirecto from './components/stats/PartidosDirecto';
 import './styles/App.css';
 
 function App() {
