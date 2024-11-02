@@ -92,10 +92,12 @@ function Foro() {
 
     // Configurar Socket.IO para escuchar los mensajes nuevos
     socket.on('mensajeRecibido', (mensaje) => {
+      console.log('Mensaje recibido:', mensaje);
+      console.log('Sala actual:', currentSala);
       if (mensaje.chatRoom === currentSala) {
-        setMensajes((prevMensajes) => [...prevMensajes, mensaje]);
+          setMensajes((prevMensajes) => [...prevMensajes, mensaje]);
       }
-    });
+    });  
 
     // Limpiar socket cuando el componente se desmonte
     return () => {
@@ -166,29 +168,7 @@ function Foro() {
         chatRoom: currentSala 
       };    
       console.log('Enviando mensaje:', nuevoMensaje);
-      
       socket.emit('nuevoMensaje', nuevoMensaje);
-
-      /*try {
-        const response = await fetch(`/api/foro/salas/${currentSala}/mensajes`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(nuevoMensaje)
-        });
-  
-        if (response.ok) {
-          const data = await response.json();
-          console.log('Mensaje registrado:', data);
-          setMensajes((prevMensajes) => [...prevMensajes, data.newMessage]);
-        } else {
-          console.error('Error al registrar el mensaje:', response.statusText);
-        }
-      } catch (error) {
-        console.error('Error en la solicitud:', error);
-      }*/
-  
       setContent('');
     }
   };
@@ -257,7 +237,7 @@ function Foro() {
             ) : (
               mensajes.map((mensaje, index) => (
                 <div key={index}>
-                  <strong>{mensaje.user.username}</strong>: {mensaje.content}
+                  <strong>{mensaje.username}</strong>: {mensaje.content}
                   <small style={{ float: 'right' }}>{new Date(mensaje.date).toLocaleString()}</small>
                   <hr />
                 </div>
