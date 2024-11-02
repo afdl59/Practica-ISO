@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import '../../styles/foro/Foro.css';
 import io from 'socket.io-client';
 import { useNavigate } from 'react-router-dom';
@@ -7,126 +7,70 @@ function Foro() {
   const [mensajes, setMensajes] = useState([]);
   const [content, setContent] = useState('');
   const [username, setUsername] = useState('');
-  const [salas, setSalas] = useState([]); // Lista de salas disponibles
-  const [currentSala, setCurrentSala] = useState(''); // Sala seleccionada
-  const [newSalaTitle, setNewSalaTitle] = useState(''); // Título para una nueva sala
-  const [newSalaDescription, setNewSalaDescription] = useState(''); // Descripción para la nueva sala
+  const [salas, setSalas] = useState([]);
+  const [currentSala, setCurrentSala] = useState('');
+  const [newSalaTitle, setNewSalaTitle] = useState('');
+  const [newSalaDescription, setNewSalaDescription] = useState('');
   const navigate = useNavigate();
   
-  // Inicializar la conexión de Socket.IO
-  const socket = io('https://futbol360.ddns.net');
+  // Utiliza useRef para que `socket` permanezca constante en todas las renderizaciones
+  const socket = useRef(null);
 
-  useEffect(() => { 
-    const checkAuthAndLoadData = async () => {
-      try {
-        // Verificar si el usuario está autenticado
-        console.log('Verificando autenticación...');
-        const response = await fetch('/api/check-session', {
-          headers: {
-            'Cache-Control': 'no-cache', // Evitar el caché en la solicitud
-          }
-        });
-        const textData = await response.text(); // Primero obtenemos el texto en lugar de JSON para identificar si hay un error de formato
+  // Configurar la conexión de Socket.IO una sola vez al montar el componente
+  useEffect(() => {
+    socket.current = io('https://futbol360.ddns.net');
 
-        try {
-          const data = JSON.parse(textData); // Intentamos parsear la respuesta como JSON
-          console.log('Respuesta de /api/check-session:', data);
-
-          if (!data.isAuthenticated) {
-            console.warn('Usuario no autenticado, redirigiendo al login.');
-            navigate('/login'); // Redirige al login si no está autenticado
-            return;
-          }
-
-          setUsername(data.username);
-        } catch (jsonError) {
-          console.error('Error al parsear la respuesta de /api/check-session:', jsonError);
-          console.error('Contenido de la respuesta:', textData);
-          navigate('/login');
-          return;
-        }
-
-        // Cargar las salas de chat iniciales
-        console.log('Cargando salas de chat...');
-        const responseSalas = await fetch('/api/foro/salas', {
-          headers: {
-            'Cache-Control': 'no-cache', // Evitar el caché en la solicitud
-          }
-        });
-
-        // Verificar el estado de la respuesta para manejar los códigos HTTP
-        if (responseSalas.status === 304) {
-          console.warn('No hay cambios en las salas de chat desde la última solicitud.');
-          return; // No actualizar si no hay cambios
-        } else if (!responseSalas.ok) {
-          console.warn('Error al cargar las salas de chat. Código de estado:', responseSalas.status);
-          return;
-        }
-
-        const textSalas = await responseSalas.text(); // Primero obtenemos el texto para identificar cualquier problema
-
-        try {
-          const dataSalas = JSON.parse(textSalas);
-          console.log('Respuesta de /api/foro/salas:', dataSalas);
-
-          if (Array.isArray(dataSalas)) {
-            setSalas(dataSalas);
-          } else {
-            console.warn('La respuesta de /api/foro/salas no es un array válido.');
-          }
-        } catch (jsonSalasError) {
-          console.error('Error al parsear la respuesta de /api/foro/salas:', jsonSalasError);
-          console.error('Contenido de la respuesta:', textSalas);
-        }
-      } catch (error) {
-        console.error('Error verificando la sesión o cargando las salas:', error);
-        navigate('/login');
-      }
-    };
-
-    checkAuthAndLoadData();
-
-    socket.on('connect', () => {
+    socket.current.on('connect', () => {
       console.log('Conectado al servidor de Socket.IO');
     });
 
     // Configurar Socket.IO para escuchar los mensajes nuevos
-    socket.on('mensajeRecibido', (mensaje) => {
+    socket.current.on('mensajeRecibido', (mensaje) => {
       console.log('Mensaje recibido:', mensaje);
       console.log('Sala actual:', currentSala);
       if (mensaje.chatRoom === currentSala) {
           setMensajes((prevMensajes) => [...prevMensajes, mensaje]);
       }
-    });  
+    });
 
     // Limpiar socket cuando el componente se desmonte
     return () => {
-      socket.off('mensajeRecibido');
-      socket.disconnect();
+      socket.current.off('mensajeRecibido');
+      socket.current.disconnect();
+      console.log('Socket desconectado');
     };
-  }, [currentSala]);
+  }, []); // Solo ejecutado una vez al montar el componente
 
+  // useEffect para manejar cambios en `currentSala`
+  useEffect(() => {
+    if (currentSala) {
+      console.log('Cambiando a sala:', currentSala);
+      setMensajes([]); // Limpiar mensajes cuando se cambia de sala
 
-  const handleSalaChange = async (sala) => {
-    setCurrentSala(sala._id);
-    console.log('Cambiando a sala:', sala._id);
-    setMensajes([]); // Limpiar mensajes cuando se cambia de sala
+      // Emitir evento de unirse a la nueva sala
+      socket.current.emit('unirseASala', currentSala);
 
-    // Unirse a la nueva sala con Socket.IO
-    socket.emit('unirseASala', sala._id);
-
-    // Cargar mensajes de la nueva sala
-    try {
-      const responseMensajes = await fetch(`/api/foro/salas/${sala._id}/mensajes`);
-      if (responseMensajes.ok) {
-        const dataMensajes = await responseMensajes.json();
-        setMensajes(dataMensajes);
-      } else {
-        console.warn('No se encontraron mensajes en la sala.');
-      }
-    } catch (error) {
-      console.error('Error al cargar los mensajes de la sala:', error);
+      // Cargar mensajes de la nueva sala
+      const fetchMensajes = async () => {
+        try {
+          const responseMensajes = await fetch(`/api/foro/salas/${currentSala}/mensajes`);
+          if (responseMensajes.ok) {
+            const dataMensajes = await responseMensajes.json();
+            setMensajes(dataMensajes);
+          } else {
+            console.warn('No se encontraron mensajes en la sala.');
+          }
+        } catch (error) {
+          console.error('Error al cargar los mensajes de la sala:', error);
+        }
+      };
+      
+      fetchMensajes();
     }
+  }, [currentSala]); // Ejecutado cada vez que `currentSala` cambia
+
+  const handleSalaChange = (sala) => {
+    setCurrentSala(sala._id);
   };
 
   const handleCreateSala = async (e) => {
@@ -160,21 +104,19 @@ function Foro() {
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (username && content && currentSala) {
       const nuevoMensaje = { 
         username: username, 
         content: content, 
         chatRoom: currentSala 
-      };    
+      };
       console.log('Enviando mensaje:', nuevoMensaje);
-      socket.emit('nuevoMensaje', nuevoMensaje);
+      socket.current.emit('nuevoMensaje', nuevoMensaje);
       setContent('');
     }
   };
-  
-  
 
   return (
     <>
