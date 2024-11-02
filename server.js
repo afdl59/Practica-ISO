@@ -406,7 +406,7 @@ io.on('connection', (socket) => {
     
             // Emitir el nuevo mensaje a todos los usuarios en la sala
             io.to(chatRoom).emit('mensajeRecibido', {
-                username: user,
+                user: username,
                 content,
                 date: nuevoMensaje.date,
                 chatRoom
@@ -475,7 +475,7 @@ app.post('/api/foro/salas/:id/mensajes', async (req, res) => {
         await newMessage.save();
 
         // Emitir mensaje a todos los conectados
-        io.to(id).emit('nuevoMensaje', {
+        io.to(id).emit('mensajeRecibido', {
             content,
             user: username,
             chatRoom: id,

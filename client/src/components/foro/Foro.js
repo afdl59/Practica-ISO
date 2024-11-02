@@ -164,10 +164,10 @@ function Foro() {
         user: username, 
         content: content, 
         chatRoom: currentSala 
-      };
+      };    
       console.log('Enviando mensaje:', nuevoMensaje);
       
-      socket.emit('enviarMensaje', nuevoMensaje);
+      socket.emit('nuevoMensaje', nuevoMensaje);
 
       /*try {
         const response = await fetch(`/api/foro/salas/${currentSala}/mensajes`, {
