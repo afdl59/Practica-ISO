@@ -1,95 +1,108 @@
 /* Contenedor principal del foro */
 .foro-container {
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #f4f4f4; /* Fondo claro para el foro */
+  background: linear-gradient(to right, #141e30, #243b55); /* Fondo degradado */
   padding: 20px;
   box-sizing: border-box;
 }
 
+/* Título del foro */
+.foro-container h1 {
+  color: #ffffff;
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Sombra del título */
+}
+
 /* Contenedor de los mensajes del foro */
 .foro-mensajes {
-  background-color: rgba(0, 0, 0, 0.6); /* Fondo negro semitransparente */
+  background-color: rgba(255, 255, 255, 0.1); /* Fondo blanco semitransparente */
   width: 80%;
   height: 60vh;
   overflow-y: auto;
   padding: 20px;
-  border-radius: 10px; /* Bordes redondeados */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra para dar profundidad */
-  color: #ffffff; /* Texto blanco */
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); /* Sombra de texto para mejorar legibilidad */
+  border-radius: 12px; /* Bordes redondeados */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4); /* Sombra para dar profundidad */
+  color: #ffffff;
+  backdrop-filter: blur(6px); /* Efecto de desenfoque */
   margin-bottom: 20px;
 }
 
 /* Estilo para cada mensaje */
 .mensaje {
   margin-bottom: 15px;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.3); /* Fondo semitransparente */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .mensaje strong {
-  color: #ffffff; /* Nombre de usuario en blanco */
+  color: #ffd700; /* Nombre de usuario en dorado */
 }
 
 .mensaje small {
   font-size: 0.8rem;
-  color: #cccccc; /* Fecha en gris claro */
+  color: #bbbbbb; /* Fecha en gris claro */
   float: right;
 }
 
 /* Barra de envío de mensajes */
 .foro-inputs {
   display: flex;
-  flex-direction: column;
+  align-items: center;
   width: 80%;
-  background-color: rgba(0, 0, 0, 0.6); /* Fondo negro semitransparente */
-  padding: 20px;
-  border-radius: 10px; /* Bordes redondeados */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra para dar profundidad */
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(6px); /* Efecto de desenfoque */
 }
 
 .foro-inputs input,
 .foro-inputs textarea {
   width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
+  padding: 12px;
+  margin-right: 10px;
   border: none;
-  border-radius: 5px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
   font-size: 1rem;
-  background-color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #333;
 }
 
 .foro-inputs textarea {
   resize: none;
-  height: 100px;
+  height: 60px;
 }
 
 /* Botón de envío */
 .foro-inputs button {
-  padding: 10px 20px;
-  background-color: #007bff;
+  padding: 12px 20px;
+  background-color: #00b4d8;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
   cursor: pointer;
-  font-size: 1.2rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Añadir sombra a los botones */
-  transition: background-color 0.3s ease;
+  font-size: 1rem;
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
 }
 
 .foro-inputs button:hover {
-  background-color: #0056b3; /* Efecto hover en el botón */
+  background-color: #0077b6; /* Efecto hover en el botón */
 }
 
-/* Hacer que la vista de mensajes se mantenga visible en pantallas pequeñas */
+/* Estilo para pantallas pequeñas */
 @media (max-width: 768px) {
-  .foro-container {
-    height: auto;
-    padding: 10px;
+  .foro-container h1 {
+    font-size: 2rem;
   }
 
   .foro-mensajes {
@@ -99,6 +112,16 @@
 
   .foro-inputs {
     width: 100%;
+    flex-direction: column;
+  }
+
+  .foro-inputs input,
+  .foro-inputs textarea {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
+  .foro-inputs button {
+    width: 100%;
   }
 }
-    
