@@ -153,7 +153,7 @@ function Foro() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (username && content && currentSala) {
       const nuevoMensaje = { 
@@ -162,10 +162,31 @@ function Foro() {
         chatRoom: currentSala 
       };
       console.log('Enviando mensaje:', nuevoMensaje);
-      socket.emit('nuevoMensaje', nuevoMensaje);
+  
+      try {
+        const response = await fetch(`/api/foro/salas/${currentSala}/mensajes`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(nuevoMensaje)
+        });
+  
+        if (response.ok) {
+          const data = await response.json();
+          console.log('Mensaje registrado:', data);
+          setMensajes((prevMensajes) => [...prevMensajes, data.newMessage]);
+        } else {
+          console.error('Error al registrar el mensaje:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error en la solicitud:', error);
+      }
+  
       setContent('');
     }
   };
+  
   
 
   return (
