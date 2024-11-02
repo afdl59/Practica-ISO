@@ -109,6 +109,7 @@ function Foro() {
 
   const handleSalaChange = async (sala) => {
     setCurrentSala(sala._id);
+    console.log('Cambiando a sala:', sala._id);
     setMensajes([]); // Limpiar mensajes cuando se cambia de sala
 
     // Unirse a la nueva sala con Socket.IO
