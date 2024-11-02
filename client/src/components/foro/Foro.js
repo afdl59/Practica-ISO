@@ -161,7 +161,7 @@ function Foro() {
     e.preventDefault();
     if (username && content && currentSala) {
       const nuevoMensaje = { 
-        user: username, 
+        username: username, 
         content: content, 
         chatRoom: currentSala 
       };    

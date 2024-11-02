@@ -394,19 +394,17 @@ io.on('connection', (socket) => {
     });
 
     // Escuchar evento de nuevo mensaje y guardar en la base de datos
-    socket.on('nuevoMensaje', async ({ chatRoom, user, content }) => {
+    socket.on('nuevoMensaje', async ({ chatRoom, username, content }) => {
         try {
-            // Crear el nuevo mensaje con el username directamente
             const nuevoMensaje = new Message({
                 content,
-                user,
+                user: username,  // Cambiado de "user" a "username"
                 chatRoom
             });
             await nuevoMensaje.save();
     
-            // Emitir el nuevo mensaje a todos los usuarios en la sala
             io.to(chatRoom).emit('mensajeRecibido', {
-                user: username,
+                username: username, // Emitiendo "username" en lugar de "user"
                 content,
                 date: nuevoMensaje.date,
                 chatRoom
@@ -417,7 +415,7 @@ io.on('connection', (socket) => {
             console.error('Error al enviar el mensaje:', err);
             socket.emit('error', 'Error al enviar el mensaje');
         }
-    });        
+    });           
 
     socket.on('disconnect', () => {
         console.log('Usuario desconectado');
@@ -477,7 +475,7 @@ app.post('/api/foro/salas/:id/mensajes', async (req, res) => {
         // Emitir mensaje a todos los conectados
         io.to(id).emit('mensajeRecibido', {
             content,
-            user: username,
+            username: username,
             chatRoom: id,
             date: newMessage.date
         });
