@@ -92,7 +92,7 @@ const chatRoomSchema = new mongoose.Schema({
 const messageSchema = new mongoose.Schema({
     content: { type: String, required: true },
     date: { type: Date, default: Date.now },
-    user: { type: String, required: true },
+    username: { type: String, required: true },
     chatRoom: { type: String, ref: 'ChatRoom', required: true }
 });
 
@@ -398,7 +398,7 @@ io.on('connection', (socket) => {
         try {
             const nuevoMensaje = new Message({
                 content,
-                user: username,  // Cambiado de "user" a "username"
+                username: username,  // Cambiado de "user" a "username"
                 chatRoom
             });
             await nuevoMensaje.save();
@@ -469,7 +469,7 @@ app.post('/api/foro/salas/:id/mensajes', async (req, res) => {
     const { username, content } = req.body;
 
     try {
-        const newMessage = new Message({ content, user: username, chatRoom: id });
+        const newMessage = new Message({ content, username: username, chatRoom: id });
         await newMessage.save();
 
         // Emitir mensaje a todos los conectados

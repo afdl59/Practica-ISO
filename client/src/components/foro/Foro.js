@@ -147,12 +147,12 @@ function Foro() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (username && content && currentSala) {
+      socket.current.emit('nuevoMensaje', nuevoMensaje);
       const nuevoMensaje = {
         username: username,
         content: content,
         chatRoom: currentSala,
       };
-      socket.current.emit('nuevoMensaje', nuevoMensaje);
       //Actualizamos lista de mensajes
       setMensajes((prevMensajes) => [
         ...prevMensajes,
@@ -224,7 +224,7 @@ function Foro() {
             ) : (
               mensajes.map((mensaje, index) => (
                 <div key={index}>
-                  <strong>{mensaje.username}</strong>: {mensaje.content}
+                  <strong>{mensaje.username || mensaje.user}</strong>: {mensaje.content}
                   <small style={{ float: 'right' }}>{new Date(mensaje.date).toLocaleString()}</small>
                   <hr />
                 </div>
