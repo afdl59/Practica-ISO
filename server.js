@@ -385,7 +385,7 @@ app.get('/api/partidos', (req, res) => {
 
 // Socket.io: manejo de mensajes en tiempo real
 io.on('connection', (socket) => {
-    console.log('Nuevo usuario conectado');
+    console.log(`Usuario conectado: ${socket.id}`);		
 
     // Escuchar evento de unirse a una sala
     socket.on('unirseASala', (salaId) => {
