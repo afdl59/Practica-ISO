@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 function Foro() {
   const [mensajes, setMensajes] = useState([]);
   const [content, setContent] = useState('');
-  const [username] = useState('');
+  const [username, setUsername] = useState('');
   const [salas, setSalas] = useState([]);
   const [currentSala, setCurrentSala] = useState('');
   const [newSalaTitle, setNewSalaTitle] = useState('');
