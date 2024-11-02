@@ -147,12 +147,14 @@ function Foro() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (username && content && currentSala) {
-      socket.current.emit('nuevoMensaje', nuevoMensaje);
       const nuevoMensaje = {
         username: username,
         content: content,
         chatRoom: currentSala,
       };
+
+      socket.current.emit('nuevoMensaje', nuevoMensaje);
+      
       //Actualizamos lista de mensajes
       setMensajes((prevMensajes) => [
         ...prevMensajes,
