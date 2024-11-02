@@ -164,12 +164,6 @@ function Foro() {
       };
 
       socket.current.emit('nuevoMensaje', nuevoMensaje);
-
-      //Actualizamos lista de mensajes
-      /*setMensajes((prevMensajes) => [
-        ...prevMensajes,
-        { ...nuevoMensaje, date: new Date().toISOString() },
-      ]);*/
       setContent('');
     }
   };
