@@ -86,6 +86,10 @@ function Foro() {
 
     checkAuthAndLoadData();
 
+    socket.on('connect', () => {
+      console.log('Conectado al servidor de Socket.IO');
+    });
+
     // Configurar Socket.IO para escuchar los mensajes nuevos
     socket.on('mensajeRecibido', (mensaje) => {
       if (mensaje.chatRoom === currentSala) {
@@ -157,13 +161,15 @@ function Foro() {
     e.preventDefault();
     if (username && content && currentSala) {
       const nuevoMensaje = { 
-        username: username, 
+        user: username, 
         content: content, 
         chatRoom: currentSala 
       };
       console.log('Enviando mensaje:', nuevoMensaje);
-  
-      try {
+      
+      socket.emit('enviarMensaje', nuevoMensaje);
+
+      /*try {
         const response = await fetch(`/api/foro/salas/${currentSala}/mensajes`, {
           method: 'POST',
           headers: {
@@ -181,7 +187,7 @@ function Foro() {
         }
       } catch (error) {
         console.error('Error en la solicitud:', error);
-      }
+      }*/
   
       setContent('');
     }
