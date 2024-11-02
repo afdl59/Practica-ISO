@@ -26,6 +26,7 @@ function Foro() {
 
     // Configurar Socket.IO para escuchar los mensajes nuevos
     socket.current.on('mensajeRecibido', (mensaje) => {
+      console.log('Mensaje recibido en el cliente:', mensaje);
       if (mensaje.chatRoom === currentSala) {
         setMensajes((prevMensajes) => [...prevMensajes, mensaje]);
       }
@@ -154,7 +155,7 @@ function Foro() {
       };
 
       socket.current.emit('nuevoMensaje', nuevoMensaje);
-      
+
       //Actualizamos lista de mensajes
       setMensajes((prevMensajes) => [
         ...prevMensajes,

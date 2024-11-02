@@ -391,6 +391,10 @@ io.on('connection', (socket) => {
     socket.on('unirseASala', (salaId) => {
         socket.join(salaId);
         console.log(`Usuario se unió a la sala: ${salaId}`);
+        socket.on('mensajeRecibido', (mensaje) => {
+            console.log('Mensaje recibido en el servidor:', mensaje);
+            io.to(salaId).emit('mensajeRecibido', mensaje);
+        });
     });
 
     // Escuchar evento de nuevo mensaje y guardar en la base de datos
