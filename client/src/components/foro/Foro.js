@@ -166,10 +166,10 @@ function Foro() {
       socket.current.emit('nuevoMensaje', nuevoMensaje);
 
       //Actualizamos lista de mensajes
-      setMensajes((prevMensajes) => [
+      /*setMensajes((prevMensajes) => [
         ...prevMensajes,
         { ...nuevoMensaje, date: new Date().toISOString() },
-      ]);
+      ]);*/
       setContent('');
     }
   };
