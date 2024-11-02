@@ -153,6 +153,11 @@ function Foro() {
         chatRoom: currentSala,
       };
       socket.current.emit('nuevoMensaje', nuevoMensaje);
+      //Actualizamos lista de mensajes
+      setMensajes((prevMensajes) => [
+        ...prevMensajes,
+        { ...nuevoMensaje, date: new Date().toISOString() },
+      ]);
       setContent('');
     }
   };
