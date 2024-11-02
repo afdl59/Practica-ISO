@@ -475,7 +475,7 @@ app.post('/api/foro/salas/:id/mensajes', async (req, res) => {
         await newMessage.save();
 
         // Emitir mensaje a todos los conectados
-        io.to(id).emit('mensajeRecibido', {
+        io.to(id).emit('nuevoMensaje', {
             content,
             user: username,
             chatRoom: id,
