@@ -24,14 +24,6 @@ function Foro() {
       console.log('Conectado al servidor de Socket.IO');
     });
 
-    // Configurar Socket.IO para escuchar los mensajes nuevos
-    socket.current.on('mensajeRecibido', (mensaje) => {
-      console.log('Mensaje recibido en el cliente:', mensaje);
-      if (mensaje.chatRoom === currentSala) {
-        setMensajes((prevMensajes) => [...prevMensajes, mensaje]);
-      }
-    });
-
     // Limpiar la conexión de Socket.IO al desmontar el componente
     return () => {
       socket.current.off('mensajeRecibido');
@@ -39,6 +31,23 @@ function Foro() {
       console.log('Socket desconectado');
     };
   }, []); // Se ejecuta solo una vez al montar el componente
+
+  // Manejar mensajes recibidos
+  useEffect(() => {
+    const handleMensajeRecibido = (mensaje) => {
+      console.log('Mensaje recibido en el cliente:', mensaje);
+      if (mensaje.chatRoom === currentSala) {
+        setMensajes((prevMensajes) => [...prevMensajes, mensaje]);
+      }
+    };
+  
+    socket.current.on('mensajeRecibido', handleMensajeRecibido);
+  
+    // Limpiar el evento 'mensajeRecibido' al cambiar de sala o desmontar el componente
+    return () => {
+      socket.current.off('mensajeRecibido', handleMensajeRecibido);
+    };
+  }, [currentSala]);
 
   // Verificación de autenticación y carga inicial de datos
   useEffect(() => {
