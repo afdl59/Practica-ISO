@@ -54,7 +54,7 @@ function Foro() {
     const checkAuthAndLoadData = async () => {
       try {
         // Verificar si el usuario está autenticado
-        const response = await fetch('/api/check-session', {
+        const response = await fetch('/api/auth/check-session', {
           headers: {
             'Cache-Control': 'no-cache',
           },

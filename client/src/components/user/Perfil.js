@@ -16,7 +16,7 @@ function Perfil() {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await fetch('/api/check-session');
+        const response = await fetch('/api/auth/check-session');
         const data = await response.json();
   
         if (!data.isAuthenticated) {
