@@ -1,0 +1,34 @@
+{
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.3",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "http": "^0.0.1-security",
+    "mongoose": "^8.6.3",
+    "mysql2": "^3.11.3",
+    "ngrok": "^5.0.0-beta.2",
+    "nodemailer": "^6.9.15",
+    "socket.io": "^4.8.0"
+  },
+  "name": "practica-iso",
+  "description": "Practica de ISO año 3. Integrantes: Carlos Richante, Raquel Cerezo, Alejandro Figari, Ignacio Arvilla, Lorenzo Sanz y Raimundo Baca\r hbscshds",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/afdl59/Practica-ISO.git"
+  },
+  "keywords": [
+    "Futbol360"
+  ],
+  "author": "lorensation",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
+  }
+}

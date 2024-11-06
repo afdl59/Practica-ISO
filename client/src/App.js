@@ -17,6 +17,7 @@ import PartidoPrueba2 from './components/stats/PartidoPrueba2';
 import WordleDiario from './components/minijuegos/WordleDiario';
 import Foro from './components/foro/Foro';
 import PartidoDetalle from './components/stats/PartidoDetalle';
+import PartidosDirecto from './components/stats/PartidosDirecto';
 import './styles/App.css';
 
 function App() {
@@ -38,7 +39,8 @@ function App() {
         <Route path="/partido-prueba1" element={<PartidoPrueba1 />} />
         <Route path="/partido-prueba2" element={<PartidoPrueba2 />} />
         <Route path="/foro" element={<Foro />} />
-        <Route path="/PartidoDetalle" element={<PartidoDetalle/>} />
+        <Route path="/partido/:idPartido" element={<PartidoDetalle />} /> {/* Ruta para el detalle de un partido tras merge */}
+        <Route path="/partidos-directo" element={<PartidosDirecto />} />
       </Routes>
     </div>
   );

@@ -5,6 +5,7 @@ import '../styles/Sidebar.css';
 
 function Sidebar() {
   const [minigamesOpen, setMinigamesOpen] = useState(false);
+  const [estadisticasOpen, setEstadisticasOpen] = useState(false); // Nuevo estado
   const [notificaciones, setNotificaciones] = useState([]);
   const [equipoFavorito, setEquipoFavorito] = useState('');
   const [intereses, setIntereses] = useState([]);
@@ -13,17 +14,18 @@ function Sidebar() {
     setMinigamesOpen(!minigamesOpen);
   };
 
+  const toggleEstadisticas = () => { // Nueva función
+    setEstadisticasOpen(!estadisticasOpen);
+  };
+
   useEffect(() => {
-    // Cargar equipo e intereses del localStorage
     const savedEquipo = localStorage.getItem('equipoFavorito');
     const savedIntereses = JSON.parse(localStorage.getItem('intereses')) || [];
 
     setEquipoFavorito(savedEquipo);
     setIntereses(savedIntereses);
 
-    // Generar notificaciones basadas en el equipo e intereses
     const nuevasNotificaciones = [];
-
     if (savedEquipo) {
       nuevasNotificaciones.push(`Noticias recientes de ${savedEquipo}`);
     }
@@ -49,11 +51,20 @@ function Sidebar() {
         <img src={logo} alt="Icon Foro" className="navbar-icon" />
         <h3 className="navbar-title">Foro</h3>
       </Link>
-      <Link to="/partidos" className="navbar-item">
+
+      {/* Nueva sección Estadísticas */}
+      <div className="navbar-item dropdown" onClick={toggleEstadisticas}>
         <img src={logo} alt="Icon Estadísticas" className="navbar-icon" />
         <h3 className="navbar-title">Estadísticas</h3>
-      </Link>
+        {estadisticasOpen && (
+          <div className="dropdown-content">
+            <Link to="/partidos" className="dropdown-item">Partidos Pasados</Link>
+            <Link to="/partidos-directo" className="dropdown-item">Partidos en Directo</Link>
+          </div>
+        )}
+      </div>
 
+      {/* Sección Minijuegos */}
       <div className="navbar-item dropdown" onClick={toggleMinigames}>
         <img src={logo} alt="Icon Minijuegos" className="navbar-icon" />
         <h3 className="navbar-title">Minijuegos</h3>
