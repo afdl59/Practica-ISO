@@ -3,6 +3,15 @@ const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const emailService = require('../services/emailService');
 
+// authController.js
+exports.checkSession = (req, res) => {
+    if (req.session && req.session.user) {
+        res.json({ isAuthenticated: true, username: req.session.user.username });
+    } else {
+        res.json({ isAuthenticated: false });
+    }
+};
+
 // Registro de usuario
 exports.register = async (req, res) => {
     const { username, firstName, lastName, email, password } = req.body;
