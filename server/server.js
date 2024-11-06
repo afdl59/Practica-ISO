@@ -29,7 +29,7 @@ app.use((req, res, next) => {
 // Middleware de configuración
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, 'client', 'build'))); // Servir archivos estáticos desde /build
+app.use(express.static(path.join(__dirname, '../client/build'))); // Servir archivos estáticos desde /build
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Servir archivos subidos desde /uploads
 app.use(cors({
     origin: 'https://futbol360.ddns.net',
@@ -54,7 +54,7 @@ socketHandler(io);
 
 // Servir el cliente de React en cualquier otra ruta
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+    res.sendFile(path.join(__dirname, '../client/build/index.html'));
 });
 
 // Iniciar el servidor
