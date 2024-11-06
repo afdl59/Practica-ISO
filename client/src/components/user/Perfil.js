@@ -16,7 +16,7 @@ function Perfil() {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await fetch('/api/check-session');
+        const response = await fetch('/api/auth/check-session');
         const data = await response.json();
   
         if (!data.isAuthenticated) {
@@ -54,7 +54,7 @@ function Perfil() {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch('/api/logout', {
+      const response = await fetch('/api/users/logout', {
         method: 'POST'
       });
 
@@ -79,7 +79,7 @@ function Perfil() {
       formData.append('username', userData.username); // Asegúrate de enviar el nombre de usuario
   
       try {
-        const response = await fetch('/api/upload', {
+        const response = await fetch('/api/users/upload', {
           method: 'POST',
           body: formData
         });
