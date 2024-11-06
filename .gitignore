@@ -30,3 +30,12 @@ replay_pid*
 
 # Allow example file
 !.env.example
+
+# Ignorar la carpeta node_modules
+/node_modules
+
+# Ignorar package-lock.json
+/package-lock.json
+
+# Ignorar package.json
+/package.json
