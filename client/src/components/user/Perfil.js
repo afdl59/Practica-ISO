@@ -79,7 +79,7 @@ function Perfil() {
       formData.append('username', userData.username); // Asegúrate de enviar el nombre de usuario
   
       try {
-        const response = await fetch('/api/upload', {
+        const response = await fetch('/api/users/upload', {
           method: 'POST',
           body: formData
         });
