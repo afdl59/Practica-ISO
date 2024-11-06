@@ -2,7 +2,7 @@
 const express = require('express');
 const multer = require('multer');
 const userController = require('../controllers/userController');
-const authMiddleware = require('../middleware/authMiddleware'); // Importa el middleware de autenticación
+const authMiddleware = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
@@ -17,15 +17,13 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// Rutas de autenticación
+// Rutas de autenticación y perfil de usuario
 router.post('/register', userController.register);
 router.post('/login', userController.login);
-router.get('/check-session', userController.checkSession);
 router.post('/logout', userController.logout);
-
-// Rutas de perfil de usuario con verificación de sesión
-router.get('/:username', authMiddleware, userController.getUserProfile); // Protege la ruta de obtener perfil
-router.put('/:username', authMiddleware, userController.updateUserProfile); // Protege la ruta de actualizar perfil
-router.post('/upload', authMiddleware, upload.single('fotoPerfil'), userController.uploadProfileImage); // Protege la ruta de subir imagen de perfil
+router.get('/check-session', authMiddleware.checkSession);
+router.get('/:username', authMiddleware, userController.getUserProfile);
+router.put('/:username', authMiddleware, userController.updateUserProfile);
+router.post('/upload', authMiddleware, upload.single('fotoPerfil'), userController.uploadProfileImage);
 
 module.exports = router;

@@ -80,18 +80,6 @@ exports.login = async (req, res) => {
     }
 };
 
-// Verificar sesión activa
-exports.checkSession = (req, res) => {
-    if (req.session && req.session.user) {
-        res.json({
-            isAuthenticated: true,
-            username: req.session.username
-        });
-    } else {
-        res.json({ isAuthenticated: false });
-    }
-};
-
 // Cerrar sesión
 exports.logout = (req, res) => {
     req.session.destroy((err) => {
