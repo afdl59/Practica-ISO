@@ -17,7 +17,7 @@ module.exports = (io) => {
             });
         });
 
-        // Evento para recibir y guardar un nuevo mensaje en la base de datos
+        // Evento para recibir y guardar un nuevo mensaje en la base de datos no relacional
         socket.on('nuevoMensaje', async ({ chatRoom, username, content }) => {
             try {
                 // Crear una nueva instancia de mensaje y guardarlo en la base de datos
