@@ -18,6 +18,8 @@ import WordleDiario from './components/minijuegos/WordleDiario';
 import Foro from './components/foro/Foro';
 import PartidoDetalle from './components/stats/PartidoDetalle';
 import PartidosDirecto from './components/stats/PartidosDirecto';
+import AnadirEquipoFavorito from './components/user/AnadirEquipoFavorito';
+import AnadirCompeticionFavorita from './components/user/AnadirCompeticionFavorita';
 import './styles/App.css';
 
 function App() {
@@ -30,6 +32,8 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/minijuegos" element={<Minijuegos />} />
         <Route path="/perfil" element={<Perfil />} /> {/* Ruta para la página de perfil */}
+        <Route path="/perfil/anadir-equipo-favorito" element={<AnadirEquipoFavorito />} />
+        <Route path="/perfil/anadir-competicion-favorita" element={<AnadirCompeticionFavorita />} />
         <Route path="/minijuegos/bingo" element={<Bingo />} /> {/* Ruta para Bingo */}
         <Route path="/minijuegos/tiro-libre" element={<TiroLibre />} /> {/* Ruta para Tiro Libre */}
         <Route path="/minijuegos/wordle-diario" element={<WordleDiario />} /> {/* Nueva ruta para Wordle Diario */}
