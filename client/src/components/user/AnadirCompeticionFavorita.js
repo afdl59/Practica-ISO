@@ -69,4 +69,4 @@ function AñadirCompeticionFavorita() {
   );
 }
 
-export default AnadirCompeticionFavorita;
+export default AñadirCompeticionFavorita;
