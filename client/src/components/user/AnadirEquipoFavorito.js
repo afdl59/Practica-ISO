@@ -10,7 +10,8 @@ function AñadirEquipoFavorito() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const competicionIds = { "LaLiga": 140, 
+  const competicionIds = { 
+    "LaLiga": 140, 
     "Premier League": 39, 
     "Serie A": 135, 
     "Bundesliga": 78, 
@@ -18,7 +19,8 @@ function AñadirEquipoFavorito() {
     "World Cup": 1 
     };
     
-  const paises = { "España": "spain", 
+  const paises = { 
+    "España": "spain", 
     "Inglaterra": "england", 
     "Italia": "italy", 
     "Francia": "france", 

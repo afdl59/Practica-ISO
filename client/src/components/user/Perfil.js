@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import '../../styles/user/Perfil.css';
 
 function Perfil() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [editedData, setEditedData] = useState({
@@ -11,8 +12,8 @@ function Perfil() {
     lastName: '',
     equiposFavoritos: [],
     competicionesFavoritas: [],
-    equipoFavoritoManual: '', 
-    competicionFavoritaManual: '', 
+    equipoFavoritoManual: '',
+    competicionFavoritaManual: '',
     fotoPerfil: null
   });
 
@@ -26,10 +27,7 @@ function Perfil() {
           return;
         }
         const userResponse = await fetch(`/api/users/${data.username}`);
-
-        if (!userResponse.ok){
-          throw new Error('Error al obtener datos del usuario');
-        }
+        if (!userResponse.ok) throw new Error('Error al obtener datos del usuario');
 
         const userData = await userResponse.json();
         setUserData(userData);
@@ -37,7 +35,7 @@ function Perfil() {
           ...editedData,
           firstName: userData.firstName,
           lastName: userData.lastName,
-          equiposFavoritos: userData.equiposFavoritos || [],
+          equiposFavoritos: userData.equipoFavorito || [],
           competicionesFavoritas: userData.competicionesFavoritas || [],
           fotoPerfil: userData.fotoPerfil
         });
@@ -51,12 +49,25 @@ function Perfil() {
     checkAuth();
   }, [navigate]);
 
+  useEffect(() => {
+    if (location.state?.equipoSeleccionado) {
+      setEditedData((prevData) => ({
+        ...prevData,
+        equipoFavoritoManual: location.state.equipoSeleccionado
+      }));
+    }
+    if (location.state?.competicionSeleccionada) {
+      setEditedData((prevData) => ({
+        ...prevData,
+        competicionFavoritaManual: location.state.competicionSeleccionada
+      }));
+    }
+  }, [location.state]);
+
   const handleLogout = async () => {
     try {
       const response = await fetch('/api/users/logout', { method: 'POST' });
-      if (response.ok){
-        navigate('/login');
-      }
+      if (response.ok) navigate('/login');
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
     }
@@ -67,14 +78,9 @@ function Perfil() {
     if (file) {
       const formData = new FormData();
       formData.append('fotoPerfil', file);
-
       try {
         const response = await fetch('/api/users/upload', { method: 'POST', body: formData });
-        
-        if (!response.ok){
-          throw new Error('Error al subir la imagen');
-        }
-
+        if (!response.ok) throw new Error('Error al subir la imagen');
         const data = await response.json();
         setUserData((prevUserData) => ({
           ...prevUserData,
@@ -97,22 +103,21 @@ function Perfil() {
       const updatedData = {
         firstName: editedData.firstName,
         lastName: editedData.lastName,
-        equiposFavoritos: editedData.equiposFavoritos.includes(editedData.equipoFavoritoManual)
+        equipoFavorito: editedData.equiposFavoritos.includes(editedData.equipoFavoritoManual)
           ? editedData.equiposFavoritos
           : [...editedData.equiposFavoritos, editedData.equipoFavoritoManual],
         competicionesFavoritas: editedData.competicionesFavoritas.includes(editedData.competicionFavoritaManual)
           ? editedData.competicionesFavoritas
           : [...editedData.competicionesFavoritas, editedData.competicionFavoritaManual]
       };
+
       const response = await fetch(`/api/users/${userData.username}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatedData)
       });
 
-      if (!response.ok){
-        throw new Error('Error al actualizar los datos del usuario');
-      }
+      if (!response.ok) throw new Error('Error al actualizar los datos del usuario');
 
       setUserData(updatedData);
       alert('Datos actualizados correctamente');
@@ -121,13 +126,8 @@ function Perfil() {
     }
   };
 
-  if (loading){
-    return <div>Cargando...</div>;
-  }
-
-  if (!userData){
-    return <div>Error al cargar los datos del usuario.</div>;
-  }
+  if (loading) return <div>Cargando...</div>;
+  if (!userData) return <div>Error al cargar los datos del usuario.</div>;
 
   return (
     <div className="perfil-container">
