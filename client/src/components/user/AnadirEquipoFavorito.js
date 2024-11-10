@@ -84,4 +84,4 @@ function AñadirEquipoFavorito() {
   );
 }
 
-export default AnadirEquipoFavorito;
+export default AñadirEquipoFavorito;
