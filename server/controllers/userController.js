@@ -5,12 +5,11 @@ const emailService = require('../services/emailService');
 
 // Registro de usuario con envío de correo de bienvenida
 exports.register = async (req, res) => {
-    const { username, firstName, lastName, email, password } = req.body;
+    const { username, firstName, lastName, email, password, equipoFavorito, competicionesFavoritas } = req.body;
     try {
-        const nuevoUsuario = new User({ username, firstName, lastName, email, password });
+        const nuevoUsuario = new User({ username, firstName, lastName, email, password, equipoFavorito, competicionesFavoritas });
         await nuevoUsuario.save();
 
-        // Configurar y enviar el correo de bienvenida
         const mailOptions = {
             from: process.env.EMAIL_USER,
             to: email,
@@ -61,7 +60,7 @@ exports.login = async (req, res) => {
             firstName: usuario.firstName,
             lastName: usuario.lastName,
             equipoFavorito: usuario.equipoFavorito,
-            intereses: usuario.intereses,
+            competicionesFavoritas: usuario.competicionesFavoritas,
             fotoPerfil: usuario.fotoPerfil,
             messages: usuario.messages
         };
@@ -110,7 +109,7 @@ exports.getUserProfile = async (req, res) => {
             lastName: usuario.lastName,
             fotoPerfil: usuario.fotoPerfil || null,
             equipoFavorito: usuario.equipoFavorito || '',
-            intereses: usuario.intereses || [],
+            competicionesFavoritas: usuario.competicionesFavoritas || [],
             ultimoLogin: usuario.createdAt,
         });
     } catch (err) {
@@ -121,7 +120,7 @@ exports.getUserProfile = async (req, res) => {
 // Actualizar perfil de usuario
 exports.updateUserProfile = async (req, res) => {
     const { username } = req.params;
-    const { firstName, lastName, equipoFavorito, intereses } = req.body;
+    const { firstName, lastName, equipoFavorito, competicionesFavoritas } = req.body;
 
     try {
         const usuario = await User.findOne({ username });
@@ -133,7 +132,7 @@ exports.updateUserProfile = async (req, res) => {
         usuario.firstName = firstName || usuario.firstName;
         usuario.lastName = lastName || usuario.lastName;
         usuario.equipoFavorito = equipoFavorito || usuario.equipoFavorito;
-        usuario.intereses = intereses || usuario.intereses;
+        usuario.competicionesFavoritas = competicionesFavoritas || usuario.competicionesFavoritas;
 
         await usuario.save();
         res.status(200).json(usuario);
@@ -167,4 +166,3 @@ exports.uploadProfileImage = async (req, res) => {
         res.status(500).json({ message: 'Error al subir la imagen' });
     }
 };
-
