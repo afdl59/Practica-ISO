@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     fotoPerfil: { type: String },
-    equipoFavorito: { type: String }, // Nuevo campo para el equipo favorito
+    equipoFavorito: { type: [String], default: [] }, // Nuevo campo para el equipo favorito
     competicionesFavoritas: { type: [String], default: [] }, // Nuevo campo para competiciones favoritas
     createdAt: { type: Date, default: Date.now },
 });

@@ -62,7 +62,6 @@ exports.login = async (req, res) => {
             equipoFavorito: usuario.equipoFavorito,
             competicionesFavoritas: usuario.competicionesFavoritas,
             fotoPerfil: usuario.fotoPerfil,
-            messages: usuario.messages
         };
 
         req.session.save((err) => {
@@ -108,7 +107,7 @@ exports.getUserProfile = async (req, res) => {
             firstName: usuario.firstName,
             lastName: usuario.lastName,
             fotoPerfil: usuario.fotoPerfil || null,
-            equipoFavorito: usuario.equipoFavorito || '',
+            equipoFavorito: usuario.equipoFavorito || [],
             competicionesFavoritas: usuario.competicionesFavoritas || [],
             ultimoLogin: usuario.createdAt,
         });
