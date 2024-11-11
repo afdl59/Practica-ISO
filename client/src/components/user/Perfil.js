@@ -79,7 +79,7 @@ function Perfil() {
       const formData = new FormData();
       formData.append('fotoPerfil', file);
       try {
-        const response = await fetch('/api/users/upload', { method: 'POST', body: formData });
+        const response = await fetch('/api/users/uploads', { method: 'POST', body: formData });
         if (!response.ok) throw new Error('Error al subir la imagen');
         const data = await response.json();
         setUserData((prevUserData) => ({

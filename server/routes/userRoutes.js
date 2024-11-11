@@ -25,6 +25,6 @@ router.post('/logout', userController.logout);
 router.get('/check-session', authController.checkSession);
 router.get('/:username', authMiddleware, userController.getUserProfile);
 router.put('/:username', authMiddleware, userController.updateUserProfile);
-router.post('/upload', authMiddleware, upload.single('fotoPerfil'), userController.uploadProfileImage);
+router.post('/uploads', authMiddleware, upload.single('fotoPerfil'), userController.uploadProfileImage);
 
 module.exports = router;
