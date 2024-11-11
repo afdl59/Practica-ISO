@@ -35,6 +35,7 @@ app.use(cors({
     origin: 'https://futbol360.ddns.net',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
 }));
 
 // Configurar middleware de sesión
