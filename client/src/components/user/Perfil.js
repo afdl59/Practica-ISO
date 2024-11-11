@@ -12,8 +12,8 @@ function Perfil() {
     lastName: '',
     equiposFavoritos: [],
     competicionesFavoritas: [],
-    equipoFavoritoManual: '',
-    competicionFavoritaManual: '',
+    equipoFavoritoTemporal: '',
+    competicionFavoritaTemporal: '',
     fotoPerfil: null
   });
 
@@ -35,7 +35,7 @@ function Perfil() {
           ...editedData,
           firstName: userData.firstName,
           lastName: userData.lastName,
-          equiposFavoritos: userData.equipoFavorito || [],
+          equiposFavoritos: userData.equiposFavoritos || [],
           competicionesFavoritas: userData.competicionesFavoritas || [],
           fotoPerfil: userData.fotoPerfil
         });
@@ -53,13 +53,13 @@ function Perfil() {
     if (location.state?.equipoSeleccionado) {
       setEditedData((prevData) => ({
         ...prevData,
-        equipoFavoritoManual: location.state.equipoSeleccionado
+        equipoFavoritoTemporal: location.state.equipoSeleccionado
       }));
     }
     if (location.state?.competicionSeleccionada) {
       setEditedData((prevData) => ({
         ...prevData,
-        competicionFavoritaManual: location.state.competicionSeleccionada
+        competicionFavoritaTemporal: location.state.competicionSeleccionada
       }));
     }
   }, [location.state]);
@@ -103,12 +103,16 @@ function Perfil() {
       const updatedData = {
         firstName: editedData.firstName,
         lastName: editedData.lastName,
-        equipoFavorito: editedData.equiposFavoritos.includes(editedData.equipoFavoritoManual)
+        equiposFavoritos: editedData.equiposFavoritos.includes(editedData.equipoFavoritoTemporal)
           ? editedData.equiposFavoritos
-          : [...editedData.equiposFavoritos, editedData.equipoFavoritoManual],
-        competicionesFavoritas: editedData.competicionesFavoritas.includes(editedData.competicionFavoritaManual)
+          : editedData.equipoFavoritoTemporal.trim() !== ''
+          ? [...editedData.equiposFavoritos, editedData.equipoFavoritoTemporal]
+          : editedData.equiposFavoritos,
+        competicionesFavoritas: editedData.competicionesFavoritas.includes(editedData.competicionFavoritaTemporal)
           ? editedData.competicionesFavoritas
-          : [...editedData.competicionesFavoritas, editedData.competicionFavoritaManual]
+          : editedData.competicionFavoritaTemporal.trim() !== ''
+          ? [...editedData.competicionesFavoritas, editedData.competicionFavoritaTemporal]
+          : editedData.competicionesFavoritas
       };
 
       const response = await fetch(`/api/users/${userData.username}`, {
@@ -155,14 +159,14 @@ function Perfil() {
         <ul>
           {editedData.equiposFavoritos.map((equipo, index) => <li key={index}>{equipo}</li>)}
         </ul>
-        <input type="text" name="equipoFavoritoManual" value={editedData.equipoFavoritoManual} onChange={handleInputChange} />
+        <input type="text" name="equipoFavoritoTemporal" value={editedData.equipoFavoritoTemporal} onChange={handleInputChange} />
         <Link to="/perfil/anadir-equipo-favorito"><button>Añadir equipo favorito</button></Link>
 
         <h3>Competiciones Favoritas</h3>
         <ul>
           {editedData.competicionesFavoritas.map((competicion, index) => <li key={index}>{competicion}</li>)}
         </ul>
-        <input type="text" name="competicionFavoritaManual" value={editedData.competicionFavoritaManual} onChange={handleInputChange} />
+        <input type="text" name="competicionFavoritaTemporal" value={editedData.competicionFavoritaTemporal} onChange={handleInputChange} />
         <Link to="/perfil/anadir-competicion-favorita"><button>Añadir competición favorita</button></Link>
       </div>
 
