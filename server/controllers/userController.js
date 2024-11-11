@@ -147,7 +147,9 @@ exports.uploadProfileImage = async (req, res) => {
         if (!req.file) {
             return res.status(400).json({ message: 'No se subió ningún archivo' });
         }
-
+        if (req.file === undefined) {
+            return res.status(400).json({ message: 'El file es undefined' });
+        }
         const imageUrl = `${req.protocol}://api/users/uploads/${req.file.filename}`;
         const { username } = req.body;
         const usuario = await User.findOne({ username });
