@@ -18,7 +18,7 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// Rutas de autenticación y perfil de usuario
+// Rutas de autenticación y perfil de usuarioo
 router.post('/register', userController.register);
 router.post('/login', userController.login);
 router.post('/logout', userController.logout);
