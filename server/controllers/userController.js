@@ -148,7 +148,7 @@ exports.uploadProfileImage = async (req, res) => {
             return res.status(400).json({ message: 'No se subió ningún archivo' });
         }
 
-        const imageUrl = `${req.protocol}://api/users/uploads/${req.file.filename}`.replace('http:', 'https:');
+        const imageUrl = `${req.protocol}://api/users/uploads/${req.file.filename}`;
         const { username } = req.body;
         const usuario = await User.findOne({ username });
 
