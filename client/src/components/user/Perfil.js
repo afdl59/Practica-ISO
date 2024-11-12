@@ -119,27 +119,50 @@ function Perfil() {
 
   const handleSaveChanges = async () => {
     try {
+      // Construimos los datos actualizados
       const updatedData = {
         firstName: editedData.firstName,
         lastName: editedData.lastName,
-        equiposFavoritos: editedData.equiposFavoritos,
-        competicionesFavoritas: editedData.competicionesFavoritas
+        equiposFavoritos: editedData.equiposFavoritos.includes(editedData.equipoFavoritoTemporal)
+          ? editedData.equiposFavoritos
+          : editedData.equipoFavoritoTemporal.trim() !== ''
+          ? [...editedData.equiposFavoritos, editedData.equipoFavoritoTemporal]
+          : editedData.equiposFavoritos,
+        competicionesFavoritas: editedData.competicionesFavoritas.includes(editedData.competicionFavoritaTemporal)
+          ? editedData.competicionesFavoritas
+          : editedData.competicionFavoritaTemporal.trim() !== ''
+          ? [...editedData.competicionesFavoritas, editedData.competicionFavoritaTemporal]
+          : editedData.competicionesFavoritas
       };
-
+  
+      // Realizamos la solicitud PUT para actualizar los datos del usuario
       const response = await fetch(`/api/users/${userData.username}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatedData)
       });
-
+  
+      // Verificamos que la solicitud se haya realizado con éxito
       if (!response.ok) throw new Error('Error al actualizar los datos del usuario');
-
-      setUserData(updatedData);
+  
+      // Actualizamos `userData` y limpiamos los campos temporales
+      setUserData({
+        ...updatedData,
+        fotoPerfil: userData.fotoPerfil  // Aseguramos que la foto de perfil no se sobreescriba
+      });
+      
+      setEditedData((prevData) => ({
+        ...prevData,
+        equipoFavoritoTemporal: '',
+        competicionFavoritaTemporal: ''
+      }));
+      
       alert('Datos actualizados correctamente');
     } catch (error) {
       console.error('Error al actualizar los datos del usuario:', error);
     }
   };
+  
 
   if (loading) return <div>Cargando...</div>;
   if (!userData) return <div>Error al cargar los datos del usuario.</div>;
