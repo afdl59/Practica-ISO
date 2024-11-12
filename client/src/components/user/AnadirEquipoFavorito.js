@@ -52,7 +52,8 @@ function AñadirEquipoFavorito() {
   };
 
   const handleEquipoClick = (equipo) => {
-    addEquipoFavorito(equipo.team.name);
+    console.log('Equipo seleccionado:', equipo.team.name);
+    state.addEquipoFavorito(equipo.team.name);
     navigate('/perfil');
   };
 
