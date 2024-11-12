@@ -55,9 +55,9 @@ function Perfil() {
       setEditedData((prevData) => ({
         ...prevData,
         equipoFavoritoTemporal: location.state.equipoSeleccionado,
-        equiposFavoritos: prevData.equiposFavoritos.includes(location.state.equipoSeleccionado)
+        equiposFavoritos: prevData.equiposFavoritos.includes(equipoFavoritoTemporal)
           ? prevData.equiposFavoritos
-          : [...prevData.equiposFavoritos, location.state.equipoSeleccionado]
+          : [...prevData.equiposFavoritos, equipoFavoritoTemporal]
       }));
     }
     if (location.state?.competicionSeleccionada) {
@@ -65,20 +65,20 @@ function Perfil() {
       setEditedData((prevData) => ({
         ...prevData,
         competicionFavoritaTemporal: location.state.competicionSeleccionada,
-        competicionesFavoritas: prevData.competicionesFavoritas.includes(location.state.competicionSeleccionada)
+        competicionesFavoritas: prevData.competicionesFavoritas.includes(competicionFavoritaTemporal)
           ? prevData.competicionesFavoritas
-          : [...prevData.competicionesFavoritas, location.state.competicionSeleccionada]
+          : [...prevData.competicionesFavoritas, competicionFavoritaTemporal]
       }));
     }
   }, [location.state]);
   
   
-  useEffect(() => {
+  /*useEffect(() => {
     // Limpiar location.state después de añadir el equipo o competición seleccionado
     if (location.state?.equipoSeleccionado || location.state?.competicionSeleccionada) {
       navigate(location.pathname, { replace: true });
     }
-  }, [location, navigate]);
+  }, [location, navigate]);*/
   
 
   const handleLogout = async () => {
