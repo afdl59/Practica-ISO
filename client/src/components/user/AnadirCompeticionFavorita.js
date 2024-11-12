@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import '../../styles/user/BuscadorFavoritos.css';
 
-function AñadirCompeticionFavorita() {
+function AñadirCompeticionFavorita({ addCompeticionFavorita }) {
   const [nombre, setNombre] = useState('');
   const [pais, setPais] = useState('');
   const [competiciones, setCompeticiones] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { state } = useLocation();
 
   const paises = {
     "España": "spain",
@@ -43,7 +42,7 @@ function AñadirCompeticionFavorita() {
 
   const handleCompeticionClick = (competicion) => {
     console.log('Competición seleccionada:', competicion.league.name);
-    props.addCompeticionFavorita(competicion.league.name);
+    addCompeticionFavorita(competicion.league.name);
     navigate('/perfil');
   };
 

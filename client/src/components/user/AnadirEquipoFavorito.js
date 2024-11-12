@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import '../../styles/user/BuscadorFavoritos.css';
 
-function AñadirEquipoFavorito() {
+function AñadirEquipoFavorito({ addEquipoFavorito }) {
   const [nombre, setNombre] = useState('');
   const [pais, setPais] = useState('');
   const [competicion, setCompeticion] = useState('');
   const [equipos, setEquipos] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { state } = useLocation();
 
   const competicionIds = { 
     "LaLiga": 140, 
@@ -18,7 +17,7 @@ function AñadirEquipoFavorito() {
     "Bundesliga": 78, 
     "Ligue 1": 61, 
     "World Cup": 1 
-    };
+  };
     
   const paises = { 
     "España": "spain", 
@@ -28,7 +27,7 @@ function AñadirEquipoFavorito() {
     "Alemania": "germany", 
     "Holanda": "netherlands", 
     "Turquía": "turkey" 
-    };
+  };
 
   const handleBuscar = async () => {
     setLoading(true);
@@ -54,7 +53,7 @@ function AñadirEquipoFavorito() {
 
   const handleEquipoClick = (equipo) => {
     console.log('Equipo seleccionado:', equipo.team.name);
-    props.addEquipoFavorito(equipo.team.name);
+    addEquipoFavorito(equipo.team.name);
     navigate('/perfil');
   };
 
