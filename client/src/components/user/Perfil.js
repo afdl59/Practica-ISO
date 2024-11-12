@@ -134,6 +134,8 @@ function Perfil() {
   
   if (loading) return <div>Cargando...</div>;
   if (!userData) return <div>Error al cargar los datos del usuario.</div>;
+  console.log("Funcion de addEquipoFavorito:", addEquipoFavorito);
+  console.log("Funcion de addCompeticionFavorita:", addCompeticionFavorita);
 
 return (
   <div className="perfil-container">
@@ -168,7 +170,7 @@ return (
         {editedData.competicionesFavoritas.map((competicion, index) => <li key={index}>{competicion}</li>)}
       </ul>
       <Link to="/perfil/anadir-competicion-favorita"><button>Añadir competición favorita</button></Link>
-      
+
       <Routes>
       <Route path="anadir-equipo-favorito" element={<AnadirEquipoFavorito addEquipoFavorito={addEquipoFavorito} />} />
       <Route path="anadir-competicion-favorita" element={<AnadirCompeticionFavorita addCompeticionFavorita={addCompeticionFavorita} />} />
