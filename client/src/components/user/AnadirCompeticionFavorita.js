@@ -9,9 +9,15 @@ function AñadirCompeticionFavorita({ addCompeticionFavorita }) {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  console.log('Prop addCompeticionFavorita:', addCompeticionFavorita);
+  
   const handleCompeticionClick = (competicion) => {
     console.log('Competición seleccionada:', competicion.league.name);
-    addCompeticionFavorita(competicion.league.name);
+    if (typeof addCompeticionFavorita === 'function') {
+        addCompeticionFavorita(competicion.league.name);
+    } else {
+        console.error('addCompeticionFavorita is not a function:', addCompeticionFavorita);
+    }
     navigate('/perfil');
   };
 
