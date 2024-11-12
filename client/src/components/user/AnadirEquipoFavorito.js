@@ -10,6 +10,12 @@ function AñadirEquipoFavorito({ addEquipoFavorito }) {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  const handleEquipoClick = (equipo) => {
+    console.log('Equipo seleccionado:', equipo.team.name);
+    addEquipoFavorito(equipo.team.name);
+    navigate('/perfil');
+  };
+
   const competicionIds = { 
     "LaLiga": 140, 
     "Premier League": 39, 
@@ -49,12 +55,6 @@ function AñadirEquipoFavorito({ addEquipoFavorito }) {
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleEquipoClick = (equipo) => {
-    console.log('Equipo seleccionado:', equipo.team.name);
-    addEquipoFavorito(equipo.team.name);
-    navigate('/perfil');
   };
 
   return (

@@ -9,6 +9,12 @@ function AñadirCompeticionFavorita({ addCompeticionFavorita }) {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  const handleCompeticionClick = (competicion) => {
+    console.log('Competición seleccionada:', competicion.league.name);
+    addCompeticionFavorita(competicion.league.name);
+    navigate('/perfil');
+  };
+
   const paises = {
     "España": "spain",
     "Inglaterra": "england",
@@ -38,12 +44,6 @@ function AñadirCompeticionFavorita({ addCompeticionFavorita }) {
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleCompeticionClick = (competicion) => {
-    console.log('Competición seleccionada:', competicion.league.name);
-    addCompeticionFavorita(competicion.league.name);
-    navigate('/perfil');
   };
 
   return (
