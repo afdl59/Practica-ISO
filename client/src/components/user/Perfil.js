@@ -51,18 +51,37 @@ function Perfil() {
 
   useEffect(() => {
     if (location.state?.equipoSeleccionado) {
-      setEditedData((prevData) => ({
-        ...prevData,
-        equipoFavoritoTemporal: location.state.equipoSeleccionado
-      }));
+      setEditedData((prevData) => {
+        const nuevoEquipo = location.state.equipoSeleccionado;
+        return {
+          ...prevData,
+          equiposFavoritos: prevData.equiposFavoritos.includes(nuevoEquipo)
+            ? prevData.equiposFavoritos
+            : [...prevData.equiposFavoritos, nuevoEquipo],
+          equipoFavoritoTemporal: nuevoEquipo
+        };
+      });
     }
     if (location.state?.competicionSeleccionada) {
-      setEditedData((prevData) => ({
-        ...prevData,
-        competicionFavoritaTemporal: location.state.competicionSeleccionada
-      }));
+      setEditedData((prevData) => {
+        const nuevaCompeticion = location.state.competicionSeleccionada;
+        return {
+          ...prevData,
+          competicionesFavoritas: prevData.competicionesFavoritas.includes(nuevaCompeticion)
+            ? prevData.competicionesFavoritas
+            : [...prevData.competicionesFavoritas, nuevaCompeticion],
+          competicionFavoritaTemporal: nuevaCompeticion
+        };
+      });
     }
   }, [location.state]);
+  
+  useEffect(() => {
+    if (location.state?.equipoSeleccionado || location.state?.competicionSeleccionada) {
+      navigate(location.pathname, { replace: true });
+    }
+  }, [location, navigate]);
+  
 
   const handleLogout = async () => {
     try {
