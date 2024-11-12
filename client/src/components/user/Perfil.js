@@ -56,9 +56,7 @@ function Perfil() {
   
       setEditedData((prevData) => ({
         ...prevData,
-        equiposFavoritos: prevData.equiposFavoritos.includes(equipoSeleccionado)
-          ? prevData.equiposFavoritos
-          : [...prevData.equiposFavoritos, equipoSeleccionado]
+        equiposFavoritos: [...prevData.equiposFavoritos, equipoSeleccionado]
       }));
   
       // Limpiar location.state después de procesar la actualización
@@ -69,9 +67,7 @@ function Perfil() {
       const competicionSeleccionada = location.state.competicionSeleccionada;
       setEditedData((prevData) => ({
         ...prevData,
-        competicionesFavoritas: prevData.competicionesFavoritas.includes(competicionSeleccionada)
-          ? prevData.competicionesFavoritas
-          : [...prevData.competicionesFavoritas, competicionSeleccionada]
+        competicionesFavoritas: [...prevData.competicionesFavoritas, competicionSeleccionada]
       }));
   
       // Limpiar location.state después de procesar la actualización
