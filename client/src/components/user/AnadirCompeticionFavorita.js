@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import '../../styles/user/BuscadorFavoritos.css';
 
 function AñadirCompeticionFavorita() {
@@ -8,6 +8,7 @@ function AñadirCompeticionFavorita() {
   const [competiciones, setCompeticiones] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { state } = useLocation();
 
   const paises = {
     "España": "spain",

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import '../../styles/user/BuscadorFavoritos.css';
 
 function AñadirEquipoFavorito() {
@@ -9,6 +9,7 @@ function AñadirEquipoFavorito() {
   const [equipos, setEquipos] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { state } = useLocation();
 
   const competicionIds = { 
     "LaLiga": 140, 
