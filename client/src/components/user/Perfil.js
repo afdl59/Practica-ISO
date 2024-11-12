@@ -51,30 +51,22 @@ function Perfil() {
 
   useEffect(() => {
     if (location.state?.equipoSeleccionado) {
-      setEditedData((prevData) => {
-        const nuevoEquipo = location.state.equipoSeleccionado;
-        return {
-          ...prevData,
-          equiposFavoritos: prevData.equiposFavoritos.includes(nuevoEquipo)
-            ? prevData.equiposFavoritos
-            : [...prevData.equiposFavoritos, nuevoEquipo],
-          equipoFavoritoTemporal: nuevoEquipo
-        };
-      });
+      console.log('Equipo recibido en Perfil.js:', location.state.equipoSeleccionado);
+      setEditedData((prevData) => ({
+        ...prevData,
+        equipoFavoritoTemporal: location.state.equipoSeleccionado
+      }));
     }
     if (location.state?.competicionSeleccionada) {
-      setEditedData((prevData) => {
-        const nuevaCompeticion = location.state.competicionSeleccionada;
-        return {
-          ...prevData,
-          competicionesFavoritas: prevData.competicionesFavoritas.includes(nuevaCompeticion)
-            ? prevData.competicionesFavoritas
-            : [...prevData.competicionesFavoritas, nuevaCompeticion],
-          competicionFavoritaTemporal: nuevaCompeticion
-        };
-      });
+      console.log('Competición recibida en Perfil.js:', location.state.competicionSeleccionada);
+      setEditedData((prevData) => ({
+        ...prevData,
+        competicionFavoritaTemporal: location.state.competicionSeleccionada
+      }));
     }
-
+  }, [location.state]);
+  
+  useEffect(() => {
     // Limpiar location.state después de añadir el equipo o competición seleccionado
     if (location.state?.equipoSeleccionado || location.state?.competicionSeleccionada) {
       navigate(location.pathname, { replace: true });
@@ -134,7 +126,9 @@ function Perfil() {
           ? [...editedData.competicionesFavoritas, editedData.competicionFavoritaTemporal]
           : editedData.competicionesFavoritas
       };
-  
+      
+      console.log('Datos actualizados para guardar:', updatedData);
+
       // Realizamos la solicitud PUT para actualizar los datos del usuario
       const response = await fetch(`/api/users/${userData.username}`, {
         method: 'PUT',
@@ -190,16 +184,16 @@ function Perfil() {
 
       <div className="favoritos">
         <h3>Equipos Favoritos</h3>
-        <ul>
-          {editedData.equiposFavoritos.map((equipo, index) => <li key={index}>{equipo}</li>)}
-        </ul>
+          <ul>
+            {editedData.equiposFavoritos.map((equipo, index) => ( <li key={index}>{equipo}</li>))}
+          </ul>
         <input type="text" name="equipoFavoritoTemporal" value={editedData.equipoFavoritoTemporal} onChange={handleInputChange} />
         <Link to="/perfil/anadir-equipo-favorito"><button>Añadir equipo favorito</button></Link>
 
         <h3>Competiciones Favoritas</h3>
-        <ul>
-          {editedData.competicionesFavoritas.map((competicion, index) => <li key={index}>{competicion}</li>)}
-        </ul>
+          <ul>
+            {editedData.competicionesFavoritas.map((competicion, index) => ( <li key={index}>{competicion}</li> ))}
+          </ul>
         <input type="text" name="competicionFavoritaTemporal" value={editedData.competicionFavoritaTemporal} onChange={handleInputChange} />
         <Link to="/perfil/anadir-competicion-favorita"><button>Añadir competición favorita</button></Link>
       </div>
