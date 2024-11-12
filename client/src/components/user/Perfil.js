@@ -51,34 +51,33 @@ function Perfil() {
 
   useEffect(() => {
     if (location.state?.equipoSeleccionado) {
-      console.log('Equipo seleccionado:', location.state.equipoSeleccionado);
+      const equipoSeleccionado = location.state.equipoSeleccionado;
+      console.log("Equipo recibido en Perfil.js:", equipoSeleccionado);
+  
       setEditedData((prevData) => ({
         ...prevData,
-        equipoFavoritoTemporal: location.state.equipoSeleccionado,
-        equiposFavoritos: prevData.equiposFavoritos.includes(prevData.equipoFavoritoTemporal)
+        equiposFavoritos: prevData.equiposFavoritos.includes(equipoSeleccionado)
           ? prevData.equiposFavoritos
-          : [...prevData.equiposFavoritos, prevData.equipoFavoritoTemporal]
+          : [...prevData.equiposFavoritos, equipoSeleccionado]
       }));
+  
+      // Limpiar location.state después de procesar la actualización
+      navigate(location.pathname, { replace: true, state: {} });
     }
+  
     if (location.state?.competicionSeleccionada) {
-      console.log('Competicion seleccionada:', location.state.competicionSeleccionada);
+      const competicionSeleccionada = location.state.competicionSeleccionada;
       setEditedData((prevData) => ({
         ...prevData,
-        competicionFavoritaTemporal: location.state.competicionSeleccionada,
-        competicionesFavoritas: prevData.competicionesFavoritas.includes(prevData.competicionFavoritaTemporal)
+        competicionesFavoritas: prevData.competicionesFavoritas.includes(competicionSeleccionada)
           ? prevData.competicionesFavoritas
-          : [...prevData.competicionesFavoritas, prevData.competicionFavoritaTemporal]
+          : [...prevData.competicionesFavoritas, competicionSeleccionada]
       }));
-    }
-  }, [location.state]);
   
-  
-  /*useEffect(() => {
-    // Limpiar location.state después de añadir el equipo o competición seleccionado
-    if (location.state?.equipoSeleccionado || location.state?.competicionSeleccionada) {
-      navigate(location.pathname, { replace: true });
+      // Limpiar location.state después de procesar la actualización
+      navigate(location.pathname, { replace: true, state: {} });
     }
-  }, [location, navigate]);*/
+  }, [location.state, navigate]);
   
 
   const handleLogout = async () => {
@@ -119,7 +118,7 @@ function Perfil() {
   const handleSaveChanges = async () => {
     try {
       // Verificar si equipoFavoritoTemporal está en equiposFavoritos y añadirlo si no lo está
-      const nuevosEquiposFavoritos = editedData.equiposFavoritos.includes(editedData.equipoFavoritoTemporal)
+      /*const nuevosEquiposFavoritos = editedData.equiposFavoritos.includes(editedData.equipoFavoritoTemporal)
         ? editedData.equiposFavoritos
         : editedData.equipoFavoritoTemporal.trim() !== ''
         ? [...editedData.equiposFavoritos, editedData.equipoFavoritoTemporal]
@@ -130,7 +129,7 @@ function Perfil() {
         ? editedData.competicionesFavoritas
         : editedData.competicionFavoritaTemporal.trim() !== ''
         ? [...editedData.competicionesFavoritas, editedData.competicionFavoritaTemporal]
-        : editedData.competicionesFavoritas;
+        : editedData.competicionesFavoritas;*/
   
       const updatedData = {
         firstName: editedData.firstName,
@@ -164,7 +163,6 @@ function Perfil() {
   };
   
   
-
   if (loading) return <div>Cargando...</div>;
   if (!userData) return <div>Error al cargar los datos del usuario.</div>;
 
