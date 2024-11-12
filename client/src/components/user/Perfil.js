@@ -135,53 +135,6 @@ function Perfil() {
   if (loading) return <div>Cargando...</div>;
   if (!userData) return <div>Error al cargar los datos del usuario.</div>;
 
-  /*return (
-    <div className="perfil-container">
-      <h1>Perfil de {userData.username}</h1>
-      <div className="perfil-photo">
-        {editedData.fotoPerfil ? (
-          <img src={editedData.fotoPerfil} alt="Foto de perfil" className="profile-image" />
-        ) : (
-          <div className="placeholder-image">No profile photo</div>
-        )}
-        <input type="file" accept="image/*" onChange={handleFotoChange} />
-      </div>
-
-      <div className="perfil-info">
-        <label>Nombre:
-          <input type="text" name="firstName" value={editedData.firstName} onChange={handleInputChange} />
-        </label>
-        <label>Apellido:
-          <input type="text" name="lastName" value={editedData.lastName} onChange={handleInputChange} />
-        </label>
-      </div>
-
-      <div className="favoritos">
-        <h3>Equipos Favoritos</h3>
-        <ul>
-          {editedData.equiposFavoritos.map((equipo, index) => <li key={index}>{equipo}</li>)}
-        </ul>
-        <Link to={{
-          pathname: "/perfil/anadir-equipo-favorito",
-          state: { addEquipoFavorito }
-        }}><button>Añadir equipo favorito</button></Link>
-
-        <h3>Competiciones Favoritas</h3>
-        <ul>
-          {editedData.competicionesFavoritas.map((competicion, index) => <li key={index}>{competicion}</li>)}
-        </ul>
-        <Link to={{
-          pathname: "/perfil/anadir-competicion-favorita",
-          state: { addCompeticionFavorita }
-        }}><button>Añadir competición favorita</button></Link>
-      </div>
-
-      <button onClick={handleSaveChanges}>Guardar Cambios</button>
-      <button onClick={handleLogout}>Cerrar Sesión</button>
-    </div>
-  );
-}*/
-
 return (
   <div className="perfil-container">
     <h1>Perfil de {userData.username}</h1>
@@ -220,10 +173,15 @@ return (
     <button onClick={handleSaveChanges}>Guardar Cambios</button>
     <button onClick={handleLogout}>Cerrar Sesión</button>
 
-    <Routes>
-      <Route path="anadir-equipo-favorito" element={<AnadirEquipoFavorito addEquipoFavorito={addEquipoFavorito} />} />
-      <Route path="anadir-competicion-favorita" element={<AnadirCompeticionFavorita addCompeticionFavorita={addCompeticionFavorita} />} />
-    </Routes>
+    <Route
+      path="anadir-equipo-favorito"
+      element={<AnadirEquipoFavorito addEquipoFavorito={() => console.log("Función de prueba de equipo")} />}
+    />
+    <Route
+      path="anadir-competicion-favorita"
+      element={<AnadirCompeticionFavorita addCompeticionFavorita={() => console.log("Función de prueba de competición")} />}
+    />
+
   </div>
 );
 }
