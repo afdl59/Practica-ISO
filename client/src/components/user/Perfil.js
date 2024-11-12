@@ -111,51 +111,51 @@ function Perfil() {
 
   const handleSaveChanges = async () => {
     try {
-      // Construimos los datos actualizados
+      // Verificar si equipoFavoritoTemporal está en equiposFavoritos y añadirlo si no lo está
+      const nuevosEquiposFavoritos = editedData.equiposFavoritos.includes(editedData.equipoFavoritoTemporal)
+        ? editedData.equiposFavoritos
+        : editedData.equipoFavoritoTemporal.trim() !== ''
+        ? [...editedData.equiposFavoritos, editedData.equipoFavoritoTemporal]
+        : editedData.equiposFavoritos;
+  
+      // Verificar si competicionFavoritaTemporal está en competicionesFavoritas y añadirla si no lo está
+      const nuevasCompeticionesFavoritas = editedData.competicionesFavoritas.includes(editedData.competicionFavoritaTemporal)
+        ? editedData.competicionesFavoritas
+        : editedData.competicionFavoritaTemporal.trim() !== ''
+        ? [...editedData.competicionesFavoritas, editedData.competicionFavoritaTemporal]
+        : editedData.competicionesFavoritas;
+  
       const updatedData = {
         firstName: editedData.firstName,
         lastName: editedData.lastName,
-        equiposFavoritos: editedData.equiposFavoritos.includes(editedData.equipoFavoritoTemporal)
-          ? editedData.equiposFavoritos
-          : editedData.equipoFavoritoTemporal.trim() !== ''
-          ? [...editedData.equiposFavoritos, editedData.equipoFavoritoTemporal]
-          : editedData.equiposFavoritos,
-        competicionesFavoritas: editedData.competicionesFavoritas.includes(editedData.competicionFavoritaTemporal)
-          ? editedData.competicionesFavoritas
-          : editedData.competicionFavoritaTemporal.trim() !== ''
-          ? [...editedData.competicionesFavoritas, editedData.competicionFavoritaTemporal]
-          : editedData.competicionesFavoritas
+        equiposFavoritos: nuevosEquiposFavoritos,
+        competicionesFavoritas: nuevasCompeticionesFavoritas
       };
-      
-      console.log('Datos actualizados para guardar:', updatedData);
-
-      // Realizamos la solicitud PUT para actualizar los datos del usuario
+  
+      console.log("Datos actualizados para guardar:", updatedData);
+  
       const response = await fetch(`/api/users/${userData.username}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatedData)
       });
   
-      // Verificamos que la solicitud se haya realizado con éxito
       if (!response.ok) throw new Error('Error al actualizar los datos del usuario');
   
-      // Actualizamos `userData` y limpiamos los campos temporales
-      setUserData({
-        ...updatedData,
-        fotoPerfil: userData.fotoPerfil  // Aseguramos que la foto de perfil no se sobreescriba
-      });
-      
+      setUserData(updatedData);
+      alert('Datos actualizados correctamente');
+
       setEditedData((prevData) => ({
         ...prevData,
         equipoFavoritoTemporal: '',
         competicionFavoritaTemporal: ''
       }));
       
-      alert('Datos actualizados correctamente');
     } catch (error) {
       console.error('Error al actualizar los datos del usuario:', error);
     }
   };
+  
   
 
   if (loading) return <div>Cargando...</div>;
