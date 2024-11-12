@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/user/BuscadorFavoritos.css';
 
-function AñadirEquipoFavorito({ addEquipoFavorito }) {
+function AnadirEquipoFavorito({ addEquipoFavorito }) {
   const [nombre, setNombre] = useState('');
   const [pais, setPais] = useState('');
   const [competicion, setCompeticion] = useState('');
@@ -13,14 +13,15 @@ function AñadirEquipoFavorito({ addEquipoFavorito }) {
   console.log('Prop addEquipoFavorito:', addEquipoFavorito);
 
   const handleEquipoClick = (equipo) => {
-        console.log('Equipo seleccionado:', equipo.team.name);
-        if (typeof addEquipoFavorito === 'function') {
-            addEquipoFavorito(equipo.team.name);
-        } else {
-            console.error('addEquipoFavorito is not a function:', addEquipoFavorito);
-        }
-        navigate('/perfil');
+    console.log('Equipo seleccionado:', equipo.team.name);
+    if (typeof addEquipoFavorito === 'function') {
+      addEquipoFavorito(equipo.team.name);
+    } else {
+      console.error('addEquipoFavorito is not a function:', addEquipoFavorito);
+    }
+    navigate('/perfil');
   };
+
 
   const competicionIds = { 
     "LaLiga": 140, 
@@ -94,4 +95,4 @@ function AñadirEquipoFavorito({ addEquipoFavorito }) {
   );
 }
 
-export default AñadirEquipoFavorito;
+export default AnadirEquipoFavorito;

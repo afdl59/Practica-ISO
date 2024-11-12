@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/user/BuscadorFavoritos.css';
 
-function AñadirCompeticionFavorita({ addCompeticionFavorita }) {
+function AnadirCompeticionFavorita({ addCompeticionFavorita }) {
   const [nombre, setNombre] = useState('');
   const [pais, setPais] = useState('');
   const [competiciones, setCompeticiones] = useState([]);
@@ -14,9 +14,9 @@ function AñadirCompeticionFavorita({ addCompeticionFavorita }) {
   const handleCompeticionClick = (competicion) => {
     console.log('Competición seleccionada:', competicion.league.name);
     if (typeof addCompeticionFavorita === 'function') {
-        addCompeticionFavorita(competicion.league.name);
+      addCompeticionFavorita(competicion.league.name);
     } else {
-        console.error('addCompeticionFavorita is not a function:', addCompeticionFavorita);
+      console.error('addCompeticionFavorita is not a function:', addCompeticionFavorita);
     }
     navigate('/perfil');
   };
@@ -77,4 +77,4 @@ function AñadirCompeticionFavorita({ addCompeticionFavorita }) {
   );
 }
 
-export default AñadirCompeticionFavorita;
+export default AnadirCompeticionFavorita;
