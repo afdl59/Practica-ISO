@@ -168,20 +168,15 @@ return (
         {editedData.competicionesFavoritas.map((competicion, index) => <li key={index}>{competicion}</li>)}
       </ul>
       <Link to="/perfil/anadir-competicion-favorita"><button>Añadir competición favorita</button></Link>
+      
+      <Routes>
+      <Route path="anadir-equipo-favorito" element={<AnadirEquipoFavorito addEquipoFavorito={addEquipoFavorito} />} />
+      <Route path="anadir-competicion-favorita" element={<AnadirCompeticionFavorita addCompeticionFavorita={addCompeticionFavorita} />} />
+    </Routes>
     </div>
 
     <button onClick={handleSaveChanges}>Guardar Cambios</button>
     <button onClick={handleLogout}>Cerrar Sesión</button>
-
-    <Route
-      path="anadir-equipo-favorito"
-      element={<AnadirEquipoFavorito addEquipoFavorito={() => console.log("Función de prueba de equipo")} />}
-    />
-    <Route
-      path="anadir-competicion-favorita"
-      element={<AnadirCompeticionFavorita addCompeticionFavorita={() => console.log("Función de prueba de competición")} />}
-    />
-
   </div>
 );
 }
