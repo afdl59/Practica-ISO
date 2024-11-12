@@ -41,8 +41,8 @@ function AñadirCompeticionFavorita() {
   };
 
   const handleCompeticionClick = (competicion) => {
-    console.log('Competicion seleccionada:', competicion.league.name);
-    navigate('/perfil', { state: { competicionSeleccionada: competicion.league.name } });
+    addCompeticionFavorita(competicion.league.name);
+    navigate('/perfil');
   };
 
   return (
