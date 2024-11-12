@@ -43,7 +43,7 @@ function AñadirCompeticionFavorita() {
 
   const handleCompeticionClick = (competicion) => {
     console.log('Competición seleccionada:', competicion.league.name);
-    addCompeticionFavorita(competicion.league.name);
+    props.addCompeticionFavorita(competicion.league.name);
     navigate('/perfil');
   };
 
