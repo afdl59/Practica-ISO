@@ -75,9 +75,10 @@ function Perfil() {
 
   const handleFotoChange = async (e) => {
     const file = e.target.files[0];
-    if (file) {
+    if (file && userData) {
       const formData = new FormData();
       formData.append('fotoPerfil', file);
+      formData.append('username', userData.username);
       try {
         const response = await fetch('/api/users/uploads', { method: 'POST', body: formData });
         if (!response.ok) throw new Error('Error al subir la imagen');
