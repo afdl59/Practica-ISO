@@ -55,9 +55,9 @@ function Perfil() {
       setEditedData((prevData) => ({
         ...prevData,
         equipoFavoritoTemporal: location.state.equipoSeleccionado,
-        equiposFavoritos: prevData.equiposFavoritos.includes(equipoFavoritoTemporal)
+        equiposFavoritos: prevData.equiposFavoritos.includes(prevData.equipoFavoritoTemporal)
           ? prevData.equiposFavoritos
-          : [...prevData.equiposFavoritos, equipoFavoritoTemporal]
+          : [...prevData.equiposFavoritos, prevData.equipoFavoritoTemporal]
       }));
     }
     if (location.state?.competicionSeleccionada) {
@@ -65,9 +65,9 @@ function Perfil() {
       setEditedData((prevData) => ({
         ...prevData,
         competicionFavoritaTemporal: location.state.competicionSeleccionada,
-        competicionesFavoritas: prevData.competicionesFavoritas.includes(competicionFavoritaTemporal)
+        competicionesFavoritas: prevData.competicionesFavoritas.includes(prevData.competicionFavoritaTemporal)
           ? prevData.competicionesFavoritas
-          : [...prevData.competicionesFavoritas, competicionFavoritaTemporal]
+          : [...prevData.competicionesFavoritas, prevData.competicionFavoritaTemporal]
       }));
     }
   }, [location.state]);
