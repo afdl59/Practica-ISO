@@ -51,20 +51,27 @@ function Perfil() {
 
   useEffect(() => {
     if (location.state?.equipoSeleccionado) {
-      console.log('Equipo recibido en Perfil.js:', location.state.equipoSeleccionado);
+      console.log('Equipo seleccionado:', location.state.equipoSeleccionado);
       setEditedData((prevData) => ({
         ...prevData,
-        equipoFavoritoTemporal: location.state.equipoSeleccionado
+        equipoFavoritoTemporal: location.state.equipoSeleccionado,
+        equiposFavoritos: prevData.equiposFavoritos.includes(location.state.equipoSeleccionado)
+          ? prevData.equiposFavoritos
+          : [...prevData.equiposFavoritos, location.state.equipoSeleccionado]
       }));
     }
     if (location.state?.competicionSeleccionada) {
-      console.log('Competición recibida en Perfil.js:', location.state.competicionSeleccionada);
+      console.log('Competicion seleccionada:', location.state.competicionSeleccionada);
       setEditedData((prevData) => ({
         ...prevData,
-        competicionFavoritaTemporal: location.state.competicionSeleccionada
+        competicionFavoritaTemporal: location.state.competicionSeleccionada,
+        competicionesFavoritas: prevData.competicionesFavoritas.includes(location.state.competicionSeleccionada)
+          ? prevData.competicionesFavoritas
+          : [...prevData.competicionesFavoritas, location.state.competicionSeleccionada]
       }));
     }
   }, [location.state]);
+  
   
   useEffect(() => {
     // Limpiar location.state después de añadir el equipo o competición seleccionado
