@@ -74,9 +74,8 @@ function Perfil() {
         };
       });
     }
-  }, [location.state]);
-  
-  useEffect(() => {
+
+    // Limpiar location.state después de añadir el equipo o competición seleccionado
     if (location.state?.equipoSeleccionado || location.state?.competicionSeleccionada) {
       navigate(location.pathname, { replace: true });
     }
@@ -123,16 +122,8 @@ function Perfil() {
       const updatedData = {
         firstName: editedData.firstName,
         lastName: editedData.lastName,
-        equiposFavoritos: editedData.equiposFavoritos.includes(editedData.equipoFavoritoTemporal)
-          ? editedData.equiposFavoritos
-          : editedData.equipoFavoritoTemporal.trim() !== ''
-          ? [...editedData.equiposFavoritos, editedData.equipoFavoritoTemporal]
-          : editedData.equiposFavoritos,
-        competicionesFavoritas: editedData.competicionesFavoritas.includes(editedData.competicionFavoritaTemporal)
-          ? editedData.competicionesFavoritas
-          : editedData.competicionFavoritaTemporal.trim() !== ''
-          ? [...editedData.competicionesFavoritas, editedData.competicionFavoritaTemporal]
-          : editedData.competicionesFavoritas
+        equiposFavoritos: editedData.equiposFavoritos,
+        competicionesFavoritas: editedData.competicionesFavoritas
       };
 
       const response = await fetch(`/api/users/${userData.username}`, {
