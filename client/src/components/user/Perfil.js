@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import '../../styles/user/Perfil.css';
+//import AnadirEquipoFavorito from './AnadirEquipoFavorito';
+//import AnadirCompeticionFavorita from './AnadirCompeticionFavorita';
 
 function Perfil() {
   const navigate = useNavigate();
@@ -158,17 +160,19 @@ function Perfil() {
         <ul>
           {editedData.equiposFavoritos.map((equipo, index) => <li key={index}>{equipo}</li>)}
         </ul>
-        <Link to="/perfil/anadir-equipo-favorito" state={{ addEquipoFavorito }}>
-          <button>Añadir equipo favorito</button>
-        </Link>
+        <Link to={{
+          pathname: "/perfil/anadir-equipo-favorito",
+          state: { addEquipoFavorito }
+        }}><button>Añadir equipo favorito</button></Link>
 
         <h3>Competiciones Favoritas</h3>
         <ul>
           {editedData.competicionesFavoritas.map((competicion, index) => <li key={index}>{competicion}</li>)}
         </ul>
-        <Link to="/perfil/anadir-competicion-favorita" state={{ addCompeticionFavorita }}>
-          <button>Añadir competición favorita</button>
-        </Link>
+        <Link to={{
+          pathname: "/perfil/anadir-competicion-favorita",
+          state: { addCompeticionFavorita }
+        }}><button>Añadir competición favorita</button></Link>
       </div>
 
       <button onClick={handleSaveChanges}>Guardar Cambios</button>
