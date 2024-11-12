@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import '../../styles/user/Perfil.css';
 import AnadirEquipoFavorito from './AnadirEquipoFavorito';
 import AnadirCompeticionFavorita from './AnadirCompeticionFavorita';
+import { Routes, Route } from 'react-router-dom';
 
 function Perfil() {
   const navigate = useNavigate();

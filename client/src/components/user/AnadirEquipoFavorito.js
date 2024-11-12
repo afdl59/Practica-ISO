@@ -54,7 +54,7 @@ function AñadirEquipoFavorito() {
 
   const handleEquipoClick = (equipo) => {
     console.log('Equipo seleccionado:', equipo.team.name);
-    state.addEquipoFavorito(equipo.team.name);
+    addEquipoFavorito(equipo.team.name);
     navigate('/perfil');
   };
 
