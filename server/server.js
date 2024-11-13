@@ -27,14 +27,15 @@ app.use((req, res, next) => {
 });
 
 // Middleware de configuración
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ limit: '20mb', extended: true }));
+app.use(bodyParser.json({ limit: '20mb' }));
 app.use(express.static(path.join(__dirname, '../client/build'))); // Servir archivos estáticos desde /build
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Servir archivos subidos desde /uploads
 app.use(cors({
     origin: 'https://futbol360.ddns.net',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
 }));
 
 // Configurar middleware de sesión

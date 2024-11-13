@@ -39,3 +39,7 @@ replay_pid*
 
 # Ignorar package.json
 /package.json
+
+# Ignorar Webhook-handler
+/var/www/html/webhook-handler.sh
+/var/www/html/webhook-server.js

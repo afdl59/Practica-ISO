@@ -18,6 +18,8 @@ import WordleDiario from './components/minijuegos/WordleDiario';
 import Foro from './components/foro/Foro';
 import PartidoDetalle from './components/stats/PartidoDetalle';
 import PartidosDirecto from './components/stats/PartidosDirecto';
+import AnadirEquipoFavorito from './components/user/AnadirEquipoFavorito';
+import AnadirCompeticionFavorita from './components/user/AnadirCompeticionFavorita';
 import './styles/App.css';
 
 function App() {
@@ -29,17 +31,19 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/minijuegos" element={<Minijuegos />} />
-        <Route path="/perfil" element={<Perfil />} /> {/* Ruta para la página de perfil */}
-        <Route path="/minijuegos/bingo" element={<Bingo />} /> {/* Ruta para Bingo */}
-        <Route path="/minijuegos/tiro-libre" element={<TiroLibre />} /> {/* Ruta para Tiro Libre */}
-        <Route path="/minijuegos/wordle-diario" element={<WordleDiario />} /> {/* Nueva ruta para Wordle Diario */}
-        <Route path="/minijuegos/guess-the-player" element={<GuessThePlayer />} /> {/* Nueva ruta para Guess The Player */}
+        <Route path="/perfil" element={<Perfil />} />
+        <Route path="anadir-equipo-favorito" element={<AnadirEquipoFavorito />} />
+        <Route path="anadir-competicion-favorita" element={<AnadirCompeticionFavorita />} />
+        <Route path="/minijuegos/bingo" element={<Bingo />} />
+        <Route path="/minijuegos/tiro-libre" element={<TiroLibre />} />
+        <Route path="/minijuegos/wordle-diario" element={<WordleDiario />} />
+        <Route path="/minijuegos/guess-the-player" element={<GuessThePlayer />} />
         <Route path="/player-selector" element={<PlayerSelector />} />
         <Route path="/partidos" element={<Partidos />} />
         <Route path="/partido-prueba1" element={<PartidoPrueba1 />} />
         <Route path="/partido-prueba2" element={<PartidoPrueba2 />} />
         <Route path="/foro" element={<Foro />} />
-        <Route path="/partido/:idPartido" element={<PartidoDetalle />} /> {/* Ruta para el detalle de un partido tras merge */}
+        <Route path="/partido/:idPartido" element={<PartidoDetalle />} />
         <Route path="/partidos-directo" element={<PartidosDirecto />} />
       </Routes>
     </div>
