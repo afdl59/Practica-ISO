@@ -8,11 +8,23 @@ export const FavoritosProvider = ({ children }) => {
   const [competicionesFavoritas, setCompeticionesFavoritas] = useState([]);
 
   const addEquipoFavorito = (equipo) => {
-    setEquiposFavoritos((prevEquipos) => [...prevEquipos, equipo]);
+    setEquiposFavoritos((prevEquipos) => {
+      if (!prevEquipos.includes(equipo)) {
+        const updatedEquipos = [...prevEquipos, equipo];
+        console.log("Equipos favoritos actualizados:", updatedEquipos);
+        return updatedEquipos;
+      }
+      return prevEquipos;
+    });
   };
 
   const addCompeticionFavorita = (competicion) => {
-    setCompeticionesFavoritas((prevCompeticiones) => [...prevCompeticiones, competicion]);
+    setCompeticionesFavoritas((prevCompeticiones) => {
+      if (!prevCompeticiones.includes(competicion)) {
+        return [...prevCompeticiones, competicion];
+      }
+      return prevCompeticiones;
+    });
   };
 
   return (
