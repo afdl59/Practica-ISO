@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../../styles/minijuegos/Bingo.css';
-import { useLeaderboard } from './LeaderboardContext';
+import { useLeaderboard } from '../../context/LeaderboardContext';
 
 const jugadores = [
   { nombre: "Harry Kane", definicion: "Delantero estrella del bayern de munchen y la selección inglesa." },

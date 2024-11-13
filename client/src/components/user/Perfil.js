@@ -1,18 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { FavoritosContext } from '../../context/FavoritosContext';
 import '../../styles/user/Perfil.css';
 
 function Perfil() {
   const navigate = useNavigate();
+  const { equiposFavoritos, competicionesFavoritas, addEquipoFavorito, addCompeticionFavorita } = useContext(FavoritosContext);
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [equiposFavoritos, setEquiposFavoritos] = useState([]);
-  const [competicionesFavoritas, setCompeticionesFavoritas] = useState([]);
   const [editedData, setEditedData] = useState({
     firstName: '',
     lastName: '',
-    equiposFavoritos: [],
-    competicionesFavoritas: [],
     fotoPerfil: null
   });
 
@@ -47,30 +45,6 @@ function Perfil() {
     };
     checkAuth();
   }, [navigate]);
-
-  useEffect(() => {
-    try {
-      // Leer equipos favoritos de localStorage
-      const storedEquipos = JSON.parse(localStorage.getItem('equiposFavoritos'));
-      if (Array.isArray(storedEquipos)) {
-        setEquiposFavoritos(storedEquipos);
-      } else {
-        setEquiposFavoritos([]); // Inicializa como array vacío si el dato no es un array
-      }
-  
-      // Leer competiciones favoritas de localStorage
-      const storedCompeticiones = JSON.parse(localStorage.getItem('competicionesFavoritas'));
-      if (Array.isArray(storedCompeticiones)) {
-        setCompeticionesFavoritas(storedCompeticiones);
-      } else {
-        setCompeticionesFavoritas([]); // Inicializa como array vacío si el dato no es un array
-      }
-    } catch (error) {
-      console.error("Error al cargar favoritos desde localStorage:", error);
-      setEquiposFavoritos([]);
-      setCompeticionesFavoritas([]);
-    }
-  }, []);
 
   const handleLogout = async () => {
     try {
@@ -144,50 +118,53 @@ function Perfil() {
   if (loading) return <div>Cargando...</div>;
   if (!userData) return <div>Error al cargar los datos del usuario.</div>;
 
-return (
-  <div className="perfil-container">
-    <h1>Perfil de {userData.username}</h1>
-    <div className="perfil-photo">
-      {editedData.fotoPerfil ? (
-        <img src={editedData.fotoPerfil} alt="Foto de perfil" className="profile-image" />
-      ) : (
-        <div className="placeholder-image">No profile photo</div>
-      )}
-      <input type="file" accept="image/*" onChange={handleFotoChange} />
+  return (
+    <div className="perfil-container">
+      <h1>Perfil de {userData.username}</h1>
+      <div className="perfil-photo">
+        {editedData.fotoPerfil ? (
+          <img src={editedData.fotoPerfil} alt="Foto de perfil" className="profile-image" />
+        ) : (
+          <div className="placeholder-image">No profile photo</div>
+        )}
+        <input type="file" accept="image/*" onChange={handleFotoChange} />
+      </div>
+
+      <div className="perfil-info">
+        <label>Nombre:
+          <input type="text" name="firstName" value={editedData.firstName} onChange={handleInputChange} />
+        </label>
+        <label>Apellido:
+          <input type="text" name="lastName" value={editedData.lastName} onChange={handleInputChange} />
+        </label>
+      </div>
+
+      <div className="favoritos">
+        <h3>Equipos Favoritos</h3>
+        <ul>
+          {equiposFavoritos.map((equipo, index) => (
+            <li key={`${equipo}-${index}`}>{equipo}</li>
+          ))}
+        </ul>
+        <Link to="/perfil/anadir-equipo-favorito">
+          <button>Añadir equipo favorito</button>
+        </Link>
+
+        <h3>Competiciones Favoritas</h3>
+        <ul>
+          {competicionesFavoritas.map((competicion, index) => (
+            <li key={`${competicion}-${index}`}>{competicion}</li>
+          ))}
+        </ul>
+        <Link to="/perfil/anadir-competicion-favorita">
+          <button>Añadir competición favorita</button>
+        </Link>
+      </div>
+
+      <button onClick={handleSaveChanges}>Guardar Cambios</button>
+      <button onClick={handleLogout}>Cerrar Sesión</button>
     </div>
-
-    <div className="perfil-info">
-      <label>Nombre:
-        <input type="text" name="firstName" value={editedData.firstName} onChange={handleInputChange} />
-      </label>
-      <label>Apellido:
-        <input type="text" name="lastName" value={editedData.lastName} onChange={handleInputChange} />
-      </label>
-    </div>
-
-    <div className="favoritos">
-
-      <h3>Equipos Favoritos</h3>
-      <ul>
-        {equiposFavoritos.map((equipo, index) => ( <li key={`${equipo}-${index}`}>{equipo}</li> ))}
-      </ul>
-      <Link to="/perfil/anadir-equipo-favorito">
-        <button>Añadir equipo favorito</button>
-      </Link>
-
-      <h3>Competiciones Favoritas</h3>
-      <ul>
-        {competicionesFavoritas.map((competicion, index) => ( <li key={`${competicion}-${index}`}>{competicion}</li> ))}
-      </ul>
-      <Link to="/perfil/anadir-competicion-favorita">
-        <button>Añadir competición favorita</button>
-      </Link>
-    </div>
-
-    <button onClick={handleSaveChanges}>Guardar Cambios</button>
-    <button onClick={handleLogout}>Cerrar Sesión</button>
-  </div>
-);
+  );
 }
 
 export default Perfil;

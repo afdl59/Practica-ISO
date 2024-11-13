@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FavoritosContext } from '../../context/FavoritosContext';
 import '../../styles/user/BuscadorFavoritos.css';
 
 function AnadirEquipoFavorito() {
+  const { addEquipoFavorito } = useContext(FavoritosContext);
   const [nombre, setNombre] = useState('');
   const [pais, setPais] = useState('');
   const [competicion, setCompeticion] = useState('');
@@ -11,23 +13,9 @@ function AnadirEquipoFavorito() {
   const navigate = useNavigate();
 
   const handleEquipoClick = (equipo) => {
-    try {
-      // Obtener los equipos favoritos existentes de localStorage
-      const equiposFavoritos = JSON.parse(localStorage.getItem('equiposFavoritos')) || [];
-      
-      // Verificar si el equipo ya está en la lista para evitar duplicados
-      if (!equiposFavoritos.includes(equipo)) {
-        equiposFavoritos.push(equipo);
-        localStorage.setItem('equiposFavoritos', JSON.stringify(equiposFavoritos));
-      }
-      
-      // Navegar de vuelta al perfil después de añadir
-      navigate('/perfil');
-    } catch (error) {
-      console.error("Error al guardar el equipo en localStorage:", error);
-    }
+    addEquipoFavorito(equipo.team.name);
+    navigate('/perfil');
   };
-  
 
   const competicionIds = { 
     "LaLiga": 140, 

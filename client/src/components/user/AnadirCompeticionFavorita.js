@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FavoritosContext } from '../../context/FavoritosContext';
 import '../../styles/user/BuscadorFavoritos.css';
 
 function AnadirCompeticionFavorita() {
+  const { addCompeticionFavorita } = useContext(FavoritosContext);
   const [nombre, setNombre] = useState('');
   const [pais, setPais] = useState('');
   const [competiciones, setCompeticiones] = useState([]);
@@ -10,23 +12,9 @@ function AnadirCompeticionFavorita() {
   const navigate = useNavigate();
 
   const handleCompeticionClick = (competicion) => {
-    try {
-      // Obtener las competiciones favoritas existentes de localStorage
-      const competicionesFavoritas = JSON.parse(localStorage.getItem('competicionesFavoritas')) || [];
-      
-      // Verificar si la competición ya está en la lista para evitar duplicados
-      if (!competicionesFavoritas.includes(competicion)) {
-        competicionesFavoritas.push(competicion);
-        localStorage.setItem('competicionesFavoritas', JSON.stringify(competicionesFavoritas));
-      }
-      
-      // Navegar de vuelta al perfil después de añadir
-      navigate('/perfil');
-    } catch (error) {
-      console.error("Error al guardar la competición en localStorage:", error);
-    }
+    addCompeticionFavorita(competicion.league.name);
+    navigate('/perfil');
   };
-  
 
   const paises = {
     "España": "spain",

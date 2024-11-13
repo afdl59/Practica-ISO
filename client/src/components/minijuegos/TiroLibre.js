@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../../styles/minijuegos/TiroLibre.css';
-import { useLeaderboard } from './LeaderboardContext';
+import { useLeaderboard } from '../../context/LeaderboardContext';
 
 import falcao2012 from '../../assets/players/falcao2012.jpg';
 import cristiano2012 from '../../assets/players/cristiano2012.jpg';

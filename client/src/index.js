@@ -1,19 +1,31 @@
 // src/index.js
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './styles/index.css';
-import App from './App';
 import { BrowserRouter } from 'react-router-dom';
-import { LeaderboardProvider } from './components/minijuegos/LeaderboardContext'; // Importar LeaderboardProvider
+import App from './App';
+import './styles/index.css';
+
+// Contextos
+import { LeaderboardProvider } from './context/LeaderboardContext';
+import { FavoritosProvider } from './context/FavoritosContext'; // Contexto Favoritos que hemos creado
 
 // Crear el root con el nuevo API de React 18
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <LeaderboardProvider> {/* Envolver con LeaderboardProvider */}
-      <BrowserRouter> {/* Envolver con BrowserRouter */}
+
+// Función auxiliar para envolver `App` en múltiples contextos
+const AppWithProviders = () => (
+  <LeaderboardProvider>
+    <FavoritosProvider>
+      <BrowserRouter>
         <App />
       </BrowserRouter>
-    </LeaderboardProvider>
+    </FavoritosProvider>
+  </LeaderboardProvider>
+);
+
+root.render(
+  <React.StrictMode>
+    <AppWithProviders />
   </React.StrictMode>
 );
+
