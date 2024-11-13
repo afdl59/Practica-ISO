@@ -13,6 +13,7 @@ function Perfil() {
     lastName: '',
     fotoPerfil: null
   });
+  const [initialLoad, setInitialLoad] = useState(true); // Nueva bandera para carga inicial
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -34,9 +35,12 @@ function Perfil() {
           fotoPerfil: userData.fotoPerfil
         });
 
-        // Cargar favoritos en el contexto
-        setEquiposFavoritos(userData.equipoFavorito || []);
-        setCompeticionesFavoritas(userData.competicionesFavoritas || []);
+        // Solo cargar favoritos del backend en la carga inicial
+        if (initialLoad) {
+          setEquiposFavoritos(userData.equipoFavorito || []);
+          setCompeticionesFavoritas(userData.competicionesFavoritas || []);
+          setInitialLoad(false); // Desactivar la carga inicial
+        }
       } catch (error) {
         console.error('Error:', error);
         navigate('/login');
@@ -45,7 +49,7 @@ function Perfil() {
       }
     };
     checkAuth();
-  }, [navigate, setEquiposFavoritos, setCompeticionesFavoritas]);
+  }, [navigate, initialLoad, setEquiposFavoritos, setCompeticionesFavoritas]);
 
   const handleLogout = async () => {
     try {
