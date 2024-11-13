@@ -11,12 +11,23 @@ function AnadirEquipoFavorito() {
   const navigate = useNavigate();
 
   const handleEquipoClick = (equipo) => {
-    // Guardar en localStorage
-    const equiposFavoritos = JSON.parse(localStorage.getItem('equiposFavoritos')) || [];
-    equiposFavoritos.push(equipo);
-    localStorage.setItem('equiposFavoritos', JSON.stringify(equiposFavoritos));
-    navigate('/perfil');
+    try {
+      // Obtener los equipos favoritos existentes de localStorage
+      const equiposFavoritos = JSON.parse(localStorage.getItem('equiposFavoritos')) || [];
+      
+      // Verificar si el equipo ya está en la lista para evitar duplicados
+      if (!equiposFavoritos.includes(equipo)) {
+        equiposFavoritos.push(equipo);
+        localStorage.setItem('equiposFavoritos', JSON.stringify(equiposFavoritos));
+      }
+      
+      // Navegar de vuelta al perfil después de añadir
+      navigate('/perfil');
+    } catch (error) {
+      console.error("Error al guardar el equipo en localStorage:", error);
+    }
   };
+  
 
   const competicionIds = { 
     "LaLiga": 140, 

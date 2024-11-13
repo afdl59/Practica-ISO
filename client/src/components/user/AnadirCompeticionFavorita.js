@@ -10,12 +10,23 @@ function AnadirCompeticionFavorita() {
   const navigate = useNavigate();
 
   const handleCompeticionClick = (competicion) => {
-    // Guardar en localStorage
-    const competicionesFavoritas = JSON.parse(localStorage.getItem('competicionesFavoritas')) || [];
-    competicionesFavoritas.push(competicion);
-    localStorage.setItem('competicionesFavoritas', JSON.stringify(competicionesFavoritas));
-    navigate('/perfil');
+    try {
+      // Obtener las competiciones favoritas existentes de localStorage
+      const competicionesFavoritas = JSON.parse(localStorage.getItem('competicionesFavoritas')) || [];
+      
+      // Verificar si la competición ya está en la lista para evitar duplicados
+      if (!competicionesFavoritas.includes(competicion)) {
+        competicionesFavoritas.push(competicion);
+        localStorage.setItem('competicionesFavoritas', JSON.stringify(competicionesFavoritas));
+      }
+      
+      // Navegar de vuelta al perfil después de añadir
+      navigate('/perfil');
+    } catch (error) {
+      console.error("Error al guardar la competición en localStorage:", error);
+    }
   };
+  
 
   const paises = {
     "España": "spain",

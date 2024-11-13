@@ -49,11 +49,27 @@ function Perfil() {
   }, [navigate]);
 
   useEffect(() => {
-    // Leer de localStorage al cargar el componente
-    const storedEquipos = JSON.parse(localStorage.getItem('equiposFavoritos')) || [];
-    const storedCompeticiones = JSON.parse(localStorage.getItem('competicionesFavoritas')) || [];
-    setEquiposFavoritos(storedEquipos);
-    setCompeticionesFavoritas(storedCompeticiones);
+    try {
+      // Leer equipos favoritos de localStorage
+      const storedEquipos = JSON.parse(localStorage.getItem('equiposFavoritos'));
+      if (Array.isArray(storedEquipos)) {
+        setEquiposFavoritos(storedEquipos);
+      } else {
+        setEquiposFavoritos([]); // Inicializa como array vacío si el dato no es un array
+      }
+  
+      // Leer competiciones favoritas de localStorage
+      const storedCompeticiones = JSON.parse(localStorage.getItem('competicionesFavoritas'));
+      if (Array.isArray(storedCompeticiones)) {
+        setCompeticionesFavoritas(storedCompeticiones);
+      } else {
+        setCompeticionesFavoritas([]); // Inicializa como array vacío si el dato no es un array
+      }
+    } catch (error) {
+      console.error("Error al cargar favoritos desde localStorage:", error);
+      setEquiposFavoritos([]);
+      setCompeticionesFavoritas([]);
+    }
   }, []);
 
   const handleLogout = async () => {
@@ -150,7 +166,7 @@ return (
     </div>
 
     <div className="favoritos">
-      
+
       <h3>Equipos Favoritos</h3>
       <ul>
         {equiposFavoritos.map((equipo, index) => ( <li key={`${equipo}-${index}`}>{equipo}</li> ))}
