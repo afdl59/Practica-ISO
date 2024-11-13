@@ -99,6 +99,9 @@ function Perfil() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatedData)
       });
+
+      const result = await response.json(); // Añadir para ver el resultado
+      console.log("Resultado del backend:", result);
   
       if (!response.ok) throw new Error('Error al actualizar los datos del usuario');
   
