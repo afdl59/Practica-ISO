@@ -150,17 +150,22 @@ return (
     </div>
 
     <div className="favoritos">
+      
       <h3>Equipos Favoritos</h3>
       <ul>
-        {equiposFavoritos.map((equipo, index) => <li key={index}>{equipo}</li>)}
+        {equiposFavoritos.map((equipo, index) => ( <li key={`${equipo}-${index}`}>{equipo}</li> ))}
       </ul>
-      <Link to="/perfil/anadir-equipo-favorito"><button>Añadir equipo favorito</button></Link>
+      <Link to="/perfil/anadir-equipo-favorito">
+        <button>Añadir equipo favorito</button>
+      </Link>
 
       <h3>Competiciones Favoritas</h3>
       <ul>
-        {competicionesFavoritas.map((competicion, index) => <li key={index}>{competicion}</li>)}
+        {competicionesFavoritas.map((competicion, index) => ( <li key={`${competicion}-${index}`}>{competicion}</li> ))}
       </ul>
-      <Link to="/perfil/anadir-competicion-favorita"><button>Añadir competición favorita</button></Link>
+      <Link to="/perfil/anadir-competicion-favorita">
+        <button>Añadir competición favorita</button>
+      </Link>
     </div>
 
     <button onClick={handleSaveChanges}>Guardar Cambios</button>
