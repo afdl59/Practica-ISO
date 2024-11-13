@@ -34,6 +34,9 @@ function TiroLibre() {
   const [score, setScore] = useState(0);
   const [attempts, setAttempts] = useState(0);
   const [message, setMessage] = useState('');
+  const [playerName, setPlayerName] = useState("Nombre del Jugador"); // Define un nombre inicial o cámbialo según sea necesario
+  const { username } = useUser();
+
 
   useEffect(() => {
     const randomSide = sides[Math.floor(Math.random() * sides.length)];
@@ -111,8 +114,10 @@ function TiroLibre() {
 };
 
 const endGame = () => {
-  updateLeaderboard('tiroLibre', playerName, score); // Actualizar la leaderboard
-  setMessage(`Game Over! Final Score: ${score}`);
+  if (username) {
+    updateLeaderboard('TiroLibre', score);
+    setMessage(`Game Over! Final Score: ${score}`);
+  }
 };
 
   function calculateTiroLibreScore(goals) {

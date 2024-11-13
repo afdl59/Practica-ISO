@@ -21,9 +21,12 @@ import PartidosDirecto from './components/stats/PartidosDirecto';
 import AnadirEquipoFavorito from './components/user/AnadirEquipoFavorito';
 import AnadirCompeticionFavorita from './components/user/AnadirCompeticionFavorita';
 import './styles/App.css';
+import { UserProvider } from './contexts/UserContext';
 
 function App() {
   return (
+    <UserProvider>
+      <LeaderboardProvider>
     <div className="app-container">
       <Sidebar />
       <Routes>
@@ -32,8 +35,8 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/minijuegos" element={<Minijuegos />} />
         <Route path="/perfil" element={<Perfil />} />
-        <Route path="anadir-equipo-favorito" element={<AnadirEquipoFavorito />} />
-        <Route path="anadir-competicion-favorita" element={<AnadirCompeticionFavorita />} />
+        <Route path="/perfil/anadir-equipo-favorito" element={<AnadirEquipoFavorito />} />
+        <Route path="/perfil/anadir-competicion-favorita" element={<AnadirCompeticionFavorita />} />
         <Route path="/minijuegos/bingo" element={<Bingo />} />
         <Route path="/minijuegos/tiro-libre" element={<TiroLibre />} />
         <Route path="/minijuegos/wordle-diario" element={<WordleDiario />} />
@@ -47,6 +50,8 @@ function App() {
         <Route path="/partidos-directo" element={<PartidosDirecto />} />
       </Routes>
     </div>
+    </LeaderboardProvider>
+    </UserProvider>
   );
 }
 
