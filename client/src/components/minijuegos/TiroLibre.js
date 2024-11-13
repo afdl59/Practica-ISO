@@ -110,11 +110,11 @@ function TiroLibre() {
     }
 };
 
-const endGame = () => {
+/*const endGame = () => {
   if (!playerName) return; // Verifica que playerName esté definido antes de actualizar el leaderboard
   updateLeaderboard('tiroLibre', playerName, score); // Actualizar la leaderboard
   setMessage(`Game Over! Final Score: ${score}`);
-};
+};*/
 
   function calculateTiroLibreScore(goals) {
     return goals; // Cada goal vale 1 punto
