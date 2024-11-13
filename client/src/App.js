@@ -32,8 +32,8 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/minijuegos" element={<Minijuegos />} />
         <Route path="/perfil" element={<Perfil />} />
-        <Route path="/anadir-equipo-favorito" element={<AnadirEquipoFavorito />} />
-        <Route path="/anadir-competicion-favorita" element={<AnadirCompeticionFavorita />} />
+        <Route path="/perfil/anadir-equipo-favorito" element={<AnadirEquipoFavorito />} />
+        <Route path="/perfil/anadir-competicion-favorita" element={<AnadirCompeticionFavorita />} />
         <Route path="/minijuegos/bingo" element={<Bingo />} />
         <Route path="/minijuegos/tiro-libre" element={<TiroLibre />} />
         <Route path="/minijuegos/wordle-diario" element={<WordleDiario />} />
