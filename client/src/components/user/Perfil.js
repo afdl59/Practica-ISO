@@ -87,8 +87,8 @@ function Perfil() {
       const updatedData = {
         firstName: editedData.firstName,
         lastName: editedData.lastName,
-        equipoFavorito: equiposFavoritos,
-        competicionesFavoritas: competicionesFavoritas
+        equipoFavorito: [...equiposFavoritos],
+        competicionesFavoritas: [...competicionesFavoritas]
       };
   
       console.log("Datos actualizados para guardar:", updatedData);
