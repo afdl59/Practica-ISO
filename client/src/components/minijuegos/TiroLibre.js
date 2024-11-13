@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../../styles/minijuegos/TiroLibre.css';
+import { useLeaderboard } from './LeaderboardContext';
 
 import falcao2012 from '../../assets/players/falcao2012.jpg';
 import cristiano2012 from '../../assets/players/cristiano2012.jpg';
@@ -29,6 +30,10 @@ function TiroLibre() {
   const [power, setPower] = useState(50); // Potencia del disparo
   const [targetPosition, setTargetPosition] = useState({ x: 0, y: 0 }); // Posición seleccionada en la portería
   const [keeperPosition, setKeeperPosition] = useState({ x: 220, y: 10 }); // Posición inicial del portero
+  const { updateLeaderboard } = useLeaderboard();
+  const [score, setScore] = useState(0);
+  const [attempts, setAttempts] = useState(0);
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
     const randomSide = sides[Math.floor(Math.random() * sides.length)];
@@ -94,6 +99,44 @@ function TiroLibre() {
     }, 1000);
   };
 
+  const handleGoalAttempt = (isGoal) => {
+    setAttempts(prevAttempts => prevAttempts + 1);
+
+    if (isGoal) {
+        setScore(prevScore => prevScore + 1); // 1 punto por goal
+        setMessage('Goal!');
+    } else {
+        setMessage('Miss!');
+    }
+};
+
+const endGame = () => {
+  updateLeaderboard('tiroLibre', playerName, score); // Actualizar la leaderboard
+  setMessage(`Game Over! Final Score: ${score}`);
+};
+
+  function calculateTiroLibreScore(goals) {
+    return goals; // Cada goal vale 1 punto
+}
+
+function TiroLibre({ goals, playerName }) {
+  const { updateLeaderboard } = useLeaderboard();
+  const [score, setScore] = useState(calculateTiroLibreScore(goals));
+
+  useEffect(() => {
+      if (score) {
+          updateLeaderboard('tiroLibre', playerName, score);
+      }
+  }, [score, playerName, updateLeaderboard]);
+
+  return (
+      <div>
+          {/* Game UI de Tiro Libre */}
+          <h2>Your score: {score}</h2>
+      </div>
+  );
+}
+
   return (
     <div className="game-container">
       <h1>Tiro Libre</h1>
@@ -140,21 +183,18 @@ function TiroLibre() {
           style={{ left: `${keeperPosition.x}px`, bottom: `${keeperPosition.y}px` }}>
         </div>
       </div>
+      
+      <div className="tirolibre-container">
+            <h1>Tiro Libre</h1>
+            <p>{message}</p>
+            <button onClick={() => handleGoalAttempt(true)}>Attempt Goal (Success)</button>
+            <button onClick={() => handleGoalAttempt(false)}>Attempt Goal (Fail)</button>
+            <h2>Score: {score}</h2>
+            <button onClick={endGame}>End Game</button>
+        </div>
     </div>
+    
   );
 }
 
 export default TiroLibre;
-
-
-
-
-
-
-
-
-
-
-
-
-

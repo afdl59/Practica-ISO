@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../../styles/minijuegos/Bingo.css';
+import { useLeaderboard } from './LeaderboardContext';
 
 const jugadores = [
   { nombre: "Harry Kane", definicion: "Delantero estrella del bayern de munchen y la selección inglesa." },
@@ -13,58 +14,60 @@ const jugadores = [
   { nombre: "Santiago Cazorla", definicion: "Centrocampista con gran visión de juego, ha jugado en La Liga y Premier League." }
 ];
 
-const Bingo = () => {
-  const [inputs, setInputs] = useState(Array(jugadores.length).fill(""));
-  const [mensaje, setMensaje] = useState("");
+function calculateBingoScore(inputs, jugadores) {
+  // Each correct square gives 1 point, full board gives 1 extra point
+  const filledSquares = inputs.filter((input, index) => 
+      input.trim().toLowerCase() === jugadores[index].nombre.toLowerCase()
+  ).length;
+  const isFullBoard = filledSquares === jugadores.length;
+  return isFullBoard ? filledSquares + 1 : filledSquares;
+}
 
-  // Maneja el cambio de cada input en la cuadrícula
+function BingoGame({ jugadores, playerName }) {
+  const { updateLeaderboard } = useLeaderboard();
+  const [inputs, setInputs] = useState(Array(jugadores.length).fill(''));
+  const [score, setScore] = useState(0);
+  const [mensaje, setMensaje] = useState('');
+
   const handleInputChange = (index, value) => {
-    const nuevosInputs = [...inputs];
-    nuevosInputs[index] = value;
-    setInputs(nuevosInputs);
-    setMensaje(""); // Resetear el mensaje mientras se escribe
+      const newInputs = [...inputs];
+      newInputs[index] = value;
+      setInputs(newInputs);
   };
 
-  // Validar si todos los inputs son correctos
   const validarGanador = () => {
-    const esGanador = inputs.every(
-      (input, index) => input.trim().toLowerCase() === jugadores[index].nombre.toLowerCase()
-    );
-    if (esGanador) {
-      setMensaje("¡Has ganado!");
-    } else {
-      setMensaje(""); // No mostrar mensaje hasta que se completen todas las casillas correctamente
-    }
-  };
-
-  // Maneja el evento cuando se da Enter o se cambia el foco en el último input
-  const handleEnterPress = (index) => {
-    if (index === jugadores.length - 1) {
-      validarGanador(); // Solo validar cuando se complete el último input
-    }
+      const currentScore = calculateBingoScore(inputs, jugadores);
+      setScore(currentScore);
+      
+      if (currentScore === 10) { // Full board score
+          setMensaje('¡Ganaste! Has completado el bingo.');
+          updateLeaderboard('bingo', playerName, currentScore);
+      } else {
+          setMensaje(''); // Clear message if not complete
+      }
   };
 
   return (
-    <div className="bingo-container">
-      <h1>Bingo de Futbolistas</h1>
-      <div className="grid">
-        {jugadores.map((jugador, index) => (
-          <div key={index} className={`grid-item ${inputs[index].trim().toLowerCase() === jugadores[index].nombre.toLowerCase() ? 'correct' : ''}`}>
-            <p>{jugador.definicion}</p>
-            <input
-              type="text"
-              value={inputs[index]}
-              onChange={(e) => handleInputChange(index, e.target.value)}
-              onBlur={() => validarGanador()} // Validar al salir del input
-              onKeyDown={(e) => e.key === 'Enter' && handleEnterPress(index)} // Validar al presionar Enter en el último input
-            />
+      <div className="bingo-container">
+          <h1>Bingo de Futbolistas</h1>
+          <div className="grid">
+              {jugadores.map((jugador, index) => (
+                  <div key={index} className={`grid-item ${inputs[index].trim().toLowerCase() === jugadores[index].nombre.toLowerCase() ? 'correct' : ''}`}>
+                      <p>{jugador.definicion}</p>
+                      <input
+                          type="text"
+                          value={inputs[index]}
+                          onChange={(e) => handleInputChange(index, e.target.value)}
+                          onBlur={() => validarGanador()} // Validate when leaving the input
+                          onKeyDown={(e) => e.key === 'Enter' && validarGanador()} // Validate on Enter press
+                      />
+                  </div>
+              ))}
           </div>
-        ))}
+          {mensaje && <div className="win-message">{mensaje}</div>}
+          <h2>Your score: {score}</h2>
       </div>
-      {mensaje && <div className="win-message">{mensaje}</div>}
-    </div>
   );
-};
+}
 
-export default Bingo;
-
+export default BingoGame;
