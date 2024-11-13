@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../../styles/minijuegos/WordleDiario.css';  // Importa la hoja de estilos css
+import '../../styles/minijuegos/WordleDiario.css';  // Importa la hoja de estilos
 
 const jugadores = [
   'Pele', 'Maradona', 'Zidane', 'Ronaldo', 'Ronaldinho', 'Messi', 'Cristiano Ronaldo', 'Johan Cruyff', 
@@ -58,6 +58,7 @@ const jugadores = [
 
 // Función para obtener el jugador del día
 function WordleDiario() {
+
   const [jugadorDelDia, setJugadorDelDia] = useState('');
   const [inputUsuario, setInputUsuario] = useState('');
   const [intentos, setIntentos] = useState([]);
