@@ -1,19 +1,22 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { FavoritosContext } from '../../context/FavoritosContext';
+import LoadInitialFavorites from './LoadInitialFavorites';
+import UpdateFavoritesOnChange from './UpdateFavoritesOnChange';
 import '../../styles/user/Perfil.css';
 
 function Perfil() {
   const navigate = useNavigate();
-  const { equiposFavoritos, setEquiposFavoritos, competicionesFavoritas, setCompeticionesFavoritas } = useContext(FavoritosContext);
+  const { equiposFavoritos, competicionesFavoritas } = useContext(FavoritosContext);
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [editedData, setEditedData] = useState({
     firstName: '',
     lastName: '',
-    fotoPerfil: null
+    fotoPerfil: null,
+    equipoFavorito: [],
+    competicionesFavoritas: []
   });
-  const [initialLoad, setInitialLoad] = useState(true); // Nueva bandera para carga inicial
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -32,15 +35,10 @@ function Perfil() {
         setEditedData({
           firstName: userData.firstName,
           lastName: userData.lastName,
-          fotoPerfil: userData.fotoPerfil
+          fotoPerfil: userData.fotoPerfil,
+          equipoFavorito: userData.equipoFavorito || [],
+          competicionesFavoritas: userData.competicionesFavoritas || []
         });
-
-        // Solo cargar favoritos del backend en la carga inicial
-        if (initialLoad) {
-          setEquiposFavoritos(userData.equipoFavorito || []);
-          setCompeticionesFavoritas(userData.competicionesFavoritas || []);
-          setInitialLoad(false); // Desactivar la carga inicial
-        }
       } catch (error) {
         console.error('Error:', error);
         navigate('/login');
@@ -49,7 +47,7 @@ function Perfil() {
       }
     };
     checkAuth();
-  }, [navigate, initialLoad, setEquiposFavoritos, setCompeticionesFavoritas]);
+  }, [navigate]);
 
   const handleLogout = async () => {
     try {
@@ -91,8 +89,8 @@ function Perfil() {
       const updatedData = {
         firstName: editedData.firstName,
         lastName: editedData.lastName,
-        equipoFavorito: [...equiposFavoritos],
-        competicionesFavoritas: [...competicionesFavoritas]
+        equipoFavorito: equiposFavoritos,
+        competicionesFavoritas: competicionesFavoritas
       };
   
       console.log("Datos actualizados para guardar:", updatedData);
@@ -121,6 +119,9 @@ function Perfil() {
 
   return (
     <div className="perfil-container">
+      <LoadInitialFavorites userData={userData} />
+      <UpdateFavoritesOnChange setEditedData={setEditedData} />
+
       <h1>Perfil de {userData.username}</h1>
       <div className="perfil-photo">
         {editedData.fotoPerfil ? (
@@ -133,10 +134,10 @@ function Perfil() {
 
       <div className="perfil-info">
         <label>Nombre:
-          <input type="text" name="firstName" value={editedData.firstName} onChange={handleInputChange} />
+          <input type="text" name="firstName" value={editedData.firstName} onChange={(e) => setEditedData({...editedData, firstName: e.target.value})} />
         </label>
         <label>Apellido:
-          <input type="text" name="lastName" value={editedData.lastName} onChange={handleInputChange} />
+          <input type="text" name="lastName" value={editedData.lastName} onChange={(e) => setEditedData({...editedData, lastName: e.target.value})} />
         </label>
       </div>
 
