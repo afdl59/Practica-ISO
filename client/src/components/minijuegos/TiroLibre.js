@@ -191,7 +191,7 @@ function TiroLibre({ goals, playerName }) {
             <button onClick={() => handleGoalAttempt(true)}>Attempt Goal (Success)</button>
             <button onClick={() => handleGoalAttempt(false)}>Attempt Goal (Fail)</button>
             <h2>Score: {score}</h2>
-            <button onClick={endGame}>End Game</button>
+            {/*<button onClick={endGame}>End Game</button>*/}
         </div>
     </div>
     
