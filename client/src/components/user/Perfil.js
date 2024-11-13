@@ -35,7 +35,7 @@ function Perfil() {
         });
 
         // Cargar favoritos en el contexto
-        setEquiposFavoritos(userData.equiposFavoritos || []);
+        setEquiposFavoritos(userData.equipoFavorito || []);
         setCompeticionesFavoritas(userData.competicionesFavoritas || []);
       } catch (error) {
         console.error('Error:', error);
