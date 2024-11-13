@@ -2,22 +2,18 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/user/BuscadorFavoritos.css';
 
-function AnadirCompeticionFavorita({ addCompeticionFavorita }) {
+function AnadirCompeticionFavorita() {
   const [nombre, setNombre] = useState('');
   const [pais, setPais] = useState('');
   const [competiciones, setCompeticiones] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  console.log('Prop addCompeticionFavorita:', addCompeticionFavorita);
-  
   const handleCompeticionClick = (competicion) => {
-    console.log('Competición seleccionada:', competicion.league.name);
-    if (typeof addCompeticionFavorita === 'function') {
-      addCompeticionFavorita(competicion.league.name);
-    } else {
-      console.error('addCompeticionFavorita is not a function:', addCompeticionFavorita);
-    }
+    // Guardar en localStorage
+    const competicionesFavoritas = JSON.parse(localStorage.getItem('competicionesFavoritas')) || [];
+    competicionesFavoritas.push(competicion);
+    localStorage.setItem('competicionesFavoritas', JSON.stringify(competicionesFavoritas));
     navigate('/perfil');
   };
 

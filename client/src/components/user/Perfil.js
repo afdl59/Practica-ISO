@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import '../../styles/user/Perfil.css';
-import AnadirEquipoFavorito from './AnadirEquipoFavorito';
-import AnadirCompeticionFavorita from './AnadirCompeticionFavorita';
-import { Routes, Route } from 'react-router-dom';
 
 function Perfil() {
   const navigate = useNavigate();
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [equiposFavoritos, setEquiposFavoritos] = useState([]);
+  const [competicionesFavoritas, setCompeticionesFavoritas] = useState([]);
   const [editedData, setEditedData] = useState({
     firstName: '',
     lastName: '',
@@ -49,19 +48,13 @@ function Perfil() {
     checkAuth();
   }, [navigate]);
 
-  const addEquipoFavorito = (equipo) => {
-    setEditedData((prevData) => ({
-      ...prevData,
-      equiposFavoritos: [...prevData.equiposFavoritos, equipo]
-    }));
-  };
-
-  const addCompeticionFavorita = (competicion) => {
-    setEditedData((prevData) => ({
-      ...prevData,
-      competicionesFavoritas: [...prevData.competicionesFavoritas, competicion]
-    }));
-  };
+  useEffect(() => {
+    // Leer de localStorage al cargar el componente
+    const storedEquipos = JSON.parse(localStorage.getItem('equiposFavoritos')) || [];
+    const storedCompeticiones = JSON.parse(localStorage.getItem('competicionesFavoritas')) || [];
+    setEquiposFavoritos(storedEquipos);
+    setCompeticionesFavoritas(storedCompeticiones);
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -161,13 +154,13 @@ return (
     <div className="favoritos">
       <h3>Equipos Favoritos</h3>
       <ul>
-        {editedData.equiposFavoritos.map((equipo, index) => <li key={index}>{equipo}</li>)}
+        {equiposFavoritos.map((equipo, index) => <li key={index}>{equipo}</li>)}
       </ul>
       <Link to="/perfil/anadir-equipo-favorito"><button>Añadir equipo favorito</button></Link>
 
       <h3>Competiciones Favoritas</h3>
       <ul>
-        {editedData.competicionesFavoritas.map((competicion, index) => <li key={index}>{competicion}</li>)}
+        {competicionesFavoritas.map((competicion, index) => <li key={index}>{competicion}</li>)}
       </ul>
       <Link to="/perfil/anadir-competicion-favorita"><button>Añadir competición favorita</button></Link>
     </div>
