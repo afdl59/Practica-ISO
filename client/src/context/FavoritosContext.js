@@ -21,7 +21,9 @@ export const FavoritosProvider = ({ children }) => {
   const addCompeticionFavorita = (competicion) => {
     setCompeticionesFavoritas((prevCompeticiones) => {
       if (!prevCompeticiones.includes(competicion)) {
-        return [...prevCompeticiones, competicion];
+        const updatedCompeticiones = [...prevCompeticiones, competicion];
+        console.log("Competiciones favoritas actualizadas:", updatedCompeticiones);
+        return updatedCompeticiones;
       }
       return prevCompeticiones;
     });
