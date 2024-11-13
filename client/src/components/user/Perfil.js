@@ -5,7 +5,7 @@ import '../../styles/user/Perfil.css';
 
 function Perfil() {
   const navigate = useNavigate();
-  const { equiposFavoritos, competicionesFavoritas, addEquipoFavorito, addCompeticionFavorita } = useContext(FavoritosContext);
+  const { equiposFavoritos, setEquiposFavoritos, competicionesFavoritas, setCompeticionesFavoritas } = useContext(FavoritosContext);
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [editedData, setEditedData] = useState({
@@ -29,13 +29,14 @@ function Perfil() {
         const userData = await userResponse.json();
         setUserData(userData);
         setEditedData({
-          ...editedData,
           firstName: userData.firstName,
           lastName: userData.lastName,
-          equiposFavoritos: userData.equiposFavoritos || [],
-          competicionesFavoritas: userData.competicionesFavoritas || [],
           fotoPerfil: userData.fotoPerfil
         });
+
+        // Cargar favoritos en el contexto
+        setEquiposFavoritos(userData.equiposFavoritos || []);
+        setCompeticionesFavoritas(userData.competicionesFavoritas || []);
       } catch (error) {
         console.error('Error:', error);
         navigate('/login');
@@ -44,7 +45,7 @@ function Perfil() {
       }
     };
     checkAuth();
-  }, [navigate]);
+  }, [navigate, setEquiposFavoritos, setCompeticionesFavoritas]);
 
   const handleLogout = async () => {
     try {
