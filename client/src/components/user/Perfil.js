@@ -15,7 +15,6 @@ function Perfil() {
   });
 
   useEffect(() => {
-    console.log("Competiciones favoritas en Perfil:", competicionesFavoritas);
     const checkAuth = async () => {
       try {
         const response = await fetch('/api/auth/check-session');
@@ -107,13 +106,6 @@ function Perfil() {
   
       setUserData(updatedData);
       alert('Datos actualizados correctamente');
-
-      setEditedData((prevData) => ({
-        ...prevData,
-        equipoFavoritoTemporal: '',
-        competicionFavoritaTemporal: ''
-      }));
-      
     } catch (error) {
       console.error('Error al actualizar los datos del usuario:', error);
     }
