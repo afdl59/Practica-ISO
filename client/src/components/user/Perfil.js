@@ -127,8 +127,6 @@ function Perfil() {
   
   if (loading) return <div>Cargando...</div>;
   if (!userData) return <div>Error al cargar los datos del usuario.</div>;
-  console.log("Funcion de addEquipoFavorito:", addEquipoFavorito);
-  console.log("Funcion de addCompeticionFavorita:", addCompeticionFavorita);
 
 return (
   <div className="perfil-container">
