@@ -31,7 +31,9 @@ export const FavoritosProvider = ({ children }) => {
     <FavoritosContext.Provider
       value={{
         equiposFavoritos,
+        setEquiposFavoritos,
         competicionesFavoritas,
+        setCompeticionesFavoritas,
         addEquipoFavorito,
         addCompeticionFavorita,
       }}
