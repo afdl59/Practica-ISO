@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { FavoritosContext } from '../../context/FavoritosContext';
-import LoadInitialFavorites from './LoadInitialFavorites';
-import UpdateFavoritesOnChange from './UpdateFavoritesOnChange';
+import LoadInitialFavorites from './LoadInitialFavoritos';
+import UpdateFavoritesOnChange from './UpdateFavoritosOnChange';
 import '../../styles/user/Perfil.css';
 
 function Perfil() {
