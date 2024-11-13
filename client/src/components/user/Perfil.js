@@ -15,6 +15,7 @@ function Perfil() {
   });
 
   useEffect(() => {
+    console.log("Competiciones favoritas en Perfil:", competicionesFavoritas);
     const checkAuth = async () => {
       try {
         const response = await fetch('/api/auth/check-session');
