@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import '../../styles/foro/Foro.css';
 import io from 'socket.io-client';
 import { useNavigate } from 'react-router-dom';
@@ -7,76 +7,85 @@ function Foro() {
   const [mensajes, setMensajes] = useState([]);
   const [content, setContent] = useState('');
   const [username, setUsername] = useState('');
-  const [salas, setSalas] = useState([]); // Lista de salas disponibles
-  const [currentSala, setCurrentSala] = useState(''); // Sala seleccionada
-  const [newSalaTitle, setNewSalaTitle] = useState(''); // Título para una nueva sala
-  const [newSalaDescription, setNewSalaDescription] = useState(''); // Descripción para la nueva sala
+  const [salas, setSalas] = useState([]);
+  const [currentSala, setCurrentSala] = useState('');
+  const [newSalaTitle, setNewSalaTitle] = useState('');
+  const [newSalaDescription, setNewSalaDescription] = useState('');
   const navigate = useNavigate();
-  
-  // Inicializar la conexión de Socket.IO
-  const socket = io('https://futbol360.ddns.net');
 
-  useEffect(() => { 
+  // Mantener una referencia única para la conexión de Socket.IO
+  const socket = useRef(null);
+
+  // Conectar a Socket.IO solo una vez al montar el componente
+  useEffect(() => {
+    socket.current = io('https://futbol360.ddns.net');
+
+    socket.current.on('connect', () => {
+      console.log('Conectado al servidor de Socket.IO');
+    });
+
+    // Limpiar la conexión de Socket.IO al desmontar el componente
+    return () => {
+      socket.current.off('mensajeRecibido');
+      socket.current.disconnect();
+      console.log('Socket desconectado');
+    };
+  }, []); // Se ejecuta solo una vez al montar el componente
+
+  // Manejar mensajes recibidos
+  useEffect(() => {
+    const handleMensajeRecibido = (mensaje) => {
+      console.log('Mensaje recibido en el cliente:', mensaje);
+      if (mensaje.chatRoom === currentSala) {
+        setMensajes((prevMensajes) => [...prevMensajes, mensaje]);
+      }
+    };
+  
+    socket.current.on('mensajeRecibido', handleMensajeRecibido);
+  
+    // Limpiar el evento 'mensajeRecibido' al cambiar de sala o desmontar el componente
+    return () => {
+      socket.current.off('mensajeRecibido', handleMensajeRecibido);
+    };
+  }, [currentSala]);
+
+  // Verificación de autenticación y carga inicial de datos
+  useEffect(() => {
     const checkAuthAndLoadData = async () => {
       try {
         // Verificar si el usuario está autenticado
-        console.log('Verificando autenticación...');
-        const response = await fetch('/api/check-session', {
+        const response = await fetch('/api/auth/check-session', {
           headers: {
-            'Cache-Control': 'no-cache', // Evitar el caché en la solicitud
-          }
+            'Cache-Control': 'no-cache',
+          },
         });
-        const textData = await response.text(); // Primero obtenemos el texto en lugar de JSON para identificar si hay un error de formato
+        const textData = await response.text();
 
         try {
-          const data = JSON.parse(textData); // Intentamos parsear la respuesta como JSON
-          console.log('Respuesta de /api/check-session:', data);
-
+          const data = JSON.parse(textData);
           if (!data.isAuthenticated) {
-            console.warn('Usuario no autenticado, redirigiendo al login.');
             navigate('/login'); // Redirige al login si no está autenticado
             return;
           }
-
           setUsername(data.username);
         } catch (jsonError) {
           console.error('Error al parsear la respuesta de /api/check-session:', jsonError);
-          console.error('Contenido de la respuesta:', textData);
           navigate('/login');
           return;
         }
 
-        // Cargar las salas de chat iniciales
-        console.log('Cargando salas de chat...');
+        // Cargar las salas de chat
         const responseSalas = await fetch('/api/foro/salas', {
           headers: {
-            'Cache-Control': 'no-cache', // Evitar el caché en la solicitud
-          }
+            'Cache-Control': 'no-cache',
+          },
         });
 
-        // Verificar el estado de la respuesta para manejar los códigos HTTP
-        if (responseSalas.status === 304) {
-          console.warn('No hay cambios en las salas de chat desde la última solicitud.');
-          return; // No actualizar si no hay cambios
-        } else if (!responseSalas.ok) {
-          console.warn('Error al cargar las salas de chat. Código de estado:', responseSalas.status);
-          return;
-        }
-
-        const textSalas = await responseSalas.text(); // Primero obtenemos el texto para identificar cualquier problema
-
-        try {
-          const dataSalas = JSON.parse(textSalas);
-          console.log('Respuesta de /api/foro/salas:', dataSalas);
-
-          if (Array.isArray(dataSalas)) {
-            setSalas(dataSalas);
-          } else {
-            console.warn('La respuesta de /api/foro/salas no es un array válido.');
-          }
-        } catch (jsonSalasError) {
-          console.error('Error al parsear la respuesta de /api/foro/salas:', jsonSalasError);
-          console.error('Contenido de la respuesta:', textSalas);
+        if (responseSalas.ok) {
+          const dataSalas = await responseSalas.json();
+          setSalas(dataSalas);
+        } else {
+          console.warn('Error al cargar las salas de chat.');
         }
       } catch (error) {
         console.error('Error verificando la sesión o cargando las salas:', error);
@@ -85,47 +94,39 @@ function Foro() {
     };
 
     checkAuthAndLoadData();
+  }, [navigate]);
 
-    // Configurar Socket.IO para escuchar los mensajes nuevos
-    socket.on('mensajeRecibido', (mensaje) => {
-      if (mensaje.chatRoom === currentSala) {
-        setMensajes((prevMensajes) => [...prevMensajes, mensaje]);
-      }
-    });
+  // Manejar cambio de sala
+  useEffect(() => {
+    if (currentSala) {
+      setMensajes([]); // Limpiar mensajes cuando se cambia de sala
+      socket.current.emit('unirseASala', currentSala);
 
-    // Limpiar socket cuando el componente se desmonte
-    return () => {
-      socket.off('mensajeRecibido');
-      socket.disconnect();
-    };
+      const fetchMensajes = async () => {
+        try {
+          const responseMensajes = await fetch(`/api/foro/salas/${currentSala}/mensajes`);
+          if (responseMensajes.ok) {
+            const dataMensajes = await responseMensajes.json();
+            setMensajes(dataMensajes);
+          } else {
+            console.warn('No se encontraron mensajes en la sala.');
+          }
+        } catch (error) {
+          console.error('Error al cargar los mensajes de la sala:', error);
+        }
+      };
+
+      fetchMensajes();
+    }
   }, [currentSala]);
 
-
-  const handleSalaChange = async (sala) => {
+  const handleSalaChange = (sala) => {
     setCurrentSala(sala._id);
-    setMensajes([]); // Limpiar mensajes cuando se cambia de sala
-
-    // Unirse a la nueva sala con Socket.IO
-    socket.emit('unirseASala', sala._id);
-
-    // Cargar mensajes de la nueva sala
-    try {
-      const responseMensajes = await fetch(`/api/foro/salas/${sala._id}/mensajes`);
-      if (responseMensajes.ok) {
-        const dataMensajes = await responseMensajes.json();
-        setMensajes(dataMensajes);
-      } else {
-        console.warn('No se encontraron mensajes en la sala.');
-      }
-    } catch (error) {
-      console.error('Error al cargar los mensajes de la sala:', error);
-    }
   };
 
   const handleCreateSala = async (e) => {
     e.preventDefault();
     if (newSalaTitle && newSalaDescription && username) {
-      console.log(newSalaTitle, newSalaDescription, username);
       try {
         const response = await fetch('https://futbol360.ddns.net/api/foro/salas', {
           method: 'POST',
@@ -145,7 +146,7 @@ function Foro() {
           setNewSalaTitle('');
           setNewSalaDescription('');
         } else {
-          console.error('Error al crear la nueva sala:', response.statusText);
+          console.error('Error al crear la nueva sala.');
         }
       } catch (error) {
         console.error('Error creando la nueva sala:', error);
@@ -156,9 +157,13 @@ function Foro() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (username && content && currentSala) {
-      const nuevoMensaje = { content, user: username, chatRoom: currentSala };
-      console.log('Enviando mensaje:', nuevoMensaje);
-      socket.emit('nuevoMensaje', nuevoMensaje);
+      const nuevoMensaje = {
+        username: username,
+        content: content,
+        chatRoom: currentSala,
+      };
+
+      socket.current.emit('nuevoMensaje', nuevoMensaje);
       setContent('');
     }
   };
@@ -225,7 +230,7 @@ function Foro() {
             ) : (
               mensajes.map((mensaje, index) => (
                 <div key={index}>
-                  <strong>{mensaje.user.username}</strong>: {mensaje.content}
+                  <strong>{mensaje.username || mensaje.user}</strong>: {mensaje.content}
                   <small style={{ float: 'right' }}>{new Date(mensaje.date).toLocaleString()}</small>
                   <hr />
                 </div>

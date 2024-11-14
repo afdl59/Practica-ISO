@@ -58,6 +58,7 @@ const jugadores = [
 
 // Función para obtener el jugador del día
 function WordleDiario() {
+
   const [jugadorDelDia, setJugadorDelDia] = useState('');
   const [inputUsuario, setInputUsuario] = useState('');
   const [intentos, setIntentos] = useState([]);
