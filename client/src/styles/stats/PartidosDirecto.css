@@ -1,0 +1,42 @@
+.partidos-directo-container {
+    margin: 20px;
+  }
+  
+  .competicion-section {
+    margin-top: 20px;
+  }
+  
+  .competicion-section h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #333;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 5px;
+  }
+  
+  .partido {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .partido img {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .partido span {
+    flex: 1;
+    text-align: center;
+    font-size: 16px;
+    color: #444;
+  }
+  
+  .partido div {
+    margin-left: 10px;
+    font-size: 14px;
+    color: #666;
+  }
+  
