@@ -79,6 +79,7 @@ function PartidosDirecto() {
                   <span>{partido.teams.home.name} {partido.goals.home} - {partido.goals.away} {partido.teams.away.name}</span>
                   <img src={partido.teams.away.logo} alt={partido.teams.away.name} width="50" />
                   <div>{new Date(partido.fixture.date).toLocaleTimeString()}</div>
+                  <div>Competición: {partido.league.name}</div>
                 </div>
               </li>
             ))}
