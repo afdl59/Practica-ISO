@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../../styles/minijuegos/GuessThePlayer.css';
-import { useLeaderboard } from './LeaderboardContext';
+import { useLeaderboard } from '../../context/LeaderboardContext';
 
 import Messi from '../../assets/players/Messi.jpg';
 import Cristiano from '../../assets/players/Cristiano.jpg';

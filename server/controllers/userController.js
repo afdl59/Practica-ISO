@@ -121,6 +121,8 @@ exports.updateUserProfile = async (req, res) => {
     const { username } = req.params;
     const { firstName, lastName, equipoFavorito, competicionesFavoritas } = req.body;
 
+    console.log("Datos recibidos para actualizar:", req.body); // Verificar los datos recibidos
+
     try {
         const usuario = await User.findOne({ username });
 
@@ -128,13 +130,19 @@ exports.updateUserProfile = async (req, res) => {
             return res.status(404).json({ message: 'Usuario no encontrado' });
         }
 
+        // Actualizar solo si existen valores nuevos en el req.body
         usuario.firstName = firstName || usuario.firstName;
         usuario.lastName = lastName || usuario.lastName;
         usuario.equipoFavorito = equipoFavorito || usuario.equipoFavorito;
         usuario.competicionesFavoritas = competicionesFavoritas || usuario.competicionesFavoritas;
 
+        console.log("Usuario antes de guardar:", usuario); // Confirmar valores antes de guardar
+
         await usuario.save();
-        res.status(200).json(usuario);
+        res.status(200).json({
+            message: "Perfil actualizado correctamente",
+            user: usuario
+        });
     } catch (err) {
         console.error('Error al actualizar los datos del usuario:', err);
         res.status(500).json({ message: 'Error al actualizar los datos del usuario' });

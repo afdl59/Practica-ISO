@@ -1,23 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FavoritosContext } from '../../context/FavoritosContext';
 import '../../styles/user/BuscadorFavoritos.css';
 
-function AnadirCompeticionFavorita({ addCompeticionFavorita }) {
+function AnadirCompeticionFavorita() {
+  const { addCompeticionFavorita } = useContext(FavoritosContext);
   const [nombre, setNombre] = useState('');
   const [pais, setPais] = useState('');
   const [competiciones, setCompeticiones] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  console.log('Prop addCompeticionFavorita:', addCompeticionFavorita);
-  
   const handleCompeticionClick = (competicion) => {
-    console.log('Competición seleccionada:', competicion.league.name);
-    if (typeof addCompeticionFavorita === 'function') {
-      addCompeticionFavorita(competicion.league.name);
-    } else {
-      console.error('addCompeticionFavorita is not a function:', addCompeticionFavorita);
-    }
+    addCompeticionFavorita(competicion.league.name);
     navigate('/perfil');
   };
 
