@@ -9,3 +9,5 @@ function ProximosPartidos() {
         </div>
     );
 }
+
+export default ProximosPartidos;
