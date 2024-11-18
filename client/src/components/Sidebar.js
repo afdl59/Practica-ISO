@@ -60,6 +60,7 @@ function Sidebar() {
           <div className="dropdown-content">
             <Link to="/partidos" className="dropdown-item">Partidos Pasados</Link>
             <Link to="/partidos-directo" className="dropdown-item">Partidos en Directo</Link>
+            <Link to="/proximos-partidos" className="dropdown-item">Próximos Partidos</Link>
           </div>
         )}
       </div>
