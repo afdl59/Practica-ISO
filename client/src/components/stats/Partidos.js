@@ -27,7 +27,8 @@ function Partidos() {
     "Ligue 1": 61,
     "Copa del Rey": 143,
     "Eurocopa": 4,
-    "World Cup": 1
+    "World Cup": 1,
+    "UEFA Nations League": 5
   };
 
   // Función para manejar la búsqueda
@@ -87,8 +88,8 @@ function Partidos() {
         <label>Temporada:
           <select value={temporada} onChange={(e) => setTemporada(e.target.value)}>
             <option value="">Nada</option>
-            {[...Array(8)].map((_, i) => {
-              const year = 2015 + i;
+            {[...Array(15)].map((_, i) => {
+              const year = 2010 + i;
               return <option key={year} value={year}>{year}</option>;
             })}
           </select>
