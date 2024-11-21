@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../../styles/stats/ProximosPartidos.css';
 
 const COMPETITIONS = [
   { id: 2, name: 'Champions League' },
@@ -65,12 +66,13 @@ const ProximosPartidos = () => {
               >
                 <div className="match-info">
                   <img src={match.teams.home.logo} alt={match.teams.home.name} className="team-logo" />
-                  <span>vs</span>
+                  <p>{`${match.teams.home.name} - ${match.teams.away.name}`}</p>
                   <img src={match.teams.away.logo} alt={match.teams.away.name} className="team-logo" />
                 </div>
                 <div className="match-details">
-                  <p>{`${match.teams.home.name} vs ${match.teams.away.name}`}</p>
-                  <p>{new Date(match.fixture.date).toLocaleDateString('es-ES')} - {new Date(match.fixture.date).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}</p>
+                  <p>{new Date(match.fixture.date).toLocaleDateString('es-ES')}</p>
+                  <p>{new Date(match.fixture.date).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}</p>
+                  <p>Competición: {competition}</p>
                 </div>
               </div>
             ))
