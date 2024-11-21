@@ -10,31 +10,39 @@ const ProximoPartidoDetalle = () => {
   useEffect(() => {
     const fetchMatchDetails = async () => {
       setLoading(true);
-      const headers = new Headers({
-        'x-rapidapi-key': '00cb0f459f2d3b04f9dcc00ad403423d',
-        'x-rapidapi-host': 'v3.football.api-sports.io',
-      });
 
-      const url = `https://v3.football.api-sports.io/fixtures?id=${idPartido}`;
       try {
-        const response = await fetch(url, { method: 'GET', headers });
+        const myHeaders = new Headers();
+        myHeaders.append("x-rapidapi-key", "00cb0f459f2d3b04f9dcc00ad403423d");
+        myHeaders.append("x-rapidapi-host", "v3.football.api-sports.io");
+
+        const requestOptions = {
+          method: 'GET',
+          headers: myHeaders,
+          redirect: 'follow'
+        };
+
+        const url = `https://v3.football.api-sports.io/fixtures?id=${idPartido}`;
+
+        const response = await fetch(url, requestOptions);
         const data = await response.json();
         setMatch(data.response[0]);
+        setLoading(false);
       } catch (error) {
-        console.error('Error fetching match details:', error);
+        console.error('Error al cargar los detalles del partido:', error);
+        setLoading(false);
       }
-      setLoading(false);
     };
 
     fetchMatchDetails();
   }, [idPartido]);
 
   if (loading) {
-    return <div className="loading">Cargando detalles del partido...</div>;
+    return <h2>Cargando detalles del partido...</h2>;
   }
 
   if (!match) {
-    return <div className="error">No se encontraron detalles para este partido.</div>;
+    return <h2>No se encontró el partido solicitado.</h2>;
   }
 
   const { fixture, teams, league, venue } = match;
