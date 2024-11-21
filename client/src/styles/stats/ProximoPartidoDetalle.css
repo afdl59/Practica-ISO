@@ -1,0 +1,52 @@
+/* ProximoPartidoDetalle.css */
+
+.match-detail-container {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: #f4f4f4;
+    min-height: 100vh;
+    text-align: center;
+  }
+  
+  h1 {
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .match-overview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .team-logo {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    margin: 0 20px;
+  }
+  
+  .match-detail-container p {
+    font-size: 16px;
+    margin: 10px 0;
+    color: #555;
+  }
+  
+  .match-detail-container p span {
+    font-weight: bold;
+    color: #000;
+  }
+  
+  .loading {
+    text-align: center;
+    font-size: 18px;
+    color: #777;
+  }
+  
+  .error {
+    text-align: center;
+    font-size: 18px;
+    color: red;
+  }
+  
