@@ -29,7 +29,7 @@ const ProximosPartidos = () => {
       const matchData = {};
 
       for (const competition of COMPETITIONS) {
-        const url = `https://v3.football.api-sports.io/fixtures?league=${competition.id}&from=${fromDate}&to=${toDate}`;
+        const url = `https://v3.football.api-sports.io/fixtures?season=2024&league=${competition.id}&from=${fromDate}&to=${toDate}`;
         try {
           const response = await fetch(url, { method: 'GET', headers });
           const data = await response.json();
