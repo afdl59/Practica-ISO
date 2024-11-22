@@ -7,11 +7,19 @@ export const FavoritosProvider = ({ children }) => {
   const [equiposFavoritos, setEquiposFavoritos] = useState([]);
   const [competicionesFavoritas, setCompeticionesFavoritas] = useState([]);
 
-  const addEquipoFavorito = (equipo) => {
+  const addEquipoFavorito = async (equipo) => {
     setEquiposFavoritos((prevEquipos) => {
       if (!prevEquipos.includes(equipo)) {
         const updatedEquipos = [...prevEquipos, equipo];
         console.log("Equipos favoritos actualizados:", updatedEquipos);
+  
+        // Sincronizar con el backend
+        fetch(`/api/users/${username}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ equipoFavorito: updatedEquipos })
+        }).catch((err) => console.error('Error al sincronizar equipos favoritos:', err));
+  
         return updatedEquipos;
       }
       return prevEquipos;
@@ -23,6 +31,14 @@ export const FavoritosProvider = ({ children }) => {
       if (!prevCompeticiones.includes(competicion)) {
         const updatedCompeticiones = [...prevCompeticiones, competicion];
         console.log("Competiciones favoritas actualizadas:", updatedCompeticiones);
+
+        //Sincronizar con el backend
+        fetch(`/api/users/${username}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ competicionesFavoritas: updatedCompeticiones })
+        }).catch((err) => console.error('Error al sincronizar competiciones favoritas:', err));
+        
         return updatedCompeticiones;
       }
       return prevCompeticiones;

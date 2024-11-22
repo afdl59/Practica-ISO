@@ -6,10 +6,10 @@ const LoadInitialFavorites = ({ userData }) => {
 
   useEffect(() => {
     if (userData) {
-      setEquiposFavoritos(userData.equipoFavorito || []);
-      setCompeticionesFavoritas(userData.competicionesFavoritas || []);
+      setEquiposFavoritos((prev) => prev.length === 0 ? userData.equipoFavorito || [] : prev);
+      setCompeticionesFavoritas((prev) => prev.length === 0 ? userData.competicionesFavoritas || [] : prev);
     }
-  }, [userData, setEquiposFavoritos, setCompeticionesFavoritas]);
+  }, [userData, setEquiposFavoritos, setCompeticionesFavoritas]);  
 
   return null; // Este componente no renderiza nada en la interfaz
 };
