@@ -58,7 +58,7 @@ function App() {
         <Route path="/partido/:idPartido" element={<PartidoDetalle />} />
         <Route path="/partidos-directo" element={<PartidosDirecto />} />
         <Route path="/proximos-partidos" element={<ProximosPartidos />} />
-        <Route path="proximos-partidos/:idPartido" element={<ProximoPartidoDetalle />} />
+        <Route path="/proximos-partidos/:idPartido" element={<ProximoPartidoDetalle />} />
         <Route path="/partido-prueba1" element={<PartidoPrueba1 />} />
         <Route path="/partido-prueba2" element={<PartidoPrueba2 />} />
       </Routes>
