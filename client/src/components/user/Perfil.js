@@ -134,10 +134,10 @@ function Perfil() {
 
       <div className="perfil-info">
         <label>Nombre:
-          <input type="text" name="firstName" value={editedData.firstName} onChange={(e) => setEditedData({...editedData, firstName: e.target.value})} />
+          <input type="text" name="firstName" value={editedData.firstName} onChange={handleInputChange} />
         </label>
         <label>Apellido:
-          <input type="text" name="lastName" value={editedData.lastName} onChange={(e) => setEditedData({...editedData, lastName: e.target.value})} />
+          <input type="text" name="lastName" value={editedData.lastName} onChange={handleInputChange} />
         </label>
       </div>
 
