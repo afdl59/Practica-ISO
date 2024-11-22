@@ -8,11 +8,16 @@ export const FavoritosProvider = ({ children }) => {
   const [competicionesFavoritas, setCompeticionesFavoritas] = useState([]);
 
   const addEquipoFavorito = async (equipo) => {
-    setEquiposFavoritos((prevEquipos) => {
+    setEquiposFavoritos(async (prevEquipos) => {
       if (!prevEquipos.includes(equipo)) {
         const updatedEquipos = [...prevEquipos, equipo];
         console.log("Equipos favoritos actualizados:", updatedEquipos);
-  
+        
+        //obtener el username del usuario
+        const response = await fetch('/api/auth/check-session');
+        const data = await response.json();
+        const username = data.username;
+        
         // Sincronizar con el backend
         fetch(`/api/users/${username}`, {
           method: 'PUT',
@@ -38,7 +43,7 @@ export const FavoritosProvider = ({ children }) => {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ competicionesFavoritas: updatedCompeticiones })
         }).catch((err) => console.error('Error al sincronizar competiciones favoritas:', err));
-        
+
         return updatedCompeticiones;
       }
       return prevCompeticiones;
