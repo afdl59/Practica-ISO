@@ -3,11 +3,17 @@ import { useNavigate, Link } from 'react-router-dom';
 import { FavoritosContext } from '../../context/FavoritosContext';
 import LoadInitialFavorites from './LoadInitialFavoritos';
 import UpdateFavoritesOnChange from './UpdateFavoritosOnChange';
+import { FaTimes } from 'react-icons/fa'; // Icono para la "X"
 import '../../styles/user/Perfil.css';
 
 function Perfil() {
   const navigate = useNavigate();
-  const { equiposFavoritos, competicionesFavoritas } = useContext(FavoritosContext);
+  const {
+    equiposFavoritos,
+    competicionesFavoritas,
+    removeEquipoFavorito,
+    removeCompeticionFavorita,
+  } = useContext(FavoritosContext);
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [editedData, setEditedData] = useState({
@@ -15,7 +21,7 @@ function Perfil() {
     lastName: '',
     fotoPerfil: null,
     equipoFavorito: [],
-    competicionesFavoritas: []
+    competicionesFavoritas: [],
   });
 
   useEffect(() => {
@@ -37,7 +43,7 @@ function Perfil() {
           lastName: userData.lastName,
           fotoPerfil: userData.fotoPerfil,
           equipoFavorito: userData.equipoFavorito || [],
-          competicionesFavoritas: userData.competicionesFavoritas || []
+          competicionesFavoritas: userData.competicionesFavoritas || [],
         });
       } catch (error) {
         console.error('Error:', error);
@@ -70,7 +76,7 @@ function Perfil() {
         const data = await response.json();
         setUserData((prevUserData) => ({
           ...prevUserData,
-          fotoPerfil: data.imageUrl
+          fotoPerfil: data.imageUrl,
         }));
         alert('Imagen subida correctamente');
       } catch (error) {
@@ -90,30 +96,29 @@ function Perfil() {
         firstName: editedData.firstName,
         lastName: editedData.lastName,
         equipoFavorito: equiposFavoritos,
-        competicionesFavoritas: competicionesFavoritas
+        competicionesFavoritas: competicionesFavoritas,
       };
-  
-      console.log("Datos actualizados para guardar:", updatedData);
-  
+
+      console.log('Datos actualizados para guardar:', updatedData);
+
       const response = await fetch(`/api/users/${userData.username}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updatedData)
+        body: JSON.stringify(updatedData),
       });
 
-      const result = await response.json(); // Añadir para ver el resultado
-      console.log("Resultado del backend:", result);
-  
+      const result = await response.json();
+      console.log('Resultado del backend:', result);
+
       if (!response.ok) throw new Error('Error al actualizar los datos del usuario');
-  
+
       setUserData(updatedData);
       alert('Datos actualizados correctamente');
     } catch (error) {
       console.error('Error al actualizar los datos del usuario:', error);
     }
   };
-  
-  
+
   if (loading) return <div>Cargando...</div>;
   if (!userData) return <div>Error al cargar los datos del usuario.</div>;
 
@@ -145,7 +150,12 @@ function Perfil() {
         <h3>Equipos Favoritos</h3>
         <ul>
           {equiposFavoritos.map((equipo, index) => (
-            <li key={`${equipo}-${index}`}>{equipo}</li>
+            <li key={`${equipo}-${index}`} className="favorito-item">
+              {equipo}
+              <button className="remove-btn" onClick={() => removeEquipoFavorito(equipo)}>
+                <FaTimes color="red" />
+              </button>
+            </li>
           ))}
         </ul>
         <Link to="/perfil/anadir-equipo-favorito">
@@ -155,7 +165,12 @@ function Perfil() {
         <h3>Competiciones Favoritas</h3>
         <ul>
           {competicionesFavoritas.map((competicion, index) => (
-            <li key={`${competicion}-${index}`}>{competicion}</li>
+            <li key={`${competicion}-${index}`} className="favorito-item">
+              {competicion}
+              <button className="remove-btn" onClick={() => removeCompeticionFavorita(competicion)}>
+                <FaTimes color="red" />
+              </button>
+            </li>
           ))}
         </ul>
         <Link to="/perfil/anadir-competicion-favorita">

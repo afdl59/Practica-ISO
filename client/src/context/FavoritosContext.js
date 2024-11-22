@@ -52,6 +52,48 @@ export const FavoritosProvider = ({ children }) => {
     }
   };
 
+  const removeEquipoFavorito = async (equipo) => {
+    setEquiposFavoritos((prevEquipos) => {
+      const updatedEquipos = prevEquipos.filter((item) => item !== equipo);
+  
+      // Sincronizar con el backend
+      fetch('/api/auth/check-session')
+        .then((response) => response.json())
+        .then((data) => {
+          const username = data.username;
+          return fetch(`/api/users/${username}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ equipoFavorito: updatedEquipos }),
+          });
+        })
+        .catch((err) => console.error('Error al sincronizar equipos favoritos:', err));
+  
+      return updatedEquipos;
+    });
+  };
+  
+  const removeCompeticionFavorita = async (competicion) => {
+    setCompeticionesFavoritas((prevCompeticiones) => {
+      const updatedCompeticiones = prevCompeticiones.filter((item) => item !== competicion);
+  
+      // Sincronizar con el backend
+      fetch('/api/auth/check-session')
+        .then((response) => response.json())
+        .then((data) => {
+          const username = data.username;
+          return fetch(`/api/users/${username}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ competicionesFavoritas: updatedCompeticiones }),
+          });
+        })
+        .catch((err) => console.error('Error al sincronizar competiciones favoritas:', err));
+  
+      return updatedCompeticiones;
+    });
+  };  
+
   return (
     <FavoritosContext.Provider
       value={{
@@ -61,6 +103,8 @@ export const FavoritosProvider = ({ children }) => {
         setCompeticionesFavoritas,
         addEquipoFavorito,
         addCompeticionFavorita,
+        removeEquipoFavorito,
+        removeCompeticionFavorita
       }}
     >
       {children}
