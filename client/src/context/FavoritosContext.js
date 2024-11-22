@@ -1,4 +1,3 @@
-// src/context/FavoritosContext.js
 import React, { createContext, useState } from 'react';
 
 export const FavoritosContext = createContext();
@@ -8,51 +7,49 @@ export const FavoritosProvider = ({ children }) => {
   const [competicionesFavoritas, setCompeticionesFavoritas] = useState([]);
 
   const addEquipoFavorito = async (equipo) => {
-    setEquiposFavoritos(async (prevEquipos) => {
-      if (!prevEquipos.includes(equipo)) {
-        const updatedEquipos = [...prevEquipos, equipo];
-        console.log("Equipos favoritos actualizados:", updatedEquipos);
-        
-        //obtener el username del usuario
+    if (!equiposFavoritos.includes(equipo)) {
+      const updatedEquipos = [...equiposFavoritos, equipo];
+      setEquiposFavoritos(updatedEquipos);
+
+      try {
+        // Obtener el username del usuario
         const response = await fetch('/api/auth/check-session');
         const data = await response.json();
         const username = data.username;
-        
+
         // Sincronizar con el backend
-        fetch(`/api/users/${username}`, {
+        await fetch(`/api/users/${username}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ equipoFavorito: updatedEquipos })
-        }).catch((err) => console.error('Error al sincronizar equipos favoritos:', err));
-  
-        return updatedEquipos;
+          body: JSON.stringify({ equipoFavorito: updatedEquipos }),
+        });
+      } catch (err) {
+        console.error('Error al sincronizar equipos favoritos:', err);
       }
-      return prevEquipos;
-    });
+    }
   };
 
   const addCompeticionFavorita = async (competicion) => {
-    setCompeticionesFavoritas(async (prevCompeticiones) => {
-      if (!prevCompeticiones.includes(competicion)) {
-        const updatedCompeticiones = [...prevCompeticiones, competicion];
-        console.log("Competiciones favoritas actualizadas:", updatedCompeticiones);
+    if (!competicionesFavoritas.includes(competicion)) {
+      const updatedCompeticiones = [...competicionesFavoritas, competicion];
+      setCompeticionesFavoritas(updatedCompeticiones);
 
-        //obtener el username del usuario
+      try {
+        // Obtener el username del usuario
         const response = await fetch('/api/auth/check-session');
         const data = await response.json();
         const username = data.username;
-        
-        //Sincronizar con el backend
-        fetch(`/api/users/${username}`, {
+
+        // Sincronizar con el backend
+        await fetch(`/api/users/${username}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ competicionesFavoritas: updatedCompeticiones })
-        }).catch((err) => console.error('Error al sincronizar competiciones favoritas:', err));
-
-        return updatedCompeticiones;
+          body: JSON.stringify({ competicionesFavoritas: updatedCompeticiones }),
+        });
+      } catch (err) {
+        console.error('Error al sincronizar competiciones favoritas:', err);
       }
-      return prevCompeticiones;
-    });
+    }
   };
 
   return (
