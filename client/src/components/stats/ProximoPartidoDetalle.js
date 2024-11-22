@@ -10,39 +10,31 @@ const ProximoPartidoDetalle = () => {
   useEffect(() => {
     const fetchMatchDetails = async () => {
       setLoading(true);
+      const headers = new Headers({
+        'x-rapidapi-key': '00cb0f459f2d3b04f9dcc00ad403423d',
+        'x-rapidapi-host': 'v3.football.api-sports.io',
+      });
 
+      const url = `https://v3.football.api-sports.io/fixtures?id=${idPartido}`;
       try {
-        const myHeaders = new Headers();
-        myHeaders.append("x-rapidapi-key", "00cb0f459f2d3b04f9dcc00ad403423d");
-        myHeaders.append("x-rapidapi-host", "v3.football.api-sports.io");
-
-        const requestOptions = {
-          method: 'GET',
-          headers: myHeaders,
-          redirect: 'follow'
-        };
-
-        const url = `https://v3.football.api-sports.io/fixtures?id=${idPartido}`;
-
-        const response = await fetch(url, requestOptions);
+        const response = await fetch(url, { method: 'GET', headers });
         const data = await response.json();
         setMatch(data.response[0]);
-        setLoading(false);
       } catch (error) {
-        console.error('Error al cargar los detalles del partido:', error);
-        setLoading(false);
+        console.error('Error fetching match details:', error);
       }
+      setLoading(false);
     };
 
     fetchMatchDetails();
   }, [idPartido]);
 
   if (loading) {
-    return <h2>Cargando detalles del partido...</h2>;
+    return <div className="loading">Cargando detalles del partido...</div>;
   }
 
   if (!match) {
-    return <h2>No se encontró el partido solicitado.</h2>;
+    return <div className="error">No se encontraron detalles para este partido.</div>;
   }
 
   const { fixture, teams, league, venue } = match;
@@ -52,16 +44,16 @@ const ProximoPartidoDetalle = () => {
 
   return (
     <div className="match-detail-container">
-      <h1>{league.name}</h1>
+      <h1>{match.league.name}</h1>
       <div className="match-overview">
-        <img src={teams.home.logo} alt={teams.home.name} className="team-logo" />
+        <img src={match.teams.home.logo} alt={match.teams.home.name} className="team-logo" />
         <span>vs</span>
-        <img src={teams.away.logo} alt={teams.away.name} className="team-logo" />
+        <img src={match.teams.away.logo} alt={match.teams.away.name} className="team-logo" />
       </div>
-      <p>{`${teams.home.name} vs ${teams.away.name}`}</p>
+      <p>{`${match.teams.home.name} vs ${match.teams.away.name}`}</p>
       <p>{formattedDate} - {formattedTime}</p>
-      <p>Estadio: {venue.name}, {venue.city}</p>
-      <p>Jornada: {fixture.round}</p>
+      <p>Estadio: {match.fixture.venue.name}, {match.fixture.venue.city}</p>
+      <p>Jornada: {match.league.round}</p>
     </div>
   );
 };
