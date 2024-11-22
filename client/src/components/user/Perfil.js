@@ -126,62 +126,73 @@ function Perfil() {
     <div className="perfil-container">
       <LoadInitialFavorites userData={userData} />
       <UpdateFavoritesOnChange setEditedData={setEditedData} />
-
+  
       <h1>Perfil de {userData.username}</h1>
-      <div className="perfil-photo">
-        {editedData.fotoPerfil ? (
-          <img src={editedData.fotoPerfil} alt="Foto de perfil" className="profile-image" />
-        ) : (
-          <div className="placeholder-image">No profile photo</div>
-        )}
-        <input type="file" accept="image/*" onChange={handleFotoChange} />
+      <div className="perfil-content">
+        {/* Columna 1: Foto de perfil y datos personales */}
+        <div className="perfil-left">
+          <div className="perfil-photo">
+            {editedData.fotoPerfil ? (
+              <img src={editedData.fotoPerfil} alt="Foto de perfil" className="profile-image" />
+            ) : (
+              <div className="placeholder-image">No profile photo</div>
+            )}
+            <input type="file" accept="image/*" onChange={handleFotoChange} />
+          </div>
+  
+          <div className="perfil-info">
+            <label>Nombre:
+              <input type="text" name="firstName" value={editedData.firstName} onChange={handleInputChange} />
+            </label>
+            <label>Apellido:
+              <input type="text" name="lastName" value={editedData.lastName} onChange={handleInputChange} />
+            </label>
+          </div>
+        </div>
+  
+        {/* Columna 2: Favoritos */}
+        <div className="perfil-right">
+          <div className="favoritos">
+            <h3>Equipos Favoritos</h3>
+            <ul>
+              {equiposFavoritos.map((equipo, index) => (
+                <li key={`${equipo}-${index}`} className="favorito-item">
+                  {equipo}
+                  <button className="remove-btn" onClick={() => removeEquipoFavorito(equipo)}>
+                    <FaTimes color="red" />
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <Link to="/perfil/anadir-equipo-favorito">
+              <button>Añadir equipo favorito</button>
+            </Link>
+  
+            <h3>Competiciones Favoritas</h3>
+            <ul>
+              {competicionesFavoritas.map((competicion, index) => (
+                <li key={`${competicion}-${index}`} className="favorito-item">
+                  {competicion}
+                  <button className="remove-btn" onClick={() => removeCompeticionFavorita(competicion)}>
+                    <FaTimes color="red" />
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <Link to="/perfil/anadir-competicion-favorita">
+              <button>Añadir competición favorita</button>
+            </Link>
+          </div>
+        </div>
       </div>
-
-      <div className="perfil-info">
-        <label>Nombre:
-          <input type="text" name="firstName" value={editedData.firstName} onChange={handleInputChange} />
-        </label>
-        <label>Apellido:
-          <input type="text" name="lastName" value={editedData.lastName} onChange={handleInputChange} />
-        </label>
+  
+      {/* Botones en la parte inferior */}
+      <div className="perfil-actions">
+        <button onClick={handleSaveChanges}>Guardar Cambios</button>
+        <button onClick={handleLogout}>Cerrar Sesión</button>
       </div>
-
-      <div className="favoritos">
-        <h3>Equipos Favoritos</h3>
-        <ul>
-          {equiposFavoritos.map((equipo, index) => (
-            <li key={`${equipo}-${index}`} className="favorito-item">
-              {equipo}
-              <button className="remove-btn" onClick={() => removeEquipoFavorito(equipo)}>
-                <FaTimes color="red" />
-              </button>
-            </li>
-          ))}
-        </ul>
-        <Link to="/perfil/anadir-equipo-favorito">
-          <button>Añadir equipo favorito</button>
-        </Link>
-
-        <h3>Competiciones Favoritas</h3>
-        <ul>
-          {competicionesFavoritas.map((competicion, index) => (
-            <li key={`${competicion}-${index}`} className="favorito-item">
-              {competicion}
-              <button className="remove-btn" onClick={() => removeCompeticionFavorita(competicion)}>
-                <FaTimes color="red" />
-              </button>
-            </li>
-          ))}
-        </ul>
-        <Link to="/perfil/anadir-competicion-favorita">
-          <button>Añadir competición favorita</button>
-        </Link>
-      </div>
-
-      <button onClick={handleSaveChanges}>Guardar Cambios</button>
-      <button onClick={handleLogout}>Cerrar Sesión</button>
     </div>
-  );
+  );  
 }
 
 export default Perfil;
