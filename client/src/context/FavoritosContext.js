@@ -31,12 +31,17 @@ export const FavoritosProvider = ({ children }) => {
     });
   };
 
-  const addCompeticionFavorita = (competicion) => {
-    setCompeticionesFavoritas((prevCompeticiones) => {
+  const addCompeticionFavorita = async (competicion) => {
+    setCompeticionesFavoritas(async (prevCompeticiones) => {
       if (!prevCompeticiones.includes(competicion)) {
         const updatedCompeticiones = [...prevCompeticiones, competicion];
         console.log("Competiciones favoritas actualizadas:", updatedCompeticiones);
 
+        //obtener el username del usuario
+        const response = await fetch('/api/auth/check-session');
+        const data = await response.json();
+        const username = data.username;
+        
         //Sincronizar con el backend
         fetch(`/api/users/${username}`, {
           method: 'PUT',
