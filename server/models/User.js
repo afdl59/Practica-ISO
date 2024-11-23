@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema({
     fotoPerfil: { type: String },
     equipoFavorito: { type: [String], default: [] }, // Nuevo campo para el equipo favorito
     competicionesFavoritas: { type: [String], default: [] }, // Nuevo campo para competiciones favoritas
+    puntosTotales: { type: Number, default: 0 },
     createdAt: { type: Date, default: Date.now },
 });
 
