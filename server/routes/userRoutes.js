@@ -27,4 +27,7 @@ router.get('/:username', authMiddleware, userController.getUserProfile);
 router.put('/:username', authMiddleware, userController.updateUserProfile);
 router.post('/uploads', authMiddleware, upload.single('fotoPerfil'), userController.uploadProfileImage);
 
+router.put('/update-points/:username', authMiddleware, userController.updateUserPoints); // Actualizar puntos
+router.get('/ranking', userController.getRanking); // Obtener ranking
+
 module.exports = router;
