@@ -26,6 +26,7 @@ import PartidoPrueba1 from './components/stats/PartidoPrueba1';
 import PartidoPrueba2 from './components/stats/PartidoPrueba2';
 import ProximosPartidos from './components/stats/ProximosPartidos';
 import ProximoPartidoDetalle from './components/stats/ProximoPartidoDetalle';
+import Predicciones from './components/stats/Predicciones';
 
 import './styles/App.css';
 
@@ -59,6 +60,7 @@ function App() {
         <Route path="/partidos-directo" element={<PartidosDirecto />} />
         <Route path="/proximos-partidos" element={<ProximosPartidos />} />
         <Route path="/proximos-partidos/:idPartido" element={<ProximoPartidoDetalle />} />
+        <Route path="/predicciones" element={<Predicciones />} />
         <Route path="/partido-prueba1" element={<PartidoPrueba1 />} />
         <Route path="/partido-prueba2" element={<PartidoPrueba2 />} />
       </Routes>

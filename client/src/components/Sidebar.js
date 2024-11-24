@@ -65,6 +65,12 @@ function Sidebar() {
         )}
       </div>
 
+      {/* Sección Predicciones */}
+      <Link to="/predicciones" className="navbar-item">
+        <img src={logo} alt="Icon Foro" className="navbar-icon" />
+        <h3 className="navbar-title">Predicciones</h3>
+      </Link>
+
       {/* Sección Minijuegos */}
       <div className="navbar-item dropdown" onClick={toggleMinigames}>
         <img src={logo} alt="Icon Minijuegos" className="navbar-icon" />
