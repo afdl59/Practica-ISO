@@ -8,6 +8,7 @@ const ProximoPartidoDetalle = () => {
   const [loading, setLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Comprobar sesión
   const [prediction, setPrediction] = useState(null); // Predicción seleccionada
+  const [username, setUsername] = useState(null);
 
   useEffect(() => {
     const checkSession = async () => {
@@ -15,6 +16,7 @@ const ProximoPartidoDetalle = () => {
       const data = await response.json();
       if (data.isAuthenticated) {
         setIsLoggedIn(true);
+        setUsername(data.username);
       }
     };
 
@@ -49,7 +51,7 @@ const ProximoPartidoDetalle = () => {
     if (!prediction) return alert('Seleccione una opción antes de realizar la predicción.');
 
     try {
-      const response = await fetch(`/api/users/${data.username}/predictions`, {
+      const response = await fetch(`/api/users/${username}/predictions`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
