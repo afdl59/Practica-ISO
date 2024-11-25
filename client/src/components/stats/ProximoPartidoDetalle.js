@@ -49,7 +49,7 @@ const ProximoPartidoDetalle = () => {
     if (!prediction) return alert('Seleccione una opción antes de realizar la predicción.');
 
     try {
-      const response = await fetch('/api/users/predictions', {
+      const response = await fetch(`/api/users/${data.username}/predictions`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
