@@ -13,6 +13,8 @@ const userSchema = new mongoose.Schema({
     competicionesFavoritas: { type: [String], default: [] }, // Nuevo campo para competiciones favoritas
     puntosTotales: { type: Number, default: 0 },
     createdAt: { type: Date, default: Date.now },
+    prediccionesActuales: { type: Array, default: [] }, // Nuevo campo para almacenar las predicciones del usuario
+    puntosPredicciones: { type: Number, default: 0 }, // Nuevo campo para almacenar los puntos de las predicciones del usuario
 });
 
 // Middleware para encriptar la contraseña antes de guardar
