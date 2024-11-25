@@ -88,7 +88,7 @@ const ProximoPartidoDetalle = () => {
       </div>
       <p>{`${match.teams.home.name} vs ${match.teams.away.name}`}</p>
       <p>{formattedDate} - {formattedTime}</p>
-      <p>Estadio: {match.ficture.venue.name}, {match.fixture.venue.city}</p>
+      <p>Estadio: {match.fixture.venue.name}, {match.fixture.venue.city}</p>
       <p>Jornada: {match.league.round}</p>
 
       {isLoggedIn && (
