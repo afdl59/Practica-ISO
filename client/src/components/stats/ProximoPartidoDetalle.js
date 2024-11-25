@@ -80,16 +80,16 @@ const ProximoPartidoDetalle = () => {
 
   return (
     <div className="match-detail-container">
-      <h1>{league.name}</h1>
+      <h1>{match.league.name}</h1>
       <div className="match-overview">
-        <img src={teams.home.logo} alt={teams.home.name} className="team-logo" />
+        <img src={match.teams.home.logo} alt={match.teams.home.name} className="team-logo" />
         <span>vs</span>
-        <img src={teams.away.logo} alt={teams.away.name} className="team-logo" />
+        <img src={match.teams.away.logo} alt={match.teams.away.name} className="team-logo" />
       </div>
-      <p>{`${teams.home.name} vs ${teams.away.name}`}</p>
+      <p>{`${match.teams.home.name} vs ${match.teams.away.name}`}</p>
       <p>{formattedDate} - {formattedTime}</p>
-      <p>Estadio: {venue.name}, {venue.city}</p>
-      <p>Jornada: {fixture.round}</p>
+      <p>Estadio: {match.ficture.venue.name}, {match.fixture.venue.city}</p>
+      <p>Jornada: {match.league.round}</p>
 
       {isLoggedIn && (
         <div className="prediction-container">
