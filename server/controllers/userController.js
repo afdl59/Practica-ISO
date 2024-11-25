@@ -175,3 +175,61 @@ exports.uploadProfileImage = async (req, res) => {
         res.status(500).json({ message: 'Error al subir la imagen' });
     }
 };
+
+// Actualizar puntos de predicciones de usuario
+exports.updateUserPredictionsPoints = async (req, res) => {
+    const { username } = req.params;
+    const { points } = req.body;
+
+    try {
+        const usuario = await User.findOne({ username });
+        if (!usuario) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+
+        usuario.puntosPredicciones = (usuario.predictionPoints || 0) + points;
+        await usuario.save();
+        res.status(200).json({ message: 'Puntos de predicciones actualizados', user: usuario });
+    } catch (err) {
+        console.error('Error al actualizar puntos de predicciones:', err);
+        res.status(500).json({ message: 'Error al actualizar puntos de predicciones' });
+    }
+}
+
+// Añadir predicción de usuario
+exports.addUserPrediction = async (req, res) => {
+    const { username } = req.params;
+    const { matchId, prediction } = req.body;
+
+    try {
+        const usuario = await User.findOne({ username });
+        if (!usuario) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+
+        const nuevaPrediccion = { matchId, prediction };
+        usuario.prediccionesActuales.push(nuevaPrediccion);
+        await usuario.save();
+        res.status(201).json({ message: 'Predicción añadida correctamente', user: usuario });
+    } catch (err) {
+        console.error('Error al añadir predicción:', err);
+        res.status(500).json({ message: 'Error al añadir predicción' });
+    }
+}
+
+// Obtener lista de predicciones de usuario
+exports.getUserPredictions = async (req, res) => {
+    const { username } = req.params;
+
+    try {
+        const usuario = await User.findOne({ username });
+        if (!usuario) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+
+        res.status(200).json({ predictions: usuario.prediccionesActuales });
+    } catch (err) {
+        console.error('Error al obtener las predicciones:', err);
+        res.status(500).json({ message: 'Error al obtener las predicciones' });
+    }
+}
