@@ -176,6 +176,49 @@ exports.uploadProfileImage = async (req, res) => {
     }
 };
 
+// Actualizar puntos de un usuario
+exports.updateUserPoints = async (req, res) => {
+    const { username } = req.params;
+    const { points } = req.body;
+
+    try {
+        const usuario = await User.findOne({ username });
+        if (!usuario) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+
+        usuario.points = (usuario.points || 0) + points;
+        await usuario.save();
+        res.status(200).json({ message: 'Puntos actualizados', user: usuario });
+    } catch (err) {
+        console.error('Error al actualizar puntos:', err);
+        res.status(500).json({ message: 'Error al actualizar puntos' });
+    }
+};
+
+// Obtener el ranking de usuarios
+exports.getRanking = async (req, res) => {
+    const { limit = 10, page = 1 } = req.query;
+
+    try {
+        const usuarios = await User.find({})
+            .sort({ points: -1 })
+            .skip((page - 1) * limit)
+            .limit(parseInt(limit));
+
+        res.status(200).json({
+            ranking: usuarios.map((usuario, index) => ({
+                position: index + 1 + (page - 1) * limit,
+                username: usuario.username,
+                points: usuario.points || 0
+            }))
+        });
+    } catch (err) {
+        console.error('Error al obtener ranking:', err);
+        res.status(500).json({ message: 'Error al obtener ranking' });
+    }
+};
+
 // Actualizar puntos de predicciones de usuario
 exports.updateUserPredictionsPoints = async (req, res) => {
     const { username } = req.params;
