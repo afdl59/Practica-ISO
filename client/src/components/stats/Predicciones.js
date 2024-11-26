@@ -13,7 +13,8 @@ function Predicciones() {
             if (!response.ok){
                 return navigate('/login');
             } else {
-            setUsername(response.username);
+                const userData = await response.json();
+                setUsername(userData.username);
             }
 
             const userData = await response.json();
