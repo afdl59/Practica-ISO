@@ -10,26 +10,26 @@
 
 /* Barra lateral */
 .barra-lateral {
-  width: 25%; /* Ajustar ancho para una mejor visibilidad */
+  width: 25%;
   min-width: 300px;
   background-color: rgba(0, 0, 0, 0.8);
   display: flex;
   flex-direction: column;
   padding: 20px;
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
-  overflow-y: auto; /* Scroll para muchas salas */
+  overflow-y: auto;
 }
 
 /* Barra superior */
 .barra-superior {
   display: flex;
-  flex-direction: column; /* Cambiado para centrado vertical */
+  flex-direction: column;
   gap: 15px;
   margin-bottom: 20px;
 }
 
 .barra-superior input {
-  width: 100%; /* Ocupa todo el espacio disponible */
+  width: 100%;
   padding: 10px;
   border-radius: 6px;
   border: none;
@@ -56,7 +56,7 @@
 .lista-salas {
   display: flex;
   flex-direction: column;
-  gap: 15px; /* Espaciado entre las salas */
+  gap: 15px;
 }
 
 .sala-item {
@@ -91,26 +91,51 @@
 .sala-info small {
   font-size: 0.9rem;
   color: #ccc;
-  margin-top: 5px; /* Espaciado entre texto */
+  margin-top: 5px;
 }
 
 /* Zona de chat */
 .sala-chat {
-  flex-grow: 1; /* Ocupa todo el espacio restante */
+  flex-grow: 1;
   min-width: 600px;
   display: flex;
   flex-direction: column;
   padding: 20px;
   background-color: rgba(0, 0, 0, 0.9);
-  overflow-y: auto; /* Scroll para mensajes */
+  overflow-y: auto;
 }
 
 /* Encabezado de chat */
-.sala-chat h2 {
+.header-sala {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 10px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.info-sala h2 {
+  margin: 0;
   font-size: 1.5rem;
-  margin-bottom: 20px;
-  text-align: center;
+}
+
+.info-sala .descripcion-sala {
+  font-size: 0.9rem;
+  color: #ccc;
+}
+
+.boton-ajustes {
+  background: none;
+  border: none;
   color: #fff;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: transform 0.2s ease;
+}
+
+.boton-ajustes:hover {
+  transform: rotate(90deg);
 }
 
 /* Contenedor de mensajes */
@@ -119,11 +144,10 @@
   padding: 10px;
   display: flex;
   flex-direction: column;
-  gap: 10px; /* Espaciado entre mensajes */
+  gap: 10px;
   overflow-y: auto;
 }
 
-/* Mensajes agrupados */
 .grupo-fecha {
   margin-bottom: 20px;
 }
@@ -145,7 +169,7 @@
 
 .mensaje.propio {
   align-self: flex-end;
-  flex-direction: row-reverse; /* Avatar a la derecha */
+  flex-direction: row-reverse;
 }
 
 .mensaje.ajeno {
@@ -189,9 +213,9 @@
   padding: 10px;
   background-color: rgba(0, 0, 0, 0.8);
   border-radius: 6px;
-  /*position: sticky; Fija la posición */
-  bottom: 20; /* Pegado a la parte inferior del contenedor */
-  z-index: 10; /* Asegura que esté por encima de otros elementos */
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
 }
 
 .enviar-mensaje input {
@@ -219,7 +243,8 @@
 }
 
 /* Popup para crear sala */
-.popup-crear-sala {
+.popup-crear-sala,
+.popup-ajustes {
   position: fixed;
   top: 0;
   left: 0;

@@ -256,7 +256,7 @@ function Foro() {
     return dateB - dateA; // Orden descendente
   });
 
-  return (
+  return(
     <div className="foro-contenedor">
       <div className="barra-lateral">
         <div className="barra-superior">
@@ -267,7 +267,7 @@ function Foro() {
             onChange={(e) => setSearch(e.target.value)}
           />
           <button className="boton-crear-sala" onClick={() => setShowPopup(true)}>
-            Crear Sala
+            + Crear Sala
           </button>
         </div>
         <div className="lista-salas">
@@ -293,46 +293,61 @@ function Foro() {
             ))}
         </div>
       </div>
+
       <div className="sala-chat">
-        
-        {currentSala ? (
+        {currentSala && (
           <>
-            <h2>{currentSalaName}</h2>
+            <div className="header-sala">
+              <div className="info-sala">
+                <h2>{currentSalaName}</h2>
+                <p className="descripcion-sala">{currentSalaDescription}</p>
+              </div>
+              {currentSalaCreatedBy === username && (
+                <button
+                  className="boton-ajustes"
+                  onClick={() => setShowSettingsPopup(true)}
+                >
+                  <i className="fa fa-cog"></i>
+                </button>
+              )}
+            </div>
+
             <div className="mensajes">
               {groupedMessages.map(({ date, groups }, index) => (
                 <div key={index} className="grupo-fecha">
                   <div className="fecha">{date}</div>
-                    {groups.map((group, idx) => (
-                      <div key={idx} className="grupo-mensajes">
-                        <div className="info-usuario">
-                          <div className="avatar">
-                            <img
-                              src={profilePictures[group.username] || '/uploads/default-profile.png'}
-                              alt={group.username}
-                            />
-                          </div>
-                          <strong>{group.username}</strong>
+                  {groups.map((group, idx) => (
+                    <div key={idx} className="grupo-mensajes">
+                      <div className="info-usuario">
+                        <div className="avatar">
+                          <img
+                            src={profilePictures[group.username] || '/uploads/default-profile.png'}
+                            alt={group.username}
+                          />
                         </div>
-                        {group.messages.map((mensaje, i) => (
-                          <div
-                            key={i}
-                            className={`mensaje ${
-                              mensaje.username === username ? 'propio' : 'ajeno'
-                            }`}
-                          >
-                            <div className="contenido">
-                              {mensaje.content}
-                              <div className="hora">
-                                {new Date(mensaje.date).toLocaleTimeString()}
-                              </div>
+                        <strong>{group.username}</strong>
+                      </div>
+                      {group.messages.map((mensaje, i) => (
+                        <div
+                          key={i}
+                          className={`mensaje ${
+                            mensaje.username === username ? 'propio' : 'ajeno'
+                          }`}
+                        >
+                          <div className="contenido">
+                            {mensaje.content}
+                            <div className="hora">
+                              {new Date(mensaje.date).toLocaleTimeString()}
                             </div>
                           </div>
-                        ))}
-                      </div>
-                    ))}
-                  </div>
+                        </div>
+                      ))}
+                    </div>
+                  ))}
+                </div>
               ))}
             </div>
+
             <form className="enviar-mensaje" onSubmit={handleSubmit}>
               <input
                 type="text"
@@ -344,13 +359,34 @@ function Foro() {
               <button type="submit">Enviar</button>
             </form>
           </>
-        ) : (
-          <p style={{ color: '#fff', textAlign: 'center', marginTop: '20px' }}>
-            Selecciona una sala para comenzar a chatear
-          </p>
         )}
       </div>
-  
+
+      {showSettingsPopup && (
+        <div className="popup-ajustes">
+          <div className="popup-contenido">
+            <h3>Ajustes de Sala</h3>
+            <button className="boton-ajuste">Limpiar Mensajes</button>
+            <button className="boton-ajuste">Eliminar Sala</button>
+            <input
+              type="text"
+              placeholder="Editar nombre de la sala"
+              value={currentSalaName}
+              onChange={(e) => setCurrentSalaName(e.target.value)}
+            />
+            <input
+              type="text"
+              placeholder="Editar descripción"
+              value={currentSalaDescription}
+              onChange={(e) => setCurrentSalaDescription(e.target.value)}
+            />
+            <button className="boton-ajuste" onClick={() => setShowSettingsPopup(false)}>
+              Cerrar
+            </button>
+          </div>
+        </div>
+      )}
+
       {showPopup && (
         <div className="popup-crear-sala">
           <div className="popup-contenido">
