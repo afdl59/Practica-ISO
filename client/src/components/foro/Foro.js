@@ -248,34 +248,41 @@ function Foro() {
   };
   
   const groupedMessages = groupMessagesByDateAndUser();
+
+  // Ordenar las salas por la fecha del último mensaje
+  const sortedSalas = salas.sort((a, b) => {
+    const dateA = new Date(a.lastMessageDate || a.createdAt).getTime();
+    const dateB = new Date(b.lastMessageDate || b.createdAt).getTime();
+    return dateB - dateA; // Orden descendente
+  });
   
   return (
     <div className="foro-contenedor">
       <div className="barra-lateral">
-        <div className="barra-superior">
+      <div className="barra-superior">
           <input
             type="text"
             placeholder="Buscar salas..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-          <button className="boton-crear-sala" onClick={togglePopup}>
+          <button className="boton-crear-sala" onClick={() => setShowPopup(true)}>
             + Crear Sala
           </button>
         </div>
         <div className="lista-salas">
-          {salas
+          {sortedSalas
             .filter((sala) =>
               sala.title.toLowerCase().includes(search.toLowerCase())
             )
             .map((sala) => (
               <button
                 key={sala._id}
-                onClick={() => handleSalaChange(sala)}
+                onClick={() => setCurrentSala(sala._id)}
                 className={sala._id === currentSala ? 'sala-activa' : ''}
               >
                 <strong>{sala.title}</strong>
-                <small>{sala.description}</small>
+                <small>{new Date(sala.lastMessageDate || sala.createdAt).toLocaleString()}</small>
               </button>
             ))}
         </div>
