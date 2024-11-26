@@ -1,127 +1,166 @@
-/* Contenedor principal del foro */
-.foro-container {
+/* Contenedor principal */
+.foro-contenedor {
+  display: flex;
   width: 100%;
-  min-height: 100vh;
+  height: 100vh; /* Ocupa toda la pantalla */
+  background: linear-gradient(to right, #141e30, #243b55);
+  color: #fff;
+}
+
+/* Barra lateral */
+.barra-lateral {
+  width: 25%; /* Ocupa un cuarto de la pantalla */
+  background-color: rgba(0, 0, 0, 0.8);
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background: linear-gradient(to right, #141e30, #243b55); /* Fondo degradado */
   padding: 20px;
-  box-sizing: border-box;
-}
-
-/* Título del foro */
-.foro-container h1 {
-  color: #ffffff;
-  font-size: 2.5rem;
-  margin-bottom: 20px;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Sombra del título */
-}
-
-/* Contenedor de los mensajes del foro */
-.foro-mensajes {
-  background-color: rgba(255, 255, 255, 0.1); /* Fondo blanco semitransparente */
-  width: 80%;
-  height: 60vh;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
   overflow-y: auto;
-  padding: 20px;
-  border-radius: 12px; /* Bordes redondeados */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4); /* Sombra para dar profundidad */
-  color: #ffffff;
-  backdrop-filter: blur(6px); /* Efecto de desenfoque */
-  margin-bottom: 20px;
 }
 
-/* Estilo para cada mensaje */
-.mensaje {
-  margin-bottom: 15px;
+.barra-lateral input {
   padding: 10px;
-  border-radius: 8px;
-  background-color: rgba(0, 0, 0, 0.3); /* Fondo semitransparente */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.mensaje strong {
-  color: #ffd700; /* Nombre de usuario en dorado */
-}
-
-.mensaje small {
-  font-size: 0.8rem;
-  color: #bbbbbb; /* Fecha en gris claro */
-  float: right;
-}
-
-/* Barra de envío de mensajes */
-.foro-inputs {
-  display: flex;
-  align-items: center;
-  width: 80%;
-  background-color: rgba(255, 255, 255, 0.1);
-  padding: 15px;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(6px); /* Efecto de desenfoque */
-}
-
-.foro-inputs input,
-.foro-inputs textarea {
-  width: 100%;
-  padding: 12px;
-  margin-right: 10px;
+  margin-bottom: 20px;
   border: none;
   border-radius: 6px;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #333;
+  font-size: 1rem;
+}
+
+.lista-salas button {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: none;
+  border-radius: 6px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.lista-salas button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.sala-activa {
+  background-color: #0077b6;
+  color: #fff;
+  font-weight: bold;
+}
+
+/* Sala principal */
+.sala-chat {
+  flex-grow: 1; /* Ocupa todo el espacio restante */
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.sala-chat h2 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  text-align: center;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Contenedor de mensajes */
+.mensajes {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 10px;
+  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Mensajes agrupados por fecha */
+.fecha {
+  font-size: 1rem;
+  margin: 10px 0;
+  color: #ffd700;
+  text-align: center;
+}
+
+/* Burbujas de mensajes */
+.mensaje {
+  display: flex;
+  flex-direction: column;
+  max-width: 70%;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  word-wrap: break-word;
+}
+
+.mensaje.propio {
+  align-self: flex-end;
+  background-color: #0077b6;
+  color: #fff;
+}
+
+.mensaje.ajeno {
+  align-self: flex-start;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: #fff;
+}
+
+.mensaje .hora {
+  font-size: 0.8rem;
+  color: #ccc;
+  margin-top: 5px;
+  text-align: right;
+}
+
+/* Formulario de envío de mensajes */
+.enviar-mensaje {
+  display: flex;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 12px;
+}
+
+.enviar-mensaje input {
+  flex-grow: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  margin-right: 10px;
   font-size: 1rem;
   background-color: rgba(255, 255, 255, 0.9);
   color: #333;
 }
 
-.foro-inputs textarea {
-  resize: none;
-  height: 60px;
-}
-
-/* Botón de envío */
-.foro-inputs button {
-  padding: 12px 20px;
-  background-color: #00b4d8;
-  color: white;
+.enviar-mensaje button {
+  padding: 10px 20px;
   border: none;
   border-radius: 6px;
-  cursor: pointer;
+  background-color: #00b4d8;
+  color: #fff;
   font-size: 1rem;
   font-weight: bold;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
   transition: all 0.3s ease;
 }
 
-.foro-inputs button:hover {
-  background-color: #0077b6; /* Efecto hover en el botón */
+.enviar-mensaje button:hover {
+  background-color: #0077b6;
 }
 
-/* Estilo para pantallas pequeñas */
+/* Estilo responsivo */
 @media (max-width: 768px) {
-  .foro-container h1 {
-    font-size: 2rem;
+  .barra-lateral {
+    width: 35%; /* Ocupa más espacio en pantallas pequeñas */
   }
 
-  .foro-mensajes {
-    width: 100%;
-    height: 50vh;
+  .sala-chat h2 {
+    font-size: 1.5rem;
   }
 
-  .foro-inputs {
-    width: 100%;
-    flex-direction: column;
-  }
-
-  .foro-inputs input,
-  .foro-inputs textarea {
-    margin-right: 0;
-    margin-bottom: 10px;
-  }
-
-  .foro-inputs button {
-    width: 100%;
+  .mensaje {
+    max-width: 90%; /* Ajustar burbujas para pantallas pequeñas */
   }
 }
