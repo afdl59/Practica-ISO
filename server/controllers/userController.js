@@ -270,7 +270,7 @@ exports.getUserPredictions = async (req, res) => {
             return res.status(404).json({ message: 'Usuario no encontrado' });
         }
 
-        res.status(200).json({ predictions: usuario.prediccionesActuales });
+        res.status(200).json({ prediccionesActuales: usuario.prediccionesActuales });
     } catch (err) {
         console.error('Error al obtener las predicciones:', err);
         res.status(500).json({ message: 'Error al obtener las predicciones' });
