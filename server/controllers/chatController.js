@@ -62,3 +62,48 @@ exports.postMessage = async (req, res) => {
         res.status(500).json({ message: 'Error al enviar el mensaje: ' + err.message });
     }
 };
+
+// Actualizar una sala de chat
+exports.updateRoom = async (req, res) => {
+    const { id } = req.params;
+    const { title, description } = req.body;
+    try {
+        const updatedRoom = await ChatRoom.findByIdAndUpdate(
+            id,
+            { title, description },
+            { new: true }
+        );
+        if (!updatedRoom) {
+            return res.status(404).json({ message: 'Sala no encontrada' });
+        }
+        res.status(200).json({ message: 'Sala actualizada correctamente', updatedRoom });
+    } catch (err) {
+        res.status(500).json({ message: 'Error al actualizar la sala: ' + err.message });
+    }
+};
+
+// Limpiar mensajes de una sala de chat
+exports.clearMessages = async (req, res) => {
+    const { id } = req.params;
+    try {
+        await Message.deleteMany({ chatRoom: id });
+        res.status(200).json({ message: 'Mensajes eliminados correctamente' });
+    } catch (err) {
+        res.status(500).json({ message: 'Error al eliminar los mensajes: ' + err.message });
+    }
+};
+
+// Eliminar una sala de chat
+exports.deleteRoom = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const deletedRoom = await ChatRoom.findByIdAndDelete(id);
+        if (!deletedRoom) {
+            return res.status(404).json({ message: 'Sala no encontrada' });
+        }
+        await Message.deleteMany({ chatRoom: id }); // Eliminar los mensajes asociados
+        res.status(200).json({ message: 'Sala eliminada correctamente' });
+    } catch (err) {
+        res.status(500).json({ message: 'Error al eliminar la sala: ' + err.message });
+    }
+};

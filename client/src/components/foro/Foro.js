@@ -11,11 +11,14 @@ function Foro() {
   const [salas, setSalas] = useState([]);
   const [currentSala, setCurrentSala] = useState('');
   const [currentSalaName, setCurrentSalaName] = useState('');
+  const [currentSalaDescription, setCurrentSalaDescription] = useState('');
+  const [currentSalaCreatedBy, setCurrentSalaCreatedBy] = useState('');
   const [newSalaTitle, setNewSalaTitle] = useState('');
   const [newSalaDescription, setNewSalaDescription] = useState('');
-  const [newSalaCategory, setNewSalaCategory] = useState(''); // Nueva categoría
-  const [search, setSearch] = useState(''); // Estado para el buscador
-  const [showPopup, setShowPopup] = useState(false);
+  const [newSalaCategory, setNewSalaCategory] = useState('');
+  const [search, setSearch] = useState('');
+  const [showCreateSalaPopup, setCreateSalaPopup] = useState(false);
+  const [showSettingsPopup, setShowSettingsPopup] = useState(false);
   const navigate = useNavigate();
 
   const socket = useRef(null);
@@ -123,7 +126,18 @@ function Foro() {
         }
       };
 
+      const fetchSalaData = async () => {
+        const responseSala = await fetch(`/api/foro/salas/${currentSala}`);
+        if (responseSala.ok) {
+          const salaData = await responseSala.json();
+          setCurrentSalaName(salaData.title);
+          setCurrentSalaDescription(salaData.description);
+          setCurrentSalaCreatedBy(salaData.createdBy);
+        }
+      };
+
       fetchMensajes();
+      fetchSalaData();
     }
   }, [currentSala]);
 
@@ -168,6 +182,8 @@ function Foro() {
   const handleSalaChange = (sala) => {
     setCurrentSala(sala._id);
     setCurrentSalaName(sala.title);
+    setCurrentSalaDescription(sala.description);
+    setCurrentSalaCreatedBy(sala.createdBy);
   };
 
   const handleCreateSala = async (e) => {
@@ -191,7 +207,7 @@ function Foro() {
           setNewSalaTitle('');
           setNewSalaDescription('');
           setNewSalaCategory('');
-          setShowPopup(false);
+          setCreateSalaPopup(false);
         }
       } catch (error) {
         console.error('Error creando la nueva sala:', error);
@@ -199,8 +215,46 @@ function Foro() {
     }
   };
 
-  const togglePopup = () => {
-    setShowPopup(!showPopup); // Alternar entre mostrar y ocultar el popup
+  const handleEditSala = async () => {
+    try {
+      await fetch(`/api/foro/salas/${currentSala}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: currentSalaName,
+          description: currentSalaDescription,
+        }),
+      });
+      alert('Sala actualizada correctamente');
+    } catch (error) {
+      console.error('Error actualizando la sala:', error);
+    }
+  };
+
+  const handleClearMessages = async () => {
+    try {
+      await fetch(`/api/foro/salas/${currentSala}/mensajes`, {
+        method: 'DELETE',
+      });
+      setMensajes([]);
+      alert('Mensajes eliminados correctamente');
+    } catch (error) {
+      console.error('Error eliminando los mensajes:', error);
+    }
+  };
+
+  const handleDeleteSala = async () => {
+    try {
+      await fetch(`/api/foro/salas/${currentSala}`, {
+        method: 'DELETE',
+      });
+      setSalas((prevSalas) => prevSalas.filter((sala) => sala._id !== currentSala));
+      setCurrentSala('');
+      setMensajes([]);
+      alert('Sala eliminada correctamente');
+    } catch (error) {
+      console.error('Error eliminando la sala:', error);
+    }
   };
 
   const handleSubmit = (e) => {
@@ -266,8 +320,8 @@ function Foro() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-          <button className="boton-crear-sala" onClick={() => setShowPopup(true)}>
-            + Crear Sala
+          <button className="boton-crear-sala" onClick={() => setCreateSalaPopup(true)}>
+            Crear Sala
           </button>
         </div>
         <div className="lista-salas">
@@ -366,8 +420,6 @@ function Foro() {
         <div className="popup-ajustes">
           <div className="popup-contenido">
             <h3>Ajustes de Sala</h3>
-            <button className="boton-ajuste">Limpiar Mensajes</button>
-            <button className="boton-ajuste">Eliminar Sala</button>
             <input
               type="text"
               placeholder="Editar nombre de la sala"
@@ -380,14 +432,15 @@ function Foro() {
               value={currentSalaDescription}
               onChange={(e) => setCurrentSalaDescription(e.target.value)}
             />
-            <button className="boton-ajuste" onClick={() => setShowSettingsPopup(false)}>
-              Cerrar
-            </button>
+            <button onClick={handleEditSala}>Guardar Cambios</button>
+            <button onClick={handleClearMessages}>Limpiar Mensajes</button>
+            <button onClick={handleDeleteSala}>Eliminar Sala</button>
+            <button onClick={() => setShowSettingsPopup(false)}>Cerrar</button>
           </div>
         </div>
       )}
 
-      {showPopup && (
+      {showCreateSalaPopup && (
         <div className="popup-crear-sala">
           <div className="popup-contenido">
             <h3>Crear Nueva Sala</h3>
@@ -414,7 +467,7 @@ function Foro() {
                 required
               />
               <button type="submit">Crear</button>
-              <button type="button" onClick={() => setShowPopup(false)}>
+              <button type="button" onClick={() => setCreateSalaPopup(false)}>
                 Cancelar
               </button>
             </form>
