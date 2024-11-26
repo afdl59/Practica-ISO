@@ -276,3 +276,23 @@ exports.getUserPredictions = async (req, res) => {
         res.status(500).json({ message: 'Error al obtener las predicciones' });
     }
 }
+
+// Eliminar predicción de usuario
+exports.deleteUserPrediction = async (req, res) => {
+    const { username } = req.params;
+    const { matchId } = req.body;
+
+    try {
+        const usuario = await User.findOne({ username });
+        if (!usuario) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+
+        usuario.prediccionesActuales = usuario.prediccionesActuales.filter(prediccion => prediccion.matchId !== matchId);
+        await usuario.save();
+        res.status(200).json({ message: 'Predicción eliminada correctamente', user: usuario });
+    } catch (err) {
+        console.error('Error al eliminar predicción:', err);
+        res.status(500).json({ message: 'Error al eliminar predicción' });
+    }
+}

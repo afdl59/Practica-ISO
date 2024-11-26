@@ -29,5 +29,6 @@ router.post('/uploads', authMiddleware, upload.single('fotoPerfil'), userControl
 router.post('/:username/predictions', authMiddleware, userController.addUserPrediction);
 router.put('/:username/predictions', authMiddleware, userController.updateUserPredictionsPoints);
 router.get('/:username/predictions', authMiddleware, userController.getUserPredictions);
+router.post('/:username/remove-prediction', authMiddleware, userController.deleteUserPrediction);
 
 module.exports = router;
