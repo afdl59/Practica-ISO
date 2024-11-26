@@ -11,6 +11,242 @@ function Foro() {
   const [currentSala, setCurrentSala] = useState('');
   const [newSalaTitle, setNewSalaTitle] = useState('');
   const [newSalaDescription, setNewSalaDescription] = useState('');
+  const [newSalaCategory, setNewSalaCategory] = useState(''); // Nueva categoría
+  const [search, setSearch] = useState(''); // Estado para el buscador
+  const navigate = useNavigate();
+
+  const socket = useRef(null);
+
+  useEffect(() => {
+    socket.current = io('https://futbol360.ddns.net');
+
+    socket.current.on('connect', () => {
+      console.log('Conectado al servidor de Socket.IO');
+    });
+
+    return () => {
+      socket.current.off('mensajeRecibido');
+      socket.current.disconnect();
+      console.log('Socket desconectado');
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleMensajeRecibido = (mensaje) => {
+      if (mensaje.chatRoom === currentSala) {
+        setMensajes((prevMensajes) => [...prevMensajes, mensaje]);
+      }
+    };
+
+    socket.current.on('mensajeRecibido', handleMensajeRecibido);
+
+    return () => {
+      socket.current.off('mensajeRecibido', handleMensajeRecibido);
+    };
+  }, [currentSala]);
+
+  useEffect(() => {
+    const checkAuthAndLoadData = async () => {
+      try {
+        const response = await fetch('/api/auth/check-session', {
+          headers: { 'Cache-Control': 'no-cache' },
+        });
+        const textData = await response.text();
+
+        try {
+          const data = JSON.parse(textData);
+          if (!data.isAuthenticated) {
+            navigate('/login');
+            return;
+          }
+          setUsername(data.username);
+        } catch {
+          navigate('/login');
+          return;
+        }
+
+        const responseSalas = await fetch('/api/foro/salas', {
+          headers: { 'Cache-Control': 'no-cache' },
+        });
+
+        if (responseSalas.ok) {
+          const dataSalas = await responseSalas.json();
+          setSalas(dataSalas);
+        }
+      } catch {
+        navigate('/login');
+      }
+    };
+
+    checkAuthAndLoadData();
+  }, [navigate]);
+
+  useEffect(() => {
+    if (currentSala) {
+      setMensajes([]);
+      socket.current.emit('unirseASala', currentSala);
+
+      const fetchMensajes = async () => {
+        const responseMensajes = await fetch(`/api/foro/salas/${currentSala}/mensajes`);
+        if (responseMensajes.ok) {
+          const dataMensajes = await responseMensajes.json();
+          setMensajes(dataMensajes);
+        }
+      };
+
+      fetchMensajes();
+    }
+  }, [currentSala]);
+
+  const handleSalaChange = (sala) => {
+    setCurrentSala(sala._id);
+  };
+
+  const handleCreateSala = async (e) => {
+    e.preventDefault();
+    if (newSalaTitle && newSalaDescription && newSalaCategory && username) {
+      try {
+        const response = await fetch('https://futbol360.ddns.net/api/foro/salas', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            title: newSalaTitle,
+            description: newSalaDescription,
+            category: newSalaCategory,
+            createdBy: username,
+          }),
+        });
+
+        if (response.ok) {
+          const nuevaSala = await response.json();
+          setSalas((prevSalas) => [...prevSalas, nuevaSala.newChatRoom]);
+          setNewSalaTitle('');
+          setNewSalaDescription('');
+          setNewSalaCategory('');
+        }
+      } catch (error) {
+        console.error('Error creando la nueva sala:', error);
+      }
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (username && content && currentSala) {
+      const nuevoMensaje = {
+        username,
+        content,
+        chatRoom: currentSala,
+      };
+
+      socket.current.emit('nuevoMensaje', nuevoMensaje);
+      setContent('');
+    }
+  };
+
+  const filteredSalas = salas.filter((sala) =>
+    sala.title.toLowerCase().includes(search.toLowerCase()) ||
+    sala.description.toLowerCase().includes(search.toLowerCase()) ||
+    sala.createdBy.toLowerCase().includes(search.toLowerCase())
+  );
+
+  return (
+    <>
+      <h1>Foro</h1>
+      <div className="foro-contenedor">
+        <div className="barra-lateral">
+          <input
+            type="text"
+            placeholder="Buscar salas..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <div className="lista-salas">
+            {filteredSalas.map((sala) => (
+              <button key={sala._id} onClick={() => handleSalaChange(sala)}>
+                <strong>{sala.title}</strong>
+                <p>{sala.description}</p>
+                <small>{sala.createdBy}</small>
+              </button>
+            ))}
+          </div>
+          <form onSubmit={handleCreateSala}>
+            <input
+              type="text"
+              placeholder="Título de la nueva sala"
+              value={newSalaTitle}
+              onChange={(e) => setNewSalaTitle(e.target.value)}
+              required
+            />
+            <input
+              type="text"
+              placeholder="Descripción"
+              value={newSalaDescription}
+              onChange={(e) => setNewSalaDescription(e.target.value)}
+              required
+            />
+            <input
+              type="text"
+              placeholder="Categoría"
+              value={newSalaCategory}
+              onChange={(e) => setNewSalaCategory(e.target.value)}
+              required
+            />
+            <button type="submit">Crear Sala</button>
+          </form>
+        </div>
+        {currentSala && (
+          <div className="foro">
+            <h2>Sala: {currentSala}</h2>
+            <div id="foro">
+              {mensajes.length === 0 ? (
+                <p>No hay mensajes aún. ¡Sé el primero en enviar uno!</p>
+              ) : (
+                mensajes.map((mensaje, index) => (
+                  <div key={index}>
+                    <strong>{mensaje.username}</strong>: {mensaje.content}
+                    <small style={{ float: 'right' }}>{new Date(mensaje.date).toLocaleString()}</small>
+                    <hr />
+                  </div>
+                ))
+              )}
+            </div>
+            <form id="formMensaje" onSubmit={handleSubmit}>
+              <input
+                id="content"
+                type="text"
+                placeholder="Mensaje"
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                required
+              />
+              <button type="submit">Enviar</button>
+            </form>
+          </div>
+        )}
+      </div>
+    </>
+  );
+}
+
+export default Foro;
+
+
+
+/* ANTIGUO FORO
+import React, { useState, useEffect, useRef } from 'react';
+import '../../styles/foro/Foro.css';
+import io from 'socket.io-client';
+import { useNavigate } from 'react-router-dom';
+
+function Foro() {
+  const [mensajes, setMensajes] = useState([]);
+  const [content, setContent] = useState('');
+  const [username, setUsername] = useState('');
+  const [salas, setSalas] = useState([]);
+  const [currentSala, setCurrentSala] = useState('');
+  const [newSalaTitle, setNewSalaTitle] = useState('');
+  const [newSalaDescription, setNewSalaDescription] = useState('');
   const navigate = useNavigate();
 
   // Mantener una referencia única para la conexión de Socket.IO
@@ -255,3 +491,4 @@ function Foro() {
 }
 
 export default Foro;
+*/

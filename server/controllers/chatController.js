@@ -15,22 +15,21 @@ exports.getAllRooms = async (req, res) => {
 
 // Crear una nueva sala de chat
 exports.createRoom = async (req, res) => {
-    const { title, description, createdBy } = req.body; // `createdBy` será el username
+    const { title, description, category, createdBy } = req.body; // Incluir category
     try {
-        // Verificar si el usuario existe en la colección de usuarios
         const user = await User.findOne({ username: createdBy });
         if (!user) {
             return res.status(400).json({ message: 'Usuario creador no válido' });
         }
 
-        // Crear una nueva instancia de ChatRoom con el username del creador
-        const newChatRoom = new ChatRoom({ title, description, createdBy });
+        const newChatRoom = new ChatRoom({ title, description, category, createdBy });
         await newChatRoom.save();
         res.status(201).json({ message: 'Sala creada exitosamente', newChatRoom });
     } catch (err) {
         res.status(500).json({ message: 'Error al crear la sala de chat: ' + err.message });
     }
 };
+
 
 // Obtener los mensajes de una sala específica
 exports.getMessages = async (req, res) => {
