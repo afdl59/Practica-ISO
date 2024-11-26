@@ -146,6 +146,7 @@
   flex-direction: column;
   gap: 10px;
   overflow-y: auto;
+  margin-bottom: 60px; /* Dejar espacio para el input y botón de enviar */
 }
 
 .grupo-fecha {
@@ -210,13 +211,15 @@
 /* Input de mensajes */
 .enviar-mensaje {
   display: flex;
-  align-items: center; /* Alinea los elementos verticalmente */
-  gap: 10px; /* Añade un espacio entre los elementos */
+  align-items: center;
+  gap: 10px; /* Espaciado entre input y botón */
   padding: 10px;
   background-color: rgba(0, 0, 0, 0.8);
   border-radius: 6px;
-  position: sticky;
-  bottom: 0;
+  position: fixed; /* Cambiar de sticky a fixed */
+  bottom: 10px; /* Separación del borde inferior */
+  left: 25%; /* Alinear con el inicio de la sección de chat */
+  width: 75%; /* Ajustar ancho en relación con la barra lateral */
   z-index: 10;
 }
 
@@ -227,12 +230,12 @@
   border: none;
   background-color: #fff;
   color: #333;
-  height: 40px; /* Asegúrate de que coincida con el botón */
+  height: 40px; /* Asegúrate de que el tamaño coincida con el botón */
 }
 
 .enviar-mensaje button {
-  padding: 0 20px; /* Elimina el padding vertical */
-  height: 40px; /* Asegúrate de que coincida con el input */
+  padding: 0 20px;
+  height: 40px;
   border: none;
   border-radius: 6px;
   background-color: #0077b6;
