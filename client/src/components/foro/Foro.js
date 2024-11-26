@@ -180,6 +180,7 @@ function Foro() {
   }, [username, mensajes, profilePictures]);  
 
   const handleSalaChange = (sala) => {
+    console.log('Datos de la sala seleccionada:', sala);
     setCurrentSala(sala._id);
     setCurrentSalaName(sala.title);
     setCurrentSalaDescription(sala.description);
