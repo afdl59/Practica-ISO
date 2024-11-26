@@ -216,10 +216,10 @@
   padding: 10px;
   background-color: rgba(0, 0, 0, 0.8);
   border-radius: 6px;
-  position: fixed; /* Cambiar de sticky a fixed */
+  position: fixed;
   bottom: 10px; /* Separación del borde inferior */
   left: 25%; /* Alinear con el inicio de la sección de chat */
-  width: 75%; /* Ajustar ancho en relación con la barra lateral */
+  width: calc(75% - 40px); /* Ajustar ancho dejando espacio para el padding y bordes */
   z-index: 10;
 }
 
