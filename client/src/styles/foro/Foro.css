@@ -210,6 +210,8 @@
 /* Input de mensajes */
 .enviar-mensaje {
   display: flex;
+  align-items: center; /* Alinea los elementos verticalmente */
+  gap: 10px; /* Añade un espacio entre los elementos */
   padding: 10px;
   background-color: rgba(0, 0, 0, 0.8);
   border-radius: 6px;
@@ -221,15 +223,16 @@
 .enviar-mensaje input {
   flex-grow: 1;
   padding: 10px;
-  margin-right: 10px;
   border-radius: 6px;
   border: none;
   background-color: #fff;
   color: #333;
+  height: 40px; /* Asegúrate de que coincida con el botón */
 }
 
 .enviar-mensaje button {
-  padding: 10px 20px;
+  padding: 0 20px; /* Elimina el padding vertical */
+  height: 40px; /* Asegúrate de que coincida con el input */
   border: none;
   border-radius: 6px;
   background-color: #0077b6;
