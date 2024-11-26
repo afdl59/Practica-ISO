@@ -267,7 +267,7 @@ function Foro() {
             onChange={(e) => setSearch(e.target.value)}
           />
           <button className="boton-crear-sala" onClick={() => setShowPopup(true)}>
-            + Crear Sala
+            Crear Sala
           </button>
         </div>
         <div className="lista-salas">
@@ -293,57 +293,63 @@ function Foro() {
             ))}
         </div>
       </div>
-  
-      {currentSala && (
-        <div className="sala-chat">
-          <h2>{currentSalaName}</h2>
-          <div className="mensajes">
-            {groupedMessages.map(({ date, groups }, index) => (
-              <div key={index} className="grupo-fecha">
-                <div className="fecha">{date}</div>
-                  {groups.map((group, idx) => (
-                    <div key={idx} className="grupo-mensajes">
-                      <div className="info-usuario">
-                        <div className="avatar">
-                          <img
-                            src={profilePictures[group.username] || '/uploads/default-profile.png'}
-                            alt={group.username}
-                          />
+      <div className="sala-chat">
+        
+        {currentSala ? (
+          <>
+            <h2>{currentSalaName}</h2>
+            <div className="mensajes">
+              {groupedMessages.map(({ date, groups }, index) => (
+                <div key={index} className="grupo-fecha">
+                  <div className="fecha">{date}</div>
+                    {groups.map((group, idx) => (
+                      <div key={idx} className="grupo-mensajes">
+                        <div className="info-usuario">
+                          <div className="avatar">
+                            <img
+                              src={profilePictures[group.username] || '/uploads/default-profile.png'}
+                              alt={group.username}
+                            />
+                          </div>
+                          <strong>{group.username}</strong>
                         </div>
-                        <strong>{group.username}</strong>
-                      </div>
-                      {group.messages.map((mensaje, i) => (
-                        <div
-                          key={i}
-                          className={`mensaje ${
-                            mensaje.username === username ? 'propio' : 'ajeno'
-                          }`}
-                        >
-                          <div className="contenido">
-                            {mensaje.content}
-                            <div className="hora">
-                              {new Date(mensaje.date).toLocaleTimeString()}
+                        {group.messages.map((mensaje, i) => (
+                          <div
+                            key={i}
+                            className={`mensaje ${
+                              mensaje.username === username ? 'propio' : 'ajeno'
+                            }`}
+                          >
+                            <div className="contenido">
+                              {mensaje.content}
+                              <div className="hora">
+                                {new Date(mensaje.date).toLocaleTimeString()}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      ))}
-                    </div>
-                  ))}
-                </div>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
               ))}
-          </div>
-          <form className="enviar-mensaje" onSubmit={handleSubmit}>
-            <input
-              type="text"
-              placeholder="Escribe un mensaje..."
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              required
-            />
-            <button type="submit">Enviar</button>
-          </form>
-        </div>
-      )}
+            </div>
+            <form className="enviar-mensaje" onSubmit={handleSubmit}>
+              <input
+                type="text"
+                placeholder="Escribe un mensaje..."
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                required
+              />
+              <button type="submit">Enviar</button>
+            </form>
+          </>
+        ) : (
+          <p style={{ color: '#fff', textAlign: 'center', marginTop: '20px' }}>
+            Selecciona una sala para comenzar a chatear
+          </p>
+        )}
+      </div>
   
       {showPopup && (
         <div className="popup-crear-sala">

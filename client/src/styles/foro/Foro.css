@@ -10,7 +10,8 @@
 
 /* Barra lateral */
 .barra-lateral {
-  width: 30%; /* Ajustar ancho para una mejor visibilidad */
+  width: 25%; /* Ajustar ancho para una mejor visibilidad */
+  min-width: 300px;
   background-color: rgba(0, 0, 0, 0.8);
   display: flex;
   flex-direction: column;
@@ -96,6 +97,7 @@
 /* Zona de chat */
 .sala-chat {
   flex-grow: 1; /* Ocupa todo el espacio restante */
+  min-width: 600px;
   display: flex;
   flex-direction: column;
   padding: 20px;
@@ -188,7 +190,7 @@
   background-color: rgba(0, 0, 0, 0.8);
   border-radius: 6px;
   position: sticky; /* Fija la posición */
-  bottom: 0; /* Pegado a la parte inferior del contenedor */
+  bottom: 10; /* Pegado a la parte inferior del contenedor */
   z-index: 10; /* Asegura que esté por encima de otros elementos */
 }
 
