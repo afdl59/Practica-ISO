@@ -5,11 +5,12 @@
   height: 100vh; /* Ocupa toda la pantalla */
   background: linear-gradient(to right, #141e30, #243b55);
   color: #fff;
+  overflow: hidden; /* Evita scrolls laterales no deseados */
 }
 
 /* Barra lateral */
 .barra-lateral {
-  width: 25%; /* Ampliar ancho para mostrar correctamente los títulos */
+  width: 30%; /* Ajustar ancho para una mejor visibilidad */
   background-color: rgba(0, 0, 0, 0.8);
   display: flex;
   flex-direction: column;
@@ -21,14 +22,13 @@
 /* Barra superior */
 .barra-superior {
   display: flex;
-  flex-direction: column;
+  flex-direction: column; /* Cambiado para centrado vertical */
   gap: 15px;
-  align-items: center;
   margin-bottom: 20px;
 }
 
 .barra-superior input {
-  width: calc(100% - 120px); /* Espacio restante para el botón */
+  width: 100%; /* Ocupa todo el espacio disponible */
   padding: 10px;
   border-radius: 6px;
   border: none;
@@ -95,7 +95,7 @@
 
 /* Zona de chat */
 .sala-chat {
-  width: 75%; /* Resto del espacio */
+  flex-grow: 1; /* Ocupa todo el espacio restante */
   display: flex;
   flex-direction: column;
   padding: 20px;
@@ -103,6 +103,7 @@
   overflow-y: auto; /* Scroll para mensajes */
 }
 
+/* Encabezado de chat */
 .sala-chat h2 {
   font-size: 1.5rem;
   margin-bottom: 20px;
@@ -117,12 +118,68 @@
   display: flex;
   flex-direction: column;
   gap: 10px; /* Espaciado entre mensajes */
-  border-radius: 6px;
-  background-color: rgba(255, 255, 255, 0.1);
   overflow-y: auto;
 }
 
+/* Mensajes agrupados */
+.grupo-fecha {
+  margin-bottom: 20px;
+}
 
+.fecha {
+  font-size: 1rem;
+  color: #ffd700;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+/* Mensajes individuales */
+.mensaje {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  max-width: 70%;
+}
+
+.mensaje.propio {
+  align-self: flex-end;
+  flex-direction: row-reverse; /* Avatar a la derecha */
+}
+
+.mensaje.ajeno {
+  align-self: flex-start;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.contenido {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 10px;
+  border-radius: 12px;
+  flex-grow: 1;
+}
+
+.mensaje.propio .contenido {
+  background-color: #0077b6;
+  color: white;
+}
+
+.hora {
+  font-size: 0.8rem;
+  color: #ccc;
+  text-align: right;
+}
 
 /* Input de mensajes */
 .enviar-mensaje {
@@ -154,4 +211,62 @@
 
 .enviar-mensaje button:hover {
   background-color: #005f8a;
+}
+
+/* Popup para crear sala */
+.popup-crear-sala {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-contenido {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  width: 350px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.popup-contenido h3 {
+  margin-bottom: 20px;
+  color: #0077b6;
+}
+
+.popup-contenido form input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.popup-contenido form button {
+  padding: 10px 20px;
+  margin: 5px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.popup-contenido form button[type="submit"] {
+  background-color: #0077b6;
+  color: #fff;
+}
+
+.popup-contenido form button[type="button"] {
+  background-color: #ccc;
+  color: #000;
+}
+
+.popup-contenido form button:hover {
+  opacity: 0.9;
 }
