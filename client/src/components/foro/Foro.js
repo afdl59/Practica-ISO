@@ -259,7 +259,7 @@ function Foro() {
   return (
     <div className="foro-contenedor">
       <div className="barra-lateral">
-      <div className="barra-superior">
+        <div className="barra-superior">
           <input
             type="text"
             placeholder="Buscar salas..."
@@ -276,17 +276,19 @@ function Foro() {
               sala.title.toLowerCase().includes(search.toLowerCase())
             )
             .map((sala) => (
-              <button
+              <div
                 key={sala._id}
+                className={`sala-item ${sala._id === currentSala ? 'sala-activa' : ''}`}
                 onClick={() => setCurrentSala(sala._id)}
-                className={sala._id === currentSala ? 'sala-activa' : ''}
               >
-                <strong>{sala.title}</strong>
-                <small>{new Date(sala.lastMessageDate || sala.createdAt).toLocaleString()}</small>
-              </button>
+                <div className="sala-info">
+                  <strong>{sala.title}</strong>
+                  <small>{new Date(sala.lastMessageDate || sala.createdAt).toLocaleString()}</small>
+                </div>
+              </div>
             ))}
-        </div>
       </div>
+    </div>
       {currentSala && (
         <div className="sala-chat">
           <h2>{currentSalaName}</h2>

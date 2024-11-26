@@ -1,112 +1,72 @@
-/* Contenedor principal */
-.foro-contenedor {
-  display: flex;
-  width: 100%;
-  height: 100vh;
-  background: linear-gradient(to right, #141e30, #243b55);
-  color: #fff;
-}
-
-/* Mensajes agrupados por fecha */
-.fecha {
-  font-size: 1rem;
-  color: #ffd700;
-  text-align: center;
-  margin: 20px 0;
-}
-
-/* Agrupación por usuario */
-.grupo-mensajes {
-  margin-bottom: 20px;
-}
-
-.info-usuario {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.foto-perfil {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  margin-right: 10px;
-  object-fit: cover; /* Asegura que las imágenes encajen en el contenedor */
-  border: 2px solid #fff;
-}
-
-/* Burbujas de mensajes */
-.mensaje {
+/* Barra lateral */
+.barra-lateral {
+  width: 20%; /* Ajustar ancho para que sea más compacto */
+  background-color: rgba(0, 0, 0, 0.8);
   display: flex;
   flex-direction: column;
-  max-width: 70%;
-  margin-bottom: 10px;
   padding: 10px;
-  border-radius: 12px;
-  word-wrap: break-word;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+  overflow-y: auto; /* Scroll para muchas salas */
 }
 
-.mensaje.propio {
-  align-self: flex-end;
+/* Lista de salas */
+.lista-salas {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Espacio entre las salas */
+}
+
+.sala-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.sala-item:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.sala-activa {
   background-color: #0077b6;
+  font-weight: bold;
   color: #fff;
-  text-align: right;
 }
 
-.mensaje.ajeno {
-  align-self: flex-start;
-  background-color: rgba(0, 0, 0, 0.6);
-  color: #fff;
-  text-align: left;
+/* Información de sala */
+.sala-info {
+  display: flex;
+  flex-direction: column;
 }
 
-.hora {
+.sala-info strong {
+  font-size: 1rem;
+  color: white;
+}
+
+.sala-info small {
   font-size: 0.8rem;
   color: #ccc;
-  margin-top: 5px;
-  text-align: right;
 }
 
-/* Formulario de envío de mensajes */
-.enviar-mensaje {
-  display: flex;
-  padding: 10px;
-  background-color: rgba(0, 0, 0, 0.8);
-  border-radius: 12px;
-}
-
-.enviar-mensaje input {
-  flex-grow: 1;
-  padding: 10px;
-  border: none;
-  border-radius: 6px;
-  margin-right: 10px;
-  font-size: 1rem;
-  background-color: rgba(255, 255, 255, 0.9);
-  color: #333;
-}
-
-.enviar-mensaje button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 6px;
-  background-color: #00b4d8;
-  color: #fff;
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.enviar-mensaje button:hover {
-  background-color: #0077b6;
-}
-
-/* Botón para crear sala */
+/* Barra superior */
 .barra-superior {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 15px;
+}
+
+.barra-superior input {
+  width: calc(100% - 110px); /* Espacio restante para el botón */
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.8);
+  color: #333;
 }
 
 .boton-crear-sala {
@@ -117,49 +77,11 @@
   border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
-  transition: all 0.3s ease;
+  transition: background-color 0.3s ease;
 }
 
 .boton-crear-sala:hover {
   background-color: #005f8a;
-}
-
-.lista-salas {
-  display: flex;
-  flex-direction: column; /* Cambia a apilado vertical */
-  gap: 10px;
-  overflow-y: auto;
-}
-
-.lista-salas button {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: #fff;
-  padding: 10px;
-  border: none;
-  border-radius: 6px;
-  text-align: left;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.lista-salas button:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-}
-
-.sala-activa {
-  background-color: #0077b6;
-  color: #fff;
-  font-weight: bold;
-}
-
-.barra-lateral {
-  width: 25%;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  overflow-y: auto;
-  background-color: rgba(0, 0, 0, 0.8);
 }
 
 /* Popup para crear sala */
