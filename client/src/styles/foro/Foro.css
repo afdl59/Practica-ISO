@@ -2,86 +2,17 @@
 .foro-contenedor {
   display: flex;
   width: 100%;
-  height: 100vh; /* Ocupa toda la pantalla */
+  height: 100vh;
   background: linear-gradient(to right, #141e30, #243b55);
   color: #fff;
-}
-
-/* Barra lateral */
-.barra-lateral {
-  width: 25%; /* Ocupa un cuarto de la pantalla */
-  background-color: rgba(0, 0, 0, 0.8);
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
-  overflow-y: auto;
-}
-
-.barra-lateral input {
-  padding: 10px;
-  margin-bottom: 20px;
-  border: none;
-  border-radius: 6px;
-  background-color: rgba(255, 255, 255, 0.9);
-  color: #333;
-  font-size: 1rem;
-}
-
-.lista-salas button {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: #fff;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: none;
-  border-radius: 6px;
-  text-align: left;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.lista-salas button:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-}
-
-.sala-activa {
-  background-color: #0077b6;
-  color: #fff;
-  font-weight: bold;
-}
-
-/* Sala principal */
-.sala-chat {
-  flex-grow: 1; /* Ocupa todo el espacio restante */
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  overflow-y: auto;
-}
-
-.sala-chat h2 {
-  font-size: 1.8rem;
-  margin-bottom: 20px;
-  text-align: center;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-/* Contenedor de mensajes */
-.mensajes {
-  flex-grow: 1;
-  overflow-y: auto;
-  padding: 10px;
-  border-radius: 12px;
-  background-color: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
 }
 
 /* Mensajes agrupados por fecha */
 .fecha {
   font-size: 1rem;
-  margin: 20px 0;
   color: #ffd700;
   text-align: center;
+  margin: 20px 0;
 }
 
 /* Agrupación por usuario */
@@ -93,7 +24,6 @@
   display: flex;
   align-items: center;
   margin-bottom: 10px;
-  margin-left: 10px;
 }
 
 .foto-perfil {
@@ -101,6 +31,7 @@
   height: 40px;
   border-radius: 50%;
   margin-right: 10px;
+  object-fit: cover; /* Asegura que las imágenes encajen en el contenedor */
   border: 2px solid #fff;
 }
 
@@ -112,7 +43,6 @@
   margin-bottom: 10px;
   padding: 10px;
   border-radius: 12px;
-  font-size: 0.9rem;
   word-wrap: break-word;
 }
 
@@ -120,23 +50,21 @@
   align-self: flex-end;
   background-color: #0077b6;
   color: #fff;
+  text-align: right;
 }
 
 .mensaje.ajeno {
   align-self: flex-start;
   background-color: rgba(0, 0, 0, 0.6);
   color: #fff;
+  text-align: left;
 }
 
-.mensaje .hora {
+.hora {
   font-size: 0.8rem;
   color: #ccc;
   margin-top: 5px;
   text-align: right;
-}
-
-.contenido {
-  font-size: 1rem;
 }
 
 /* Formulario de envío de mensajes */
@@ -174,17 +102,82 @@
   background-color: #0077b6;
 }
 
-/* Estilo responsivo */
-@media (max-width: 768px) {
-  .barra-lateral {
-    width: 35%; /* Ocupa más espacio en pantallas pequeñas */
-  }
+/* Botón para crear sala */
+.barra-superior {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-  .sala-chat h2 {
-    font-size: 1.5rem;
-  }
+.boton-crear-sala {
+  padding: 10px;
+  background-color: #0077b6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
 
-  .mensaje {
-    max-width: 90%; /* Ajustar burbujas para pantallas pequeñas */
-  }
+.boton-crear-sala:hover {
+  background-color: #005f8a;
+}
+
+/* Popup para crear sala */
+.popup-crear-sala {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-contenido {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  width: 300px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.popup-contenido h3 {
+  margin-bottom: 20px;
+  color: #0077b6;
+}
+
+.popup-contenido form input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.popup-contenido form button {
+  padding: 10px 20px;
+  margin: 5px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.popup-contenido form button[type="submit"] {
+  background-color: #0077b6;
+  color: #fff;
+}
+
+.popup-contenido form button[type="button"] {
+  background-color: #ccc;
+  color: #000;
+}
+
+.popup-contenido form button:hover {
+  opacity: 0.9;
 }
