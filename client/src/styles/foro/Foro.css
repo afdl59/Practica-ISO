@@ -190,7 +190,7 @@
   background-color: rgba(0, 0, 0, 0.8);
   border-radius: 6px;
   position: sticky; /* Fija la posición */
-  bottom: 10; /* Pegado a la parte inferior del contenedor */
+  bottom: 20; /* Pegado a la parte inferior del contenedor */
   z-index: 10; /* Asegura que esté por encima de otros elementos */
 }
 
