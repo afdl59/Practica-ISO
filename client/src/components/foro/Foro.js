@@ -301,33 +301,36 @@ function Foro() {
             {groupedMessages.map(({ date, groups }, index) => (
               <div key={index} className="grupo-fecha">
                 <div className="fecha">{date}</div>
-                {groups.map((group, idx) => (
-                  <div key={idx} className="grupo-mensajes">
-                    <div className="info-usuario">
-                      <img
-                        src={profilePictures[group.username] || '/uploads/default-profile.png'}
-                        alt={group.username}
-                        className="foto-perfil"
-                      />
-                      <strong>{group.username}</strong>
-                    </div>
-                    {group.messages.map((mensaje, i) => (
-                      <div
-                        key={i}
-                        className={
-                          mensaje.username === username ? 'mensaje propio' : 'mensaje ajeno'
-                        }
-                      >
-                        <div className="contenido">{mensaje.content}</div>
-                        <div className="hora">
-                          {new Date(mensaje.date).toLocaleTimeString()}
+                  {groups.map((group, idx) => (
+                    <div key={idx} className="grupo-mensajes">
+                      <div className="info-usuario">
+                        <div className="avatar">
+                          <img
+                            src={profilePictures[group.username] || '/uploads/default-profile.png'}
+                            alt={group.username}
+                          />
                         </div>
+                        <strong>{group.username}</strong>
                       </div>
-                    ))}
-                  </div>
-                ))}
-              </div>
-            ))}
+                      {group.messages.map((mensaje, i) => (
+                        <div
+                          key={i}
+                          className={`mensaje ${
+                            mensaje.username === username ? 'propio' : 'ajeno'
+                          }`}
+                        >
+                          <div className="contenido">
+                            {mensaje.content}
+                            <div className="hora">
+                              {new Date(mensaje.date).toLocaleTimeString()}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              ))}
           </div>
           <form className="enviar-mensaje" onSubmit={handleSubmit}>
             <input

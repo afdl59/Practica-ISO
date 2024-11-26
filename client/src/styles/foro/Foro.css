@@ -21,7 +21,8 @@
 /* Barra superior */
 .barra-superior {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 15px;
   align-items: center;
   margin-bottom: 20px;
 }
@@ -109,14 +110,83 @@
   color: #fff;
 }
 
-/* Mensajes */
+/* Contenedor de mensajes */
 .mensajes {
   flex-grow: 1;
-  padding: 20px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Espaciado entre mensajes */
   border-radius: 6px;
   background-color: rgba(255, 255, 255, 0.1);
   overflow-y: auto;
 }
+
+/* Mensajes agrupados */
+.mensaje {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 10px; /* Espaciado entre avatar y burbuja */
+}
+
+/* Avatar del usuario */
+.mensaje .avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.mensaje .avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Contenido del mensaje */
+.mensaje .contenido {
+  max-width: 70%;
+  padding: 10px;
+  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0.1);
+  word-wrap: break-word;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Username y hora */
+.mensaje .contenido .username {
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #0077b6;
+  margin-bottom: 5px;
+}
+
+.mensaje .contenido .hora {
+  font-size: 0.8rem;
+  color: #ccc;
+  text-align: right;
+  margin-top: 5px;
+}
+
+/* Mensajes propios */
+.mensaje.propio {
+  align-self: flex-end;
+  flex-direction: row-reverse; /* Cambiar dirección para avatar a la derecha */
+}
+
+.mensaje.propio .contenido {
+  background-color: #0077b6;
+  color: white;
+}
+
+/* Mensajes ajenos */
+.mensaje.ajeno {
+  align-self: flex-start;
+}
+
 
 /* Input de mensajes */
 .enviar-mensaje {
