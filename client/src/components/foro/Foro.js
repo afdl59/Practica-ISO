@@ -255,7 +255,7 @@ function Foro() {
     const dateB = new Date(b.lastMessageDate || b.createdAt).getTime();
     return dateB - dateA; // Orden descendente
   });
-  
+
   return (
     <div className="foro-contenedor">
       <div className="barra-lateral">
@@ -283,12 +283,17 @@ function Foro() {
               >
                 <div className="sala-info">
                   <strong>{sala.title}</strong>
-                  <small>{new Date(sala.lastMessageDate || sala.createdAt).toLocaleString()}</small>
+                  <small>Creada por {sala.createdBy}</small>
+                  <small>
+                    Último mensaje:{' '}
+                    {new Date(sala.lastMessageDate || sala.createdAt).toLocaleString()}
+                  </small>
                 </div>
               </div>
             ))}
+        </div>
       </div>
-    </div>
+  
       {currentSala && (
         <div className="sala-chat">
           <h2>{currentSalaName}</h2>
@@ -336,6 +341,7 @@ function Foro() {
           </form>
         </div>
       )}
+  
       {showPopup && (
         <div className="popup-crear-sala">
           <div className="popup-contenido">
@@ -363,7 +369,7 @@ function Foro() {
                 required
               />
               <button type="submit">Crear</button>
-              <button type="button" onClick={togglePopup}>
+              <button type="button" onClick={() => setShowPopup(false)}>
                 Cancelar
               </button>
             </form>
@@ -371,7 +377,7 @@ function Foro() {
         </div>
       )}
     </div>
-  );  
+  );
 }
 
 export default Foro;

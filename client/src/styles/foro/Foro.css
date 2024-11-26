@@ -1,10 +1,10 @@
 /* Barra lateral */
 .barra-lateral {
-  width: 20%; /* Ajustar ancho para que sea más compacto */
+  width: 30%; /* Ajustar ancho para mostrar correctamente los títulos */
   background-color: rgba(0, 0, 0, 0.8);
   display: flex;
   flex-direction: column;
-  padding: 10px;
+  padding: 20px;
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
   overflow-y: auto; /* Scroll para muchas salas */
 }
@@ -13,13 +13,11 @@
 .lista-salas {
   display: flex;
   flex-direction: column;
-  gap: 10px; /* Espacio entre las salas */
+  gap: 15px; /* Espaciado entre las salas */
 }
 
 .sala-item {
-  display: flex;
-  align-items: center;
-  padding: 10px;
+  padding: 15px;
   background-color: rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   cursor: pointer;
@@ -33,7 +31,7 @@
 .sala-activa {
   background-color: #0077b6;
   font-weight: bold;
-  color: #fff;
+  color: white;
 }
 
 /* Información de sala */
@@ -43,13 +41,14 @@
 }
 
 .sala-info strong {
-  font-size: 1rem;
+  font-size: 1.2rem;
   color: white;
 }
 
 .sala-info small {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   color: #ccc;
+  margin-top: 5px; /* Espaciado entre texto */
 }
 
 /* Barra superior */
@@ -57,12 +56,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 .barra-superior input {
-  width: calc(100% - 110px); /* Espacio restante para el botón */
-  padding: 8px;
+  width: calc(100% - 120px); /* Espacio restante para el botón */
+  padding: 10px;
   border-radius: 6px;
   border: none;
   background-color: rgba(255, 255, 255, 0.8);
@@ -70,7 +69,7 @@
 }
 
 .boton-crear-sala {
-  padding: 10px;
+  padding: 10px 15px;
   background-color: #0077b6;
   color: white;
   border: none;
@@ -102,7 +101,7 @@
   background-color: #fff;
   padding: 20px;
   border-radius: 12px;
-  width: 300px;
+  width: 350px;
   text-align: center;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
@@ -140,4 +139,62 @@
 
 .popup-contenido form button:hover {
   opacity: 0.9;
+}
+
+/* Zona de mensajes */
+.sala-chat {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.9);
+  overflow-y: auto; /* Scroll para mensajes */
+}
+
+.sala-chat h2 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #fff;
+}
+
+/* Mensajes */
+.mensajes {
+  flex-grow: 1;
+  padding: 20px;
+  border-radius: 6px;
+  background-color: rgba(255, 255, 255, 0.1);
+  overflow-y: auto;
+}
+
+/* Input de mensajes */
+.enviar-mensaje {
+  display: flex;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 6px;
+}
+
+.enviar-mensaje input {
+  flex-grow: 1;
+  padding: 10px;
+  margin-right: 10px;
+  border-radius: 6px;
+  border: none;
+  background-color: #fff;
+  color: #333;
+}
+
+.enviar-mensaje button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  background-color: #0077b6;
+  color: #fff;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.enviar-mensaje button:hover {
+  background-color: #005f8a;
 }
