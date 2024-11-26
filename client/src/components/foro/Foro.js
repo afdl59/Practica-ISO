@@ -7,6 +7,7 @@ function Foro() {
   const [mensajes, setMensajes] = useState([]);
   const [content, setContent] = useState('');
   const [username, setUsername] = useState('');
+  const [profilePictures, setProfilePictures] = useState({});
   const [salas, setSalas] = useState([]);
   const [currentSala, setCurrentSala] = useState('');
   const [currentSalaName, setCurrentSalaName] = useState('');
@@ -152,17 +153,32 @@ function Foro() {
     sala.createdBy.toLowerCase().includes(search.toLowerCase())
   );
 
-  const groupMessagesByDate = () => {
-    return mensajes.reduce((acc, mensaje) => {
+  const groupMessagesByDateAndUser = () => {
+    const groupedByDate = mensajes.reduce((acc, mensaje) => {
       const date = new Date(mensaje.date).toLocaleDateString();
       if (!acc[date]) acc[date] = [];
       acc[date].push(mensaje);
       return acc;
     }, {});
+  
+    return Object.entries(groupedByDate).map(([date, messages]) => {
+      const groupedByUser = [];
+      let currentGroup = null;
+  
+      messages.forEach((mensaje) => {
+        if (!currentGroup || currentGroup.username !== mensaje.username) {
+          currentGroup = { username: mensaje.username, messages: [], profilePicture: mensaje.profilePicture };
+          groupedByUser.push(currentGroup);
+        }
+        currentGroup.messages.push(mensaje);
+      });
+  
+      return { date, groups: groupedByUser };
+    });
   };
-
-  const groupedMessages = groupMessagesByDate();
-
+  
+  const groupedMessages = groupMessagesByDateAndUser();
+  
   return (
     <div className="foro-contenedor">
       <div className="barra-lateral">
@@ -188,49 +204,37 @@ function Foro() {
               </button>
             ))}
         </div>
-        <form onSubmit={handleCreateSala}>
-          <input
-            type="text"
-            placeholder="Título"
-            value={newSalaTitle}
-            onChange={(e) => setNewSalaTitle(e.target.value)}
-            required
-          />
-          <input
-            type="text"
-            placeholder="Descripción"
-            value={newSalaDescription}
-            onChange={(e) => setNewSalaDescription(e.target.value)}
-            required
-          />
-          <input
-            type="text"
-            placeholder="Categoría"
-            value={newSalaCategory}
-            onChange={(e) => setNewSalaCategory(e.target.value)}
-            required
-          />
-          <button type="submit">Crear Sala</button>
-        </form>
       </div>
       {currentSala && (
         <div className="sala-chat">
           <h2>{currentSalaName}</h2>
           <div className="mensajes">
-            {Object.keys(groupedMessages).map((date) => (
-              <div key={date}>
+            {groupedMessages.map(({ date, groups }, index) => (
+              <div key={index} className="grupo-fecha">
                 <div className="fecha">{date}</div>
-                {groupedMessages[date].map((mensaje, index) => (
-                  <div
-                    key={index}
-                    className={
-                      mensaje.username === username ? 'mensaje propio' : 'mensaje ajeno'
-                    }
-                  >
-                    <div className="contenido">{mensaje.content}</div>
-                    <div className="hora">
-                      {new Date(mensaje.date).toLocaleTimeString()}
+                {groups.map((group, idx) => (
+                  <div key={idx} className="grupo-mensajes">
+                    <div className="info-usuario">
+                      <img
+                        src={group.profilePicture || '/default-profile.png'}
+                        alt={group.username}
+                        className="foto-perfil"
+                      />
+                      <strong>{group.username}</strong>
                     </div>
+                    {group.messages.map((mensaje, i) => (
+                      <div
+                        key={i}
+                        className={
+                          mensaje.username === username ? 'mensaje propio' : 'mensaje ajeno'
+                        }
+                      >
+                        <div className="contenido">{mensaje.content}</div>
+                        <div className="hora">
+                          {new Date(mensaje.date).toLocaleTimeString()}
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 ))}
               </div>
@@ -249,7 +253,7 @@ function Foro() {
         </div>
       )}
     </div>
-  );
+  );  
 }
 
 export default Foro;

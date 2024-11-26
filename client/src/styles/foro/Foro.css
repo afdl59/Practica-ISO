@@ -79,9 +79,29 @@
 /* Mensajes agrupados por fecha */
 .fecha {
   font-size: 1rem;
-  margin: 10px 0;
+  margin: 20px 0;
   color: #ffd700;
   text-align: center;
+}
+
+/* Agrupación por usuario */
+.grupo-mensajes {
+  margin-bottom: 20px;
+}
+
+.info-usuario {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  margin-left: 10px;
+}
+
+.foto-perfil {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+  border: 2px solid #fff;
 }
 
 /* Burbujas de mensajes */
@@ -113,6 +133,10 @@
   color: #ccc;
   margin-top: 5px;
   text-align: right;
+}
+
+.contenido {
+  font-size: 1rem;
 }
 
 /* Formulario de envío de mensajes */
