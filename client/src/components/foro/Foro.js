@@ -9,6 +9,7 @@ function Foro() {
   const [username, setUsername] = useState('');
   const [salas, setSalas] = useState([]);
   const [currentSala, setCurrentSala] = useState('');
+  const [currentSalaName, setCurrentSalaName] = useState('');
   const [newSalaTitle, setNewSalaTitle] = useState('');
   const [newSalaDescription, setNewSalaDescription] = useState('');
   const [newSalaCategory, setNewSalaCategory] = useState(''); // Nueva categoría
@@ -100,6 +101,7 @@ function Foro() {
 
   const handleSalaChange = (sala) => {
     setCurrentSala(sala._id);
+    setCurrentSalaName(sala.title);
   };
 
   const handleCreateSala = async (e) => {
@@ -150,82 +152,103 @@ function Foro() {
     sala.createdBy.toLowerCase().includes(search.toLowerCase())
   );
 
+  const groupMessagesByDate = () => {
+    return mensajes.reduce((acc, mensaje) => {
+      const date = new Date(mensaje.date).toLocaleDateString();
+      if (!acc[date]) acc[date] = [];
+      acc[date].push(mensaje);
+      return acc;
+    }, {});
+  };
+
+  const groupedMessages = groupMessagesByDate();
+
   return (
-    <>
-      <h1>Foro</h1>
-      <div className="foro-contenedor">
-        <div className="barra-lateral">
-          <input
-            type="text"
-            placeholder="Buscar salas..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-          <div className="lista-salas">
-            {filteredSalas.map((sala) => (
-              <button key={sala._id} onClick={() => handleSalaChange(sala)}>
+    <div className="foro-contenedor">
+      <div className="barra-lateral">
+        <input
+          type="text"
+          placeholder="Buscar salas..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <div className="lista-salas">
+          {salas
+            .filter((sala) =>
+              sala.title.toLowerCase().includes(search.toLowerCase())
+            )
+            .map((sala) => (
+              <button
+                key={sala._id}
+                onClick={() => handleSalaChange(sala)}
+                className={sala._id === currentSala ? 'sala-activa' : ''}
+              >
                 <strong>{sala.title}</strong>
-                <p>{sala.description}</p>
-                <small>{sala.createdBy}</small>
+                <small>{sala.description}</small>
               </button>
             ))}
+        </div>
+        <form onSubmit={handleCreateSala}>
+          <input
+            type="text"
+            placeholder="Título"
+            value={newSalaTitle}
+            onChange={(e) => setNewSalaTitle(e.target.value)}
+            required
+          />
+          <input
+            type="text"
+            placeholder="Descripción"
+            value={newSalaDescription}
+            onChange={(e) => setNewSalaDescription(e.target.value)}
+            required
+          />
+          <input
+            type="text"
+            placeholder="Categoría"
+            value={newSalaCategory}
+            onChange={(e) => setNewSalaCategory(e.target.value)}
+            required
+          />
+          <button type="submit">Crear Sala</button>
+        </form>
+      </div>
+      {currentSala && (
+        <div className="sala-chat">
+          <h2>{currentSalaName}</h2>
+          <div className="mensajes">
+            {Object.keys(groupedMessages).map((date) => (
+              <div key={date}>
+                <div className="fecha">{date}</div>
+                {groupedMessages[date].map((mensaje, index) => (
+                  <div
+                    key={index}
+                    className={
+                      mensaje.username === username ? 'mensaje propio' : 'mensaje ajeno'
+                    }
+                  >
+                    <div className="contenido">{mensaje.content}</div>
+                    <div className="hora">
+                      {new Date(mensaje.date).toLocaleTimeString()}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ))}
           </div>
-          <form onSubmit={handleCreateSala}>
+          <form className="enviar-mensaje" onSubmit={handleSubmit}>
             <input
               type="text"
-              placeholder="Título de la nueva sala"
-              value={newSalaTitle}
-              onChange={(e) => setNewSalaTitle(e.target.value)}
+              placeholder="Escribe un mensaje..."
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
               required
             />
-            <input
-              type="text"
-              placeholder="Descripción"
-              value={newSalaDescription}
-              onChange={(e) => setNewSalaDescription(e.target.value)}
-              required
-            />
-            <input
-              type="text"
-              placeholder="Categoría"
-              value={newSalaCategory}
-              onChange={(e) => setNewSalaCategory(e.target.value)}
-              required
-            />
-            <button type="submit">Crear Sala</button>
+            <button type="submit">Enviar</button>
           </form>
         </div>
-        {currentSala && (
-          <div className="foro">
-            <h2>Sala: {currentSala}</h2>
-            <div id="foro">
-              {mensajes.length === 0 ? (
-                <p>No hay mensajes aún. ¡Sé el primero en enviar uno!</p>
-              ) : (
-                mensajes.map((mensaje, index) => (
-                  <div key={index}>
-                    <strong>{mensaje.username}</strong>: {mensaje.content}
-                    <small style={{ float: 'right' }}>{new Date(mensaje.date).toLocaleString()}</small>
-                    <hr />
-                  </div>
-                ))
-              )}
-            </div>
-            <form id="formMensaje" onSubmit={handleSubmit}>
-              <input
-                id="content"
-                type="text"
-                placeholder="Mensaje"
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                required
-              />
-              <button type="submit">Enviar</button>
-            </form>
-          </div>
-        )}
-      </div>
-    </>
+      )}
+    </div>
   );
 }
 
