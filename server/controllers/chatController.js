@@ -13,6 +13,20 @@ exports.getAllRooms = async (req, res) => {
     }
 };
 
+// Obtener los datos de una sala específica
+exports.getRoomById = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const sala = await ChatRoom.findById(id);
+        if (!sala) {
+            return res.status(404).json({ message: 'Sala no encontrada' });
+        }
+        res.status(200).json(sala);
+    } catch (err) {
+        res.status(500).json({ message: 'Error al obtener la sala: ' + err.message });
+    }
+};
+
 // Crear una nueva sala de chat
 exports.createRoom = async (req, res) => {
     const { title, description, category, createdBy } = req.body; // Incluir category

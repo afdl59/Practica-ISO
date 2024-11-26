@@ -14,6 +14,9 @@ router.get('/salas/:id/mensajes', chatController.getMessages);
 // Ruta para enviar un mensaje a una sala de chat específica
 router.post('/salas/:id/mensajes', chatController.postMessage);
 
+// Ruta para obtener los datos de una sala específica
+router.get('/salas/:id', chatController.getRoomById);
+
 // Ruta para actualizar una sala de chat
 router.put('/salas/:id', chatController.updateRoom);
 
