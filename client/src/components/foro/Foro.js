@@ -117,29 +117,48 @@ function Foro() {
     if (currentSala) {
       setMensajes([]);
       socket.current.emit('unirseASala', currentSala);
-      console.log(currentSala);
+  
       const fetchMensajes = async () => {
-        const responseMensajes = await fetch(`/api/foro/salas/${currentSala.id}/mensajes`);
-        if (responseMensajes.ok) {
-          const dataMensajes = await responseMensajes.json();
-          setMensajes(dataMensajes);
+        try {
+          const responseMensajes = await fetch(`/api/foro/salas/${currentSala}/mensajes`, {
+            method: 'GET', // Especificar el método GET
+            headers: { 'Content-Type': 'application/json' },
+          });
+          if (responseMensajes.ok) {
+            const dataMensajes = await responseMensajes.json();
+            setMensajes(dataMensajes);
+          } else {
+            console.error('Error al obtener los mensajes de la sala.');
+          }
+        } catch (error) {
+          console.error('Error en fetchMensajes:', error);
         }
       };
-
+  
       const fetchSalaData = async () => {
-        const responseSala = await fetch(`/api/foro/salas/${currentSala}`);
-        if (responseSala.ok) {
-          const salaData = await responseSala.json();
-          setCurrentSalaName(salaData.title);
-          setCurrentSalaDescription(salaData.description);
-          setCurrentSalaCreatedBy(salaData.createdBy);
+        try {
+          const responseSala = await fetch(`/api/foro/salas/${currentSala}`, {
+            method: 'GET', // Especificar el método GET
+            headers: { 'Content-Type': 'application/json' },
+          });
+          if (responseSala.ok) {
+            const salaData = await responseSala.json();
+            setCurrentSalaName(salaData.title);
+            setCurrentSalaDescription(salaData.description);
+            setCurrentSalaCreatedBy(salaData.createdBy);
+          } else {
+            console.error('Error al obtener los datos de la sala.');
+          }
+        } catch (error) {
+          console.error('Error en fetchSalaData:', error);
         }
       };
-
+  
       fetchMensajes();
       fetchSalaData();
     }
   }, [currentSala]);
+  
 
   useEffect(() => {
     // Cargar las fotos de perfil de todos los usuarios relevantes
