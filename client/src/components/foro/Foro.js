@@ -119,7 +119,7 @@ function Foro() {
       socket.current.emit('unirseASala', currentSala);
 
       const fetchMensajes = async () => {
-        const responseMensajes = await fetch(`/api/foro/salas/${currentSala}/mensajes`);
+        const responseMensajes = await fetch(`/api/foro/salas/${currentSala.id}/mensajes`);
         if (responseMensajes.ok) {
           const dataMensajes = await responseMensajes.json();
           setMensajes(dataMensajes);
