@@ -1,12 +1,53 @@
+/* Contenedor principal */
+.foro-contenedor {
+  display: flex;
+  width: 100%;
+  height: 100vh; /* Ocupa toda la pantalla */
+  background: linear-gradient(to right, #141e30, #243b55);
+  color: #fff;
+}
+
 /* Barra lateral */
 .barra-lateral {
-  width: 30%; /* Ajustar ancho para mostrar correctamente los títulos */
+  width: 25%; /* Ampliar ancho para mostrar correctamente los títulos */
   background-color: rgba(0, 0, 0, 0.8);
   display: flex;
   flex-direction: column;
   padding: 20px;
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
   overflow-y: auto; /* Scroll para muchas salas */
+}
+
+/* Barra superior */
+.barra-superior {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.barra-superior input {
+  width: calc(100% - 120px); /* Espacio restante para el botón */
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.8);
+  color: #333;
+}
+
+.boton-crear-sala {
+  padding: 10px 15px;
+  background-color: #0077b6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.boton-crear-sala:hover {
+  background-color: #005f8a;
 }
 
 /* Lista de salas */
@@ -51,99 +92,9 @@
   margin-top: 5px; /* Espaciado entre texto */
 }
 
-/* Barra superior */
-.barra-superior {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.barra-superior input {
-  width: calc(100% - 120px); /* Espacio restante para el botón */
-  padding: 10px;
-  border-radius: 6px;
-  border: none;
-  background-color: rgba(255, 255, 255, 0.8);
-  color: #333;
-}
-
-.boton-crear-sala {
-  padding: 10px 15px;
-  background-color: #0077b6;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
-}
-
-.boton-crear-sala:hover {
-  background-color: #005f8a;
-}
-
-/* Popup para crear sala */
-.popup-crear-sala {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.popup-contenido {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 12px;
-  width: 350px;
-  text-align: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-}
-
-.popup-contenido h3 {
-  margin-bottom: 20px;
-  color: #0077b6;
-}
-
-.popup-contenido form input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-}
-
-.popup-contenido form button {
-  padding: 10px 20px;
-  margin: 5px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.popup-contenido form button[type="submit"] {
-  background-color: #0077b6;
-  color: #fff;
-}
-
-.popup-contenido form button[type="button"] {
-  background-color: #ccc;
-  color: #000;
-}
-
-.popup-contenido form button:hover {
-  opacity: 0.9;
-}
-
-/* Zona de mensajes */
+/* Zona de chat */
 .sala-chat {
-  flex-grow: 1;
+  width: 75%; /* Resto del espacio */
   display: flex;
   flex-direction: column;
   padding: 20px;
