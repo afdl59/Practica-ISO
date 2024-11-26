@@ -17,7 +17,10 @@ function Predicciones() {
                 setUsername(userData.username);
             }
 
-            const userData = await response.json();
+            // fetch para obtener las predicciones del usuario
+            const predictionsResposne = await fetch(`/api/users/${username}/predictions`);
+            if (!predictionsResposne.ok) return console.error('Error al obtener predicciones del usuario');
+            const predictionsData = await predictionsResposne.json();
 
             // Comprobar partidos terminados y actualizar predicciones
             const headers = new Headers({
@@ -32,7 +35,7 @@ function Predicciones() {
             };
 
             const updatedPredictions = [];
-            for (const [matchId, userPrediction] of userData.prediccionesActuales) {
+            for (const [matchId, userPrediction] of predictionsData.prediccionesActuales) {
                 const matchResponse = await fetch(`https://v3.football.api-sports.io/fixtures?id=${matchId}`, requestOptions);
                 const matchData = await matchResponse.json();
                 const matchDetails = matchData.response[0];
