@@ -9,11 +9,12 @@ function Predicciones() {
 
     useEffect(() => {
         const fetchPredictions = async () => {
+            let userData;
             const response = await fetch('/api/auth/check-session');
             if (!response.ok){
                 return navigate('/login');
             } else {
-                const userData = await response.json();
+                userData = await response.json();
                 setUsername(userData.username);
             }
 
