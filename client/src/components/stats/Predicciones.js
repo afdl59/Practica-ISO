@@ -18,7 +18,7 @@ function Predicciones() {
             }
 
             // fetch para obtener las predicciones del usuario
-            const predictionsResposne = await fetch(`/api/users/${username}/predictions`);
+            const predictionsResposne = await fetch(`/api/users/${userData.username}/predictions`);
             if (!predictionsResposne.ok) return console.error('Error al obtener predicciones del usuario');
             const predictionsData = await predictionsResposne.json();
 
