@@ -3,16 +3,21 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import Notificaciones from './Notificaciones';
 
-// Mock para `fetch`
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useNavigate: jest.fn()
+}));
+
+const navigate = jest.fn();
 global.fetch = jest.fn();
 
 describe('Notificaciones Component', () => {
     beforeEach(() => {
-        jest.clearAllMocks(); // Limpia los mocks antes de cada test
+        jest.clearAllMocks();
     });
 
     it('Renderiza notificaciones correctamente', async () => {
-        // Mock para la llamada a `fetch` que verifica la sesión
+        // Mock para la autenticación
         fetch.mockImplementationOnce(() =>
             Promise.resolve({
                 ok: true,
@@ -20,7 +25,7 @@ describe('Notificaciones Component', () => {
             })
         );
 
-        // Mock para la llamada a `fetch` que obtiene las notificaciones
+        // Mock para las notificaciones
         fetch.mockImplementationOnce(() =>
             Promise.resolve({
                 ok: true,
@@ -38,37 +43,15 @@ describe('Notificaciones Component', () => {
             </MemoryRouter>
         );
 
-        // Espera a que las notificaciones se rendericen
+        // Verifica que las notificaciones se renderizan
         await waitFor(() => {
             expect(screen.getByText('Tienes una nueva mención en el foro.')).toBeInTheDocument();
             expect(screen.getByText('Nuevas estadísticas disponibles.')).toBeInTheDocument();
         });
     });
 
-    it('Muestra mensaje de error si el usuario no está autenticado', async () => {
-        // Mock para la llamada a `fetch` que verifica la sesión (usuario no autenticado)
-        fetch.mockImplementationOnce(() =>
-            Promise.resolve({
-                ok: false,
-                status: 401
-            })
-        );
-
-        render(
-            <MemoryRouter>
-                <Notificaciones />
-            </MemoryRouter>
-        );
-
-        // Verifica que no hay notificaciones renderizadas
-        await waitFor(() => {
-            expect(screen.queryByText('Tienes una nueva mención en el foro.')).not.toBeInTheDocument();
-            expect(screen.queryByText('Nuevas estadísticas disponibles.')).not.toBeInTheDocument();
-        });
-    });
-
     it('Permite marcar una notificación como leída', async () => {
-        // Mock para la llamada a `fetch` que verifica la sesión
+        // Mock para la autenticación
         fetch.mockImplementationOnce(() =>
             Promise.resolve({
                 ok: true,
@@ -76,7 +59,7 @@ describe('Notificaciones Component', () => {
             })
         );
 
-        // Mock para la llamada a `fetch` que obtiene las notificaciones
+        // Mock para las notificaciones
         fetch.mockImplementationOnce(() =>
             Promise.resolve({
                 ok: true,
@@ -88,7 +71,7 @@ describe('Notificaciones Component', () => {
             })
         );
 
-        // Mock para la llamada a `fetch` que marca la notificación como leída
+        // Mock para marcar como leída
         fetch.mockImplementationOnce(() =>
             Promise.resolve({
                 ok: true,
@@ -102,18 +85,33 @@ describe('Notificaciones Component', () => {
             </MemoryRouter>
         );
 
-        // Espera a que las notificaciones se rendericen
+        const markAsReadButtons = await screen.findAllByText('Marcar como leída', { selector: 'button' });
+
+        // Marca la primera notificación como leída
+        markAsReadButtons.forEach(button => button.click());
+
         await waitFor(() => {
-            expect(screen.getByText('Tienes una nueva mención en el foro.')).toBeInTheDocument();
+            expect(markAsReadButtons[0]).not.toBeInTheDocument();
         });
+    });
 
-        // Simula marcar como leída
-        const markAsReadButton = screen.getByText('Marcar como leída', { selector: 'button' });
-        markAsReadButton.click();
+    it('Redirige al login si el usuario no está autenticado', async () => {
+        fetch.mockImplementationOnce(() =>
+            Promise.resolve({
+                ok: false,
+                status: 401
+            })
+        );
 
-        // Verifica que la notificación se haya marcado como leída
+        render(
+            <MemoryRouter>
+                <Notificaciones />
+            </MemoryRouter>
+        );
+
         await waitFor(() => {
-            expect(markAsReadButton).not.toBeInTheDocument();
+            expect(navigate).toHaveBeenCalledWith('/login');
         });
     });
 });
+
