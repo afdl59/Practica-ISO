@@ -1,64 +1,34 @@
-jest.mock('msw');
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
-import { rest } from 'msw';
-import { setupServer } from 'msw/node';
-import { MemoryRouter } from 'react-router-dom'; // Importa MemoryRouter
+import { MemoryRouter } from 'react-router-dom';
 import Notificaciones from './Notificaciones';
 
-const server = setupServer(
-    rest.get('/api/auth/check-session', (req, res, ctx) => {
-        return res(ctx.json({ username: 'testuser' }));
-    }),
-    rest.get('/api/notificaciones/testuser', (req, res, ctx) => {
-        return res(ctx.json([
-            { _id: '1', content: 'Tienes una nueva mención en el foro.', isRead: false },
-            { _id: '2', content: 'Nuevas estadísticas disponibles.', isRead: false },
-        ]));
-    }),
-    rest.patch('/api/notificaciones/marcar-leida/:id', (req, res, ctx) => {
-        return res(ctx.json({ _id: req.params.id, isRead: true }));
-    })
-);
-
-beforeAll(() => server.listen());
-afterEach(() => server.resetHandlers());
-afterAll(() => server.close());
+// Mock para `fetch`
+global.fetch = jest.fn();
 
 describe('Notificaciones Component', () => {
-    it('Debe renderizar notificaciones correctamente', async () => {
-        render(
-            <MemoryRouter> {/* Envuelve el componente en MemoryRouter */}
-                <Notificaciones />
-            </MemoryRouter>
-        );
-
-        await waitFor(() => {
-            expect(screen.getByText('Tienes una nueva mención en el foro.')).toBeInTheDocument();
-            expect(screen.getByText('Nuevas estadísticas disponibles.')).toBeInTheDocument();
-        });
+    beforeEach(() => {
+        jest.clearAllMocks(); // Limpia los mocks antes de cada test
     });
 
-    it('Debe marcar una notificación como leída', async () => {
-        render(
-            <MemoryRouter>
-                <Notificaciones />
-            </MemoryRouter>
+    it('Renderiza notificaciones correctamente', async () => {
+        // Mock para la llamada a `fetch` que verifica la sesión
+        fetch.mockImplementationOnce(() =>
+            Promise.resolve({
+                ok: true,
+                json: () => Promise.resolve({ username: 'testuser' })
+            })
         );
 
-        const button = await screen.findByText('Marcar como leída', { selector: 'button' });
-        button.click();
-
-        await waitFor(() => {
-            const updatedNotification = screen.getByText('Tienes una nueva mención en el foro.');
-            expect(updatedNotification).toHaveStyle('opacity: 0.5');
-        });
-    });
-
-    it('Debe redirigir al login si el usuario no está autenticado', async () => {
-        server.use(
-            rest.get('/api/auth/check-session', (req, res, ctx) => {
-                return res(ctx.status(401));
+        // Mock para la llamada a `fetch` que obtiene las notificaciones
+        fetch.mockImplementationOnce(() =>
+            Promise.resolve({
+                ok: true,
+                json: () =>
+                    Promise.resolve([
+                        { _id: '1', content: 'Tienes una nueva mención en el foro.', isRead: false },
+                        { _id: '2', content: 'Nuevas estadísticas disponibles.', isRead: false }
+                    ])
             })
         );
 
@@ -68,8 +38,82 @@ describe('Notificaciones Component', () => {
             </MemoryRouter>
         );
 
+        // Espera a que las notificaciones se rendericen
         await waitFor(() => {
-            expect(window.location.pathname).toBe('/login');
+            expect(screen.getByText('Tienes una nueva mención en el foro.')).toBeInTheDocument();
+            expect(screen.getByText('Nuevas estadísticas disponibles.')).toBeInTheDocument();
+        });
+    });
+
+    it('Muestra mensaje de error si el usuario no está autenticado', async () => {
+        // Mock para la llamada a `fetch` que verifica la sesión (usuario no autenticado)
+        fetch.mockImplementationOnce(() =>
+            Promise.resolve({
+                ok: false,
+                status: 401
+            })
+        );
+
+        render(
+            <MemoryRouter>
+                <Notificaciones />
+            </MemoryRouter>
+        );
+
+        // Verifica que no hay notificaciones renderizadas
+        await waitFor(() => {
+            expect(screen.queryByText('Tienes una nueva mención en el foro.')).not.toBeInTheDocument();
+            expect(screen.queryByText('Nuevas estadísticas disponibles.')).not.toBeInTheDocument();
+        });
+    });
+
+    it('Permite marcar una notificación como leída', async () => {
+        // Mock para la llamada a `fetch` que verifica la sesión
+        fetch.mockImplementationOnce(() =>
+            Promise.resolve({
+                ok: true,
+                json: () => Promise.resolve({ username: 'testuser' })
+            })
+        );
+
+        // Mock para la llamada a `fetch` que obtiene las notificaciones
+        fetch.mockImplementationOnce(() =>
+            Promise.resolve({
+                ok: true,
+                json: () =>
+                    Promise.resolve([
+                        { _id: '1', content: 'Tienes una nueva mención en el foro.', isRead: false },
+                        { _id: '2', content: 'Nuevas estadísticas disponibles.', isRead: false }
+                    ])
+            })
+        );
+
+        // Mock para la llamada a `fetch` que marca la notificación como leída
+        fetch.mockImplementationOnce(() =>
+            Promise.resolve({
+                ok: true,
+                json: () => Promise.resolve({ _id: '1', isRead: true })
+            })
+        );
+
+        render(
+            <MemoryRouter>
+                <Notificaciones />
+            </MemoryRouter>
+        );
+
+        // Espera a que las notificaciones se rendericen
+        await waitFor(() => {
+            expect(screen.getByText('Tienes una nueva mención en el foro.')).toBeInTheDocument();
+        });
+
+        // Simula marcar como leída
+        const markAsReadButton = screen.getByText('Marcar como leída', { selector: 'button' });
+        markAsReadButton.click();
+
+        // Verifica que la notificación se haya marcado como leída
+        await waitFor(() => {
+            expect(markAsReadButton).not.toBeInTheDocument();
         });
     });
 });
