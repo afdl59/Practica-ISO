@@ -27,6 +27,7 @@ import PartidoPrueba2 from './components/stats/PartidoPrueba2';
 import ProximosPartidos from './components/stats/ProximosPartidos';
 import ProximoPartidoDetalle from './components/stats/ProximoPartidoDetalle';
 import Predicciones from './components/stats/Predicciones';
+import Notificaciones from './components/notificaciones/Notificaciones';
 
 import './styles/App.css';
 
@@ -40,6 +41,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/foro" element={<Foro />} />
+        <Route path="/notificaciones" element={<Notificaciones />} />
 
         {/* Rutas de Perfil */}
         <Route path="/perfil" element={<Perfil />} />

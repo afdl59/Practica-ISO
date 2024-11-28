@@ -85,18 +85,12 @@ function Sidebar() {
         )}
       </div>
 
-      <div className="navbar-item notifications">
+      {/* Sección Notificaciones */}
+      <Link to="/notificaciones" className="navbar-item">
+        <img src={logo} alt="Icon Notificaciones" className="navbar-icon" />
         <h3 className="navbar-title">Notificaciones</h3>
-        {notificaciones.length > 0 ? (
-          <ul>
-            {notificaciones.map((notificacion, index) => (
-              <li key={index}>{notificacion}</li>
-            ))}
-          </ul>
-        ) : (
-          <p>No tienes notificaciones nuevas</p>
-        )}
-      </div>
+      </Link>
+      
     </div>
   );
 }
