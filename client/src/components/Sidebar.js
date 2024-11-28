@@ -1,41 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../assets/logo.jpg';
 import '../styles/Sidebar.css';
 
 function Sidebar() {
   const [minigamesOpen, setMinigamesOpen] = useState(false);
-  const [estadisticasOpen, setEstadisticasOpen] = useState(false); // Nuevo estado
-  const [notificaciones, setNotificaciones] = useState([]);
-  const [equipoFavorito, setEquipoFavorito] = useState('');
-  const [intereses, setIntereses] = useState([]);
+  const [estadisticasOpen, setEstadisticasOpen] = useState(false);
 
   const toggleMinigames = () => {
     setMinigamesOpen(!minigamesOpen);
   };
 
-  const toggleEstadisticas = () => { // Nueva función
+  const toggleEstadisticas = () => {
     setEstadisticasOpen(!estadisticasOpen);
   };
-
-  useEffect(() => {
-    const savedEquipo = localStorage.getItem('equipoFavorito');
-    const savedIntereses = JSON.parse(localStorage.getItem('intereses')) || [];
-
-    setEquipoFavorito(savedEquipo);
-    setIntereses(savedIntereses);
-
-    const nuevasNotificaciones = [];
-    if (savedEquipo) {
-      nuevasNotificaciones.push(`Noticias recientes de ${savedEquipo}`);
-    }
-
-    savedIntereses.forEach(interes => {
-      nuevasNotificaciones.push(`Actualización en ${interes}`);
-    });
-
-    setNotificaciones(nuevasNotificaciones);
-  }, []);
 
   return (
     <div className="navbar">
