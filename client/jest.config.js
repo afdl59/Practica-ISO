@@ -1,10 +1,10 @@
 module.exports = {
-    testEnvironment: 'jsdom', // Configura Jest para un entorno DOM simulado
+    testEnvironment: 'jsdom',
     transformIgnorePatterns: [
-        '/node_modules/(?!@bundled-es-modules)' // Transforma módulos ESM específicos
+        '/node_modules/(?!@bundled-es-modules|msw)' // Transforma módulos ESM específicos
     ],
     moduleNameMapper: {
-        '\\.(css|less|scss|sass)$': 'identity-obj-proxy', // Mock de estilos CSS
-        '\\.(jpg|jpeg|png|gif|webp|svg)$': '<rootDir>/__mocks__/fileMock.js' // Mock de archivos multimedia
+        '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
+        '\\.(jpg|jpeg|png|gif|webp|svg)$': '<rootDir>/__mocks__/fileMock.js'
     }
 };
