@@ -7,6 +7,7 @@ const sendNotificationEmail = async (req, res) => {
 
     try {
         // Busca al usuario en la base de datos
+        console.log(username);
         const user = await User.findOne({ username });
         if (!user) {
             return res.status(404).json({ message: 'Usuario no encontrado' });
