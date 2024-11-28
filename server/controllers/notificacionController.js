@@ -14,7 +14,7 @@ const sendNotificationEmail = async (req, res) => {
 
         // Guarda la notificación en la base de datos
         const newNotification = new Notification({
-            userId,
+            username,
             type,
             content: `Tienes una nueva notificación relacionada con ${type === 'foro' ? 'el foro' : 'estadísticas'}.`
         });
