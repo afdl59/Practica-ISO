@@ -3,12 +3,13 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import Notificaciones from './Notificaciones';
 
+const mockedNavigate = jest.fn();
+
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
-    useNavigate: jest.fn(() => jest.fn()) // Mockea useNavigate
+    useNavigate: () => mockedNavigate // Devuelve el mock directamente
 }));
 
-const navigate = jest.fn();
 global.fetch = jest.fn();
 
 describe('Notificaciones Component', () => {
@@ -17,7 +18,6 @@ describe('Notificaciones Component', () => {
     });
 
     it('Renderiza notificaciones correctamente', async () => {
-        // Mock para la autenticación
         fetch.mockImplementationOnce(() =>
             Promise.resolve({
                 ok: true,
@@ -25,7 +25,6 @@ describe('Notificaciones Component', () => {
             })
         );
 
-        // Mock para las notificaciones
         fetch.mockImplementationOnce(() =>
             Promise.resolve({
                 ok: true,
@@ -50,7 +49,6 @@ describe('Notificaciones Component', () => {
     });
 
     it('Permite marcar una notificación como leída', async () => {
-        // Mock para la autenticación
         fetch.mockImplementationOnce(() =>
             Promise.resolve({
                 ok: true,
@@ -58,7 +56,6 @@ describe('Notificaciones Component', () => {
             })
         );
 
-        // Mock para las notificaciones
         fetch.mockImplementationOnce(() =>
             Promise.resolve({
                 ok: true,
@@ -70,7 +67,6 @@ describe('Notificaciones Component', () => {
             })
         );
 
-        // Mock para marcar como leída
         fetch.mockImplementationOnce(() =>
             Promise.resolve({
                 ok: true,
@@ -86,7 +82,6 @@ describe('Notificaciones Component', () => {
 
         const markAsReadButtons = await screen.findAllByText('Marcar como leída', { selector: 'button' });
 
-        // Marca como leída el primer botón
         markAsReadButtons[0].click();
 
         await waitFor(() => {
@@ -95,7 +90,6 @@ describe('Notificaciones Component', () => {
     });
 
     it('Redirige al login si el usuario no está autenticado', async () => {
-        // Mock para fallar la autenticación
         fetch.mockImplementationOnce(() =>
             Promise.resolve({
                 ok: false,
@@ -110,8 +104,7 @@ describe('Notificaciones Component', () => {
         );
 
         await waitFor(() => {
-            expect(navigate).toHaveBeenCalledWith('/login');
+            expect(mockedNavigate).toHaveBeenCalledWith('/login');
         });
     });
 });
-
