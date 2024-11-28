@@ -10,7 +10,7 @@ test('renders learn react link', () => {
         </MemoryRouter>
     );
     
-    const linkElement = screen.getByText(/learn react/i); // Ajusta esto según el texto esperado
+    const linkElement = screen.getByText(/Bienvenido a Futbol360/i); // Ajusta esto según el texto esperado
     expect(linkElement).toBeInTheDocument();
 });
 
