@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
+import { MemoryRouter } from 'react-router-dom'; // Importa MemoryRouter
 import Notificaciones from './Notificaciones';
 
 const server = setupServer(
@@ -25,7 +26,11 @@ afterAll(() => server.close());
 
 describe('Notificaciones Component', () => {
     it('Debe renderizar notificaciones correctamente', async () => {
-        render(<Notificaciones />);
+        render(
+            <MemoryRouter> {/* Envuelve el componente en MemoryRouter */}
+                <Notificaciones />
+            </MemoryRouter>
+        );
 
         await waitFor(() => {
             expect(screen.getByText('Tienes una nueva mención en el foro.')).toBeInTheDocument();
@@ -34,7 +39,11 @@ describe('Notificaciones Component', () => {
     });
 
     it('Debe marcar una notificación como leída', async () => {
-        render(<Notificaciones />);
+        render(
+            <MemoryRouter>
+                <Notificaciones />
+            </MemoryRouter>
+        );
 
         const button = await screen.findByText('Marcar como leída', { selector: 'button' });
         button.click();
@@ -52,7 +61,11 @@ describe('Notificaciones Component', () => {
             })
         );
 
-        render(<Notificaciones />);
+        render(
+            <MemoryRouter>
+                <Notificaciones />
+            </MemoryRouter>
+        );
 
         await waitFor(() => {
             expect(window.location.pathname).toBe('/login');
