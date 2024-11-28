@@ -5,7 +5,7 @@ import Notificaciones from './Notificaciones';
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
-    useNavigate: jest.fn()
+    useNavigate: jest.fn(() => jest.fn()) // Mockea useNavigate
 }));
 
 const navigate = jest.fn();
@@ -13,7 +13,7 @@ global.fetch = jest.fn();
 
 describe('Notificaciones Component', () => {
     beforeEach(() => {
-        jest.clearAllMocks();
+        jest.clearAllMocks(); // Limpia mocks antes de cada prueba
     });
 
     it('Renderiza notificaciones correctamente', async () => {
@@ -43,7 +43,6 @@ describe('Notificaciones Component', () => {
             </MemoryRouter>
         );
 
-        // Verifica que las notificaciones se renderizan
         await waitFor(() => {
             expect(screen.getByText('Tienes una nueva mención en el foro.')).toBeInTheDocument();
             expect(screen.getByText('Nuevas estadísticas disponibles.')).toBeInTheDocument();
@@ -87,8 +86,8 @@ describe('Notificaciones Component', () => {
 
         const markAsReadButtons = await screen.findAllByText('Marcar como leída', { selector: 'button' });
 
-        // Marca la primera notificación como leída
-        markAsReadButtons.forEach(button => button.click());
+        // Marca como leída el primer botón
+        markAsReadButtons[0].click();
 
         await waitFor(() => {
             expect(markAsReadButtons[0]).not.toBeInTheDocument();
@@ -96,6 +95,7 @@ describe('Notificaciones Component', () => {
     });
 
     it('Redirige al login si el usuario no está autenticado', async () => {
+        // Mock para fallar la autenticación
         fetch.mockImplementationOnce(() =>
             Promise.resolve({
                 ok: false,
