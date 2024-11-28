@@ -1,6 +1,6 @@
 // minijuegos/Leaderboard.js
 import React from 'react';
-import { useLeaderboard } from '../LeaderboardContext';
+import { useLeaderboard } from '../contexts/LeaderboardContext';
 
 function Leaderboard({ gameType }) {
     const { leaderboards } = useLeaderboard();
