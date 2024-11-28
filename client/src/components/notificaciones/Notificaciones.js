@@ -1,29 +1,54 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function Notificaciones() {
     const [notificaciones, setNotificaciones] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        const userId = localStorage.getItem('userId'); // Asume que tienes el ID del usuario en el almacenamiento local
+        // Verifica la sesión y obtiene el username
+        fetch('/api/auth/check-session')
+            .then((res) => {
+                if (res.ok) {
+                    return res.json();
+                } else {
+                    throw new Error('Usuario no autenticado');
+                }
+            })
+            .then((data) => {
+                const username = data.username; // Obtiene el username del endpoint
 
-        fetch(`/api/notificaciones/${userId}`)
-            .then(res => res.json())
-            .then(data => setNotificaciones(data))
-            .catch(err => console.error('Error fetching notifications:', err));
-    }, []);
+                // Llama al endpoint de notificaciones
+                return fetch(`/api/notificaciones/${username}`)
+                    .then((res) => res.json())
+                    .then((notificaciones) => {
+                        setNotificaciones(notificaciones);
+                        setIsLoading(false);
+                    });
+            })
+            .catch((err) => {
+                console.error('Error verificando sesión o cargando notificaciones:', err);
+                navigate('/login'); // Redirige al login si no está autenticado
+            });
+    }, [navigate]);
 
     const marcarComoLeida = (id) => {
         fetch(`/api/notificaciones/marcar-leida/${id}`, {
             method: 'PATCH',
         })
-            .then(res => res.json())
+            .then((res) => res.json())
             .then(() => {
                 setNotificaciones(notificaciones.map(notificacion =>
                     notificacion._id === id ? { ...notificacion, isRead: true } : notificacion
                 ));
             })
-            .catch(err => console.error('Error marking notification as read:', err));
+            .catch((err) => console.error('Error marcando notificación como leída:', err));
     };
+
+    if (isLoading) {
+        return <p>Cargando...</p>;
+    }
 
     return (
         <div className="notificaciones">
@@ -49,4 +74,3 @@ function Notificaciones() {
 }
 
 export default Notificaciones;
-
