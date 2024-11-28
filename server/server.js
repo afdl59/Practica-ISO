@@ -11,7 +11,7 @@ const sessionMiddleware = require('./middleware/sessionMiddleware');
 const authRoutes = require('./routes/authRoutes');
 const chatRoutes = require('./routes/chatRoutes');
 const userRoutes = require('./routes/userRoutes');
-const notificationRoutes = require('./routes/notificationRoutes');
+const notificationRoutes = require('./routes/notificacionRoutes');
 const socketHandler = require('./socket');
 
 // Conectar a la base de datos
