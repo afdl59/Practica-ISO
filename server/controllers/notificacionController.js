@@ -50,7 +50,7 @@ const getNotifications = async (req, res) => {
             return res.status(404).json({ message: 'Usuario no encontrado' });
         }
 
-        const notifications = await Notification.find({ userId: user._id }).sort({ createdAt: -1 });
+        const notifications = await Notification.find({ username: user.username }).sort({ createdAt: -1 });
         res.status(200).json(notifications);
     } catch (error) {
         console.error('Error al obtener notificaciones:', error);
