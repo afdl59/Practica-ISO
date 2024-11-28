@@ -107,4 +107,133 @@ describe('Notificaciones Component', () => {
             expect(mockedNavigate).toHaveBeenCalledWith('/login');
         });
     });
+
+    it('Permite eliminar una notificación', async () => {
+        fetch.mockImplementationOnce(() =>
+            Promise.resolve({
+                ok: true,
+                json: () => Promise.resolve({ username: 'testuser' })
+            })
+        );
+    
+        fetch.mockImplementationOnce(() =>
+            Promise.resolve({
+                ok: true,
+                json: () =>
+                    Promise.resolve([
+                        { _id: '1', content: 'Tienes una nueva mención en el foro.', isRead: false },
+                        { _id: '2', content: 'Nuevas estadísticas disponibles.', isRead: false }
+                    ])
+            })
+        );
+    
+        fetch.mockImplementationOnce(() =>
+            Promise.resolve({
+                ok: true,
+                json: () => Promise.resolve({ _id: '1' }) // Respuesta al eliminar
+            })
+        );
+    
+        render(
+            <MemoryRouter>
+                <Notificaciones />
+            </MemoryRouter>
+        );
+    
+        const deleteButtons = await screen.findAllByText('Eliminar', { selector: 'button' });
+    
+        // Simula eliminar la primera notificación
+        deleteButtons[0].click();
+    
+        await waitFor(() => {
+            expect(deleteButtons[0]).not.toBeInTheDocument();
+        });
+    });
+    
+    it('Permite marcar todas las notificaciones como leídas', async () => {
+        fetch.mockImplementationOnce(() =>
+            Promise.resolve({
+                ok: true,
+                json: () => Promise.resolve({ username: 'testuser' })
+            })
+        );
+    
+        fetch.mockImplementationOnce(() =>
+            Promise.resolve({
+                ok: true,
+                json: () =>
+                    Promise.resolve([
+                        { _id: '1', content: 'Tienes una nueva mención en el foro.', isRead: false },
+                        { _id: '2', content: 'Nuevas estadísticas disponibles.', isRead: false }
+                    ])
+            })
+        );
+    
+        fetch.mockImplementationOnce(() =>
+            Promise.resolve({
+                ok: true // Respuesta al marcar todas como leídas
+            })
+        );
+    
+        render(
+            <MemoryRouter>
+                <Notificaciones />
+            </MemoryRouter>
+        );
+    
+        const markAllButton = await screen.findByText('Marcar todas como leídas');
+    
+        markAllButton.click();
+    
+        await waitFor(() => {
+            const unreadNotifications = screen.queryAllByText('Marcar como leída', { selector: 'button' });
+            expect(unreadNotifications.length).toBe(0);
+        });
+    });
+    
+    it('Permite filtrar notificaciones por estado', async () => {
+        fetch.mockImplementationOnce(() =>
+            Promise.resolve({
+                ok: true,
+                json: () => Promise.resolve({ username: 'testuser' })
+            })
+        );
+    
+        fetch.mockImplementationOnce(() =>
+            Promise.resolve({
+                ok: true,
+                json: () =>
+                    Promise.resolve([
+                        { _id: '1', content: 'Tienes una nueva mención en el foro.', isRead: true },
+                        { _id: '2', content: 'Nuevas estadísticas disponibles.', isRead: false }
+                    ])
+            })
+        );
+    
+        render(
+            <MemoryRouter>
+                <Notificaciones />
+            </MemoryRouter>
+        );
+    
+        const filterUnreadButton = await screen.findByText('No Leídas');
+        const filterReadButton = await screen.findByText('Leídas');
+    
+        // Filtrar no leídas
+        filterUnreadButton.click();
+    
+        await waitFor(() => {
+            expect(screen.getByText('Nuevas estadísticas disponibles.')).toBeInTheDocument();
+            expect(screen.queryByText('Tienes una nueva mención en el foro.')).not.toBeInTheDocument();
+        });
+    
+        // Filtrar leídas
+        filterReadButton.click();
+    
+        await waitFor(() => {
+            expect(screen.getByText('Tienes una nueva mención en el foro.')).toBeInTheDocument();
+            expect(screen.queryByText('Nuevas estadísticas disponibles.')).not.toBeInTheDocument();
+        });
+    });
+    
 });
