@@ -1,5 +1,5 @@
 const express = require('express');
-const { sendNotificationEmail } = require('../controllers/notificationController');
+const { sendNotificationEmail } = require('../controllers/notificacionController');
 const router = express.Router();
 
 // Endpoint para enviar notificaciones por correo
