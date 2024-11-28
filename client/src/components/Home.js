@@ -1,21 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import logo from '../assets/logo.jpg';
-import '../styles/Home.css';
-
 function Home() {
   const [cookiesAccepted, setCookiesAccepted] = useState(false); // Estado para controlar el banner de cookies
   const [showPreferences, setShowPreferences] = useState(false); // Mostrar la ventana de preferencias de cookies
   const [cookiePreferences, setCookiePreferences] = useState({
-    essential: true,  // Siempre activado
+    essential: true, // Siempre activado
     analytics: false,
-    marketing: false
+    marketing: false,
   });
 
   useEffect(() => {
     const cookieConsent = localStorage.getItem('cookieConsent');
     if (cookieConsent) {
       setCookiesAccepted(true);
-      setCookiePreferences(JSON.parse(localStorage.getItem('cookiePreferences')) || cookiePreferences);
+      setCookiePreferences(
+        JSON.parse(localStorage.getItem('cookiePreferences')) || cookiePreferences
+      );
     }
   }, []);
 
@@ -48,13 +46,27 @@ function Home() {
 
   return (
     <div className="home-container">
+      {/* Video de fondo */}
+      <video autoPlay loop muted className="video-background">
+        <source src={VideoFondo} type="video/mp4" />
+        Tu navegador no soporta videos HTML5.
+      </video>
+
+      {/* Contenido principal */}
       <div className="text-container">
         <h1>Bienvenido a Futbol360</h1>
-        <p>Para acceder a todas las funcionalidades de Futbol360, inicia sesión o crea una cuenta.</p>
+        <p>
+          Para acceder a todas las funcionalidades de Futbol360, inicia sesión o
+          crea una cuenta.
+        </p>
       </div>
       <div className="auth-links">
-        <a href="/login" className="btn">Iniciar Sesión</a>
-        <a href="/register" className="btn">Registrarse</a>
+        <a href="/login" className="btn">
+          Iniciar Sesión
+        </a>
+        <a href="/register" className="btn">
+          Registrarse
+        </a>
       </div>
 
       {/* Modal de cookies */}
@@ -64,12 +76,28 @@ function Home() {
             <img src={logo} alt="Logo" className="cookie-logo" />
             <h2>Aviso de privacidad</h2>
             <p>
-              Utilizamos cookies para personalizar tu experiencia. Elige tus preferencias o acepta todas las cookies.
+              Utilizamos cookies para personalizar tu experiencia. Elige tus
+              preferencias o acepta todas las cookies.
             </p>
             <div className="cookie-buttons">
-              <button className="btn-accept-cookies" onClick={handleAcceptAll}>Aceptar todas</button>
-              <button className="btn-reject-cookies" onClick={handleRejectAll}>Rechazar todas</button>
-              <button className="btn-preferences-cookies" onClick={handleTogglePreferences}>Gestionar preferencias</button>
+              <button
+                className="btn-accept-cookies"
+                onClick={handleAcceptAll}
+              >
+                Aceptar todas
+              </button>
+              <button
+                className="btn-reject-cookies"
+                onClick={handleRejectAll}
+              >
+                Rechazar todas
+              </button>
+              <button
+                className="btn-preferences-cookies"
+                onClick={handleTogglePreferences}
+              >
+                Gestionar preferencias
+              </button>
             </div>
           </div>
         </div>
@@ -83,14 +111,18 @@ function Home() {
             <p>Elige qué tipos de cookies deseas activar.</p>
             <div className="cookie-options">
               <div>
-                <input type="checkbox" checked disabled /> Cookies esenciales (siempre activas)
+                <input type="checkbox" checked disabled /> Cookies esenciales
+                (siempre activas)
               </div>
               <div>
                 <input
                   type="checkbox"
                   checked={cookiePreferences.analytics}
                   onChange={() =>
-                    setCookiePreferences({ ...cookiePreferences, analytics: !cookiePreferences.analytics })
+                    setCookiePreferences({
+                      ...cookiePreferences,
+                      analytics: !cookiePreferences.analytics,
+                    })
                   }
                 />{' '}
                 Cookies de análisis
@@ -100,13 +132,21 @@ function Home() {
                   type="checkbox"
                   checked={cookiePreferences.marketing}
                   onChange={() =>
-                    setCookiePreferences({ ...cookiePreferences, marketing: !cookiePreferences.marketing })
+                    setCookiePreferences({
+                      ...cookiePreferences,
+                      marketing: !cookiePreferences.marketing,
+                    })
                   }
                 />{' '}
                 Cookies de marketing
               </div>
             </div>
-            <button className="btn-save-preferences" onClick={handleSavePreferences}>Guardar preferencias</button>
+            <button
+              className="btn-save-preferences"
+              onClick={handleSavePreferences}
+            >
+              Guardar preferencias
+            </button>
           </div>
         </div>
       )}

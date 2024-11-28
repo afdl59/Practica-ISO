@@ -1,19 +1,32 @@
+/* Estilo del contenedor principal */
 .home-container {
+  position: relative;
   width: 100%;
-  height: 100vh;
+  height: 100vh; /* Ocupa toda la pantalla */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
   text-align: center;
-  color: #ffffff; /* Color blanco para contrastar con el fondo */
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Sombra para mayor legibilidad */
+  color: #ffffff; /* Texto blanco */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Sombra para mejor legibilidad */
+  overflow: hidden; /* Evita scroll innecesario */
 }
 
+/* Estilo para el video de fondo */
+.video-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ajusta el video sin distorsión */
+  z-index: -1; /* Envía el video al fondo */
+}
+
+/* Contenedor de texto */
 .text-container {
+  position: relative;
   background-color: rgba(0, 0, 0, 0.6); /* Fondo negro semitransparente */
   padding: 20px;
   border-radius: 10px; /* Esquinas redondeadas */
@@ -23,6 +36,7 @@
   margin: 0 auto; /* Centrar el cuadro */
 }
 
+/* Contenedor de enlaces de autenticación */
 .auth-links {
   text-align: center;
   margin-top: 20px;
@@ -37,8 +51,8 @@
   margin: 10px;
   text-decoration: none;
   cursor: pointer;
-  font-size: 1.2rem; /* Tamaño de texto aumentado para mayor legibilidad */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Añadido un poco de sombra a los botones */
+  font-size: 1.2rem; /* Texto grande */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra */
   transition: background-color 0.3s ease;
 }
 
@@ -53,7 +67,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.6); /* Fondo negro semitransparente */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -67,7 +81,7 @@
   width: 90%;
   max-width: 500px;
   text-align: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra aumentada para destacar el modal */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra suave */
 }
 
 .cookie-logo {
@@ -111,7 +125,7 @@
 
 .btn-preferences-cookies {
   background-color: #ffc107;
-  color: white;
+  color: black;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
@@ -131,7 +145,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.6); /* Fondo negro semitransparente */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -145,5 +159,5 @@
   width: 90%;
   max-width: 500px;
   text-align: center;
-  box-shadow: 0
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra suave */
 }
