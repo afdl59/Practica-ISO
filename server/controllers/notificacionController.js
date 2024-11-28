@@ -3,11 +3,11 @@ const User = require('../models/User');
 const transporter = require('../services/emailService');
 
 const sendNotificationEmail = async (req, res) => {
-    const { userId, type } = req.body;
+    const { username, type } = req.body;
 
     try {
         // Busca al usuario en la base de datos
-        const user = await User.findById(userId);
+        const user = await User.findOne({ username });
         if (!user) {
             return res.status(404).json({ message: 'Usuario no encontrado' });
         }
