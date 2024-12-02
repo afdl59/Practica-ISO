@@ -36,8 +36,8 @@ function Predicciones() {
             };
 
             const updatedPredictions = [];
-            for (const [matchId, userPrediction] of predictionsData.prediccionesActuales) {
-                const matchResponse = await fetch(`https://v3.football.api-sports.io/fixtures?id=${matchId}`, requestOptions);
+            for (const prediccion of predictionsData.prediccionesActuales) {
+                const matchResponse = await fetch(`https://v3.football.api-sports.io/fixtures?id=${prediccion.matchId}`, requestOptions);
                 const matchData = await matchResponse.json();
                 const matchDetails = matchData.response[0];
 
@@ -46,9 +46,9 @@ function Predicciones() {
                     const awayWon = matchDetails.teams.away.winner;
 
                     const correct = (
-                        (userPrediction === 'home' && homeWon) ||
-                        (userPrediction === 'away' && awayWon) ||
-                        (userPrediction === 'draw' && !homeWon && !awayWon)
+                        (prediccion.prediction === 'home' && homeWon) ||
+                        (prediccion.prediction === 'away' && awayWon) ||
+                        (prediccion.prediction === 'draw' && !homeWon && !awayWon)
                     );
 
                     if (correct) {
