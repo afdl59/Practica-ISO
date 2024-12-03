@@ -28,10 +28,11 @@ function Predicciones() {
               return;
           }
           const predictionsData = await predictionsResponse.json();
-          console.log(`Respuesta check-session: ${predictionsData}`);
+          console.log(`Respuesta get userData: ${predictionsData.JSONStringify()}`);
           
-          // Asegúrate de actualizar el estado en el orden correcto
           setUserData(predictionsData);
+          console.log(`Datos de usuario actuales: ${userData}`);
+
           setPredictions({
               prediccionesActuales: predictionsData.prediccionesActuales || [],
           });
@@ -88,7 +89,7 @@ function Predicciones() {
     };
 
     fetchPredictions();
-    
+
     }, [navigate]);
 
   return (
