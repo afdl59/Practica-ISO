@@ -14,22 +14,25 @@ html, body {
   width: 100%;
 }
 
+main {
+  margin-top: 80px; /* 40px de la barra animada + 40px del navbar */
+  padding: 20px;
+}
+
 /* Navbar horizontal */
 .navbar-horizontal {
   margin: 0;
-  padding: 0;
-  background-color: #1a1a2e; /* Azul oscuro */
-  color: #ffffff;
   padding: 10px 20px;
+  background-color: #1a1a2e;
+  color: #ffffff;
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-  position: sticky;
-  top: 0;
-  position: relative; /* Necesario para posicionar elementos descendientes */
-  z-index: 10; /* Base del navbar */
+  position: sticky; /* Se queda pegado en la parte superior cuando haces scroll */
+  top: 40px; /* Debajo de la barra animada */
+  z-index: 10; /* Menor que la barra animada */
 }
 
 /* Elementos del menú */
@@ -96,4 +99,29 @@ html, body {
 .dropdown-item:hover {
   background-color: #00bfff; /* Fondo azul vibrante al pasar el cursor */
   color: #1a1a2e; /* Texto oscuro para contraste */
+}
+
+/* Estilo para la barra animada */
+.animated-bar {
+  position: fixed; /* Fija la barra en la parte superior */
+  top: 0; /* Aparece en la parte superior */
+  left: 0;
+  width: 100%;
+  background-color: #1a1a2e; /* Fondo igual al navbar */
+  color: #ffffff; /* Texto blanco */
+  height: 40px; /* Altura de la barra */
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centra el texto horizontalmente */
+  overflow: hidden; /* Evita desbordes */
+  z-index: 20; /* Más alto que el navbar */
+}
+
+.animated-bar-text {
+  white-space: nowrap;
+  position: absolute;
+  animation: slide 10s linear infinite;
+  font-size: 1rem;
+  font-weight: bold;
+  padding-left: 100%;
 }
