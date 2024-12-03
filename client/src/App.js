@@ -1,4 +1,3 @@
-// src/App.js
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
@@ -35,17 +34,23 @@ import { LeaderboardProvider } from './context/LeaderboardContext';
 
 function App() {
   return (
-    <UserProvider>
-      <LeaderboardProvider>
-        <div className="app-container">
-          <Sidebar />
-          <Routes>
-            {/* Rutas principales */}
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/foro" element={<Foro />} />
-            <Route path="/notificaciones" element={<Notificaciones />} />
+    <div className="app-container">
+      {/* Sidebar */}
+      <Sidebar />
+
+      {/* Barra animada */}
+      <div className="animated-bar">
+        <span className="animated-bar-text">
+          ¡Bienvenido a Futbol360! Consulta estadísticas, participa en predicciones, juega minijuegos y más.
+        </span>
+      </div>
+
+      {/* Rutas principales */}
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/foro" element={<Foro />} />
 
             {/* Rutas de Perfil */}
             <Route path="/perfil" element={<Perfil />} />
