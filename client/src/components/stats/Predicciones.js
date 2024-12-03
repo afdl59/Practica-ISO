@@ -3,7 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import '../../styles/stats/Predicciones.css';
 
 function Predicciones() {
-    const [predictions, setPredictions] = useState([]);
+    const [predictions, setPredictions] = useState({
+        prediccionesActuales: [],
+    });
+    const [userData, setUserData] = useState(null);
     const [username, setUsername] = useState(null);
     const navigate = useNavigate();
 
@@ -13,15 +16,17 @@ function Predicciones() {
             const response = await fetch('/api/auth/check-session');
             if (!response.ok){
                 return navigate('/login');
-            } else {
-                userData = await response.json();
-                setUsername(userData.username);
             }
 
             // fetch para obtener las predicciones del usuario
-            const predictionsResposne = await fetch(`/api/users/${userData.username}/predictions`);
+            const predictionsResposne = await fetch(`/api/users/${userData.username}`);
             if (!predictionsResposne.ok) return console.error('Error al obtener predicciones del usuario');
             const predictionsData = await predictionsResposne.json();
+
+            setUserData(predictionsData);
+            setPredictions({
+              prediccionesActuales: userData.prediccionesActuales || [],
+            });
 
             // Comprobar partidos terminados y actualizar predicciones
             const headers = new Headers({
@@ -36,7 +41,8 @@ function Predicciones() {
             };
 
             const updatedPredictions = [];
-            for (const [matchId, userPrediction] of predictionsData.prediccionesActuales) {
+            for (const userPrediction of predictions.prediccionesActuales) {
+                const { matchId, prediction} = userPrediction;
                 const matchResponse = await fetch(`https://v3.football.api-sports.io/fixtures?id=${matchId}`, requestOptions);
                 const matchData = await matchResponse.json();
                 const matchDetails = matchData.response[0];
@@ -46,9 +52,9 @@ function Predicciones() {
                     const awayWon = matchDetails.teams.away.winner;
 
                     const correct = (
-                        (userPrediction === 'home' && homeWon) ||
-                        (userPrediction === 'away' && awayWon) ||
-                        (userPrediction === 'draw' && !homeWon && !awayWon)
+                        (prediction === 'home' && homeWon) ||
+                        (prediction === 'away' && awayWon) ||
+                        (prediction === 'draw' && !homeWon && !awayWon)
                     );
 
                     if (correct) {

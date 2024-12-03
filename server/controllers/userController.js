@@ -109,6 +109,8 @@ exports.getUserProfile = async (req, res) => {
             fotoPerfil: usuario.fotoPerfil || null,
             equipoFavorito: usuario.equipoFavorito || [],
             competicionesFavoritas: usuario.competicionesFavoritas || [],
+            prediccionesActuales: usuario.prediccionesActuales || [],
+            puntosPredicciones: usuario.puntosPredicciones || 0,
             ultimoLogin: usuario.createdAt,
         });
     } catch (err) {
