@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../../styles/minijuegos/TiroLibre.css';
-import { useLeaderboard } from './LeaderboardContext';
+import { useLeaderboard } from '../../context/LeaderboardContext';
 
 import falcao2012 from '../../assets/players/falcao2012.jpg';
 import cristiano2012 from '../../assets/players/cristiano2012.jpg';
@@ -195,7 +195,7 @@ function TiroLibre({ goals, playerName }) {
             <button onClick={() => handleGoalAttempt(true)}>Attempt Goal (Success)</button>
             <button onClick={() => handleGoalAttempt(false)}>Attempt Goal (Fail)</button>
             <h2>Score: {score}</h2>
-            <button onClick={endGame}>End Game</button>
+            {/*<button onClick={endGame}>End Game</button>*/}
         </div>
     </div>
     

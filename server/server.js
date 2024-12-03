@@ -11,6 +11,7 @@ const sessionMiddleware = require('./middleware/sessionMiddleware');
 const authRoutes = require('./routes/authRoutes');
 const chatRoutes = require('./routes/chatRoutes');
 const userRoutes = require('./routes/userRoutes');
+const notificationRoutes = require('./routes/notificacionRoutes');
 const socketHandler = require('./socket');
 
 // Conectar a la base de datos
@@ -49,6 +50,9 @@ app.use('/api/foro', chatRoutes);
 
 // Rutas de usuario, algunas de las cuales requieren autenticación
 app.use('/api/users', userRoutes); 
+
+//Rutas de notificaciones
+app.use('/api/notificaciones', notificationRoutes);
 
 // Inicializar el manejador de Socket.IO
 socketHandler(io);

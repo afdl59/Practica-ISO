@@ -26,5 +26,12 @@ router.get('/check-session', authController.checkSession);
 router.get('/:username', authMiddleware, userController.getUserProfile);
 router.put('/:username', authMiddleware, userController.updateUserProfile);
 router.post('/uploads', authMiddleware, upload.single('fotoPerfil'), userController.uploadProfileImage);
+router.post('/:username/predictions', authMiddleware, userController.addUserPrediction);
+router.put('/:username/predictions', authMiddleware, userController.updateUserPredictionsPoints);
+router.get('/:username/predictions', authMiddleware, userController.getUserPredictions);
+router.post('/:username/remove-prediction', authMiddleware, userController.deleteUserPrediction);
+
+router.put('/update-points/:username', authMiddleware, userController.updateUserPoints); // Actualizar puntos
+router.get('/ranking', userController.getRanking); // Obtener ranking
 
 module.exports = router;

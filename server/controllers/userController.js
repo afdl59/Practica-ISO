@@ -109,6 +109,8 @@ exports.getUserProfile = async (req, res) => {
             fotoPerfil: usuario.fotoPerfil || null,
             equipoFavorito: usuario.equipoFavorito || [],
             competicionesFavoritas: usuario.competicionesFavoritas || [],
+            prediccionesActuales: usuario.prediccionesActuales || [],
+            puntosPredicciones: usuario.puntosPredicciones || 0,
             ultimoLogin: usuario.createdAt,
         });
     } catch (err) {
@@ -121,6 +123,8 @@ exports.updateUserProfile = async (req, res) => {
     const { username } = req.params;
     const { firstName, lastName, equipoFavorito, competicionesFavoritas } = req.body;
 
+    console.log("Datos recibidos para actualizar:", req.body); // Verificar los datos recibidos
+
     try {
         const usuario = await User.findOne({ username });
 
@@ -128,13 +132,19 @@ exports.updateUserProfile = async (req, res) => {
             return res.status(404).json({ message: 'Usuario no encontrado' });
         }
 
+        // Actualizar solo si existen valores nuevos en el req.body
         usuario.firstName = firstName || usuario.firstName;
         usuario.lastName = lastName || usuario.lastName;
         usuario.equipoFavorito = equipoFavorito || usuario.equipoFavorito;
         usuario.competicionesFavoritas = competicionesFavoritas || usuario.competicionesFavoritas;
 
+        console.log("Usuario antes de guardar:", usuario); // Confirmar valores antes de guardar
+
         await usuario.save();
-        res.status(200).json(usuario);
+        res.status(200).json({
+            message: "Perfil actualizado correctamente",
+            user: usuario
+        });
     } catch (err) {
         console.error('Error al actualizar los datos del usuario:', err);
         res.status(500).json({ message: 'Error al actualizar los datos del usuario' });
@@ -167,3 +177,124 @@ exports.uploadProfileImage = async (req, res) => {
         res.status(500).json({ message: 'Error al subir la imagen' });
     }
 };
+
+// Actualizar puntos de un usuario
+exports.updateUserPoints = async (req, res) => {
+    const { username } = req.params;
+    const { points } = req.body;
+
+    try {
+        const usuario = await User.findOne({ username });
+        if (!usuario) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+
+        usuario.points = (usuario.points || 0) + points;
+        await usuario.save();
+        res.status(200).json({ message: 'Puntos actualizados', user: usuario });
+    } catch (err) {
+        console.error('Error al actualizar puntos:', err);
+        res.status(500).json({ message: 'Error al actualizar puntos' });
+    }
+};
+
+// Obtener el ranking de usuarios
+exports.getRanking = async (req, res) => {
+    const { limit = 10, page = 1 } = req.query;
+
+    try {
+        const usuarios = await User.find({})
+            .sort({ points: -1 })
+            .skip((page - 1) * limit)
+            .limit(parseInt(limit));
+
+        res.status(200).json({
+            ranking: usuarios.map((usuario, index) => ({
+                position: index + 1 + (page - 1) * limit,
+                username: usuario.username,
+                points: usuario.points || 0
+            }))
+        });
+    } catch (err) {
+        console.error('Error al obtener ranking:', err);
+        res.status(500).json({ message: 'Error al obtener ranking' });
+    }
+};
+
+// Actualizar puntos de predicciones de usuario
+exports.updateUserPredictionsPoints = async (req, res) => {
+    const { username } = req.params;
+    const { points } = req.body;
+
+    try {
+        const usuario = await User.findOne({ username });
+        if (!usuario) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+
+        usuario.puntosPredicciones = (usuario.predictionPoints || 0) + points;
+        await usuario.save();
+        res.status(200).json({ message: 'Puntos de predicciones actualizados', user: usuario });
+    } catch (err) {
+        console.error('Error al actualizar puntos de predicciones:', err);
+        res.status(500).json({ message: 'Error al actualizar puntos de predicciones' });
+    }
+}
+
+// Añadir predicción de usuario
+exports.addUserPrediction = async (req, res) => {
+    const { username } = req.params;
+    const { matchId, prediction } = req.body;
+
+    try {
+        const usuario = await User.findOne({ username });
+        if (!usuario) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+
+        const nuevaPrediccion = { matchId, prediction };
+        usuario.prediccionesActuales.push(nuevaPrediccion);
+        await usuario.save();
+        res.status(201).json({ message: 'Predicción añadida correctamente', user: usuario });
+    } catch (err) {
+        console.error('Error al añadir predicción:', err);
+        res.status(500).json({ message: 'Error al añadir predicción' });
+    }
+}
+
+// Obtener lista de predicciones de usuario
+exports.getUserPredictions = async (req, res) => {
+    const { username } = req.params;
+
+    try {
+        const usuario = await User.findOne({ username });
+        if (!usuario) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+
+        res.status(200).json({ prediccionesActuales: usuario.prediccionesActuales });
+    } catch (err) {
+        console.error('Error al obtener las predicciones:', err);
+        res.status(500).json({ message: 'Error al obtener las predicciones' });
+    }
+}
+
+// Eliminar predicción de usuario
+exports.deleteUserPrediction = async (req, res) => {
+    const { username } = req.params;
+    const { matchId } = req.body;
+
+    try {
+        const usuario = await User.findOne({ username });
+        if (!usuario) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+
+        usuario.prediccionesActuales = usuario.prediccionesActuales.filter(prediccion => prediccion.matchId !== matchId);
+        await usuario.save();
+        res.status(200).json({ message: 'Predicción eliminada correctamente', user: usuario });
+    } catch (err) {
+        console.error('Error al eliminar predicción:', err);
+        res.status(500).json({ message: 'Error al eliminar predicción' });
+    }
+}

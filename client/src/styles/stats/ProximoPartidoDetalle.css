@@ -1,0 +1,47 @@
+.match-detail-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+.match-detail-container h1 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.match-overview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px; /* Espacio entre los equipos y el texto "vs" */
+  margin-bottom: 20px;
+}
+
+.team-logo {
+  height: 100px;
+  width: 100px;
+  object-fit: contain;
+}
+
+.match-overview span {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #007bff;
+}
+
+.match-detail-container p {
+  margin: 10px 0;
+  font-size: 1rem;
+  color: #555;
+}
+
+.match-detail-container p span {
+  font-weight: bold;
+}
+

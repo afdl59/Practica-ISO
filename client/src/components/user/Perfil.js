@@ -1,20 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { FavoritosContext } from '../../context/FavoritosContext';
+import LoadInitialFavorites from './LoadInitialFavoritos';
+import UpdateFavoritesOnChange from './UpdateFavoritosOnChange';
+import { FaTimes } from 'react-icons/fa'; // Icono para la "X"
 import '../../styles/user/Perfil.css';
-import AnadirEquipoFavorito from './AnadirEquipoFavorito';
-import AnadirCompeticionFavorita from './AnadirCompeticionFavorita';
-import { Routes, Route } from 'react-router-dom';
 
 function Perfil() {
   const navigate = useNavigate();
+  const {
+    equiposFavoritos,
+    competicionesFavoritas,
+    removeEquipoFavorito,
+    removeCompeticionFavorita,
+  } = useContext(FavoritosContext);
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [editedData, setEditedData] = useState({
     firstName: '',
     lastName: '',
-    equiposFavoritos: [],
+    fotoPerfil: null,
+    equipoFavorito: [],
     competicionesFavoritas: [],
-    fotoPerfil: null
   });
 
   useEffect(() => {
@@ -32,12 +39,11 @@ function Perfil() {
         const userData = await userResponse.json();
         setUserData(userData);
         setEditedData({
-          ...editedData,
           firstName: userData.firstName,
           lastName: userData.lastName,
-          equiposFavoritos: userData.equiposFavoritos || [],
+          fotoPerfil: userData.fotoPerfil,
+          equipoFavorito: userData.equipoFavorito || [],
           competicionesFavoritas: userData.competicionesFavoritas || [],
-          fotoPerfil: userData.fotoPerfil
         });
       } catch (error) {
         console.error('Error:', error);
@@ -48,20 +54,6 @@ function Perfil() {
     };
     checkAuth();
   }, [navigate]);
-
-  const addEquipoFavorito = (equipo) => {
-    setEditedData((prevData) => ({
-      ...prevData,
-      equiposFavoritos: [...prevData.equiposFavoritos, equipo]
-    }));
-  };
-
-  const addCompeticionFavorita = (competicion) => {
-    setEditedData((prevData) => ({
-      ...prevData,
-      competicionesFavoritas: [...prevData.competicionesFavoritas, competicion]
-    }));
-  };
 
   const handleLogout = async () => {
     try {
@@ -84,7 +76,7 @@ function Perfil() {
         const data = await response.json();
         setUserData((prevUserData) => ({
           ...prevUserData,
-          fotoPerfil: data.imageUrl
+          fotoPerfil: data.imageUrl,
         }));
         alert('Imagen subida correctamente');
       } catch (error) {
@@ -103,79 +95,104 @@ function Perfil() {
       const updatedData = {
         firstName: editedData.firstName,
         lastName: editedData.lastName,
-        equiposFavoritos: editedData.equiposFavoritos,
-        competicionesFavoritas: editedData.competicionesFavoritas
+        equipoFavorito: equiposFavoritos,
+        competicionesFavoritas: competicionesFavoritas,
       };
-  
-      console.log("Datos actualizados para guardar:", updatedData);
-  
+
+      console.log('Datos actualizados para guardar:', updatedData);
+
       const response = await fetch(`/api/users/${userData.username}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updatedData)
+        body: JSON.stringify(updatedData),
       });
-  
+
+      const result = await response.json();
+      console.log('Resultado del backend:', result);
+
       if (!response.ok) throw new Error('Error al actualizar los datos del usuario');
-  
+
       setUserData(updatedData);
       alert('Datos actualizados correctamente');
-
-      setEditedData((prevData) => ({
-        ...prevData,
-        equipoFavoritoTemporal: '',
-        competicionFavoritaTemporal: ''
-      }));
-      
     } catch (error) {
       console.error('Error al actualizar los datos del usuario:', error);
     }
   };
-  
-  
+
   if (loading) return <div>Cargando...</div>;
   if (!userData) return <div>Error al cargar los datos del usuario.</div>;
-  console.log("Funcion de addEquipoFavorito:", addEquipoFavorito);
-  console.log("Funcion de addCompeticionFavorita:", addCompeticionFavorita);
 
-return (
-  <div className="perfil-container">
-    <h1>Perfil de {userData.username}</h1>
-    <div className="perfil-photo">
-      {editedData.fotoPerfil ? (
-        <img src={editedData.fotoPerfil} alt="Foto de perfil" className="profile-image" />
-      ) : (
-        <div className="placeholder-image">No profile photo</div>
-      )}
-      <input type="file" accept="image/*" onChange={handleFotoChange} />
+  return (
+    <div className="perfil-container">
+      <LoadInitialFavorites userData={userData} />
+      <UpdateFavoritesOnChange setEditedData={setEditedData} />
+  
+      <h1>Perfil de {userData.username}</h1>
+      <div className="perfil-content">
+        {/* Columna 1: Foto de perfil y datos personales */}
+        <div className="perfil-left">
+          <div className="perfil-photo">
+            {editedData.fotoPerfil ? (
+              <img src={editedData.fotoPerfil} alt="Foto de perfil" className="profile-image" />
+            ) : (
+              <div className="placeholder-image">No profile photo</div>
+            )}
+            <input type="file" accept="image/*" onChange={handleFotoChange} />
+          </div>
+  
+          <div className="perfil-info">
+            <label>Nombre:
+              <input type="text" name="firstName" value={editedData.firstName} onChange={handleInputChange} />
+            </label>
+            <label>Apellido:
+              <input type="text" name="lastName" value={editedData.lastName} onChange={handleInputChange} />
+            </label>
+          </div>
+        </div>
+  
+        {/* Columna 2: Favoritos */}
+        <div className="perfil-right">
+          <div className="favoritos">
+            <h3>Equipos Favoritos</h3>
+            <ul>
+              {equiposFavoritos.map((equipo, index) => (
+                <li key={`${equipo}-${index}`} className="favorito-item">
+                  {equipo}
+                  <button className="remove-btn" onClick={() => removeEquipoFavorito(equipo)}>
+                    <FaTimes color="red" />
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <Link to="/perfil/anadir-equipo-favorito">
+              <button>Añadir equipo favorito</button>
+            </Link>
+  
+            <h3>Competiciones Favoritas</h3>
+            <ul>
+              {competicionesFavoritas.map((competicion, index) => (
+                <li key={`${competicion}-${index}`} className="favorito-item">
+                  {competicion}
+                  <button className="remove-btn" onClick={() => removeCompeticionFavorita(competicion)}>
+                    <FaTimes color="red" />
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <Link to="/perfil/anadir-competicion-favorita">
+              <button>Añadir competición favorita</button>
+            </Link>
+          </div>
+        </div>
+      </div>
+  
+      {/* Botones en la parte inferior */}
+      <div className="perfil-actions">
+        <button onClick={handleSaveChanges}>Guardar Cambios</button>
+        <button onClick={handleLogout}>Cerrar Sesión</button>
+      </div>
     </div>
-
-    <div className="perfil-info">
-      <label>Nombre:
-        <input type="text" name="firstName" value={editedData.firstName} onChange={handleInputChange} />
-      </label>
-      <label>Apellido:
-        <input type="text" name="lastName" value={editedData.lastName} onChange={handleInputChange} />
-      </label>
-    </div>
-
-    <div className="favoritos">
-      <h3>Equipos Favoritos</h3>
-      <ul>
-        {editedData.equiposFavoritos.map((equipo, index) => <li key={index}>{equipo}</li>)}
-      </ul>
-      <Link to="/perfil/anadir-equipo-favorito"><button>Añadir equipo favorito</button></Link>
-
-      <h3>Competiciones Favoritas</h3>
-      <ul>
-        {editedData.competicionesFavoritas.map((competicion, index) => <li key={index}>{competicion}</li>)}
-      </ul>
-      <Link to="/perfil/anadir-competicion-favorita"><button>Añadir competición favorita</button></Link>
-    </div>
-
-    <button onClick={handleSaveChanges}>Guardar Cambios</button>
-    <button onClick={handleLogout}>Cerrar Sesión</button>
-  </div>
-);
+  );  
 }
 
 export default Perfil;
