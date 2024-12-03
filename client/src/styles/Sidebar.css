@@ -31,7 +31,7 @@ main {
   width: 100%;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
   position: sticky; /* Se queda pegado en la parte superior cuando haces scroll */
-  top: 40px; /* Debajo de la barra animada */
+  top: 30px; /* Debajo de la barra animada */
   z-index: 10; /* Menor que la barra animada */
 }
 
