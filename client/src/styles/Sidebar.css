@@ -109,7 +109,7 @@ main {
   width: 100%;
   background-color: #1a1a2e; /* Fondo igual al navbar */
   color: #ffffff; /* Texto blanco */
-  height: 40px; /* Altura de la barra */
+  height: 30px; /* Altura de la barra */
   display: flex;
   align-items: center;
   justify-content: center; /* Centra el texto horizontalmente */
@@ -124,4 +124,13 @@ main {
   font-size: 1rem;
   font-weight: bold;
   padding-left: 100%;
+}
+
+@keyframes slide {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
 }
