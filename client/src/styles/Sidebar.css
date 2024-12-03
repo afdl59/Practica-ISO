@@ -1,93 +1,78 @@
-/* Estilo del navbar */
-.navbar {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  background-color: #333;
-  padding: 5px; /* Para hacerlo más delgado */
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1000;
+/* Sidebar.css */
+
+/* Estilos globales */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* Estilo de cada item en el navbar */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+
+/* Navbar horizontal */
+.navbar-horizontal {
+  margin: 0;
+  padding: 0;
+  background-color: #1a1a2e; /* Azul oscuro */
+  color: #ffffff;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+/* Elementos del menú */
 .navbar-item {
   display: flex;
-  flex-direction: column;
   align-items: center;
   text-decoration: none;
-  color: white;
-  margin: 2px;
-  text-align: center;
-  position: relative; /* Necesario para centrar el dropdown */
+  color: #ffffff;
+  transition: color 0.3s ease;
+  margin: 0 15px;
 }
 
-/* Estilo de los íconos en el navbar */
+.navbar-item:hover {
+  color: #00bfff; /* Azul vibrante */
+}
+
+/* Íconos */
 .navbar-icon {
-  width: 30px;
-  height: 30px;
-  object-fit: contain;
-  margin-bottom: 3px;
+  font-size: 1.8rem; /* Tamaño del ícono */
+  margin-right: 8px;
 }
 
-/* Estilo de los títulos del navbar */
+/* Títulos */
 .navbar-title {
-  font-size: 12px;
-  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  font-family: 'Roboto', sans-serif; /* Fuente moderna */
+  text-transform: uppercase;
 }
 
-/* Dropdown */
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #333;
-  padding: 10px;
-  top: 40px; /* Espacio debajo del ítem "Minijuegos" */
-  left: 50%; /* Posiciona el dropdown al centro horizontalmente */
-  transform: translateX(-50%); /* Centra el dropdown respecto a su elemento padre */
-  min-width: 150px;
-  z-index: 1;
-  border-radius: 5px;
+/* Notificaciones */
+.notifications {
+  display: flex;
+  align-items: center;
 }
 
-/* Mostrar el dropdown al hacer hover */
-.dropdown:hover .dropdown-content {
-  display: block;
+.notification-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.9rem;
 }
 
-.dropdown-item {
-  color: white;
-  text-decoration: none;
-  padding: 5px;
-  display: block;
+.notification-text {
+  font-size: 0.9rem;
+  color: #e0e0e0; /* Gris claro */
 }
-
-.dropdown-item:hover {
-  background-color: #444;
-}
-
-/* Ajustes para dispositivos móviles */
-@media (max-width: 768px) {
-  .navbar {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-around;
-  }
-
-  .navbar-item {
-    flex: 1;
-    justify-content: center;
-  }
-
-  .dropdown-content {
-    position: static;
-    display: block;
-    width: 100%;
-    padding: 0;
-    margin-top: 5px;
-    background-color: #333;
-  }
-}
-
