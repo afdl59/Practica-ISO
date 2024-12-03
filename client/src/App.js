@@ -30,7 +30,7 @@ import Predicciones from './components/stats/Predicciones';
 import Notificaciones from './components/notificaciones/Notificaciones';
 
 import './styles/App.css';
-import { UserProvider } from './contexts/UserContext';
+import { UserProvider } from './context/UserContext';
 
 function App() {
   return (
