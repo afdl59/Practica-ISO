@@ -1,163 +1,94 @@
-/* Estilo del contenedor principal */
+/* Contenedor principal */
 .home-container {
   position: relative;
   width: 100%;
-  height: 100vh; /* Ocupa toda la pantalla */
+  height: 100vh;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  text-align: center;
-  color: #ffffff; /* Texto blanco */
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Sombra para mejor legibilidad */
-  overflow: hidden; /* Evita scroll innecesario */
+  color: #ffffff;
+  overflow: hidden;
+  font-family: 'Arial', sans-serif;
 }
 
-/* Estilo para el video de fondo */
+/* Video de fondo */
 .video-background {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Ajusta el video sin distorsión */
-  z-index: -1; /* Envía el video al fondo */
+  object-fit: cover;
+  z-index: -1;
+  filter: brightness(0.6);
 }
 
-/* Contenedor de texto */
-.text-container {
-  position: relative;
-  background-color: rgba(0, 0, 0, 0.6); /* Fondo negro semitransparente */
+/* Contenido principal */
+.content-wrapper {
+  text-align: center;
   padding: 20px;
-  border-radius: 10px; /* Esquinas redondeadas */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra suave */
-  text-align: center;
-  max-width: 80%; /* Ajustar el ancho del cuadro */
-  margin: 0 auto; /* Centrar el cuadro */
+  z-index: 1;
 }
 
-/* Contenedor de enlaces de autenticación */
-.auth-links {
-  text-align: center;
-  margin-top: 20px;
+.title {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+  color: #00bfff;
+  text-transform: uppercase;
+}
+
+.description {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  color: #d3d3d3;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
 }
 
 .btn {
   padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
+  font-size: 1.2rem;
+  color: #fff;
+  background-color: #00bfff;
   border: none;
   border-radius: 5px;
-  margin: 10px;
   text-decoration: none;
   cursor: pointer;
-  font-size: 1.2rem; /* Texto grande */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra */
-  transition: background-color 0.3s ease;
+  transition: 0.3s;
 }
 
 .btn:hover {
-  background-color: #0056b3;
+  background-color: #ffffff;
+  color: #00bfff;
+}
+
+.btn-alt {
+  background-color: #333;
+  color: #fff;
+}
+
+.btn-alt:hover {
+  background-color: #00bfff;
+  color: #fff;
 }
 
 /* Modal de cookies */
 .cookie-modal {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6); /* Fondo negro semitransparente */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.cookie-content {
-  background-color: white;
-  padding: 30px;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  padding: 15px;
   border-radius: 10px;
-  width: 90%;
-  max-width: 500px;
-  text-align: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra suave */
+  z-index: 100;
 }
 
-.cookie-logo {
-  width: 150px;
-  margin-bottom: 20px;
-}
-
-.cookie-buttons {
-  margin-top: 20px;
-}
-
-.btn-accept-cookies {
-  background-color: #28a745;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  transition: background-color 0.3s ease;
-}
-
-.btn-accept-cookies:hover {
-  background-color: #218838;
-}
-
-.btn-reject-cookies {
-  background-color: #dc3545;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  transition: background-color 0.3s ease;
-}
-
-.btn-reject-cookies:hover {
-  background-color: #c82333;
-}
-
-.btn-preferences-cookies {
-  background-color: #ffc107;
-  color: black;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  transition: background-color 0.3s ease;
-}
-
-.btn-preferences-cookies:hover {
-  background-color: #e0a800;
-}
-
-/* Modal de preferencias de cookies */
-.cookie-preferences-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6); /* Fondo negro semitransparente */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1001;
-}
-
-.cookie-preferences-content {
-  background-color: white;
-  padding: 30px;
-  border-radius: 10px;
-  width: 90%;
-  max-width: 500px;
-  text-align: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra suave */
+.cookie-buttons .btn {
+  margin: 5px;
 }
