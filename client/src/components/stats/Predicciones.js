@@ -92,20 +92,32 @@ function Predicciones() {
     }, [navigate]);
 
     return (
-        <div className="predictions-container">
-            <h1>Tus Predicciones</h1>
-            {predictions.length > 0 ? (
-                predictions.map((match, index) => (
-                    <div key={index} className="prediction-item">
-                        <p>{match.teams.home.name} vs {match.teams.away.name}</p>
-                        <p>{new Date(match.fixture.date).toLocaleString()}</p>
-                    </div>
-                ))
-            ) : (
-                <p>No tienes predicciones activas.</p>
-            )}
-        </div>
-    );
+      <div className="predictions-container">
+          <h1>Tus Predicciones</h1>
+          {predictions.length > 0 ? (
+              predictions.map((match, index) => {
+                  // Validar que los datos del partido están completos
+                  if (
+                      match?.teams?.home?.name &&
+                      match?.teams?.away?.name &&
+                      match?.fixture?.date
+                  ) {
+                      return (
+                          <div key={index} className="prediction-item">
+                              <p>{match.teams.home.name} vs {match.teams.away.name}</p>
+                              <p>{new Date(match.fixture.date).toLocaleString()}</p>
+                          </div>
+                      );
+                  } else {
+                      console.warn("Datos incompletos para la predicción:", match);
+                      return null; // No renderizar si faltan datos
+                  }
+              })
+          ) : (
+              <p>No tienes predicciones activas.</p>
+          )}
+      </div>
+  );
 }
 
 export default Predicciones;
