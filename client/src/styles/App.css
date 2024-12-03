@@ -1,18 +1,24 @@
-/* src/styles/App.css */
+/* Estilo principal para el contenedor */
 .app-container {
-  padding-top: 60px; /* Añade espacio suficiente para que el contenido no se superponga con el navbar */
+  margin: 0;
+  padding: 0;
   display: flex;
-  justify-content: flex-start;
   flex-direction: column;
   min-height: 100vh;
+  background-color: transparent; /* Fondo transparente para que se vea el video */
+  overflow: hidden; /* Evita scroll no deseado */
 }
 
+/* Contenido principal */
 .content {
-  margin-top: 60px; /* Añade margen superior igual a la altura del navbar */
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 20px;
-  flex-grow: 1; /* El contenido crece para llenar el espacio disponible */
 }
 
+/* Encabezado de la app */
 .App-header {
   background-color: transparent;
   color: white;
@@ -20,15 +26,53 @@
   font-size: calc(12px + 2vmin);
 }
 
+/* Enlaces */
 .App-link {
-  color: #61dafb;
+  color: #00bfff; /* Azul vibrante */
+  text-decoration: none;
+  transition: color 0.3s ease-in-out;
 }
 
+.App-link:hover {
+  color: #1a73e8; /* Azul oscuro */
+}
+
+/* Animación del logo (si es necesario) */
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
   }
   to {
     transform: rotate(360deg);
+  }
+}
+
+/* Barra animada */
+.animated-bar {
+  background-color: #1a1a2e; /* Azul oscuro */
+  color: white;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.animated-bar-text {
+  white-space: nowrap;
+  position: absolute;
+  animation: slide 10s linear infinite;
+  font-size: 1rem;
+  font-weight: bold;
+  padding-left: 100%;
+}
+
+@keyframes slide {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(-100%);
   }
 }
