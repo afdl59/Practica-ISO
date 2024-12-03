@@ -1,7 +1,25 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/Home.css';
 
 function Home() {
+  const [currentTime, setCurrentTime] = useState('');
+
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      const formattedTime = now.toLocaleString('es-ES', {
+        dateStyle: 'short',
+        timeStyle: 'medium',
+      });
+      setCurrentTime(formattedTime);
+    };
+
+    const timer = setInterval(updateTime, 1000);
+    updateTime();
+
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <div className="home-container">
       {/* Video de fondo */}
@@ -10,6 +28,11 @@ function Home() {
         Tu navegador no soporta videos HTML5.
       </video>
 
+      {/* Fecha y hora en tiempo real */}
+      <div className="date-time">
+        <p>{currentTime}</p>
+      </div>
+
       {/* Contenido principal */}
       <div className="content-wrapper">
         <h1 className="title">Bienvenido a Futbol360</h1>
@@ -17,8 +40,8 @@ function Home() {
           Descubre el mundo del fútbol como nunca antes. Inicia sesión o crea una cuenta para acceder a todas las funcionalidades.
         </p>
         <div className="buttons">
-          <a href="/login" className="btn">Iniciar Sesión</a>
-          <a href="/register" className="btn btn-alt">Registrarse</a>
+          <a href="/login" className="btn primary">Iniciar Sesión</a>
+          <a href="/register" className="btn secondary">Registrarse</a>
         </div>
       </div>
     </div>
@@ -26,5 +49,3 @@ function Home() {
 }
 
 export default Home;
-
-
