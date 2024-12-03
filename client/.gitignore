@@ -11,11 +11,6 @@
 # production
 /build
 
-# Ignorar package-lock.json
-/package-lock.json
-
-# Ignorar package.json
-/package.json
 
 # misc
 .DS_Store
