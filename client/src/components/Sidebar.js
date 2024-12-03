@@ -16,24 +16,24 @@ function Sidebar() {
   };
 
   return (
-    <div className="navbar">
+    <div className="navbar-horizontal">
       <Link to="/" className="navbar-item">
-        <img src={FaHome} alt="Icon Inicio" className="navbar-icon" />
-        <h3 className="navbar-title">Inicio</h3>
+        <FaHome className="navbar-icon" />
+        <span className="navbar-title">Inicio</span>
       </Link>
       <Link to="/perfil" className="navbar-item">
-        <img src={FaUser} alt="Icon Perfil" className="navbar-icon" />
-        <h3 className="navbar-title">Perfil</h3>
+        <FaUser className="navbar-icon" />
+        <span className="navbar-title">Perfil</span>
       </Link>
       <Link to="/foro" className="navbar-item">
-        <img src={FaComments} alt="Icon Foro" className="navbar-icon" />
-        <h3 className="navbar-title">Foro</h3>
+        <FaComments className="navbar-icon" />
+        <span className="navbar-title">Foro</span>
       </Link>
 
-      {/* Nueva sección Estadísticas */}
+      {/* Sección Estadísticas */}
       <div className="navbar-item dropdown" onClick={toggleEstadisticas}>
-        <img src={FaChartBar} alt="Icon Estadísticas" className="navbar-icon" />
-        <h3 className="navbar-title">Estadísticas</h3>
+        <FaChartBar className="navbar-icon" />
+        <span className="navbar-title">Estadísticas</span>
         {estadisticasOpen && (
           <div className="dropdown-content">
             <Link to="/partidos" className="dropdown-item">Partidos Pasados</Link>
@@ -45,14 +45,14 @@ function Sidebar() {
 
       {/* Sección Predicciones */}
       <Link to="/predicciones" className="navbar-item">
-        <img src={FaChartBar} alt="Icon Foro" className="navbar-icon" />
-        <h3 className="navbar-title">Predicciones</h3>
+        <FaChartBar className="navbar-icon" />
+        <span className="navbar-title">Predicciones</span>
       </Link>
 
       {/* Sección Minijuegos */}
       <div className="navbar-item dropdown" onClick={toggleMinigames}>
-        <img src={FaGamepad} alt="Icon Minijuegos" className="navbar-icon" />
-        <h3 className="navbar-title">Minijuegos</h3>
+        <FaGamepad className="navbar-icon" />
+        <span className="navbar-title">Minijuegos</span>
         {minigamesOpen && (
           <div className="dropdown-content">
             <Link to="/minijuegos/guess-the-player" className="dropdown-item">Guess the Player</Link>
@@ -65,8 +65,8 @@ function Sidebar() {
 
       {/* Sección Notificaciones */}
       <Link to="/notificaciones" className="navbar-item">
-        <img src={FaBell} alt="Icon Notificaciones" className="navbar-icon" />
-        <h3 className="navbar-title">Notificaciones</h3>
+        <FaBell className="navbar-icon" />
+        <span className="navbar-title">Notificaciones</span>
       </Link>
       
     </div>
