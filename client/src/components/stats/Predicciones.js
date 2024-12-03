@@ -26,7 +26,9 @@ function Predicciones() {
             if (!predictionsResponse.ok) return console.error('Error al obtener predicciones del usuario');
             const predictionsData = await predictionsResponse.json();
 
+            console.log(`Respuesta check-session: ${predictionsData}`);
             setUserData(predictionsData);
+            console.log("User Data actual: ", userData);
             setPredictions({
               prediccionesActuales: userData.prediccionesActuales || [],
             });
