@@ -103,7 +103,8 @@ main {
 
 /* Estilo para la barra animada */
 .animated-bar {
-  position: fixed; /* Fija la barra en la parte superior */
+  margin: 0;
+  position: absolute; /* Fija la barra en la parte superior */
   top: 0; /* Aparece en la parte superior */
   left: 0;
   width: 100%;
