@@ -1,13 +1,19 @@
-// src/App.js
+//src/App.js
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
+
+//Componentes principales
 import Sidebar from './components/Sidebar';
 import Home from './components/Home';
+
+//User
 import Login from './components/user/Login';
 import Register from './components/user/Register';
 import Perfil from './components/user/Perfil';
 import AnadirEquipoFavorito from './components/user/AnadirEquipoFavorito';
 import AnadirCompeticionFavorita from './components/user/AnadirCompeticionFavorita';
+
+//Foro
 import Foro from './components/foro/Foro';
 
 // Minijuegos
@@ -27,8 +33,11 @@ import PartidoPrueba2 from './components/stats/PartidoPrueba2';
 import ProximosPartidos from './components/stats/ProximosPartidos';
 import ProximoPartidoDetalle from './components/stats/ProximoPartidoDetalle';
 import Predicciones from './components/stats/Predicciones';
+
+//Notificaciones
 import Notificaciones from './components/notificaciones/Notificaciones';
 
+//CSS
 import './styles/App.css';
 
 function App() {
@@ -38,13 +47,13 @@ function App() {
       <Routes>
         {/* Rutas principales */}
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
         <Route path="/foro" element={<Foro />} />
         <Route path="/notificaciones" element={<Notificaciones />} />
 
         {/* Rutas de Perfil */}
         <Route path="/perfil" element={<Perfil />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/perfil/anadir-equipo-favorito" element={<AnadirEquipoFavorito />} />
         <Route path="/perfil/anadir-competicion-favorita" element={<AnadirCompeticionFavorita />} />
 
@@ -62,9 +71,11 @@ function App() {
         <Route path="/partidos-directo" element={<PartidosDirecto />} />
         <Route path="/proximos-partidos" element={<ProximosPartidos />} />
         <Route path="/proximos-partidos/:idPartido" element={<ProximoPartidoDetalle />} />
-        <Route path="/predicciones" element={<Predicciones />} />
         <Route path="/partido-prueba1" element={<PartidoPrueba1 />} />
         <Route path="/partido-prueba2" element={<PartidoPrueba2 />} />
+
+        {/* Predicciones */}
+        <Route path="/predicciones" element={<Predicciones />} />
       </Routes>
     </div>
   );
