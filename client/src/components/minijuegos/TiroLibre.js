@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../../styles/minijuegos/TiroLibre.css';
 import { useLeaderboard } from '../../context/LeaderboardContext';
+import { useUser } from '../../context/UserContext';
 
 import falcao2012 from '../../assets/players/falcao2012.jpg';
 import cristiano2012 from '../../assets/players/cristiano2012.jpg';
@@ -34,6 +35,9 @@ function TiroLibre() {
   const [score, setScore] = useState(0);
   const [attempts, setAttempts] = useState(0);
   const [message, setMessage] = useState('');
+  const [playerName, setPlayerName] = useState("Nombre del Jugador"); // Define un nombre inicial o cámbialo según sea necesario
+  const { username } = useUser();
+
 
   useEffect(() => {
     const randomSide = sides[Math.floor(Math.random() * sides.length)];
@@ -110,11 +114,12 @@ function TiroLibre() {
     }
 };
 
-/*const endGame = () => {
-  if (!playerName) return; // Verifica que playerName esté definido antes de actualizar el leaderboard
-  updateLeaderboard('tiroLibre', playerName, score); // Actualizar la leaderboard
-  setMessage(`Game Over! Final Score: ${score}`);
-};*/
+const endGame = () => {
+  if (username) {
+    updateLeaderboard('TiroLibre', score);
+    setMessage(`Game Over! Final Score: ${score}`);
+  }
+};
 
   function calculateTiroLibreScore(goals) {
     return goals; // Cada goal vale 1 punto

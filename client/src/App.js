@@ -39,45 +39,49 @@ import Notificaciones from './components/notificaciones/Notificaciones';
 
 //CSS
 import './styles/App.css';
+import { UserProvider } from './context/UserContext';
+import { LeaderboardProvider } from './context/LeaderboardContext';
 
 function App() {
   return (
-    <div className="app-container">
-      <Sidebar />
-      <Routes>
-        {/* Rutas principales */}
-        <Route path="/" element={<Home />} />
-        <Route path="/foro" element={<Foro />} />
-        <Route path="/notificaciones" element={<Notificaciones />} />
+    <UserProvider>
+      <LeaderboardProvider>
+        <div className="app-container">
+          <Sidebar />
+          <Routes>
+            {/* Rutas principales */}
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/foro" element={<Foro />} />
+            <Route path="/notificaciones" element={<Notificaciones />} />
 
-        {/* Rutas de Perfil */}
-        <Route path="/perfil" element={<Perfil />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/perfil/anadir-equipo-favorito" element={<AnadirEquipoFavorito />} />
-        <Route path="/perfil/anadir-competicion-favorita" element={<AnadirCompeticionFavorita />} />
+            {/* Rutas de Perfil */}
+            <Route path="/perfil" element={<Perfil />} />
+            <Route path="/perfil/anadir-equipo-favorito" element={<AnadirEquipoFavorito />} />
+            <Route path="/perfil/anadir-competicion-favorita" element={<AnadirCompeticionFavorita />} />
 
-        {/* Rutas de Minijuegos */}
-        <Route path="/minijuegos" element={<Minijuegos />} />
-        <Route path="/minijuegos/bingo" element={<Bingo />} />
-        <Route path="/minijuegos/tiro-libre" element={<TiroLibre />} />
-        <Route path="/minijuegos/wordle-diario" element={<WordleDiario />} />
-        <Route path="/minijuegos/guess-the-player" element={<GuessThePlayer />} />
+            {/* Rutas de Minijuegos */}
+            <Route path="/minijuegos" element={<Minijuegos />} />
+            <Route path="/minijuegos/bingo" element={<Bingo />} />
+            <Route path="/minijuegos/tiro-libre" element={<TiroLibre />} />
+            <Route path="/minijuegos/wordle-diario" element={<WordleDiario />} />
+            <Route path="/minijuegos/guess-the-player" element={<GuessThePlayer />} />
 
-        {/* Rutas de Estadísticas y Partidos */}
-        <Route path="/partidos" element={<Partidos />} />
-        <Route path="/player-selector" element={<PlayerSelector />} />
-        <Route path="/partido/:idPartido" element={<PartidoDetalle />} />
-        <Route path="/partidos-directo" element={<PartidosDirecto />} />
-        <Route path="/proximos-partidos" element={<ProximosPartidos />} />
-        <Route path="/proximos-partidos/:idPartido" element={<ProximoPartidoDetalle />} />
-        <Route path="/partido-prueba1" element={<PartidoPrueba1 />} />
-        <Route path="/partido-prueba2" element={<PartidoPrueba2 />} />
-
-        {/* Predicciones */}
-        <Route path="/predicciones" element={<Predicciones />} />
-      </Routes>
-    </div>
+            {/* Rutas de Estadísticas y Partidos */}
+            <Route path="/partidos" element={<Partidos />} />
+            <Route path="/player-selector" element={<PlayerSelector />} />
+            <Route path="/partido/:idPartido" element={<PartidoDetalle />} />
+            <Route path="/partidos-directo" element={<PartidosDirecto />} />
+            <Route path="/proximos-partidos" element={<ProximosPartidos />} />
+            <Route path="/proximos-partidos/:idPartido" element={<ProximoPartidoDetalle />} />
+            <Route path="/predicciones" element={<Predicciones />} />
+            <Route path="/partido-prueba1" element={<PartidoPrueba1 />} />
+            <Route path="/partido-prueba2" element={<PartidoPrueba2 />} />
+          </Routes>
+        </div>
+      </LeaderboardProvider>
+    </UserProvider>
   );
 }
 
