@@ -1,12 +1,18 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
+
+//Componentes principales
 import Sidebar from './components/Sidebar';
 import Home from './components/Home';
+
+//User
 import Login from './components/user/Login';
 import Register from './components/user/Register';
 import Perfil from './components/user/Perfil';
 import AnadirEquipoFavorito from './components/user/AnadirEquipoFavorito';
 import AnadirCompeticionFavorita from './components/user/AnadirCompeticionFavorita';
+
+//Foro
 import Foro from './components/foro/Foro';
 
 // Minijuegos
@@ -26,31 +32,37 @@ import PartidoPrueba2 from './components/stats/PartidoPrueba2';
 import ProximosPartidos from './components/stats/ProximosPartidos';
 import ProximoPartidoDetalle from './components/stats/ProximoPartidoDetalle';
 import Predicciones from './components/stats/Predicciones';
+
+//Notificaciones
 import Notificaciones from './components/notificaciones/Notificaciones';
 
+//CSS
 import './styles/App.css';
 import { UserProvider } from './context/UserContext';
 import { LeaderboardProvider } from './context/LeaderboardContext';
 
 function App() {
   return (
-    <div className="app-container">
-      {/* Sidebar */}
-      <Sidebar />
+    <UserProvider>
+      <LeaderboardProvider>
+        <div className="app-container">
+          {/* Sidebar */}
+          <Sidebar />
 
-      {/* Barra animada */}
-      <div className="animated-bar">
-        <span className="animated-bar-text">
-          ¡Bienvenido a Futbol360! Consulta estadísticas, participa en predicciones, juega minijuegos y más.
-        </span>
-      </div>
+          {/* Barra animada */}
+          <div className="animated-bar">
+            <span className="animated-bar-text">
+              ¡Bienvenido a Futbol360! Consulta estadísticas, participa en predicciones, juega minijuegos y más.
+            </span>
+          </div>
 
-      {/* Rutas principales */}
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/foro" element={<Foro />} />
+          {/* Rutas principales */}
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/foro" element={<Foro />} />
+            <Route path="/notificaciones" element={<Notificaciones />} />
 
             {/* Rutas de Perfil */}
             <Route path="/perfil" element={<Perfil />} />
@@ -82,5 +94,3 @@ function App() {
 }
 
 export default App;
-
-
