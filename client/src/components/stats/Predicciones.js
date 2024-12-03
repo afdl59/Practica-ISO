@@ -28,7 +28,8 @@ function Predicciones() {
               return;
           }
           const predictionsData = await predictionsResponse.json();
-          console.log(`Respuesta get userData: ${predictionsData.JSONStringify()}`);
+          //mostramos respuesta de la api en formato array
+          console.log(predictionsData);
           
           setUserData(predictionsData);
           console.log(`Datos de usuario actuales: ${userData}`);
