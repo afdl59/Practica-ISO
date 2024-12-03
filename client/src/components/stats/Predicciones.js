@@ -12,14 +12,14 @@ function Predicciones() {
 
     useEffect(() => {
         const fetchPredictions = async () => {
-            let userData;
             const response = await fetch('/api/auth/check-session');
             if (!response.ok){
                 return navigate('/login');
             }
+            data = await response.json();
 
             // fetch para obtener las predicciones del usuario
-            const predictionsResposne = await fetch(`/api/users/${userData.username}`);
+            const predictionsResposne = await fetch(`/api/users/${data.username}`);
             if (!predictionsResposne.ok) return console.error('Error al obtener predicciones del usuario');
             const predictionsData = await predictionsResposne.json();
 
