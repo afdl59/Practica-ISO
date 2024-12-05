@@ -4,7 +4,7 @@ const multer = require('multer');
 const userController = require('../controllers/userController');
 const authMiddleware = require('../middleware/authMiddleware');
 const authController = require('../controllers/authController');
-const getIpMiddleware = require('./middleware/getIp');
+const getIpMiddleware = require('../middleware/getIp');
 
 const router = express.Router();
 

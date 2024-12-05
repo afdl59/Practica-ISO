@@ -3,7 +3,6 @@ const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const emailService = require('../services/emailService');
 const LoginIp = require('../models/LoginIp');
-const getIpMiddleware = require('../middleware/getIp');
 
 // Registro de usuario con envío de correo de bienvenida
 exports.register = async (req, res) => {
