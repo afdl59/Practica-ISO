@@ -269,7 +269,7 @@ exports.updateUserPredictionsPoints = async (req, res) => {
         console.error('Error al actualizar puntos de predicciones:', err);
         res.status(500).json({ message: 'Error al actualizar puntos de predicciones' });
     }
-}
+};
 
 // Añadir predicción de usuario
 exports.addUserPrediction = async (req, res) => {
@@ -290,7 +290,7 @@ exports.addUserPrediction = async (req, res) => {
         console.error('Error al añadir predicción:', err);
         res.status(500).json({ message: 'Error al añadir predicción' });
     }
-}
+};
 
 // Obtener lista de predicciones de usuario
 exports.getUserPredictions = async (req, res) => {
@@ -307,7 +307,7 @@ exports.getUserPredictions = async (req, res) => {
         console.error('Error al obtener las predicciones:', err);
         res.status(500).json({ message: 'Error al obtener las predicciones' });
     }
-}
+};
 
 // Eliminar predicción de usuario
 exports.deleteUserPrediction = async (req, res) => {
@@ -327,4 +327,30 @@ exports.deleteUserPrediction = async (req, res) => {
         console.error('Error al eliminar predicción:', err);
         res.status(500).json({ message: 'Error al eliminar predicción' });
     }
-}
+};
+
+// Solicitud de ayuda por correo electrónico
+exports.sendHelpRequest = async (req, res) => {
+    const { subject, message } = req.body;
+    const user = req.session.user;
+
+    if (!user) {
+        return res.status(401).json({ message: 'No autorizado' });
+    }
+
+    const mailOptions = {
+        from: user.email, // Email del usuario autenticado
+        to: 'futbol360.client@gmail.com', // Email destino
+        subject: `[Futbol360] ${subject}`,
+        text: `Mensaje de: ${user.email}\n\n${message}`, // Cuerpo del correo
+    };
+
+    emailService.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.error('Error al enviar el correo de ayuda:', error);
+            return res.status(500).json({ message: 'Error al enviar el correo' });
+        }
+        console.log('Correo de ayuda enviado:', info.response);
+        res.status(200).json({ message: 'Correo enviado exitosamente' });
+    });
+};

@@ -35,4 +35,6 @@ router.post('/:username/remove-prediction', authMiddleware, userController.delet
 router.put('/update-points/:username', authMiddleware, userController.updateUserPoints); // Actualizar puntos
 router.get('/ranking', userController.getRanking); // Obtener ranking
 
+router.post('/help', userController.sendHelpRequest);
+
 module.exports = router;
