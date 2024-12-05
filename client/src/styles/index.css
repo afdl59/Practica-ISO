@@ -17,3 +17,22 @@
     width: 100%;
     height: 100%;
   }
+
+  .password-validation-list {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+}
+
+.password-validation-list li {
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.password-validation-list .valid {
+    color: green;
+}
+
+.password-validation-list .invalid {
+    color: red;
+}
