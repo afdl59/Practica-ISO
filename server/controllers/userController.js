@@ -2,6 +2,8 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const emailService = require('../services/emailService');
+const LoginIp = require('../models/LoginIp');
+const getIpMiddleware = require('../middleware/getIp');
 
 // Registro de usuario con envío de correo de bienvenida
 exports.register = async (req, res) => {
@@ -33,12 +35,10 @@ exports.register = async (req, res) => {
 // Inicio de sesión
 exports.login = async (req, res) => {
     const { identifier, password } = req.body;
+
     try {
         const usuario = await User.findOne({
-            $or: [
-                { email: identifier },
-                { username: identifier }
-            ]
+            $or: [{ email: identifier }, { username: identifier }],
         });
 
         if (!usuario) {
@@ -49,6 +49,37 @@ exports.login = async (req, res) => {
         if (!passwordCorrecta) {
             return res.status(400).json({ message: 'Usuario o contraseña incorrectos' });
         }
+
+        const currentIp = req.clientIp;
+
+        // Busca la última IP registrada para este usuario
+        const lastLogin = await LoginIp.findOne({ username: usuario.username }).sort({ date: -1 });
+
+        // Si la IP es diferente, envía una notificación
+        if (lastLogin && lastLogin.ip !== currentIp) {
+            const mailOptions = {
+                from: process.env.EMAIL_USER,
+                to: usuario.email,
+                subject: 'Notificación de inicio de sesión',
+                html: `
+                    <p>Hemos detectado un inicio de sesión desde una IP diferente a la habitual.</p>
+                    <p><strong>IP actual:</strong> ${currentIp}</p>
+                    <p><strong>IP previa:</strong> ${lastLogin.ip}</p>
+                    <p><strong>Fecha:</strong> ${new Date().toLocaleString()}</p>
+                    <p>Si no reconoces esta actividad, por favor cambia tu contraseña inmediatamente.</p>
+                `,
+            };
+
+            emailService.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    console.error('Error al enviar la notificación:', error);
+                }
+            });
+        }
+
+        // Guarda la nueva IP en la colección
+        const newLogin = new LoginIp({ username: usuario.username, ip: currentIp });
+        await newLogin.save();
 
         // Configurar datos de sesión
         req.session.userId = usuario._id;

@@ -4,6 +4,7 @@ const multer = require('multer');
 const userController = require('../controllers/userController');
 const authMiddleware = require('../middleware/authMiddleware');
 const authController = require('../controllers/authController');
+const getIpMiddleware = require('./middleware/getIp');
 
 const router = express.Router();
 
@@ -20,7 +21,7 @@ const upload = multer({ storage });
 
 // Rutas de autenticación y perfil de usuario
 router.post('/register', userController.register);
-router.post('/login', userController.login);
+router.post('/login', getIpMiddleware, userController.login);
 router.post('/logout', userController.logout);
 router.get('/check-session', authController.checkSession);
 router.get('/:username', authMiddleware, userController.getUserProfile);
