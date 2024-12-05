@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { FavoritosContext } from '../../context/FavoritosContext';
@@ -23,6 +24,9 @@ function Perfil() {
     equipoFavorito: [],
     competicionesFavoritas: [],
   });
+  const [showHelpForm, setShowHelpForm] = useState(false);
+  const [helpSubject, setHelpSubject] = useState('');
+  const [helpMessage, setHelpMessage] = useState('');
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -119,6 +123,29 @@ function Perfil() {
     }
   };
 
+  const handleHelpSubmit = async () => {
+    try {
+        const response = await fetch('/api/users/help', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ subject: helpSubject, message: helpMessage }),
+        });
+        if (response.ok) {
+            alert('Tu mensaje ha sido enviado correctamente.');
+            setShowHelpForm(false);
+            setHelpSubject('');
+            setHelpMessage('');
+        } else {
+            throw new Error('Error al enviar el mensaje de ayuda.');
+        }
+    } catch (error) {
+        console.error(error);
+        alert('Hubo un error al enviar tu mensaje.');
+    }
+  };
+
   if (loading) return <div>Cargando...</div>;
   if (!userData) return <div>Error al cargar los datos del usuario.</div>;
 
@@ -188,11 +215,31 @@ function Perfil() {
   
       {/* Botones en la parte inferior */}
       <div className="perfil-actions">
-        <button onClick={handleSaveChanges}>Guardar Cambios</button>
-        <button onClick={handleLogout}>Cerrar Sesión</button>
+          <button onClick={handleSaveChanges}>Guardar Cambios</button>
+          <button onClick={handleLogout}>Cerrar Sesión</button>
+          <button onClick={() => setShowHelpForm(true)}>Ayuda</button>
       </div>
+
+      {showHelpForm && (
+        <div className="help-form">
+          <h3>Formulario de Ayuda</h3>
+          <input
+              type="text"
+              placeholder="Asunto"
+              value={helpSubject}
+              onChange={(e) => setHelpSubject(e.target.value)}
+          />
+          <textarea
+              placeholder="Escribe tu mensaje..."
+              value={helpMessage}
+              onChange={(e) => setHelpMessage(e.target.value)}
+          ></textarea>
+          <button onClick={handleHelpSubmit}>Enviar</button>
+          <button onClick={() => setShowHelpForm(false)}>Cancelar</button>
+        </div>  
+      )}
     </div>
   );  
 }
 
-export default Perfil;
+export default Perfil;
