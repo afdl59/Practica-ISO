@@ -1,24 +1,23 @@
 .predictions-container {
-    max-width: 800px;
-    margin: 20px;
-    padding: 20px;
-    text-align: center;
-  }
-  
-  .predictions-container h1 {
-    margin-bottom: 20px;
-  }
+  max-width: 800px;
+  margin: 20px;
+  padding: 20px;
+  text-align: center;
+}
 
-  .partido {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  .partido img {
-    width: 50px;
-    height: 50px;
-  }
-  
+.predictions-container h1 {
+  margin-bottom: 20px;
+}
+
+.partido {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.partido img {
+  width: 50px;
+  height: 50px;
+}

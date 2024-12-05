@@ -94,10 +94,9 @@ function Predicciones() {
     return (
       <div className="predictions-container">
           <h1>Tus Predicciones</h1>
-          <ul>
-            {predictions.length > 0 ? (
-                predictions.map((match, index) => {
-                    // mostrar la lista de los partidos predecidos
+          {predictions.length > 0 ? (
+              predictions.map((match, index) => {
+                  // mostrar la lista de los partidos predecidos
                   <div className="partido">
                     <img src={match.teams.home.logo} alt={match.teams.home.name} width="50" />
                     <span>{match.teams.home.name} {match.goals.home} - {match.goals.away} {match.teams.away.name}</span>
@@ -105,11 +104,10 @@ function Predicciones() {
                     <div>{new Date(match.fixture.date).toLocaleDateString()}</div>
                     <div>Competición: {match.league.name}</div>
                   </div>
-                })
-            ) : (
-                <p>No tienes predicciones activas.</p>
-            )}
-          </ul>
+              })
+          ) : (
+              <p>No tienes predicciones activas.</p>
+          )}
       </div>
   );
 }
