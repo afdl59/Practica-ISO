@@ -1,6 +1,5 @@
-// Updated Register.js
 import React, { useState } from 'react';
-import '../../styles/index.css'; // Importa los estilos globales
+import '../../styles/index.css';
 
 function Register() {
     const [formData, setFormData] = useState({
@@ -12,22 +11,51 @@ function Register() {
         confirmPassword: ''
     });
     const [error, setError] = useState('');
+    const [passwordValidations, setPasswordValidations] = useState({
+        hasUpperCase: false,
+        hasLowerCase: false,
+        hasNumber: false,
+        hasSpecialChar: false,
+        hasMinLength: false
+    });
 
     const handleChange = (e) => {
+        const { name, value } = e.target;
         setFormData({
             ...formData,
-            [e.target.name]: e.target.value
+            [name]: value
+        });
+
+        if (name === 'password') {
+            validatePassword(value);
+        }
+    };
+
+    const validatePassword = (password) => {
+        setPasswordValidations({
+            hasUpperCase: /[A-Z]/.test(password),
+            hasLowerCase: /[a-z]/.test(password),
+            hasNumber: /\d/.test(password),
+            hasSpecialChar: /[!@#$%^&*(),.?":{}|<>]/.test(password),
+            hasMinLength: password.length >= 6
         });
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const { hasUpperCase, hasLowerCase, hasNumber, hasSpecialChar, hasMinLength } = passwordValidations;
+
+        if (!hasUpperCase || !hasLowerCase || !hasNumber || !hasSpecialChar || !hasMinLength) {
+            setError('La contraseña no cumple con los requisitos');
+            return;
+        }
+
         if (formData.password !== formData.confirmPassword) {
             setError('Las contraseñas no coinciden');
             return;
         }
         setError('');
-        
+
         try {
             const response = await fetch('/api/users/register', {
                 method: 'POST',
@@ -45,7 +73,6 @@ function Register() {
             if (!response.ok) {
                 throw new Error('Error al registrar usuario');
             }
-            // Redirigir a la página de inicio después del registro exitoso
             window.location.href = '/';
         } catch (err) {
             setError(err.message);
@@ -96,6 +123,23 @@ function Register() {
                     onChange={handleChange}
                     required
                 />
+                <ul className="password-validation-list">
+                    <li className={passwordValidations.hasUpperCase ? 'valid' : 'invalid'}>
+                        Al menos una letra mayúscula
+                    </li>
+                    <li className={passwordValidations.hasLowerCase ? 'valid' : 'invalid'}>
+                        Al menos una letra minúscula
+                    </li>
+                    <li className={passwordValidations.hasNumber ? 'valid' : 'invalid'}>
+                        Al menos un número
+                    </li>
+                    <li className={passwordValidations.hasSpecialChar ? 'valid' : 'invalid'}>
+                        Al menos un símbolo especial
+                    </li>
+                    <li className={passwordValidations.hasMinLength ? 'valid' : 'invalid'}>
+                        Al menos 6 caracteres
+                    </li>
+                </ul>
                 <input
                     type="password"
                     name="confirmPassword"
@@ -107,6 +151,13 @@ function Register() {
                 {error && <p className="error-message">{error}</p>}
                 <button type="submit">Registrarse</button>
             </form>
+            <hr />
+            <button
+                className="google-login-button"
+                onClick={() => window.location.href = '/api/auth/google'}
+            >
+                Registrarse con Google
+            </button>
             <p>¿Ya tienes cuenta? <a href="/login">Inicia sesión aquí</a></p>
         </div>
     );

@@ -24,7 +24,7 @@ function Home() {
     <div className="home-container">
       {/* Video de fondo */}
       <video className="video-background" autoPlay loop muted>
-        <source src="/VideoFutbolHome.mp4" type="video/mp4" />
+        <source src="/Balon.mp4" type="video/mp4" />
         Tu navegador no soporta videos HTML5.
       </video>
 

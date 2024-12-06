@@ -1,5 +1,6 @@
 // middleware/authMiddleware.js
 module.exports = (req, res, next) => {
+    console.log("Sesión actual:", req.session);
     if (req.session && req.session.userId) {
         next(); // El usuario está autenticado, continuar con la solicitud
     } else {

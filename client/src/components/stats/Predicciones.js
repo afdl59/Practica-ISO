@@ -100,12 +100,17 @@ function Predicciones() {
                   if (
                       match?.teams?.home?.name &&
                       match?.teams?.away?.name &&
+                      match?.teams?.home?.logo &&
+                      match?.teams?.away?.logo &&
                       match?.fixture?.date
                   ) {
                       return (
                           <div key={index} className="prediction-item">
-                              <p>{match.teams.home.name} vs {match.teams.away.name}</p>
-                              <p>{new Date(match.fixture.date).toLocaleString()}</p>
+                            <img src={match.teams.home.logo} alt={match.teams.home.name} width="50" />
+                            <span>{match.teams.home.name} {match.goals.home} - {match.goals.away} {match.teams.away.name}</span>
+                            <img src={match.teams.away.logo} alt={match.teams.away.name} width="50" />
+                            <div>{new Date(match.fixture.date).toLocaleDateString()}</div>
+                            <div>Competición: {match.league.name}</div>
                           </div>
                       );
                   } else {
