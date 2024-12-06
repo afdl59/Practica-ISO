@@ -1,92 +1,100 @@
-/* Reinicio del estilo para evitar interferencias globales */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  padding: 0;
-  height: 100vh; /* La altura del body cubre toda la pantalla */
-  display: flex; /* Activa el modelo de Flexbox */
-  justify-content: center; /* Centrado horizontal */
-  align-items: center; /* Centrado vertical */
-  background-color: #f5f5f5; /* Color de fondo opcional */
-}
-
-.perfil-container {
-  text-align: center;
-  max-width: 500px; /* Tamaño máximo del formulario */
-  width: 90%; /* Ajustable a pantallas pequeñas */
-  padding: 40px;
-  border: 1px solid #ddd;
-  border-radius: 100px;
-  background-color: #fff;
-  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15); /* Sombra */
-}
 
 
-.social-text {
-  font-size: 16px;
-  color: #555;
+.perfil-container h1 {
+  color: #e63946; /* Color del título */
+  font-size: 24px;
   margin-bottom: 20px;
+  font-weight: bold;
 }
 
-.social-login {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  margin-bottom: 70;
-  width: 100%;
+.perfil-content {
+  margin-top: 20px;
 }
 
-.google-btn {
-  background-color: #db4437;
-  color: white;
-  font-size: 18px;
-  padding: 15px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  width: 100%;
-  transition: background-color 0.3s;
+/* Estilo para el formulario */
+form {
+  text-align: center;
 }
 
-.google-btn:hover {
-  background-color: #b33427;
+form label {
+  display: block;
+  text-align: center;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #555;
 }
 
-.login-form {
-  width: 100%;
-  display: center;
-  justify-content: center;
-  align-items: center;
-  place-items: center;
-  flex-direction: column;
-  gap: 20px;
+form input[type="text"],
+form input[type="email"],
+form input[type="password"] {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 50px;
+  font-size: 14px;
 }
 
-.login-form input {
-  padding: 15px;
+form button {
+  width: 50%;
+  padding: 12px;
+  background-color: #0a063a; /* Botón principal */
+  color: #ffffff;
   font-size: 16px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  width: 100%;
-}
-
-.login-btn {
-  background-color: #ff4d4f;
-  color: white;
-  font-size: 18px;
-  padding: 15px;
+  font-weight: bold;
   border: none;
-  border-radius: 5px;
+  border-radius: 50px;
   cursor: pointer;
-  width: 100%;
-  transition: background-color 0.3s;
+  margin-bottom: 10px;
 }
 
-.login-btn:hover {
-  background-color: #e43d3d;
+form button:hover {
+  background-color: #0b1344; /* Botón al pasar el mouse */
+}
+
+form .divider {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+}
+
+form .divider::before,
+form .divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 10px solid #ddd;
+}
+
+form .divider span {
+  padding: 0 10px;
+  font-size: 14px;
+  color: #999;
+}
+
+form .social-login button {
+  width: 50%;
+  padding: 10px;
+  border: 1px solid #4285F4;
+  color: #4285F4;
+  font-size: 14px;
+  border-radius: 5px;
+  background-color: #ffffff;
+  cursor: pointer;
+  margin-bottom: 15px;
+}
+
+form .social-login button:hover {
+  background-color: #e8f0fe;
+}
+
+form a {
+  display: block;
+  margin-top: 10px;
+  color: #e63946;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+form a:hover {
+  text-decoration: underline;
 }
