@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaHome, FaUser, FaComments, FaChartBar, FaGamepad, FaBell } from 'react-icons/fa';
 import '../styles/Sidebar.css';
-
+/*comntario*/
 function Sidebar() {
   const [notificaciones, setNotificaciones] = useState([]);
 
