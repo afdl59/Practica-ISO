@@ -37,7 +37,11 @@ function Perfil() {
           navigate('/login');
           return;
         }
-        const userResponse = await fetch(`/api/users/${data.username}`);
+        const userResponse = await fetch(`/api/users/${data.username}`, {
+          method: 'GET',
+          credentials: 'include',
+        });
+      
         if (!userResponse.ok) throw new Error('Error al obtener datos del usuario');
 
         const userData = await userResponse.json();

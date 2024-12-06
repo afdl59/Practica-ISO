@@ -11,9 +11,10 @@ passport.use(new GoogleStrategy({
         // Busca o crea el usuario en la base de datos
         let user = await User.findOne({ googleId: profile.id });
         if (!user) {
+            const sanitizedUsername = profile.displayName.replace(/\s+/g, '').toLowerCase();
             user = new User({
                 googleId: profile.id,
-                username: profile.displayName,
+                username: profile.sanitizedUsername,
                 email: profile.emails[0].value,
                 fotoPerfil: profile.photos[0].value,
             });
