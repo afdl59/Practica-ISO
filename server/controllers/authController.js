@@ -1,8 +1,40 @@
 // controllers/authController.js
+
+// Verificar si hay una sesión activa
 exports.checkSession = (req, res) => {
     if (req.session && req.session.user) {
         res.json({ isAuthenticated: true, username: req.session.user.username });
     } else {
         res.json({ isAuthenticated: false });
     }
+};
+
+// Manejar la redirección después del inicio de sesión con OAuth
+exports.handleOAuthSuccess = (req, res) => {
+    // Passport ya guarda al usuario autenticado en req.user
+    if (req.user) {
+        // Crear una sesión para el usuario
+        req.session.user = {
+            id: req.user.id,
+            username: req.user.username,
+            email: req.user.email,
+            fotoPerfil: req.user.fotoPerfil,
+        };
+        res.redirect('/'); // Redirige a la página principal (o a donde prefieras)
+    } else {
+        res.status(400).json({ message: "No se pudo autenticar al usuario." });
+    }
+};
+
+// Cerrar sesión
+exports.logout = (req, res) => {
+    req.logout(err => {
+        if (err) {
+            return res.status(500).json({ message: "Error al cerrar sesión" });
+        }
+        req.session.destroy(() => {
+            res.clearCookie('connect.sid'); // Limpia la cookie de sesión
+            res.redirect('/'); // Redirige al usuario
+        });
+    });
 };

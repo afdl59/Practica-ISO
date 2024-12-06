@@ -9,6 +9,7 @@ const { Server } = require('socket.io');
 const connectDB = require('./config/db');
 const sessionMiddleware = require('./middleware/sessionMiddleware');
 const getIpMiddleware = require('./middleware/getIp');
+const passport = require('./middleware/passport');
 const authRoutes = require('./routes/authRoutes');
 const chatRoutes = require('./routes/chatRoutes');
 const userRoutes = require('./routes/userRoutes');
@@ -45,6 +46,10 @@ app.use(sessionMiddleware);
 
 //Configurar middleware para obtener la IP del cliente
 app.use(getIpMiddleware);
+
+// Middleware de Passport
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Rutas de autenticación pública
 app.use('/api/auth', authRoutes); 
