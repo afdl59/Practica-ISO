@@ -5,7 +5,7 @@ const User = require('../models/User'); // Modelo de usuario
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: "/api/auth/google/callback",
+    callbackURL: "https://futbol360.ddns.net/api/auth/google/callback",
 }, async (accessToken, refreshToken, profile, done) => {
     try {
         // Busca o crea el usuario en la base de datos
