@@ -1,3 +1,5 @@
+/* Sidebar.css */
+
 /* Estilos globales */
 * {
   margin: 0;
@@ -15,33 +17,32 @@ html, body {
 /* Navbar horizontal */
 .navbar-horizontal {
   margin: 0;
-  padding: 10px 20px;
+  padding: 0;
   background-color: #1a1a2e; /* Azul oscuro */
   color: #ffffff;
+  padding: 10px 20px;
   display: flex;
-  justify-content: space-between; /* Espaciado uniforme entre elementos */
+  justify-content: space-between;
   align-items: center;
   width: 100%;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); /* Sombra elegante */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
   position: sticky;
   top: 0;
-  z-index: 900; /* Asegura que se mantenga sobre otros elementos */
+  z-index: 10;
 }
 
 /* Elementos del menú */
 .navbar-item {
   display: flex;
   align-items: center;
-  text-decoration: none; /* Sin subrayado */
+  text-decoration: none;
   color: #ffffff;
-  transition: color 0.3s ease, transform 0.3s ease;
+  transition: color 0.3s ease;
   margin: 0 15px;
-  position: relative; /* Para manejar subelementos */
 }
 
 .navbar-item:hover {
   color: #00bfff; /* Azul vibrante */
-  transform: translateY(-2px); /* Ligero movimiento al hover */
 }
 
 /* Íconos */
@@ -62,67 +63,16 @@ html, body {
 .notifications {
   display: flex;
   align-items: center;
-  position: relative; /* Para colocar la lista de notificaciones */
 }
 
 .notification-list {
   list-style: none;
-  margin: 5px 0 0; /* Espaciado superior */
-  padding: 10px;
+  margin: 0;
+  padding: 0;
   font-size: 0.9rem;
-  color: #333333; /* Texto gris oscuro */
-  background-color: #ffffff; /* Fondo blanco */
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para el popup */
-  position: absolute;
-  top: 40px; /* Aparece debajo del ícono de notificaciones */
-  right: 0;
-  display: none; /* Oculto por defecto */
-  z-index: 1000;
-}
-
-.notifications:hover .notification-list {
-  display: block; /* Mostrar al hacer hover en notificaciones */
-}
-
-.notification-list li {
-  padding: 5px 10px;
-  border-bottom: 1px solid #e0e0e0; /* Separador entre notificaciones */
-}
-
-.notification-list li:last-child {
-  border-bottom: none; /* Sin borde para el último elemento */
 }
 
 .notification-text {
   font-size: 0.9rem;
   color: #e0e0e0; /* Gris claro */
-  margin-left: 10px;
-}
-
-/* Activo */
-.navbar-item.active {
-  color: #00bfff; /* Azul vibrante para el elemento activo */
-  border-bottom: 2px solid #00bfff; /* Línea indicadora */
-}
-
-/* Responsividad */
-@media (max-width: 768px) {
-  .navbar-horizontal {
-    flex-wrap: wrap; /* Permite que los elementos se ajusten en varias líneas */
-    padding: 10px;
-  }
-
-  .navbar-item {
-    margin: 10px 5px; /* Espaciado reducido en pantallas pequeñas */
-    font-size: 0.9rem;
-  }
-
-  .navbar-icon {
-    font-size: 1.5rem; /* Reducir tamaño del ícono */
-  }
-
-  .navbar-title {
-    display: none; /* Ocultar títulos en pantallas pequeñas */
-  }
 }
