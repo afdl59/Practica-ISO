@@ -339,10 +339,11 @@ exports.sendHelpRequest = async (req, res) => {
     }
 
     const mailOptions = {
-        from: user.email, // Email del usuario autenticado
-        to: 'futbol360.client@gmail.com', // Email destino
+        from: 'Futbol360 <futbol360.client@gmail.com>',
+        to: 'futbol360.client@gmail.com',
+        replyTo: user.email, //Email del usuario para recibir las respuestas
         subject: `[Futbol360] ${subject}`,
-        text: `Mensaje de: ${user.email}\n\n${message}`, // Cuerpo del correo
+        text: `Mensaje de: ${user.email}\n\n${message}`,
     };
 
     emailService.sendMail(mailOptions, (error, info) => {
