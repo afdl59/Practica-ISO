@@ -22,21 +22,6 @@ function Home() {
 
   return (
     <div className="home-container">
-      {/* Barra animada */}
-      <div id="marquee-bar">
-        <marquee>
-          ¡Bienvenido a Futbol360! Explora estadísticas, predicciones y minijuegos. ¡No te lo pierdas!
-        </marquee>
-      </div>
-
-      {/* Columnas de anuncios */}
-      <div className="advertisement left-ad">
-        <p>Anuncio aquí</p>
-      </div>
-      <div className="advertisement right-ad">
-        <p>Anuncio aquí</p>
-      </div>
-
       {/* Video de fondo */}
       <video className="video-background" autoPlay loop muted>
         <source src="/VideoFutbolHome.mp4" type="video/mp4" />
@@ -64,3 +49,4 @@ function Home() {
 }
 
 export default Home;
+
