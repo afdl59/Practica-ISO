@@ -27,10 +27,12 @@ form label {
 form input[type="text"],
 form input[type="email"],
 form input[type="password"] {
-  width: calc(100% - 20px);
+  width: calc(100% - 765px);
+  margin: 10px auto;
+  text-align: center;
   padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #ddd;
+  margin-bottom: 5px;
+  border: 1px solid #04031d;
   border-radius: 50px;
   font-size: 14px;
 }
