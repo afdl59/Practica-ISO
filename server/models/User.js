@@ -7,7 +7,13 @@ const userSchema = new mongoose.Schema({
     firstName: { type: String },
     lastName: { type: String },
     email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
+    password: { 
+        type: String,
+        required: function () {
+            // Requiere contraseña solo si no tiene googleId
+            return !this.googleId;
+        }
+    },
     fotoPerfil: { type: String },
     googleId: { type: String, unique: true },
     equipoFavorito: { type: [String], default: [] }, // Nuevo campo para el equipo favorito
