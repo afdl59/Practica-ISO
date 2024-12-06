@@ -14,7 +14,7 @@ passport.use(new GoogleStrategy({
             const sanitizedUsername = profile.displayName.replace(/\s+/g, '').toLowerCase();
             user = new User({
                 googleId: profile.id,
-                username: profile.sanitizedUsername,
+                username: sanitizedUsername,
                 email: profile.emails[0].value,
                 fotoPerfil: profile.photos[0].value,
             });
