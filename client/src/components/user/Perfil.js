@@ -31,7 +31,10 @@ function Perfil() {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await fetch('/api/auth/check-session');
+        const response = await fetch('/api/auth/check-session', {
+          method: 'GET',
+          credentials: 'include',
+      });
         const data = await response.json();
         if (!data.isAuthenticated) {
           navigate('/login');
