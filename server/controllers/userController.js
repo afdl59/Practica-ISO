@@ -121,7 +121,7 @@ exports.logout = (req, res) => {
 
 // Obtener datos de un usuario específico
 exports.getUserProfile = async (req, res) => {
-    if (!req.session.userId) {
+    if (!req.session) {
         return res.status(401).json({ message: 'No autorizado' });
     }
     const { username } = req.params;
