@@ -3,7 +3,7 @@
 // Verificar si hay una sesión activa
 exports.checkSession = (req, res) => {
     console.log("Sesion activa: ", req.session);
-    if (req.session && req.session.userId) {
+    if (req.session) {
         return res.status(200).json({
             isAuthenticated: true,
             username: req.session.username,

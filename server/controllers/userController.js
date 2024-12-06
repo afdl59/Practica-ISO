@@ -124,8 +124,7 @@ exports.getUserProfile = async (req, res) => {
     if (!req.session.userId) {
         return res.status(401).json({ message: 'No autorizado' });
     }
-    const username = decodeURIComponent(req.params.username);
-    //const { username } = req.params;
+    const { username } = req.params;
     try {
         const usuario = await User.findOne({ username });
         if (!usuario) {
