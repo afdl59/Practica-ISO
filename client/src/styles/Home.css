@@ -24,10 +24,25 @@
   filter: brightness(0.6);
 }
 
+/* Barra animada (marquee) */
+#marquee-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #1a1a2e; /* Azul oscuro */
+  color: white;
+  font-size: 1.2rem;
+  text-align: center;
+  z-index: 1000; /* Sobre todo */
+  padding: 10px 0;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3); /* Efecto sombra */
+}
+
 /* Fecha y hora */
 .date-time {
   position: absolute;
-  top: 20px;
+  top: 50px;
   left: 20px;
   color: #ffffff;
   background-color: rgba(0, 0, 0, 0.7);
@@ -104,4 +119,38 @@
 
 .btn.secondary:hover {
   background-color: #444444;
+}
+
+/* Columnas de anuncios */
+.advertisement {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 150px;
+  height: 300px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
+  text-align: center;
+  border: 2px solid #00bfff;
+  border-radius: 10px;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.5);
+  z-index: 999; /* Visible pero detrás del marquee */
+}
+
+.left-ad {
+  left: 10px;
+}
+
+.right-ad {
+  right: 10px;
+}
+
+/* Animaciones para el texto del marquee (opcional) */
+#marquee-bar marquee {
+  font-weight: bold;
+  font-size: 1.2rem;
 }
