@@ -151,6 +151,13 @@ function Register() {
                 {error && <p className="error-message">{error}</p>}
                 <button type="submit">Registrarse</button>
             </form>
+            <hr />
+            <button
+                className="google-login-button"
+                onClick={() => window.location.href = '/api/auth/google'}
+            >
+                Registrarse con Google
+            </button>
             <p>¿Ya tienes cuenta? <a href="/login">Inicia sesión aquí</a></p>
         </div>
     );

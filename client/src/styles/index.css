@@ -36,3 +36,21 @@
 .password-validation-list .invalid {
     color: red;
 }
+
+.google-login-button {
+  display: block;
+  margin: 10px auto;
+  padding: 10px 20px;
+  background-color: #4285F4;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  width: 100%;
+}
+
+.google-login-button:hover {
+  background-color: #357AE8;
+}

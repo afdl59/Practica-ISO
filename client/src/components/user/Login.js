@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../../styles/index.css'; // Importa los estilos globales
+import '../../styles/index.css';
 
 function Login() {
     const [formData, setFormData] = useState({
-        identifier: '', // Puede ser nombre de usuario o correo electrónico
+        identifier: '',
         password: ''
     });
     const [error, setError] = useState('');
@@ -32,16 +32,13 @@ function Login() {
                 body: JSON.stringify(formData)
             });
             const data = await response.json();
-            
+
             if (!response.ok) {
                 throw new Error(data.message || 'Error al iniciar sesión');
             }
 
             setSuccess('Inicio de sesión exitoso');
             navigate('/'); // Redirigir a la página de inicio
-
-            // Guardar el nombre de usuario en localStorage
-            //localStorage.setItem('username', formData.identifier);
         } catch (err) {
             setError(err.message);
         }
@@ -71,8 +68,16 @@ function Login() {
                 {success && <p className="success-message">{success}</p>}
                 <button type="submit">Iniciar Sesión</button>
             </form>
+            <hr />
+            <button
+                className="google-login-button"
+                onClick={() => window.location.href = '/api/auth/google'}
+            >
+                Iniciar sesión con Google
+            </button>
         </div>
     );
 }
 
 export default Login;
+
