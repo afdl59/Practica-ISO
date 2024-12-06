@@ -38,8 +38,16 @@ app.use(cors({
     origin: 'https://futbol360.ddns.net',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true
+    credentials: true,
 }));
+
+//Debugging solicitudes entrantes y salientes
+app.use((req, res, next) => {
+    console.log("Cookies recibidas:", req.cookies);
+    console.log("Origen de la solicitud:", req.headers.origin);
+    console.log("Sesión actual:", req.session);
+    next();
+});
 
 // Configurar middleware de sesión
 app.use(sessionMiddleware);
