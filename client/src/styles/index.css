@@ -79,6 +79,27 @@ html, body {
   border-radius: 8px; /* Bordes redondeados */
 }
 
+/* Botón debajo del video */
+.prediction-panel .promo-button {
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 0; /* Menos padding para hacerlo más compacto */
+  width: 90%; /* Ajusta al 90% del ancho del video */
+  background: #007bff; /* Azul que combina con la página */
+  color: #ffffff;
+  text-decoration: none;
+  text-align: center;
+  border-radius: 6px;
+  transition: background 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-top: -10px; /* Sube el botón un poco */
+}
+
+.prediction-panel .promo-button:hover {
+  background: #379522; /* Azul más oscuro al pasar el cursor */
+}
+
 /* Columna derecha */
 .info-panel {
   width: 300px;
@@ -120,3 +141,4 @@ html, body {
   color: #333333;
   text-align: center;
 }
+
