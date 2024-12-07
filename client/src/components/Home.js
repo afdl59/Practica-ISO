@@ -1,14 +1,37 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/Home.css';
 
 function Home() {
+  const [currentTime, setCurrentTime] = useState('');
+
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      const formattedTime = now.toLocaleString('es-ES', {
+        dateStyle: 'short',
+        timeStyle: 'medium',
+      });
+      setCurrentTime(formattedTime);
+    };
+
+    const timer = setInterval(updateTime, 1000);
+    updateTime();
+
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <div className="home-container">
       {/* Video de fondo */}
       <video className="video-background" autoPlay loop muted>
-        <source src="/VideoFutbolHome.mp4" type="video/mp4" />
+        <source src="/Balon.mp4" type="video/mp4" />
         Tu navegador no soporta videos HTML5.
       </video>
+
+      {/* Fecha y hora en tiempo real */}
+      <div className="date-time">
+        <p>{currentTime}</p>
+      </div>
 
       {/* Contenido principal */}
       <div className="content-wrapper">
@@ -17,14 +40,18 @@ function Home() {
           Descubre el mundo del fútbol como nunca antes. Inicia sesión o crea una cuenta para acceder a todas las funcionalidades.
         </p>
         <div className="buttons">
-          <a href="/login" className="btn">Iniciar Sesión</a>
-          <a href="/register" className="btn btn-alt">Registrarse</a>
+          <a href="/login" className="btn primary">Iniciar Sesión</a>
+          <a href="/register" className="btn secondary">Registrarse</a>
         </div>
+      </div>
+
+      {/* Botones de Términos y Privacidad */}
+      <div className="footer-links">
+        <a href="/terms" className="footer-link">Términos y Condiciones</a>
+        <a href="/privacy" className="footer-link">Privacidad</a>
       </div>
     </div>
   );
 }
 
 export default Home;
-
-

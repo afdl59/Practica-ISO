@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import logo from '../assets/logo.jpg';
+import { FaHome, FaUser, FaComments, FaChartBar, FaGamepad, FaBell } from 'react-icons/fa';
 import '../styles/Sidebar.css';
 
 function Sidebar() {
@@ -16,24 +16,24 @@ function Sidebar() {
   };
 
   return (
-    <div className="navbar">
+    <div className="navbar-horizontal">
       <Link to="/" className="navbar-item">
-        <img src={logo} alt="Icon Inicio" className="navbar-icon" />
-        <h3 className="navbar-title">Inicio</h3>
+        <FaHome className="navbar-icon" />
+        <span className="navbar-title">Inicio</span>
       </Link>
       <Link to="/perfil" className="navbar-item">
-        <img src={logo} alt="Icon Perfil" className="navbar-icon" />
-        <h3 className="navbar-title">Perfil</h3>
+        <FaUser className="navbar-icon" />
+        <span className="navbar-title">Perfil</span>
       </Link>
       <Link to="/foro" className="navbar-item">
-        <img src={logo} alt="Icon Foro" className="navbar-icon" />
-        <h3 className="navbar-title">Foro</h3>
+        <FaComments className="navbar-icon" />
+        <span className="navbar-title">Foro</span>
       </Link>
 
-      {/* Nueva sección Estadísticas */}
+      {/* Sección Estadísticas */}
       <div className="navbar-item dropdown" onClick={toggleEstadisticas}>
-        <img src={logo} alt="Icon Estadísticas" className="navbar-icon" />
-        <h3 className="navbar-title">Estadísticas</h3>
+        <FaChartBar className="navbar-icon" />
+        <span className="navbar-title">Estadísticas</span>
         {estadisticasOpen && (
           <div className="dropdown-content">
             <Link to="/partidos" className="dropdown-item">Partidos Pasados</Link>
@@ -45,14 +45,14 @@ function Sidebar() {
 
       {/* Sección Predicciones */}
       <Link to="/predicciones" className="navbar-item">
-        <img src={logo} alt="Icon Foro" className="navbar-icon" />
-        <h3 className="navbar-title">Predicciones</h3>
+        <FaChartBar className="navbar-icon" />
+        <span className="navbar-title">Predicciones</span>
       </Link>
 
       {/* Sección Minijuegos */}
       <div className="navbar-item dropdown" onClick={toggleMinigames}>
-        <img src={logo} alt="Icon Minijuegos" className="navbar-icon" />
-        <h3 className="navbar-title">Minijuegos</h3>
+        <FaGamepad className="navbar-icon" />
+        <span className="navbar-title">Minijuegos</span>
         {minigamesOpen && (
           <div className="dropdown-content">
             <Link to="/minijuegos/guess-the-player" className="dropdown-item">Guess the Player</Link>
@@ -63,10 +63,16 @@ function Sidebar() {
         )}
       </div>
 
+      {/* Sección Rankings */}
+      <Link to="/rankings" className="navbar-item">
+        <FaChartBar className="navbar-icon" />
+        <span className="navbar-title">Rankings</span>
+      </Link>
+
       {/* Sección Notificaciones */}
       <Link to="/notificaciones" className="navbar-item">
-        <img src={logo} alt="Icon Notificaciones" className="navbar-icon" />
-        <h3 className="navbar-title">Notificaciones</h3>
+        <FaBell className="navbar-icon" />
+        <span className="navbar-title">Notificaciones</span>
       </Link>
       
     </div>
@@ -74,4 +80,3 @@ function Sidebar() {
 }
 
 export default Sidebar;
-
