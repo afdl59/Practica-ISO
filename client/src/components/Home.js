@@ -24,7 +24,7 @@ function Home() {
     <div className="home-container">
       {/* Video de fondo */}
       <video className="video-background" autoPlay loop muted>
-        <source src="/VideoFutbolHome.mp4" type="video/mp4" />
+        <source src="/Balon.mp4" type="video/mp4" />
         Tu navegador no soporta videos HTML5.
       </video>
 
@@ -43,6 +43,12 @@ function Home() {
           <a href="/login" className="btn primary">Iniciar Sesión</a>
           <a href="/register" className="btn secondary">Registrarse</a>
         </div>
+      </div>
+
+      {/* Botones de Términos y Privacidad */}
+      <div className="footer-links">
+        <a href="/terms" className="footer-link">Términos y Condiciones</a>
+        <a href="/privacy" className="footer-link">Privacidad</a>
       </div>
     </div>
   );

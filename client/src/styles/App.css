@@ -46,33 +46,3 @@
     transform: rotate(360deg);
   }
 }
-
-/* Barra animada */
-.animated-bar {
-  background-color: #1a1a2e; /* Azul oscuro */
-  color: white;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  position: relative;
-  overflow: hidden;
-  z-index: 10;
-}
-
-.animated-bar-text {
-  white-space: nowrap;
-  position: absolute;
-  animation: slide 10s linear infinite;
-  font-size: 1rem;
-  font-weight: bold;
-  padding-left: 100%;
-}
-
-@keyframes slide {
-  from {
-    transform: translateX(100%);
-  }
-  to {
-    transform: translateX(-100%);
-  }
-}
