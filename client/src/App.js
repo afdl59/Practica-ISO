@@ -41,6 +41,9 @@ import './styles/App.css';
 import { UserProvider } from './context/UserContext';
 import { LeaderboardProvider } from './context/LeaderboardContext';
 
+//Rankings
+import Rankings from './components/stats/Rankings';
+
 function App() {
   return (
     <UserProvider>
@@ -86,6 +89,9 @@ function App() {
             <Route path="/predicciones" element={<Predicciones />} />
             <Route path="/partido-prueba1" element={<PartidoPrueba1 />} />
             <Route path="/partido-prueba2" element={<PartidoPrueba2 />} />
+
+            {/* Rutas de Rankings */}
+            <Route path="/rankings" element={<Rankings />} />
           </Routes>
         </div>
       </LeaderboardProvider>
