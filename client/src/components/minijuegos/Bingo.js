@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../../styles/minijuegos/Bingo.css';
 import { useLeaderboard } from '../../context/LeaderboardContext';
 
+// Define los jugadores
 const jugadores = [
   { nombre: "Harry Kane", definicion: "Delantero estrella del bayern de munchen y la selección inglesa." },
   { nombre: "Sergio Ramos", definicion: "Defensa central, leyenda del Real Madrid y capitán de la selección española." },
@@ -14,18 +15,28 @@ const jugadores = [
   { nombre: "Santiago Cazorla", definicion: "Centrocampista con gran visión de juego, ha jugado en La Liga y Premier League." }
 ];
 
+// Función para calcular el puntaje
 function calculateBingoScore(inputs, jugadores) {
-  // Each correct square gives 1 point, full board gives 1 extra point
+  // Cambios: Validación de inputs y jugadores para evitar errores
+  if (!jugadores || !inputs) return 0;
+  
+  // Validación para evitar error de 'undefined' al acceder a jugadores[index]
   const filledSquares = inputs.filter((input, index) => 
-      input.trim().toLowerCase() === jugadores[index].nombre.toLowerCase()
+      input.trim().toLowerCase() === jugadores[index]?.nombre.toLowerCase()
   ).length;
+
   const isFullBoard = filledSquares === jugadores.length;
   return isFullBoard ? filledSquares + 1 : filledSquares;
 }
 
 function BingoGame({ jugadores, playerName }) {
   const { updateLeaderboard } = useLeaderboard();
-  const [inputs, setInputs] = useState(Array(jugadores.length).fill(''));
+
+  // Cambios: Inicialización del estado inputs con un fallback en caso de que jugadores esté vacío
+  const [inputs, setInputs] = useState(() => 
+      jugadores ? Array(jugadores.length).fill('') : []
+  );
+
   const [score, setScore] = useState(0);
   const [mensaje, setMensaje] = useState('');
 
@@ -36,10 +47,11 @@ function BingoGame({ jugadores, playerName }) {
   };
 
   const validarGanador = () => {
+      // Cambios: Validación en caso de que jugadores o inputs no existan
       const currentScore = calculateBingoScore(inputs, jugadores);
       setScore(currentScore);
       
-      if (currentScore === 10) { // Full board score
+      if (currentScore === jugadores.length + 1) { // Full board score
           setMensaje('¡Ganaste! Has completado el bingo.');
           updateLeaderboard('bingo', playerName, currentScore);
       } else {
@@ -47,19 +59,27 @@ function BingoGame({ jugadores, playerName }) {
       }
   };
 
+  // Cambios: Agregar manejo de errores si jugadores está vacío o indefinido
+  if (!jugadores || jugadores.length === 0) {
+      return <div>No hay datos de jugadores disponibles.</div>;
+  }
+
   return (
       <div className="bingo-container">
           <h1>Bingo de Futbolistas</h1>
           <div className="grid">
               {jugadores.map((jugador, index) => (
-                  <div key={index} className={`grid-item ${inputs[index].trim().toLowerCase() === jugadores[index].nombre.toLowerCase() ? 'correct' : ''}`}>
+                  <div 
+                      key={index} 
+                      className={`grid-item ${inputs[index]?.trim().toLowerCase() === jugador.nombre.toLowerCase() ? 'correct' : ''}`}
+                  >
                       <p>{jugador.definicion}</p>
                       <input
                           type="text"
-                          value={inputs[index]}
+                          value={inputs[index] || ''} // Cambios: fallback en caso de que inputs[index] sea undefined
                           onChange={(e) => handleInputChange(index, e.target.value)}
-                          onBlur={() => validarGanador()} // Validate when leaving the input
-                          onKeyDown={(e) => e.key === 'Enter' && validarGanador()} // Validate on Enter press
+                          onBlur={() => validarGanador()} // Validar al salir del input
+                          onKeyDown={(e) => e.key === 'Enter' && validarGanador()} // Validar al presionar Enter
                       />
                   </div>
               ))}
@@ -69,5 +89,11 @@ function BingoGame({ jugadores, playerName }) {
       </div>
   );
 }
+
+// Cambios: Props por defecto para evitar problemas si no se pasan props al componente
+BingoGame.defaultProps = {
+  jugadores: [],
+  playerName: 'Guest'
+};
 
 export default BingoGame;
