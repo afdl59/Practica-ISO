@@ -27,7 +27,7 @@ function Perfil() {
   const [showHelpForm, setShowHelpForm] = useState(false);
   const [helpSubject, setHelpSubject] = useState('');
   const [helpMessage, setHelpMessage] = useState('');
-
+  //estilos
   useEffect(() => {
     const checkAuth = async () => {
       try {
