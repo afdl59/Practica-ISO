@@ -4,7 +4,7 @@ import '../../styles/index.css';
 import botanike1 from '../../assets/Patrocinio/botanike1.jpg';
 import botanike2 from '../../assets/Patrocinio/botanike2.jpg';
 import botanike3 from '../../assets/Patrocinio/botanike3.jpg';
-
+import botanike4 from '../../assets/Patrocinio/botanike4.jpg';
 
 function Login() {
     const [formData, setFormData] = useState({
@@ -49,9 +49,6 @@ function Login() {
     };
 
     
-
-    
-   
       return (
         <div>
           {/* Productos Patrocinados */}
@@ -70,13 +67,13 @@ function Login() {
               </div>
               <div className="product">
                 <img src={botanike3} alt="Producto 3" />
-                <p>adidas Originals Pantalón Corto Real Madrid</p>
-                <span>45,00 €</span>
+                <p>Bota Nike Air Mercurial Beige</p>
+                <span>39,98 €</span>
               </div>
               <div className="product">
-                <img src={botanike1} alt="Producto 4" />
-                <p>adidas Pantalón Real Madrid Authentic</p>
-                <span>50,00 €</span>
+                <img src={botanike4} alt="Producto 4" />
+                <p>Bota Nike Air Merucrial Verde</p>
+                <span>39,00 €</span>
               </div>
             </div>
           </div>
