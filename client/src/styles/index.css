@@ -47,28 +47,47 @@ html, body {
   margin-top: 70px; /* Deja espacio debajo del sidebar */
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-between; /* Coloca las columnas a los extremos */
   align-items: flex-start;
+  gap: 20px; /* Espacio entre los elementos */
 }
 
-/* Contenedor de anuncios */
-.ad-container {
-  width: 20%;
-  height: calc(100vh - 70px); /* Ajusta la altura para excluir el sidebar */
-  background: rgba(0, 0, 0, 0.05); /* Fondo gris claro */
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+/* Panel de predicciones (columna izquierda) */
+.prediction-panel {
+  width: 300px;
+  height: calc(100vh - 50px); /* Ocupa toda la altura menos la del sidebar */
+  background: #1a1a1a; /* Fondo negro */
+  color: #ffffff; /* Texto blanco */
+  padding: 20px;
+  border-radius: 0 0 12px 12px; /* Solo bordes inferiores redondeados */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Sombra suave */
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 10px;
-  margin: 0 10px;
+  position: fixed; /* Fija el panel en la pantalla */
+  top: 50px; /* Debajo del sidebar */
+  left: 0; /* Pegado al borde izquierdo */
+  z-index: 3; /* Asegura que esté sobre otros elementos */
 }
 
-.ad-container h3 {
-  font-size: 18px;
-  color: #333;
+/* Columna derecha idéntica */
+.info-panel {
+  width: 300px;
+  height: calc(100vh - 50px); /* Ocupa toda la altura menos la del sidebar */
+  background: #1a1a1a; /* Fondo negro */
+  color: #ffffff; /* Texto blanco */
+  padding: 20px;
+  border-radius: 0 0 12px 12px; /* Solo bordes inferiores redondeados */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Sombra suave */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: fixed; /* Fija el panel en la pantalla */
+  top: 50px; /* Debajo del sidebar */
+  right: 0; /* Pegado al borde derecho */
+  z-index: 3; /* Asegura que esté sobre otros elementos */
 }
 
 /* Contenedor del formulario */
@@ -80,8 +99,9 @@ html, body {
   border-radius: 12px;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Sombra suave */
   position: relative;
-  margin: 80px auto 0 auto; /* Baja el formulario más abajo */
+  margin: 150px auto 0 auto; /* Baja el formulario para centrarlo */
   z-index: 1; /* Eleva el formulario sobre los anuncios */
+  text-align: center; /* Centra los textos y botones */
 }
 
 /* Título */
@@ -97,9 +117,9 @@ html, body {
 form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  width: 100%;
   align-items: center;
+  gap: 15px; /* Espaciado entre campos */
+  width: 100%;
 }
 
 /* Campos de texto */
@@ -169,49 +189,4 @@ hr {
 
 .google-login-button:hover {
   background: #c23321;
-}
-
-/* Mensajes de error y éxito */
-.error-message {
-  font-size: 14px;
-  color: #e63946; /* Rojo para errores */
-  margin-top: -10px;
-  text-align: center;
-}
-
-.success-message {
-  font-size: 14px;
-  color: #28a745; /* Verde para éxito */
-  margin-top: -10px;
-  text-align: center;
-}
-
-/* Responsivo */
-@media (max-width: 768px) {
-  .main-container {
-      flex-direction: column;
-      align-items: center;
-  }
-
-  .ad-container {
-      width: 90%;
-      height: 150px; /* Ajusta los anuncios para pantallas pequeñas */
-      margin-bottom: 20px;
-  }
-
-  .auth-container {
-      width: 90%;
-      padding: 30px;
-  }
-
-  form input[type="text"],
-  form input[type="password"],
-  form button[type="submit"],
-  .google-login-button {
-      width: 100%;
-  }
-
-  hr {
-      width: 100%;
-  }
 }

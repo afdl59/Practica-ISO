@@ -46,6 +46,23 @@ function Login() {
 
     return (
         <div className="auth-container">
+                      <div className="prediction-panel">
+        <h2>Haz tus predicciones</h2>
+        <p>
+            Participa en nuestras predicciones y demuestra tu conocimiento. 
+            Compite con otros usuarios y gana recompensas.
+        </p>
+        <button>¡Empieza ahora!</button>
+    </div>
+    <div class="info-panel">
+    <h2>HAZ TUS PREDICCIONES</h2>
+    <p>
+        Participa en nuestras predicciones y demuestra tu conocimiento.
+        Compite con otros usuarios y gana recompensas.
+    </p>
+    <button>¡Empieza ahora!</button>
+</div>
+
             <h1>Iniciar Sesión en Futbol360</h1>
             <form onSubmit={handleSubmit}>
                 <input
@@ -75,7 +92,9 @@ function Login() {
             >
                 Iniciar sesión con Google
             </button>
+  
         </div>
+        
     );
 }
 
