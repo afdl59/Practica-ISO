@@ -1,5 +1,5 @@
 // minijuegos/Leaderboard.js
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLeaderboard } from '../context/LeaderboardContext';
 import '../styles/Leaderboard.css';
 
