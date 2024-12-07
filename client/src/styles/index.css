@@ -1,4 +1,4 @@
-/* Estilos globales */
+/* Reset y estilos globales */
 * {
   margin: 0;
   padding: 0;
@@ -6,53 +6,202 @@
 }
 
 html, body {
-  margin: 0;
-  padding: 0;
   height: 100%;
   width: 100%;
-  overflow-x: hidden; /* Evita el scroll horizontal */
-  background: url('./src/assets/equipo_login.jpg') no-repeat center center fixed; /* Ruta de la imagen */
-  background-size: cover; /* Escala la imagen para cubrir toda la pantalla */
+  font-family: 'Montserrat', sans-serif; /* Fuente Montserrat */
+  background: #f8f9fa; /* Fondo claro */
+  display: flex;
+  flex-direction: column; /* Asegura que los elementos sean apilados */
 }
 
-#root {
+/* Sidebar */
+.sidebar {
   width: 100%;
-  height: 100%;
-}
-
-.password-validation-list {
-  list-style: none;
-  padding: 0;
-  margin: 10px 0;
-}
-
-.password-validation-list li {
-  margin-bottom: 5px;
-  font-size: 14px;
-}
-
-.password-validation-list .valid {
-  color: green;
-}
-
-.password-validation-list .invalid {
-  color: red;
-}
-
-.google-login-button {
-  display: block;
-  margin: 10px auto;
-  padding: 10px 20px;
-  background-color: #4c88e9;
+  height: 50px; /* Altura del sidebar */
+  background: #212529; /* Color oscuro para el sidebar */
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
   color: white;
-  font-size: 16px;
-  border: none;
-  border-radius: 15px;
-  cursor: pointer;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2; /* Mantén el sidebar sobre el resto */
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); /* Sombra ligera */
+}
+
+.sidebar a {
+  text-decoration: none;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.sidebar a:hover {
+  color: #007bff; /* Azul al pasar el cursor */
+}
+
+/* Contenedor principal */
+.main-container {
+  margin-top: 70px; /* Deja espacio debajo del sidebar */
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* Contenedor de anuncios */
+.ad-container {
+  width: 20%;
+  height: calc(100vh - 70px); /* Ajusta la altura para excluir el sidebar */
+  background: rgba(0, 0, 0, 0.05); /* Fondo gris claro */
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
-  width: 50%;
+  padding: 10px;
+  margin: 0 10px;
+}
+
+.ad-container h3 {
+  font-size: 18px;
+  color: #333;
+}
+
+/* Contenedor del formulario */
+.auth-container {
+  width: 60%;
+  max-width: 500px;
+  background: #ffffff; /* Fondo blanco */
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Sombra suave */
+  position: relative;
+  margin: 80px auto 0 auto; /* Baja el formulario más abajo */
+  z-index: 1; /* Eleva el formulario sobre los anuncios */
+}
+
+/* Título */
+.auth-container h1 {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #333333;
+  text-align: center;
+}
+
+/* Formularios */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+  align-items: center;
+}
+
+/* Campos de texto */
+form input[type="text"],
+form input[type="password"] {
+  font-size: 16px;
+  width: 90%; /* Ajustar ancho uniforme */
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+form input[type="text"]:focus,
+form input[type="password"]:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Botón de envío */
+form button[type="submit"] {
+  font-size: 16px;
+  padding: 12px;
+  width: 90%;
+  background: #007bff;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+form button[type="submit"]:hover {
+  background: #0056b3;
+}
+
+/* Botón de Google */
+.google-login-button {
+  font-size: 16px;
+  padding: 12px;
+  width: 90%;
+  background: #db4437; /* Rojo de Google */
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 20px;
 }
 
 .google-login-button:hover {
-  background-color: #357AE8;
+  background: #c23321;
+}
+
+/* Mensajes de error y éxito */
+.error-message {
+  font-size: 14px;
+  color: #e63946; /* Rojo para errores */
+  margin-top: -10px;
+  text-align: center;
+}
+
+.success-message {
+  font-size: 14px;
+  color: #28a745; /* Verde para éxito */
+  margin-top: -10px;
+  text-align: center;
+}
+
+/* Separador */
+hr {
+  border: none;
+  border-top: 1px solid #e0e0e0;
+  margin: 20px 0;
+  width: 90%;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .main-container {
+      flex-direction: column;
+      align-items: center;
+  }
+
+  .ad-container {
+      width: 90%;
+      height: 150px; /* Ajusta los anuncios para pantallas pequeñas */
+      margin-bottom: 20px;
+  }
+
+  .auth-container {
+      width: 90%;
+      padding: 30px;
+  }
+
+  form input[type="text"],
+  form input[type="password"],
+  form button[type="submit"],
+  .google-login-button {
+      width: 100%;
+  }
 }

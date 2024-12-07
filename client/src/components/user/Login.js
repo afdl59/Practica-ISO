@@ -1,45 +1,83 @@
-var express = require('express');
-var router = express.Router();
-const bcrypt = require('bcrypt');
-const userService = require('./userService');
-const db = require('./Connection');
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import '../../styles/index.css';
 
-/* GET users listing. */
-// router.get('/login', function(req, res, next) {
-//   res.render('login', { user: req.session.user});
-// });
+function Login() {
+    const [formData, setFormData] = useState({
+        identifier: '',
+        password: ''
+    });
+    const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
+    const navigate = useNavigate();
 
-router.post('/', async function(req, res, next) {
-    const { name, password } = req.body;
-    try{
-        await db.connect("ConnectionWeb1");
-        const user = await userContext.findUserByUsername(name);
-        console.log(user);
-        //comprobamos si usuario existe
-        if (user) {
-            console.log("Usuario encontrado");
-            console.log("Su pass es: ", user.password);
-            const hashedPassword = user.hashedPassword;
-            console.log(hashedPassword);
-            const isMatch = await bcrypt.compare(password, hashedPassword);
-            //si la contraseña concuerda
-            if (isMatch) {
-                console.log("Login correcto");
-                req.session.message = "¡Login correcto!";
-                req.session.user = { user: user };
-                return res.redirect('/profile'); 
+    function handleChange(e) {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        });
+    }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError('');
+        setSuccess('');
+
+        try {
+            const response = await fetch('/api/users/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || 'Error al iniciar sesión');
             }
+
+            setSuccess('Inicio de sesión exitoso');
+            navigate('/'); // Redirigir a la página de inicio
+        } catch (err) {
+            setError(err.message);
         }
+    };
 
-        console.log("Usuario o contraseña incorrectos");
-        req.session.error = "Usuario o contraseña incorrectas";
-        res.redirect('/');
-    } catch (error) {
-        console.error("Error:", error);
-    } finally {
-        // Cerrar la conexión
-        await db.close();
-    }    
-});
+    return (
+        <div className="auth-container">
+            <h1>Iniciar Sesión en Futbol360</h1>
+            <form onSubmit={handleSubmit}>
+                <input
+                    type="text"
+                    name="identifier"
+                    placeholder="Nombre de usuario o Correo Electrónico"
+                    value={formData.identifier}
+                    onChange={handleChange}
+                    required
+                />
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Contraseña"
+                    value={formData.password}
+                    onChange={handleChange}
+                    required
+                />
+                {error && <p className="error-message">{error}</p>}
+                {success && <p className="success-message">{success}</p>}
+                <button type="submit">Iniciar Sesión</button>
+            </form>
+            <hr />
+            <button
+                className="google-login-button"
+                onClick={() => window.location.href = '/api/auth/google'}
+            >
+                Iniciar sesión con Google
+            </button>
+        </div>
+    );
+}
 
-module.exports = router;
+export default Login;
+
