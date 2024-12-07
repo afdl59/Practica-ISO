@@ -42,7 +42,7 @@ passport.use(new TwitterStrategy({
             : null;
         
         // Validar si 'email' existe y tiene contenido
-        const email = profile.email && profile.emails.length > 0 
+        const email = profile.emails && profile.emails.length > 0 
         ? profile.emails[0].value 
         : null;
 

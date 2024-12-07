@@ -10,8 +10,8 @@ const userSchema = new mongoose.Schema({
     password: { 
         type: String,
         required: function () {
-            // Requiere contraseña solo si no tiene googleId
-            return (!this.googleId || !this.twitterId);
+            // Requiere contraseña solo si no tiene googleId ni twitterId
+            return (!this.googleId && !this.twitterId);
         }
     },
     fotoPerfil: { type: String },
