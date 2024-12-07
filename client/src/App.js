@@ -36,6 +36,10 @@ import Predicciones from './components/stats/Predicciones';
 //Notificaciones
 import Notificaciones from './components/notificaciones/Notificaciones';
 
+//Terminos y Condiciones
+import Terms from './components/Terms';
+import Privacy from './components/Privacy';
+
 //CSS
 import './styles/App.css';
 import { UserProvider } from './context/UserContext';
@@ -86,6 +90,10 @@ function App() {
             <Route path="/predicciones" element={<Predicciones />} />
             <Route path="/partido-prueba1" element={<PartidoPrueba1 />} />
             <Route path="/partido-prueba2" element={<PartidoPrueba2 />} />
+
+            {/* Rutas de Términos y Condiciones */}
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/privacy" element={<Privacy />} />
           </Routes>
         </div>
       </LeaderboardProvider>
