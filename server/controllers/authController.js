@@ -15,16 +15,27 @@ exports.checkSession = (req, res) => {
 
 // Manejar la redirección después del inicio de sesión con OAuth
 exports.handleOAuthSuccess = (req, res) => {
-    // Passport ya guarda al usuario autenticado en req.user
     if (req.user) {
         // Crear una sesión para el usuario
         req.session.userId = req.user.id;
         req.session.username = req.user.username;
-        res.redirect('/'); // Redirige a la página principal (o a donde prefieras)
+
+        // Log para verificar la sesión
+        console.log("Sesión creada tras OAuth:", req.session);
+
+        // Guardar sesión explícitamente
+        req.session.save((err) => {
+            if (err) {
+                console.error("Error al guardar la sesión:", err);
+                return res.status(500).json({ message: "No se pudo guardar la sesión" });
+            }
+            res.redirect('/'); // Redirige al home o donde prefieras
+        });
     } else {
         res.status(400).json({ message: "No se pudo autenticar al usuario." });
     }
 };
+
 
 // Cerrar sesión
 exports.logout = (req, res) => {
