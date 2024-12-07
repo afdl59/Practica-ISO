@@ -1,5 +1,5 @@
 // LeaderboardContext.js
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const LeaderboardContext = createContext();
 
@@ -9,14 +9,28 @@ export function LeaderboardProvider({ children }) {
         guessThePlayer: [],
         tiroLibre: [],
         wordle: [],
+        predicciones: [],
     });
+
+    useEffect(() => {
+        async function fetchLeaderboards() {
+            try {
+                const response = await fetch('/api/leaderboards'); // Endpoint del backend
+                const data = await response.json();
+                setLeaderboards(data);
+            } catch (error) {
+                console.error('Error fetching leaderboards:', error);
+            }
+        }
+        fetchLeaderboards();
+    }, []);
 
     function updateLeaderboard(game, playerName, score) {
         setLeaderboards(prev => ({
             ...prev,
             [game]: [...prev[game], { playerName, score, date: new Date() }]
                 .sort((a, b) => b.score - a.score)
-                .slice(0, 10) // Only keep top 10 scores
+                .slice(0, 10),
         }));
     }
 
