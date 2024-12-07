@@ -158,6 +158,12 @@ function Register() {
             >
                 Registrarse con Google
             </button>
+            <button
+                className="twitter-login-button"
+                onClick={() => window.location.href = '/api/auth/twitter'}
+            >
+              Registrarse con Twitter
+            </button>
             <p>¿Ya tienes cuenta? <a href="/login">Inicia sesión aquí</a></p>
         </div>
     );

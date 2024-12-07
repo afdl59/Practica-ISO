@@ -15,6 +15,15 @@ router.get('/google/callback',
     handleOAuthSuccess // Usa el controlador para manejar el éxito de OAuth
 );
 
+// Ruta de autenticación con Twitter
+router.get('/twitter', passport.authenticate('twitter'));
+
+// Callback de Twitter
+router.get('/twitter/callback', 
+    passport.authenticate('twitter', { failureRedirect: '/login' }),
+    handleOAuthSuccess // Usa el controlador para manejar el éxito de OAuth
+);
+
 // Cerrar sesión
 router.get('/logout', logout);
 

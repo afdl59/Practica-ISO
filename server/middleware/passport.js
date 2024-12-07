@@ -1,5 +1,6 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const TwitterStrategy = require('passport-twitter').Strategy;
 const User = require('../models/User'); // Modelo de usuario
 
 passport.use(new GoogleStrategy({
@@ -17,6 +18,29 @@ passport.use(new GoogleStrategy({
                 username: sanitizedUsername,
                 email: profile.emails[0].value,
                 fotoPerfil: profile.photos[0].value,
+            });
+            await user.save();
+        }
+        return done(null, user);
+    } catch (err) {
+        return done(err, null);
+    }
+}));
+
+passport.use(new TwitterStrategy({
+    consumerKey: process.env.TWITTER_CONSUMER_KEY,
+    consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
+    callbackURL: "https://futbol360.ddns.net/api/auth/twitter/callback",
+}, async (token, tokenSecret, profile, done) => {
+    try {
+        // Busca o crea el usuario en la base de datos
+        let user = await User.findOne({ twitterId: profile.id });
+        if (!user) {
+            user = new User({
+                twitterId: profile.id,
+                username: profile.username,
+                email: profile.emails[0].value,
+                fotoPerfil: profile.photos[0]?.value || null,
             });
             await user.save();
         }

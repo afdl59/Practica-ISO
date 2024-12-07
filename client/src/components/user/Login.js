@@ -124,6 +124,12 @@ function Login() {
             >
                 Iniciar sesión con Google
             </button>
+            <button
+                className="twitter-login-button"
+                onClick={() => window.location.href = '/api/auth/twitter'}
+            >
+              Iniciar sesión con Twitter
+            </button>
           </div>
     
           {/* Panel izquierdo con videos */}
