@@ -14,21 +14,25 @@ html, body {
   width: 100%;
 }
 
+main {
+  margin-top: 80px; /* 40px de la barra animada + 40px del navbar */
+  padding: 20px;
+}
+
 /* Navbar horizontal */
 .navbar-horizontal {
   margin: 0;
-  padding: 0;
-  background-color: #1a1a2e; /* Azul oscuro */
-  color: #ffffff;
   padding: 10px 20px;
+  background-color: #1a1a2e;
+  color: #ffffff;
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-  position: sticky;
-  top: 0;
-  z-index: 10;
+  position: sticky; /* Se queda pegado en la parte superior cuando haces scroll */
+  top: 30px; /* Debajo de la barra animada */
+  z-index: 10; /* Menor que la barra animada */
 }
 
 /* Elementos del menú */
@@ -59,20 +63,75 @@ html, body {
   text-transform: uppercase;
 }
 
-/* Notificaciones */
-.notifications {
+/* Item dropdown */
+.navbar-item.dropdown {
+  cursor: pointer; /* Apunta que es clickeable */
+  position: relative; /* Necesario para posicionar el contenido del dropdown */
+  z-index: 20;
+}
+
+/* Estilos para el contenedor del dropdown */
+.dropdown-content {
+  display: flex; /* Flexbox para organizar los items */
+  flex-direction: column; /* Columna para alinear los elementos */
+  position: absolute;
+  top: 100%; /* Justo debajo del botón del navbar */
+  left: 0;
+  background-color: #1a1a2e; /* Fondo igual al navbar */
+  border: 1px solid #00bfff; /* Borde del menú desplegable */
+  border-radius: 5px; /* Bordes redondeados */
+  z-index: 20; /* Asegura que esté por encima de otros elementos */
+  min-width: 150px; /* Ancho mínimo */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Sombra para darle profundidad */
+  overflow: hidden; /* Evita desbordes visuales */
+}
+
+/* Estilo de los items del dropdown */
+.dropdown-item {
+  color: #ffffff; /* Color del texto */
+  text-decoration: none; /* Sin subrayado */
+  padding: 10px 15px; /* Espaciado interno */
+  font-family: 'Roboto', sans-serif; /* Fuente consistente */
+  font-size: 0.9rem; /* Tamaño del texto */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Animación suave */
+}
+
+.dropdown-item:hover {
+  background-color: #00bfff; /* Fondo azul vibrante al pasar el cursor */
+  color: #1a1a2e; /* Texto oscuro para contraste */
+}
+
+/* Estilo para la barra animada */
+.animated-bar {
+  margin: 0;
+  position: absolute; /* Fija la barra en la parte superior */
+  top: 0; /* Aparece en la parte superior */
+  left: 0;
+  width: 100%;
+  background-color: #1a1a2e; /* Fondo igual al navbar */
+  color: #ffffff; /* Texto blanco */
+  height: 30px; /* Altura de la barra */
   display: flex;
   align-items: center;
+  justify-content: center; /* Centra el texto horizontalmente */
+  overflow: hidden; /* Evita desbordes */
+  z-index: 20; /* Más alto que el navbar */
 }
 
-.notification-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  font-size: 0.9rem;
+.animated-bar-text {
+  white-space: nowrap;
+  position: absolute;
+  animation: slide 10s linear infinite;
+  font-size: 1rem;
+  font-weight: bold;
+  padding-left: 100%;
 }
 
-.notification-text {
-  font-size: 0.9rem;
-  color: #e0e0e0; /* Gris claro */
+@keyframes slide {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
 }

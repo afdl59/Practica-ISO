@@ -27,7 +27,7 @@
 /* Fecha y hora */
 .date-time {
   position: absolute;
-  top: 20px;
+  top: 45px;
   left: 20px;
   color: #ffffff;
   background-color: rgba(0, 0, 0, 0.7);
@@ -104,4 +104,21 @@
 
 .btn.secondary:hover {
   background-color: #444444;
+}
+
+.footer-links {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.footer-link {
+  margin: 0 10px;
+  font-size: 14px;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.footer-link:hover {
+  text-decoration: underline;
+  color: #f0f0f0;
 }

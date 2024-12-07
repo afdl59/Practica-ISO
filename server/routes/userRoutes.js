@@ -4,6 +4,7 @@ const multer = require('multer');
 const userController = require('../controllers/userController');
 const authMiddleware = require('../middleware/authMiddleware');
 const authController = require('../controllers/authController');
+const getIpMiddleware = require('../middleware/getIp');
 
 const router = express.Router();
 
@@ -20,18 +21,20 @@ const upload = multer({ storage });
 
 // Rutas de autenticación y perfil de usuario
 router.post('/register', userController.register);
-router.post('/login', userController.login);
+router.post('/login', getIpMiddleware, userController.login);
 router.post('/logout', userController.logout);
 router.get('/check-session', authController.checkSession);
 router.get('/:username', authMiddleware, userController.getUserProfile);
 router.put('/:username', authMiddleware, userController.updateUserProfile);
 router.post('/uploads', authMiddleware, upload.single('fotoPerfil'), userController.uploadProfileImage);
 router.post('/:username/predictions', authMiddleware, userController.addUserPrediction);
-router.put('/:username/predictions', authMiddleware, userController.updateUserPredictionsPoints);
+router.put('/:username/update-predictionPoints', authMiddleware, userController.updateUserPredictionsPoints);
 router.get('/:username/predictions', authMiddleware, userController.getUserPredictions);
 router.post('/:username/remove-prediction', authMiddleware, userController.deleteUserPrediction);
 
 router.put('/update-points/:username', authMiddleware, userController.updateUserPoints); // Actualizar puntos
 router.get('/ranking', userController.getRanking); // Obtener ranking
+
+router.post('/help', userController.sendHelpRequest);
 
 module.exports = router;
