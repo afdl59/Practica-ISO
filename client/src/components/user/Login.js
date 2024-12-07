@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/index.css';
+import botanike1 from '../../assets/Patrocinio/botanike1.jpg';
+import botanike2 from '../../assets/Patrocinio/botanike2.jpg';
+import botanike3 from '../../assets/Patrocinio/botanike3.jpg';
+import botanike4 from '../../assets/Patrocinio/botanike4.jpg';
 
 function Login() {
     const [formData, setFormData] = useState({
