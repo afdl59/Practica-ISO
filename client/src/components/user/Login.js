@@ -46,14 +46,22 @@ function Login() {
 
     return (
         <div className="auth-container">
-                      <div className="prediction-panel">
-        <h2>Haz tus predicciones</h2>
-        <p>
-            Participa en nuestras predicciones y demuestra tu conocimiento. 
-            Compite con otros usuarios y gana recompensas.
-        </p>
-        <button>¡Empieza ahora!</button>
-    </div>
+          <div class="prediction-panel">
+  <div class="ad-container">
+    <iframe
+      width="100%"
+      height="200"
+      src="https://www.youtube.com/embed/eUaywO-fq0I"
+      title="YouTube video"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen>
+    </iframe>
+    <p class="ad-description">Disfruta del video promocional y descubre más sobre nuestros servicios.</p>
+  </div>
+</div>
+  
+                     
     <div class="info-panel">
     <h2>HAZ TUS PREDICCIONES</h2>
     <p>
