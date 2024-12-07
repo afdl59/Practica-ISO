@@ -41,14 +41,6 @@ app.use(cors({
     credentials: true,
 }));
 
-//Debugging solicitudes entrantes y salientes
-app.use((req, res, next) => {
-    console.log("Cookies recibidas:", req.cookies);
-    console.log("Origen de la solicitud:", req.headers.origin);
-    console.log("Sesión actual:", req.session);
-    next();
-});
-
 // Configurar middleware de sesión
 app.use(sessionMiddleware);
 
@@ -58,6 +50,14 @@ app.use(getIpMiddleware);
 // Middleware de Passport
 app.use(passport.initialize());
 app.use(passport.session());
+
+//Debugging solicitudes entrantes y salientes
+app.use((req, res, next) => {
+    console.log("Cookies recibidas:", req.cookies);
+    console.log("Origen de la solicitud:", req.headers.origin);
+    console.log("Sesión actual:", req.session);
+    next();
+});
 
 // Rutas de autenticación pública
 app.use('/api/auth', authRoutes); 

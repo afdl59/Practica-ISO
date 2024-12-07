@@ -83,16 +83,6 @@ exports.login = async (req, res) => {
         // Configurar datos de sesión
         req.session.userId = usuario._id;
         req.session.username = usuario.username;
-        req.session.user = {
-            id: usuario._id,
-            username: usuario.username,
-            email: usuario.email,
-            firstName: usuario.firstName,
-            lastName: usuario.lastName,
-            equipoFavorito: usuario.equipoFavorito,
-            competicionesFavoritas: usuario.competicionesFavoritas,
-            fotoPerfil: usuario.fotoPerfil,
-        };
 
         req.session.save((err) => {
             if (err) {
@@ -100,7 +90,16 @@ exports.login = async (req, res) => {
             }
             res.status(200).json({
                 message: 'Inicio de sesión exitoso',
-                user: req.session.user
+                user: {
+                    id: usuario._id,
+                    username: usuario.username,
+                    email: usuario.email,
+                    firstName: usuario.firstName,
+                    lastName: usuario.lastName,
+                    equipoFavorito: usuario.equipoFavorito,
+                    competicionesFavoritas: usuario.competicionesFavoritas,
+                    fotoPerfil: usuario.fotoPerfil,
+                },
             });
         });
     } catch (err) {
@@ -124,8 +123,7 @@ exports.getUserProfile = async (req, res) => {
     if (!req.session.userId) {
         return res.status(401).json({ message: 'No autorizado' });
     }
-    const username = decodeURIComponent(req.params.username);
-    //const { username } = req.params;
+    const { username } = req.params;
     try {
         const usuario = await User.findOne({ username });
         if (!usuario) {

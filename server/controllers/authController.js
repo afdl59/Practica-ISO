@@ -18,12 +18,8 @@ exports.handleOAuthSuccess = (req, res) => {
     // Passport ya guarda al usuario autenticado en req.user
     if (req.user) {
         // Crear una sesión para el usuario
-        req.session.user = {
-            id: req.user.id,
-            username: req.user.username,
-            email: req.user.email,
-            fotoPerfil: req.user.fotoPerfil,
-        };
+        req.session.userId = req.user.id;
+        req.session.username = req.user.username;
         res.redirect('/'); // Redirige a la página principal (o a donde prefieras)
     } else {
         res.status(400).json({ message: "No se pudo autenticar al usuario." });
