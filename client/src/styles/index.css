@@ -8,17 +8,17 @@
 html, body {
   height: 100%;
   width: 100%;
-  font-family: 'Montserrat', sans-serif; /* Fuente Montserrat */
-  background: #f8f9fa; /* Fondo claro */
+  font-family: 'Montserrat', sans-serif;
+  background: #f8f9fa;
   display: flex;
-  flex-direction: column; /* Asegura que los elementos sean apilados */
+  flex-direction: column;
 }
 
 /* Sidebar */
 .sidebar {
   width: 100%;
-  height: 50px; /* Altura del sidebar */
-  background: #212529; /* Color oscuro para el sidebar */
+  height: 50px;
+  background: #212529;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -26,8 +26,8 @@ html, body {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 2; /* Mantén el sidebar sobre el resto */
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); /* Sombra ligera */
+  z-index: 2;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .sidebar a {
@@ -39,98 +39,86 @@ html, body {
 }
 
 .sidebar a:hover {
-  color: #007bff; /* Azul al pasar el cursor */
+  color: #007bff;
 }
 
 /* Contenedor principal */
 .main-container {
-  margin-top: 70px; /* Deja espacio debajo del sidebar */
+  margin-top: 70px;
   width: 100%;
   display: flex;
-  justify-content: space-between; /* Coloca las columnas a los extremos */
+  justify-content: space-between;
   align-items: flex-start;
-  gap: 20px; /* Espacio entre los elementos */
+  gap: 20px;
 }
 
 /* Panel de predicciones (columna izquierda) */
 .prediction-panel {
   width: 300px;
-  height: calc(100vh - 50px); /* Ocupa toda la altura menos la del sidebar */
-  background: #1a1a1a; /* Fondo negro */
-  color: #ffffff; /* Texto blanco */
+  height: calc(100vh - 50px);
+  background: #1a1a1a;
+  color: #ffffff;
   padding: 20px;
-  border-radius: 0 0 12px 12px; /* Solo bordes inferiores redondeados */
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Sombra suave */
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  position: fixed; /* Fija el panel en la pantalla */
-  top: 50px; /* Debajo del sidebar */
-  left: 0; /* Pegado al borde izquierdo */
-  z-index: 3; /* Asegura que esté sobre otros elementos */
+  position: fixed;
+  top: 50px;
+  left: 0;
+  z-index: 3;
+  overflow-y: auto;
 }
 
-.prediction-panel iframe {
-  width: 100%; /* Ocupa todo el ancho del panel */
-  height: 200px; /* Altura del video */
-  border: none; /* Sin bordes */
-  margin-bottom: 15px; /* Espacio debajo del video */
+/* Estilo de los enlaces de los videos */
+.video-link {
+  display: block; /* El enlace envuelve completamente el video */
+  margin-bottom: 15px; /* Espacio entre los videos */
   border-radius: 8px; /* Bordes redondeados */
+  overflow: hidden; /* Asegura que los bordes redondeados se respeten */
 }
 
-/* Botón debajo del video */
-.prediction-panel .promo-button {
-  display: inline-block;
-  font-size: 14px;
-  font-weight: 600;
-  padding: 8px 0; /* Menos padding para hacerlo más compacto */
-  width: 90%; /* Ajusta al 90% del ancho del video */
-  background: #007bff; /* Azul que combina con la página */
-  color: #ffffff;
-  text-decoration: none;
-  text-align: center;
-  border-radius: 6px;
-  transition: background 0.3s ease;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  margin-top: -10px; /* Sube el botón un poco */
-}
-
-.prediction-panel .promo-button:hover {
-  background: #379522; /* Azul más oscuro al pasar el cursor */
+/* Estilo de los videos dentro del enlace */
+.video-link iframe {
+  width: 100%; /* Ancho completo */
+  height: 200px; /* Altura de los videos */
+  border: none; /* Sin bordes */
+  pointer-events: none; /* Impide la interacción con el iframe */
 }
 
 /* Columna derecha */
 .info-panel {
   width: 300px;
-  height: calc(100vh - 50px); /* Ocupa toda la altura menos la del sidebar */
-  background: #1a1a1a; /* Fondo negro */
-  color: #ffffff; /* Texto blanco */
+  height: calc(100vh - 50px);
+  background: #1a1a1a;
+  color: #ffffff;
   padding: 20px;
-  border-radius: 0 0 12px 12px; /* Solo bordes inferiores redondeados */
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Sombra suave */
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  position: fixed; /* Fija el panel en la pantalla */
-  top: 50px; /* Debajo del sidebar */
-  right: 0; /* Pegado al borde derecho */
-  z-index: 3; /* Asegura que esté sobre otros elementos */
+  position: fixed;
+  top: 50px;
+  right: 0;
+  z-index: 3;
 }
 
 /* Contenedor del formulario */
 .auth-container {
   width: 60%;
   max-width: 500px;
-  background: #ffffff; /* Fondo blanco */
+  background: #ffffff;
   padding: 40px;
   border-radius: 12px;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Sombra suave */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
   position: relative;
-  margin: 150px auto 0 auto; /* Baja el formulario para centrarlo */
-  z-index: 1; /* Eleva el formulario sobre los anuncios */
-  text-align: center; /* Centra los textos y botones */
+  margin: 150px auto 0 auto;
+  z-index: 1;
+  text-align: center;
 }
 
 /* Título */
@@ -141,4 +129,3 @@ html, body {
   color: #333333;
   text-align: center;
 }
-

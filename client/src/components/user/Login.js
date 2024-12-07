@@ -46,40 +46,53 @@ function Login() {
 
     return (
         <div className="auth-container">
-            <div className="prediction-panel">
+       <div className="prediction-panel">
                 {/* Video 1 */}
-                <iframe
-                    src="https://www.youtube.com/embed/eUaywO-fq0I?autoplay=1&mute=1&loop=1&playlist=eUaywO-fq0I"
-                    title="Anuncio promocional 1"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen>
-                </iframe>
-                <a className="promo-button" href="https://www.cupraofficial.es/ofertas/formentor" target="_blank" rel="noopener noreferrer">
-                    Accede a la oferta
+                <a
+                    href="https://www.cupraofficial.es/ofertas/formentor"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="video-link"
+                >
+                    <iframe
+                        src="https://www.youtube.com/embed/eUaywO-fq0I?autoplay=1&mute=1&loop=1&playlist=eUaywO-fq0I"
+                        title="Anuncio promocional 1"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen>
+                    </iframe>
                 </a>
 
                 {/* Video 2 */}
-                <iframe
-                    src="https://www.youtube.com/embed/GWiFgSreYKw?autoplay=1&mute=1&loop=1&playlist=GWiFgSreYKw"
-                    title="Anuncio promocional 2"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen>
-                </iframe>
-                <a className="promo-button" href="https://www.cupraofficial.es/ofertas/formentor" target="_blank" rel="noopener noreferrer">
-                    Descubre más
+                <a
+                    href="https://www.playstation.com/es-es/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="video-link"
+                >
+                    <iframe
+                        src="https://www.youtube.com/embed/GWiFgSreYKw?autoplay=1&mute=1&loop=1&playlist=GWiFgSreYKw"
+                        title="Anuncio promocional 2"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen>
+                    </iframe>
                 </a>
 
                 {/* Video 3 */}
-                <iframe
-                    src="https://www.youtube.com/embed/i0Wtxu5TI6Y?autoplay=1&mute=1&loop=1&playlist=i0Wtxu5TI6Y"
-                    title="Anuncio promocional 3"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen>
-                </iframe>
-                <a className="promo-button" href="https://www.cupraofficial.es/ofertas/formentor" target="_blank" rel="noopener noreferrer">
-                    Más información
+                <a
+                    href="https://www.heineken.com/es/es/agegateway?returnurl=%2fes%2fes%2fhome"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="video-link"
+                >
+                    <iframe
+                        src="https://www.youtube.com/embed/i0Wtxu5TI6Y?autoplay=1&mute=1&loop=1&playlist=i0Wtxu5TI6Y"
+                        title="Anuncio promocional 3"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen>
+                    </iframe>
                 </a>
             </div>
+
 
             <div className="info-panel">
                 <h2>HAZ TUS PREDICCIONES</h2>
