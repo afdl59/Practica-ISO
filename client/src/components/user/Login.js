@@ -46,21 +46,16 @@ function Login() {
 
     return (
         <div className="auth-container">
-          <div class="prediction-panel">
-  <div class="ad-container">
-    <iframe
-      width="100%"
-      height="200"
-      src="https://www.youtube.com/embed/eUaywO-fq0I"
-      title="YouTube video"
-      frameborder="0"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-      allowfullscreen>
-    </iframe>
-    <p class="ad-description">Disfruta del video promocional y descubre más sobre nuestros servicios.</p>
-  </div>
+<div class="prediction-panel">
+  <iframe
+    src="https://www.youtube.com/embed/eUaywO-fq0I?autoplay=1&mute=1&loop=1&playlist=eUaywO-fq0I"
+    title="Anuncio promocional"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen>
+  </iframe>
+  <p>Anuncio promocional: Aprende más con este video destacado.</p>
 </div>
-  
+
                      
     <div class="info-panel">
     <h2>HAZ TUS PREDICCIONES</h2>

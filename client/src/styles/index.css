@@ -71,7 +71,15 @@ html, body {
   z-index: 3; /* Asegura que esté sobre otros elementos */
 }
 
-/* Columna derecha idéntica */
+.prediction-panel iframe {
+  width: 100%; /* Ocupa todo el ancho del panel */
+  height: 200px; /* Altura del video */
+  border: none; /* Sin bordes */
+  margin-bottom: 15px; /* Espacio debajo del video */
+  border-radius: 8px; /* Bordes redondeados */
+}
+
+/* Columna derecha */
 .info-panel {
   width: 300px;
   height: calc(100vh - 50px); /* Ocupa toda la altura menos la del sidebar */
@@ -111,82 +119,4 @@ html, body {
   margin-bottom: 20px;
   color: #333333;
   text-align: center;
-}
-
-/* Formularios */
-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 15px; /* Espaciado entre campos */
-  width: 100%;
-}
-
-/* Campos de texto */
-form input[type="text"],
-form input[type="password"] {
-  font-size: 16px;
-  width: 90%; /* Ajustar ancho uniforme */
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  outline: none;
-  text-align: center; /* Centra el texto dentro del campo */
-  transition: all 0.3s ease;
-}
-
-form input[type="text"]:focus,
-form input[type="password"]:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-}
-
-/* Botón de envío */
-form button[type="submit"] {
-  font-size: 16px;
-  padding: 12px;
-  width: 90%;
-  background: #007bff;
-  color: #ffffff;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-form button[type="submit"]:hover {
-  background: #0056b3;
-}
-
-/* Línea divisoria */
-hr {
-  border: none;
-  border-top: 1px solid #e0e0e0;
-  margin: 20px 0;
-  width: 90%; /* Alinea con los botones */
-  margin-left: auto; /* Centra la línea horizontal */
-  margin-right: auto;
-}
-
-/* Botón de Google */
-.google-login-button {
-  font-size: 16px;
-  padding: 12px;
-  width: 90%; /* Mantiene el mismo ancho que el botón de iniciar sesión */
-  background: #db4437; /* Rojo de Google */
-  color: #ffffff;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-top: 20px;
-  display: block; /* Asegura que se comporte como un bloque */
-  margin-left: auto;
-  margin-right: auto; /* Centra el botón horizontalmente */
-}
-
-.google-login-button:hover {
-  background: #c23321;
 }
