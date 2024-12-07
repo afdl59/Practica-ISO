@@ -13,11 +13,15 @@ const getLeaderboards = async (req, res) => {
         };
 
         users.forEach(user => {
-            for (const category in user.puntos) {
-                leaderboards[category].push({
-                    playerName: user.username,
-                    score: user.puntos[category],
-                });
+            if (user.puntos) {
+                for (const category in user.puntos) {
+                    if (leaderboards[category]) {
+                        leaderboards[category].push({
+                            playerName: user.username,
+                            score: user.puntos[category],
+                        });
+                    }
+                }
             }
         });
 
