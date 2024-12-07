@@ -58,7 +58,7 @@ html, body {
   height: calc(100vh - 50px);
   background: #1a1a1a;
   color: #ffffff;
-  padding: 20px;
+  padding: 20px 0; /* Espaciado vertical interno */
   border-radius: 0 0 12px 12px;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
   display: flex;
@@ -72,20 +72,25 @@ html, body {
   overflow-y: auto;
 }
 
-/* Estilo de los enlaces de los videos */
-.video-link {
-  display: block; /* El enlace envuelve completamente el video */
-  margin-bottom: 15px; /* Espacio entre los videos */
-  border-radius: 8px; /* Bordes redondeados */
-  overflow: hidden; /* Asegura que los bordes redondeados se respeten */
+/* Contenedor de los videos */
+.prediction-panel a {
+  display: block;
+  width: 100%;
+  margin: 0;
 }
 
-/* Estilo de los videos dentro del enlace */
-.video-link iframe {
-  width: 100%; /* Ancho completo */
-  height: 200px; /* Altura de los videos */
-  border: none; /* Sin bordes */
-  pointer-events: none; /* Impide la interacción con el iframe */
+.prediction-panel iframe {
+  width: 100%;
+  height: 200px;
+  border: none;
+  border-radius: 8px;
+  display: block;
+  margin: 0;
+}
+
+/* Ajuste del último video */
+.prediction-panel a:last-child {
+  margin-bottom: 0;
 }
 
 /* Columna derecha */
@@ -94,7 +99,7 @@ html, body {
   height: calc(100vh - 50px);
   background: #1a1a1a;
   color: #ffffff;
-  padding: 20px;
+  padding: 0; /* Sin padding para ajustar el video */
   border-radius: 0 0 12px 12px;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
   display: flex;
@@ -105,6 +110,16 @@ html, body {
   top: 50px;
   right: 0;
   z-index: 3;
+  overflow-y: auto;
+}
+
+/* Estilo del video en el panel derecho */
+.info-panel iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 8px;
+  margin: 0;
 }
 
 /* Contenedor del formulario */
@@ -116,7 +131,7 @@ html, body {
   border-radius: 12px;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
   position: relative;
-  margin: 150px auto 0 auto;
+  margin: 150px auto;
   z-index: 1;
   text-align: center;
 }
@@ -128,4 +143,76 @@ html, body {
   margin-bottom: 20px;
   color: #333333;
   text-align: center;
+}
+
+/* Formularios */
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+}
+
+/* Campos de texto */
+form input[type="text"],
+form input[type="password"] {
+  font-size: 16px;
+  width: 90%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  outline: none;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+form input[type="text"]:focus,
+form input[type="password"]:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Botón de envío */
+form button[type="submit"] {
+  font-size: 16px;
+  padding: 12px;
+  width: 90%;
+  background: #007bff;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+form button[type="submit"]:hover {
+  background: #0056b3;
+}
+
+/* Línea divisoria */
+hr {
+  border: none;
+  border-top: 1px solid #e0e0e0;
+  margin: 20px 0;
+  width: 90%;
+}
+
+/* Botón de Google */
+.google-login-button {
+  font-size: 16px;
+  padding: 12px;
+  width: 90%;
+  background: #db4437;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.google-login-button:hover {
+  background: #c23321;
 }

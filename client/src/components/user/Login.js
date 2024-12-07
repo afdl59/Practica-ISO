@@ -46,62 +46,47 @@ function Login() {
 
     return (
         <div className="auth-container">
-       <div className="prediction-panel">
-                {/* Video 1 */}
-                <a
-                    href="https://www.cupraofficial.es/ofertas/formentor"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="video-link"
-                >
-                    <iframe
-                        src="https://www.youtube.com/embed/eUaywO-fq0I?autoplay=1&mute=1&loop=1&playlist=eUaywO-fq0I"
-                        title="Anuncio promocional 1"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen>
-                    </iframe>
-                </a>
+<div className="prediction-panel">
+  {/* Video 1 */}
+  <div className="video-container" onClick={() => window.open('https://www.cupraofficial.es/ofertas/formentor', '_blank')}>
+    <iframe
+      src="https://www.youtube.com/embed/eUaywO-fq0I?autoplay=1&mute=1&loop=1&playlist=eUaywO-fq0I"
+      title="Anuncio promocional 1"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowFullScreen>
+    </iframe>
+  </div>
 
-                {/* Video 2 */}
-                <a
-                    href="https://www.playstation.com/es-es/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="video-link"
-                >
-                    <iframe
-                        src="https://www.youtube.com/embed/GWiFgSreYKw?autoplay=1&mute=1&loop=1&playlist=GWiFgSreYKw"
-                        title="Anuncio promocional 2"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen>
-                    </iframe>
-                </a>
+  {/* Video 2 */}
+  <div className="video-container" onClick={() => window.open('https://www.playstation.com/es-es/', '_blank')}>
+    <iframe
+      src="https://www.youtube.com/embed/GWiFgSreYKw?autoplay=1&mute=1&loop=1&playlist=GWiFgSreYKw"
+      title="Anuncio promocional 2"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowFullScreen>
+    </iframe>
+  </div>
 
-                {/* Video 3 */}
-                <a
-                    href="https://www.heineken.com/es/es/agegateway?returnurl=%2fes%2fes%2fhome"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="video-link"
-                >
-                    <iframe
-                        src="https://www.youtube.com/embed/i0Wtxu5TI6Y?autoplay=1&mute=1&loop=1&playlist=i0Wtxu5TI6Y"
-                        title="Anuncio promocional 3"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen>
-                    </iframe>
-                </a>
-            </div>
+  {/* Video 3 */}
+  <div className="video-container" onClick={() => window.open('https://www.heineken.com/es/es/agegateway?returnurl=%2fes%2fes%2fhome', '_blank')}>
+    <iframe
+      src="https://www.youtube.com/embed/i0Wtxu5TI6Y?autoplay=1&mute=1&loop=1&playlist=i0Wtxu5TI6Y"
+      title="Anuncio promocional 3"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowFullScreen>
+    </iframe>
+  </div>
+</div>
 
 
-            <div className="info-panel">
-                <h2>HAZ TUS PREDICCIONES</h2>
-                <p>
-                    Participa en nuestras predicciones y demuestra tu conocimiento.
-                    Compite con otros usuarios y gana recompensas.
-                </p>
-                <button>¡Empieza ahora!</button>
-            </div>
+<div className="info-panel">
+  <iframe
+    src="https://www.youtube.com/embed/TkHSuJUY5oA?autoplay=1&mute=1&loop=1&playlist=TkHSuJUY5oA"
+    title="Video destacado"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowFullScreen>
+  </iframe>
+</div>
 
             <h1>Iniciar Sesión en Futbol360</h1>
             <form onSubmit={handleSubmit}>
