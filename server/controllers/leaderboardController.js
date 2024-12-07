@@ -1,40 +1,45 @@
-// controllers/leaderboardController.js
 const User = require('../models/User');
 
 const getLeaderboards = async (req, res) => {
     try {
-        const users = await User.find({}, 'username puntos');
+        // Inicializar las categorías del leaderboard como objetos vacíos
         const leaderboards = {
-            bingo: [],
-            guessThePlayer: [],
-            tiroLibre: [],
-            wordle: [],
-            predicciones: [],
+            bingo: {},
+            guessThePlayer: {},
+            tiroLibre: {},
+            wordle: {},
+            predicciones: {},
         };
 
+        // Obtener los usuarios desde la base de datos
+        const users = await User.find({}, 'username puntos');
+
+        // Recorrer los usuarios y llenar las categorías
         users.forEach(user => {
             if (user.puntos) {
                 for (const category in user.puntos) {
-                    if (leaderboards[category]) {
-                        leaderboards[category].push({
-                            playerName: user.username,
-                            score: user.puntos[category],
-                        });
+                    // Asegurarse de que la categoría exista en leaderboards
+                    if (leaderboards.hasOwnProperty(category)) {
+                        // Agregar al objeto clave-valor con el nombre del usuario como clave
+                        leaderboards[category][user.username] = user.puntos[category];
                     }
                 }
             }
         });
 
+        // Convertir los objetos en arreglos ordenados por puntuación
+        const sortedLeaderboards = {};
         for (const category in leaderboards) {
-            leaderboards[category] = leaderboards[category]
+            sortedLeaderboards[category] = Object.entries(leaderboards[category])
+                .map(([playerName, score]) => ({ playerName, score }))
                 .sort((a, b) => b.score - a.score)
-                .slice(0, 10); // Top 10
+                .slice(0, 10); // Limitar a los 10 mejores
         }
 
-        res.json(leaderboards);
+        res.status(200).json(sortedLeaderboards);
     } catch (error) {
         console.error('Error fetching leaderboards:', error);
-        res.status(500).send('Internal server error');
+        res.status(500).json({ error: 'Error interno del servidor' });
     }
 };
 
