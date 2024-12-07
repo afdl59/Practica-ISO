@@ -8,6 +8,8 @@ const http = require('http');
 const { Server } = require('socket.io');
 const connectDB = require('./config/db');
 const sessionMiddleware = require('./middleware/sessionMiddleware');
+const getIpMiddleware = require('./middleware/getIp');
+const passport = require('./middleware/passport');
 const authRoutes = require('./routes/authRoutes');
 const chatRoutes = require('./routes/chatRoutes');
 const userRoutes = require('./routes/userRoutes');
@@ -36,11 +38,25 @@ app.use(cors({
     origin: 'https://futbol360.ddns.net',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true
+    credentials: true,
 }));
 
 // Configurar middleware de sesión
 app.use(sessionMiddleware);
+
+//Configurar middleware para obtener la IP del cliente
+app.use(getIpMiddleware);
+
+// Middleware de Passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+//Debugging solicitudes entrantes y salientes
+app.use((req, res, next) => {
+    console.log("Encabezados recibidos:", req.headers);
+    console.log("Cookies recibidas en encabezado:", req.headers.cookie);
+    next();
+});
 
 // Rutas de autenticación pública
 app.use('/api/auth', authRoutes); 
