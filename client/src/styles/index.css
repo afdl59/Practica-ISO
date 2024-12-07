@@ -111,6 +111,7 @@ form input[type="password"] {
   border: 1px solid #ddd;
   border-radius: 8px;
   outline: none;
+  text-align: center; /* Centra el texto dentro del campo */
   transition: all 0.3s ease;
 }
 
