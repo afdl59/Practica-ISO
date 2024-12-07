@@ -10,12 +10,13 @@ const userSchema = new mongoose.Schema({
     password: { 
         type: String,
         required: function () {
-            // Requiere contraseña solo si no tiene googleId
-            return !this.googleId;
+            // Requiere contraseña solo si no tiene googleId ni twitterId
+            return (!this.googleId && !this.twitterId);
         }
     },
     fotoPerfil: { type: String },
     googleId: { type: String, unique: true },
+    twitterId: { type: String, unique: true},
     equipoFavorito: { type: [String], default: [] }, // Nuevo campo para el equipo favorito
     competicionesFavoritas: { type: [String], default: [] }, // Nuevo campo para competiciones favoritas
     puntosTotales: { type: Number, default: 0 },

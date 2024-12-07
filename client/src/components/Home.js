@@ -44,9 +44,14 @@ function Home() {
           <a href="/register" className="btn secondary">Registrarse</a>
         </div>
       </div>
+
+      {/* Botones de Términos y Privacidad */}
+      <div className="footer-links">
+        <a href="/terms" className="footer-link">Términos y Condiciones</a>
+        <a href="/privacy" className="footer-link">Privacidad</a>
+      </div>
     </div>
   );
 }
 
 export default Home;
-

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaHome, FaUser, FaComments, FaChartBar, FaGamepad, FaBell } from 'react-icons/fa';
 import '../styles/Sidebar.css';
-/*comntario*/
+
 function Sidebar() {
   const [minigamesOpen, setMinigamesOpen] = useState(false);
   const [estadisticasOpen, setEstadisticasOpen] = useState(false);
@@ -63,6 +63,12 @@ function Sidebar() {
         )}
       </div>
 
+      {/* Sección Rankings */}
+      <Link to="/rankings" className="navbar-item">
+        <FaChartBar className="navbar-icon" />
+        <span className="navbar-title">Rankings</span>
+      </Link>
+
       {/* Sección Notificaciones */}
       <Link to="/notificaciones" className="navbar-item">
         <FaBell className="navbar-icon" />
@@ -74,4 +80,3 @@ function Sidebar() {
 }
 
 export default Sidebar;
-

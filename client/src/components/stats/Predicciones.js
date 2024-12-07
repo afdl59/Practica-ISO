@@ -11,18 +11,15 @@ function Predicciones() {
         const fetchPredictions = async () => {
             try {
                 // Verificar sesión del usuario
-                /*
                 const response = await fetch('/api/auth/check-session');
                 if (!response.ok) {
                     navigate('/login');
                     return;
                 }
                 const sessionData = await response.json();
-                */
 
-                const username = "nacho__arvilla"
                 // Obtener datos del usuario
-                const predictionsResponse = await fetch(`/api/users/${username}`, {
+                const predictionsResponse = await fetch(`/api/users/${sessionData.username}`, {
                     method: 'GET',
                     headers: { 'Content-Type': 'application/json' },
                 });
@@ -67,7 +64,7 @@ function Predicciones() {
 
                         if (correct) {
                             const points = 3;
-                            await fetch(`/api/users/${username}/update-predictionPoints`, {
+                            await fetch(`/api/users/${sessionData.username}/update-predictionPoints`, {
                                 method: 'PUT',
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({ points }),
@@ -75,7 +72,7 @@ function Predicciones() {
                         }
 
                         // Eliminar predicción por partido terminado
-                        await fetch(`/api/users/${username}/remove-prediction`, {
+                        await fetch(`/api/users/${sessionData.username}/remove-prediction`, {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({ matchId }),

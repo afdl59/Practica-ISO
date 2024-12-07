@@ -1,233 +1,125 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
-
-.overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    transition: opacity 1s ease;
-    background: rgba(0, 0, 0, 0.75);
-    z-index: 9;
-    opacity: 0;
-    display: none;
+.perfil-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
 }
 
-.overlay.show {
-    opacity: 1;
-    visibility: visible;
-    display: block;
+.perfil-content {
+  display: flex;
+  width: 80%; /* Ajusta según el ancho deseado */
+  gap: 20px;
+  margin-top: 20px;
 }
 
-.login-panel{
-    background-color: var(--color-white);
-    border-radius: 30px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
-    position: fixed;
-    top: 25%;
-    left: 25%;
-    overflow: hidden;
-    height: auto;
-    width: 60%;
-    min-height: 480px;
-    opacity: 0;
-    transition: all 0.75s ease-in-out;
-    display: none;
-    z-index: 10;
+.perfil-left,
+.perfil-right {
+  flex: 1;
 }
 
-.login-panel.show{
-    opacity: 1;
-    visibility: visible;
-    display: block;
+.perfil-photo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
-.login-panel p{
-    font-size: 14px;
-    line-height: 20px;
-    letter-spacing: 0.3px;
-    margin: 20px 0;
-    color: var(--color-white);
+.profile-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
 }
 
-.login-panel a{
-    color: var(--color-dark);
-    font-size: 13px;
-    text-decoration: none;
-    margin: 15px 0 10px;
+.placeholder-image {
+  width: 100px;
+  height: 100px;
+  background-color: #ddd;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.login-panel button{
-    background-color: var(--color-success);
-    color: var(--color-white);
-    font-size: 12px;
-    padding: 10px 45px;
-    border: 1px solid transparent;
-    border-radius: 8px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    margin-top: 10px;
-    cursor: pointer;
+.perfil-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.login-panel button.hidden{
-    background-color: transparent;
-    border-color: var(--color-white);
+.favoritos ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-.login-panel form{
-    background-color: var(--color-white);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    padding: 0 40px;
-    height: 100%;
+.favorito-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 10px;
+  margin: 3px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  font-size: 14px;
+  line-height: 1.2;
+  height: auto;
 }
 
-.login-panel input{
-    background-color: var(--color-background);
-    border: none;
-    margin: 8px 0;
-    padding: 10px 15px;
-    font-size: 13px;
-    border-radius: 8px;
-    width: 100%;
-    outline: none;
+.favorito-item:hover {
+  background-color: #e6f7ff;
+  border-color: #40a9ff;
 }
 
-.login-panel .form-container{
-    position: absolute;
-    top: 0;
-    height: 100%;
-    transition: all 0.6s ease-in-out;
+.remove-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1em;
 }
 
-.login-panel .sign-in{
-    left: 0;
-    width: 50%;
-    z-index: 2;
+.remove-btn:hover {
+  color: red;
+  opacity: 0.8;
 }
 
-.login-panel.active .sign-in{
-    transform: translateX(100%);
+.perfil-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  gap: 10px;
 }
 
-.login-panel .sign-up{
-    left: 0;
-    width: 50%;
-    opacity: 0;
-    z-index: 1;
+.perfil-actions button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
 }
 
-.login-panel.active .sign-up{
-    transform: translateX(100%);
-    opacity: 1;
-    z-index: 5;
-    animation: move 0.6s;
+.help-form {
+  margin-top: 20px;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
 }
 
-button:disabled{
-    background-color: var(--color-light);
-    color: var(--color-dark);
-    cursor: not-allowed;
+.help-form h3 {
+  margin-bottom: 10px;
 }
 
-input:disabled{
-    background-color: var(--color-light);
-    color: var(--color-dark);
-    cursor: not-allowed;
+.help-form input,
+.help-form textarea {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
 }
 
-@keyframes move{
-    0%, 49.99%{
-        opacity: 0;
-        z-index: 1;
-    }
-    50%, 100%{
-        opacity: 1;
-        z-index: 5;
-    }
-}
-
-.login-panel .social-icons{
-    margin: 20px 0;
-}
-
-.login-panel .social-icons a{
-    border: 1px solid var(--color-background);
-    border-radius: 20%;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 3px;
-    width: 40px;
-    height: 40px;
-}
-
-.login-panel .toggle-container{
-    position: absolute;
-    top: 0;
-    left: 50%;
-    width: 50%;
-    height: 100%;
-    overflow: hidden;
-    transition: all 0.6s ease-in-out;
-    border-radius: 150px 0 0 100px;
-    z-index: 1000;
-}
-
-.login-panel.active .toggle-container{
-    transform: translateX(-100%);
-    border-radius: 0 150px 100px 0;
-}
-
-.login-panel .toggle{
-    background-color: var(--color-primary);
-    height: 100%;
-    background: linear-gradient(to right, var(--color-primary-variant), var(--color-primary));
-    color: var(--color-white);
-    position: relative;
-    left: -100%;
-    height: 100%;
-    width: 200%;
-    transform: translateX(0);
-    transition: all 0.6s ease-in-out;
-}
-
-.login-panel.active .toggle{
-    transform: translateX(50%);
-}
-
-.login-panel .toggle-panel{
-    position: absolute;
-    width: 50%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    padding: 0 30px;
-    text-align: center;
-    top: 0;
-    transform: translateX(0);
-    transition: all 0.6s ease-in-out;
-}
-
-.login-panel .toggle-left{
-    transform: translateX(-200%);
-}
-
-.login-panel.active .toggle-left{
-    transform: translateX(0);
-}
-
-.login-panel .toggle-right{
-    right: 0;
-    transform: translateX(0);
-}
-
-.login-panel.active .toggle-right{
-    transform: translateX(200%);
+.help-form button {
+  margin-right: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
 }
