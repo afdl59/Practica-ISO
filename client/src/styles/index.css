@@ -139,6 +139,16 @@ form button[type="submit"]:hover {
   background: #0056b3;
 }
 
+/* Línea divisoria */
+hr {
+  border: none;
+  border-top: 1px solid #e0e0e0;
+  margin: 20px 0;
+  width: 90%; /* Alinea con los botones */
+  margin-left: auto; /* Centra la línea horizontal */
+  margin-right: auto;
+}
+
 /* Botón de Google */
 .google-login-button {
   font-size: 16px;
@@ -176,14 +186,6 @@ form button[type="submit"]:hover {
   text-align: center;
 }
 
-/* Separador */
-hr {
-  border: none;
-  border-top: 1px solid #e0e0e0;
-  margin: 20px 0;
-  width: 90%;
-}
-
 /* Responsivo */
 @media (max-width: 768px) {
   .main-container {
@@ -206,6 +208,10 @@ hr {
   form input[type="password"],
   form button[type="submit"],
   .google-login-button {
+      width: 100%;
+  }
+
+  hr {
       width: 100%;
   }
 }
