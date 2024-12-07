@@ -31,24 +31,29 @@ passport.use(new TwitterStrategy({
     consumerKey: process.env.TWITTER_CONSUMER_KEY,
     consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
     callbackURL: "https://futbol360.ddns.net/api/auth/twitter/callback",
+    includeEmail: true,
 }, async (token, tokenSecret, profile, done) => {
     try {
-        console.log("Profile recibido:", profile); // Para depuración
+        console.log("Profile recibido:", profile);
 
         // Validar si 'photos' existe y tiene contenido
         const fotoPerfil = profile.photos && profile.photos.length > 0
             ? profile.photos[0].value
             : null;
         
-        //const email = profile.email ? profile.emails[0].value : null;
+        // Validar si 'email' existe y tiene contenido
+        const email = profile.email && profile.emails.length > 0 
+        ? profile.emails[0].value 
+        : null;
+
         // Busca o crea el usuario en la base de datos
         let user = await User.findOne({ twitterId: profile.id });
         if (!user) {
             user = new User({
                 twitterId: profile.id,
                 username: profile.username,
-                email: profile.emails[0].value,
-                fotoPerfil: profile.photos[0]?.value || null,
+                email: email,
+                fotoPerfil: fotoPerfil,
             });
             await user.save();
         }
