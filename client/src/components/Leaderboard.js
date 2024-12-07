@@ -1,6 +1,6 @@
 // minijuegos/Leaderboard.js
 import React, { useState } from 'react';
-import { useLeaderboard } from '../../context/LeaderboardContext';
+import { useLeaderboard } from '../context/LeaderboardContext';
 import '../styles/leaderboard/Leaderboard.css';
 
 function Leaderboard() {
