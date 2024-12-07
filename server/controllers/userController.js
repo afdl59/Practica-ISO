@@ -249,29 +249,6 @@ exports.getRanking = async (req, res) => {
     }
 };
 
-// obtener ranking de usuarios mediante puntos de predicciones
-exports.getPredictionsRanking = async (req, res) => {
-    const { limit = 10, page = 1 } = req.query;
-
-    try {
-        const usuarios = await User.find({})
-            .sort({ puntosPredicciones: -1 })
-            .skip((page - 1) * limit)
-            .limit(parseInt(limit));
-
-        res.status(200).json({
-            ranking: usuarios.map((usuario, index) => ({
-                position: index + 1 + (page - 1) * limit,
-                username: usuario.username,
-                points: usuario.puntosPredicciones || 0
-            }))
-        });
-    } catch (err) {
-        console.error('Error al obtener ranking:', err);
-        res.status(500).json({ message: 'Error al obtener ranking' });
-    }
-}
-
 // Actualizar puntos de predicciones de usuario
 exports.updateUserPredictionsPoints = async (req, res) => {
     const { username } = req.params;
@@ -283,7 +260,9 @@ exports.updateUserPredictionsPoints = async (req, res) => {
             return res.status(404).json({ message: 'Usuario no encontrado' });
         }
 
-        usuario.puntosPredicciones = (usuario.puntosPredicciones || 0) + points;
+        usuario.puntos = usuario.puntos || {};
+        usuario.puntos.predicciones = (usuario.puntos.predicciones || 0) + points;
+        
         await usuario.save();
         res.status(200).json({ message: 'Puntos de predicciones actualizados', user: usuario });
     } catch (err) {
@@ -375,4 +354,41 @@ exports.sendHelpRequest = async (req, res) => {
         console.log('Correo de ayuda enviado:', info.response);
         res.status(200).json({ message: 'Correo enviado exitosamente' });
     });
+};
+
+// Método para actualizar la puntuación de un usuario
+exports.updateUserScore = async (req, res) => {
+    try {
+        const { username } = req.params; // Username desde la URL
+        const { category, newScore } = req.body; // Categoría y nueva puntuación desde el cuerpo de la solicitud
+
+        // Validar que la categoría sea válida
+        const validCategories = ['bingo', 'guessThePlayer', 'tiroLibre', 'wordle', 'predicciones'];
+        if (!validCategories.includes(category)) {
+            return res.status(400).json({ error: 'Categoría no válida' });
+        }
+
+        // Buscar al usuario por username
+        const user = await User.findOne({ username });
+        if (!user) {
+            return res.status(404).json({ error: 'Usuario no encontrado' });
+        }
+
+        // Actualizar la puntuación en la categoría correspondiente
+        user.puntos[category] = (user.puntos[category] || 0) + newScore;
+
+        // Guardar los cambios en la base de datos
+        await user.save();
+
+        res.status(200).json({
+            message: 'Puntuación actualizada correctamente',
+            user: {
+                username: user.username,
+                puntos: user.puntos,
+            },
+        });
+    } catch (error) {
+        console.error('Error al actualizar la puntuación:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
 };
