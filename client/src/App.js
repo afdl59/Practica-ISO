@@ -15,6 +15,9 @@ import AnadirCompeticionFavorita from './components/user/AnadirCompeticionFavori
 //Foro
 import Foro from './components/foro/Foro';
 
+//Leaderboard
+import Leaderboard from './components/Leaderboard';
+
 // Minijuegos
 import Minijuegos from './components/minijuegos/Minijuegos';
 import Bingo from './components/minijuegos/Bingo';
@@ -100,6 +103,9 @@ function App() {
 
             {/* Rutas de Rankings */}
             <Route path="/rankings" element={<Rankings />} />
+
+            {/* Ruta de Leaderboard*/}
+            <Route path="/leaderboard" element={<Leaderboard />} />
 
           </Routes>
         </div>
