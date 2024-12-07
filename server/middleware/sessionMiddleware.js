@@ -9,8 +9,8 @@ module.exports = session({
     store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI }),
     cookie: {
         maxAge: 1000 * 60 * 60 * 24 * 7, // 1 semana
-        secure: process.env.NODE_ENV === 'production', // Solo true en producción
-        sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
+        secure: false, //process.env.NODE_ENV === 'production', // Solo true en producción
+        sameSite: 'Lax', //process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
     },
 });
 
