@@ -52,31 +52,47 @@ function Login() {
       return (
         <div>
           {/* Productos Patrocinados */}
-          <div className="product-carousel">
-            <h3>Patrocinado · Productos sugeridos</h3>
-            <div className="carousel-container">
-              <div className="product">
-                <img src={botanike1} alt="Producto 1" />
-                <p>Bota Nike Mercurial Air</p>
-                <span>53,99 €</span>
-              </div>
-              <div className="product">
-                <img src={botanike2} alt="Producto 2" />
-                <p>Bota Nike Air Zoom Mercurial Superfly 10</p>
-                <span>89,99 €</span>
-              </div>
-              <div className="product">
-                <img src={botanike3} alt="Producto 3" />
-                <p>Bota Nike Air Mercurial Beige</p>
-                <span>39,98 €</span>
-              </div>
-              <div className="product">
-                <img src={botanike4} alt="Producto 4" />
-                <p>Bota Nike Air Merucrial Verde</p>
-                <span>39,00 €</span>
-              </div>
-            </div>
-          </div>
+<div className="product-carousel">
+  <h3>Patrocinado · Productos sugeridos</h3>
+  <div className="carousel-container">
+    {/* Producto 1 */}
+    <div className="product">
+      <a href="https://www.futbolemotion.com/es/comprar/bota-de-futbol/nike/air-zoom-mercurial-superfly-10-academy-fgmg-volt-black?gad_source=1&gclid=Cj0KCQiAgdC6BhCgARIsAPWNWH2boBMT9GHFHmySym3Q8-9kXdmWNCiMxL4-Smym4wQKnmSVxsgXxY0aAnyGEALw_wcB" target="_blank" rel="noopener noreferrer">
+        <img src={botanike1} alt="Producto 1" />
+      </a>
+      <p>Bota Nike Mercurial Air</p>
+      <span>53,99 €</span>
+    </div>
+
+    {/* Producto 2 */}
+    <div className="product">
+      <a href="https://www.futbolemotion.com/es/comprar/bota-de-futbol/nike/mercurial-air-zoom-vapor-16-academy-fgmg-glacier-blue-blue-orbit?gad_source=1&gclid=Cj0KCQiAgdC6BhCgARIsAPWNWH2l6s-7bmd3FPcsQqflpok3NoIQYiOqolpvbI9S7wquWg_cPgOnVDsaAjRCEALw_wcB" target="_blank" rel="noopener noreferrer">
+        <img src={botanike2} alt="Producto 2" />
+      </a>
+      <p>Bota Nike Air Zoom Mercurial Superfly 10</p>
+      <span>89,99 €</span>
+    </div>
+
+    {/* Producto 3 */}
+    <div className="product">
+      <a href="https://www.amazon.es/BLBK-Profesionales-Exteriores-Artificial-competici%C3%B3n/dp/B0DCW97Z2Z/ref=asc_df_B0D9VHFJZX?mcid=f986778da76c3291850e78a5d943fefb&tag=googshopes-21&linkCode=df0&hvadid=706993575057&hvpos=&hvnetw=g&hvrand=11766055878718087285&hvpone=&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=1005493&hvtargid=pla-2333446893046&gad_source=1&th=1&psc=1" target="_blank" rel="noopener noreferrer">
+        <img src={botanike3} alt="Producto 3" />
+      </a>
+      <p>Bota Nike Air Mercurial Beige</p>
+      <span>39,98 €</span>
+    </div>
+
+    {/* Producto 4 */}
+    <div className="product">
+      <a href="https://www.amazon.es/BLBK-Profesionales-Exteriores-Artificial-competici%C3%B3n/dp/B0D8LN9XJS/ref=asc_df_B0D9VHFJZX?mcid=f986778da76c3291850e78a5d943fefb&tag=googshopes-21&linkCode=df0&hvadid=706993575057&hvpos=&hvnetw=g&hvrand=11766055878718087285&hvpone=&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=1005493&hvtargid=pla-2333446893046&gad_source=1&th=1&psc=1" target="_blank" rel="noopener noreferrer">
+        <img src={botanike4} alt="Producto 4" />
+      </a>
+      <p>Bota Nike Air Merucrial Verde</p>
+      <span>39,00 €</span>
+    </div>
+  </div>
+</div>
+
     
           {/* Contenedor de inicio de sesión */}
           <div className="auth-container">
