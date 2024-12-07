@@ -37,6 +37,8 @@ router.get('/predictionsRanking', userController.getPredictionsRanking)
 router.put('/update-points/:username', authMiddleware, userController.updateUserPoints); // Actualizar puntos
 router.get('/ranking', userController.getRanking); // Obtener ranking
 
+router.put('/:username/score', userController.updateUserScore);
+
 router.post('/help', userController.sendHelpRequest);
 
 module.exports = router;

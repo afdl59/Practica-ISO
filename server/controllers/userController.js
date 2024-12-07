@@ -376,3 +376,40 @@ exports.sendHelpRequest = async (req, res) => {
         res.status(200).json({ message: 'Correo enviado exitosamente' });
     });
 };
+
+// Método para actualizar la puntuación de un usuario
+exports.updateUserScore = async (req, res) => {
+    try {
+        const { username } = req.params; // Username desde la URL
+        const { category, newScore } = req.body; // Categoría y nueva puntuación desde el cuerpo de la solicitud
+
+        // Validar que la categoría sea válida
+        const validCategories = ['bingo', 'guessThePlayer', 'tiroLibre', 'wordle', 'predicciones'];
+        if (!validCategories.includes(category)) {
+            return res.status(400).json({ error: 'Categoría no válida' });
+        }
+
+        // Buscar al usuario por username
+        const user = await User.findOne({ username });
+        if (!user) {
+            return res.status(404).json({ error: 'Usuario no encontrado' });
+        }
+
+        // Actualizar la puntuación en la categoría correspondiente
+        user.puntos[category] = (user.puntos[category] || 0) + newScore;
+
+        // Guardar los cambios en la base de datos
+        await user.save();
+
+        res.status(200).json({
+            message: 'Puntuación actualizada correctamente',
+            user: {
+                username: user.username,
+                puntos: user.puntos,
+            },
+        });
+    } catch (error) {
+        console.error('Error al actualizar la puntuación:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
+};
