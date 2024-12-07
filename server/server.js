@@ -53,9 +53,8 @@ app.use(passport.session());
 
 //Debugging solicitudes entrantes y salientes
 app.use((req, res, next) => {
-    console.log("Cookies recibidas:", req.cookies);
-    console.log("Origen de la solicitud:", req.headers.origin);
-    console.log("Sesión actual:", req.session);
+    console.log("Encabezados recibidos:", req.headers);
+    console.log("Cookies recibidas en encabezado:", req.headers.cookie);
     next();
 });
 
