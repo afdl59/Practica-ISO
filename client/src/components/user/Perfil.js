@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { FavoritosContext } from '../../context/FavoritosContext';
@@ -17,6 +16,8 @@ function Perfil() {
   } = useContext(FavoritosContext);
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [editedData, setEditedData] = useState({
     firstName: '',
     lastName: '',
@@ -44,7 +45,6 @@ function Perfil() {
           method: 'GET',
           credentials: 'include',
         });
-      
         if (!userResponse.ok) throw new Error('Error al obtener datos del usuario');
 
         const userData = await userResponse.json();
@@ -110,16 +110,11 @@ function Perfil() {
         competicionesFavoritas: competicionesFavoritas,
       };
 
-      console.log('Datos actualizados para guardar:', updatedData);
-
       const response = await fetch(`/api/users/${userData.username}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatedData),
       });
-
-      const result = await response.json();
-      console.log('Resultado del backend:', result);
 
       if (!response.ok) throw new Error('Error al actualizar los datos del usuario');
 
@@ -130,40 +125,72 @@ function Perfil() {
     }
   };
 
-  const handleHelpSubmit = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault();
     try {
-        const response = await fetch('/api/users/help', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ subject: helpSubject, message: helpMessage }),
-        });
-        if (response.ok) {
-            alert('Tu mensaje ha sido enviado correctamente.');
-            setShowHelpForm(false);
-            setHelpSubject('');
-            setHelpMessage('');
-        } else {
-            throw new Error('Error al enviar el mensaje de ayuda.');
-        }
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+      if (response.ok) {
+        navigate('/dashboard');
+      } else {
+        alert('Credenciales inválidas.');
+      }
     } catch (error) {
-        console.error(error);
-        alert('Hubo un error al enviar tu mensaje.');
+      console.error('Error al iniciar sesión:', error);
+      alert('Error al iniciar sesión.');
     }
   };
 
   if (loading) return <div>Cargando...</div>;
-  if (!userData) return <div>Error al cargar los datos del usuario.</div>;
+  if (!userData) {
+    // Si no hay datos del usuario, muestra el formulario de inicio de sesión
+    return (
+      <div className="perfil-container">
+        <h1>LALIGA</h1>
+        <form onSubmit={handleLogin}>
+          <div className="social-login">
+            <button type="button" className="google">Continuar con Google</button>
+          </div>
+          <div className="divider">
+            <span>o</span>
+          </div>
+          <label htmlFor="email">Correo Electrónico</label>
+          <input
+            type="email"
+            id="email"
+            placeholder="Ingresa tu correo electrónico"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <label htmlFor="password">Contraseña</label>
+          <input
+            type="password"
+            id="password"
+            placeholder="Ingresa tu contraseña"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <button type="submit">INICIAR SESIÓN</button>
+          <a href="#">¿Olvidaste tu contraseña?</a>
+        </form>
+      </div>
+    );
+  }
 
   return (
     <div className="perfil-container">
       <LoadInitialFavorites userData={userData} />
       <UpdateFavoritesOnChange setEditedData={setEditedData} />
-  
+
       <h1>Perfil de {userData.username}</h1>
       <div className="perfil-content">
-        {/* Columna 1: Foto de perfil y datos personales */}
         <div className="perfil-left">
           <div className="perfil-photo">
             {editedData.fotoPerfil ? (
@@ -173,7 +200,6 @@ function Perfil() {
             )}
             <input type="file" accept="image/*" onChange={handleFotoChange} />
           </div>
-  
           <div className="perfil-info">
             <label>Nombre:
               <input type="text" name="firstName" value={editedData.firstName} onChange={handleInputChange} />
@@ -183,8 +209,6 @@ function Perfil() {
             </label>
           </div>
         </div>
-  
-        {/* Columna 2: Favoritos */}
         <div className="perfil-right">
           <div className="favoritos">
             <h3>Equipos Favoritos</h3>
@@ -201,7 +225,7 @@ function Perfil() {
             <Link to="/perfil/anadir-equipo-favorito">
               <button>Añadir equipo favorito</button>
             </Link>
-  
+
             <h3>Competiciones Favoritas</h3>
             <ul>
               {competicionesFavoritas.map((competicion, index) => (
@@ -219,34 +243,14 @@ function Perfil() {
           </div>
         </div>
       </div>
-  
-      {/* Botones en la parte inferior */}
-      <div className="perfil-actions">
-          <button onClick={handleSaveChanges}>Guardar Cambios</button>
-          <button onClick={handleLogout}>Cerrar Sesión</button>
-          <button onClick={() => setShowHelpForm(true)}>Ayuda</button>
-      </div>
 
-      {showHelpForm && (
-        <div className="help-form">
-          <h3>Formulario de Ayuda</h3>
-          <input
-              type="text"
-              placeholder="Asunto"
-              value={helpSubject}
-              onChange={(e) => setHelpSubject(e.target.value)}
-          />
-          <textarea
-              placeholder="Escribe tu mensaje..."
-              value={helpMessage}
-              onChange={(e) => setHelpMessage(e.target.value)}
-          ></textarea>
-          <button onClick={handleHelpSubmit}>Enviar</button>
-          <button onClick={() => setShowHelpForm(false)}>Cancelar</button>
-        </div>  
-      )}
+      <div className="perfil-actions">
+        <button onClick={handleSaveChanges}>Guardar Cambios</button>
+        <button onClick={handleLogout}>Cerrar Sesión</button>
+        <button onClick={() => setShowHelpForm(true)}>Ayuda</button>
+      </div>
     </div>
-  );  
+  );
 }
 
-export default Perfil;
+export default Perfil;

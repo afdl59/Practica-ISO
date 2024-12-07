@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaHome, FaUser, FaComments, FaChartBar, FaGamepad, FaBell } from 'react-icons/fa';
 import '../styles/Sidebar.css';
-
+/*comntario*/
 function Sidebar() {
   const [minigamesOpen, setMinigamesOpen] = useState(false);
   const [estadisticasOpen, setEstadisticasOpen] = useState(false);
@@ -74,3 +74,4 @@ function Sidebar() {
 }
 
 export default Sidebar;
+

@@ -1,56 +1,266 @@
-/* Estilos globales */
+/* Reset y estilos globales */
 * {
-    margin-top: 40;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    width: 100%;
-    overflow-x: hidden; /* Evita el scroll horizontal */
-  }
-  
-  #root {
-    width: 100%;
-    height: 100%;
-  }
-
-  .password-validation-list {
-    list-style: none;
-    padding: 0;
-    margin: 10px 0;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.password-validation-list li {
-    margin-bottom: 5px;
-    font-size: 14px;
+html, body {
+  height: 100%;
+  width: 100%;
+  font-family: 'Montserrat', sans-serif;
+  background: #f8f9fa;
+  display: flex;
+  flex-direction: column;
 }
 
-.password-validation-list .valid {
-    color: green;
-}
-
-.password-validation-list .invalid {
-    color: red;
-}
-
-.google-login-button {
-  display: block;
-  margin: 10px auto;
-  padding: 10px 20px;
-  background-color: #4285F4;
+/* Sidebar */
+.sidebar {
+  width: 100%;
+  height: 50px;
+  background: #212529;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
   color: white;
-  font-size: 16px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar a {
+  text-decoration: none;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.sidebar a:hover {
+  color: #007bff;
+}
+
+/* Contenedor principal */
+.main-container {
+  margin-top: 70px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+/* Productos Patrocinados */
+.product-carousel {
+  width: calc(100% - 600px); /* Ajusta al espacio entre las columnas */
+  margin: 20px auto;
+  padding: 10px 0;
   text-align: center;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Añade una sombra ligera */
+  position: relative;
+  z-index: 2;
+}
+
+.product-carousel h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #212529;
+}
+
+.carousel-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.product {
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.product img {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  margin-bottom: 10px;
+  border-radius: 8px; /* Bordes redondeados */
+}
+
+.product p {
+  font-size: 14px;
+  margin: 5px 0;
+  color: #333;
+}
+
+.product span {
+  font-size: 14px;
+  font-weight: bold;
+  color: #007bff;
+}
+
+/* Panel de predicciones (columna izquierda) */
+.prediction-panel {
+  width: 300px;
+  height: calc(100vh - 50px);
+  background: #1a1a1a;
+  color: #ffffff;
+  padding: 20px 0; /* Espaciado vertical interno */
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: fixed;
+  top: 50px;
+  left: 0;
+  z-index: 3;
+  overflow-y: auto;
+}
+
+/* Contenedor de los videos */
+.prediction-panel a {
+  display: block;
+  width: 100%;
+  margin: 0;
+}
+
+.prediction-panel iframe {
+  width: 100%;
+  height: 200px;
+  border: none;
+  border-radius: 8px;
+  display: block;
+  margin: 0;
+}
+
+/* Panel derecho ocupando toda la columna */
+.full-width-info-panel {
+  width: 300px; /* Ocupa toda la columna */
+  height: calc(100vh - 50px); /* Altura completa menos el navbar */
+  background: #1a1a1a; /* Fondo negro */
+  padding: 0; /* Sin relleno */
+  border-radius: 0 0 12px 12px; /* Bordes redondeados inferiores */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Sombra suave */
+  display: flex;
+  justify-content: center; /* Centrado horizontal */
+  align-items: center; /* Centrado vertical */
+  position: fixed; /* Fija el panel */
+  top: 50px; /* Justo debajo de la barra de navegación */
+  right: 0; /* Pegado al borde derecho */
+  z-index: 3; /* Sobre otros elementos */
+}
+
+.full-width-info-panel iframe {
+  width: 100%; /* Ancho completo */
+  height: 100%; /* Altura completa */
+  border: none; /* Sin bordes */
+  border-radius: 0 0 12px 12px; /* Bordes redondeados inferiores */
+}
+
+/* Contenedor del formulario */
+.auth-container {
+  width: 60%;
+  max-width: 500px;
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  position: relative;
+  margin: 50px auto; /* Reducido el margen superior para subirlo */
+  z-index: 1;
+  text-align: center;
+}
+
+/* Título del formulario */
+.auth-container h1 {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #333333;
+  text-align: center;
+}
+
+/* Formularios */
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
   width: 100%;
 }
 
-.google-login-button:hover {
-  background-color: #357AE8;
+/* Campos de texto */
+form input[type="text"],
+form input[type="password"] {
+  font-size: 16px;
+  width: 90%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  outline: none;
+  text-align: center;
+  transition: all 0.3s ease;
 }
+
+form input[type="text"]:focus,
+form input[type="password"]:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Botón de envío */
+form button[type="submit"] {
+  font-size: 16px;
+  padding: 12px;
+  width: 90%;
+  background: #007bff;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+form button[type="submit"]:hover {
+  background: #0056b3;
+}
+
+/* Línea divisoria */
+hr {
+  border: none;
+  border-top: 1px solid #e0e0e0;
+  margin: 20px 0;
+  width: 90%;
+}
+
+/* Botón de Google */
+.google-login-button {
+  font-size: 16px;
+  padding: 12px;
+  width: 90%;
+  background: #db4437;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.google-login-button:hover {
+  background: #c23321;
+}
+
