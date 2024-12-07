@@ -178,7 +178,7 @@ html, body {
   border-radius: 12px;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
   position: relative;
-  margin: 100px auto; /* Ajusta el margen superior para centrar verticalmente */
+  margin: 50px auto; /* Reducido el margen superior para subirlo */
   z-index: 1;
   text-align: center;
 }
@@ -263,3 +263,4 @@ hr {
 .google-login-button:hover {
   background: #c23321;
 }
+
