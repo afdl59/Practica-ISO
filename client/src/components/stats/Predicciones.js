@@ -63,10 +63,11 @@ function Predicciones() {
                         );
 
                         if (correct) {
-                            await fetch(`/api/users/${sessionData.username}/predictions`, {
+                            const points = 3;
+                            await fetch(`/api/users/${sessionData.username}/update-predictionPoints`, {
                                 method: 'PUT',
                                 headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ points: 3 }),
+                                body: JSON.stringify({ points }),
                             });
                         }
 

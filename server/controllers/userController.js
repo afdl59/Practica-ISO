@@ -260,7 +260,7 @@ exports.updateUserPredictionsPoints = async (req, res) => {
             return res.status(404).json({ message: 'Usuario no encontrado' });
         }
 
-        usuario.puntosPredicciones = (usuario.predictionPoints || 0) + points;
+        usuario.puntosPredicciones = (usuario.puntosPredicciones || 0) + points;
         await usuario.save();
         res.status(200).json({ message: 'Puntos de predicciones actualizados', user: usuario });
     } catch (err) {
