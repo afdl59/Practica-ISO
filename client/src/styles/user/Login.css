@@ -139,6 +139,9 @@
 .ads-section {
     width: 100%;
     margin-bottom: 80px;
+    display: flex !important;
+    padding: 20px;
+    z-index: 2;
 }
   
 /* Auth-container */

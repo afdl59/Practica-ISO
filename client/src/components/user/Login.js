@@ -76,10 +76,10 @@ function Login() {
   };
 
   if (loading) return <div>Cargando...</div>;
-  
+
   return (
       <div className="auth-page">
-        {!isPremium && (
+        {isPremium === false && (
           <div className="ads-section">
             {/* Contenedor de productos sugeridos */}
             <div className="product-carousel">
