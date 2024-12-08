@@ -134,6 +134,7 @@ exports.getUserProfile = async (req, res) => {
             username: usuario.username,
             firstName: usuario.firstName,
             lastName: usuario.lastName,
+            email: usuario.email,
             fotoPerfil: usuario.fotoPerfil || null,
             equipoFavorito: usuario.equipoFavorito || [],
             competicionesFavoritas: usuario.competicionesFavoritas || [],

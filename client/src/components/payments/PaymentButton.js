@@ -7,6 +7,7 @@ const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
 export default function PaymentButton({ userEmail }) {
   const handlePayment = async () => {
     try {
+      console.log('Email enviado al backend:', userEmail);
       const response = await fetch('/api/payments/create-session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -15,7 +16,7 @@ export default function PaymentButton({ userEmail }) {
       if (!response.ok) {
         throw new Error('Error en la creación de la sesión de pago');
       }
-      
+
       const { sessionId } = await response.json();
 
       const stripe = await stripePromise;
