@@ -78,6 +78,33 @@ const markAsRead = async (req, res) => {
     }
 };
 
+const searchUsers = async (req, res) => {
+    const { search } = req.query;
+  
+    if (!search) {
+      return res.status(400).json({ message: 'El parámetro de búsqueda es obligatorio.' });
+    }
 
-module.exports = { sendNotificationEmail, getNotifications, markAsRead };
+    console.log('Valor de búsqueda:', search);
+  
+    try {
+      const regexSearch = new RegExp(search, 'i'); // Genera un regex dinámico e insensible a mayúsculas
+      const users = await User.find({
+        username: { $regex: regexSearch },
+      })
+        .limit(10) // Limitar resultados
+        .select('username'); // Solo devuelve los nombres de usuario
+  
+      if (users.length === 0) {
+        return res.status(404).json({ message: 'Usuario no encontrado' });
+      }
+  
+      res.status(200).json(users);
+    } catch (error) {
+      console.error('Error al buscar usuarios:', error);
+      res.status(500).json({ message: 'Error al buscar usuarios' });
+    }
+  };
+
+module.exports = { sendNotificationEmail, getNotifications, markAsRead, searchUsers };
 
