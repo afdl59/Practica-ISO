@@ -7,6 +7,7 @@ exports.checkSession = (req, res) => {
         return res.status(200).json({
             isAuthenticated: true,
             username: req.session.username,
+            isPremium: req.session.isPremium,
         });
     } else {
         return res.status(401).json({ isAuthenticated: false });
