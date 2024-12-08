@@ -291,12 +291,6 @@ function Foro() {
     }
   };
 
-  const filteredSalas = salas.filter((sala) =>
-    sala.title.toLowerCase().includes(search.toLowerCase()) ||
-    sala.description.toLowerCase().includes(search.toLowerCase()) ||
-    sala.createdBy.toLowerCase().includes(search.toLowerCase())
-  );
-
   const groupMessagesByDateAndUser = () => {
     const groupedByDate = mensajes.reduce((acc, mensaje) => {
       const date = new Date(mensaje.date).toLocaleDateString();
@@ -346,7 +340,7 @@ function Foro() {
         </div>
         <div className="lista-salas">
           {sortedSalas
-            .filter(filteredSalas)
+            .filter((sala) => sala.title.toLowerCase().includes(search.toLowerCase()))
             .map((sala) => (
               <div
                 key={sala._id}
