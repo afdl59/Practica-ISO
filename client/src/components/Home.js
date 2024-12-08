@@ -33,9 +33,11 @@ function Home() {
           credentials: 'include',
         });
         const data = await response.json();
-        console.log("Estado de isPremium: ", data.isPremium);
-        if (response.ok && data.isPremium !== undefined) {
-          setIsPremium(data.isPremium);
+        let username = data.username;
+        const premiumResponse = await fetch(`/api/users/${username}/premium-status`);
+        const premiumData = await premiumResponse.json();
+        if (premiumResponse.ok && premiumData.isPremium !== undefined) {
+          setIsPremium(premiumData.isPremium);
         }
       } catch (err) {
         console.error('Error verificando la sesión:', err);
