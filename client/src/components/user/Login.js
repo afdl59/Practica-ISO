@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../../styles/index.css';
 import '../../styles/user/Login.css';
 import botanike1 from '../../assets/patrocinio/botanike1.jpeg';
 import botanike2 from '../../assets/patrocinio/botanike2.jpeg';
@@ -46,8 +47,8 @@ function Login() {
       }
     };
 
-    if (isPremium === null || isPremium === undefined) checkSession();
-  }, [isPremium]);
+    checkSession();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
