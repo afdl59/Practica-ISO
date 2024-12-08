@@ -311,3 +311,26 @@
 .popup-contenido form button:hover {
   opacity: 0.9;
 }
+
+.user-suggestions {
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  max-height: 200px;
+  overflow-y: auto;
+  list-style: none;
+  padding: 10px;
+  margin: 0;
+  width: 100%;
+}
+
+.user-suggestions li {
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.user-suggestions li:hover {
+  background-color: #f0f0f0;
+}
+
