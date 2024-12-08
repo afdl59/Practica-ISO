@@ -392,3 +392,40 @@ exports.updateUserScore = async (req, res) => {
         res.status(500).json({ error: 'Error interno del servidor' });
     }
 };
+
+// Obtener el estado actual de isPremium
+exports.getPremiumStatus = async (req, res) => {
+    const { username } = req.params;
+
+    try {
+        const usuario = await User.findOne({ username });
+        if (!usuario) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+
+        res.status(200).json({ isPremium: usuario.isPremium });
+    } catch (err) {
+        console.error('Error al obtener el estado de suscripción:', err);
+        res.status(500).json({ message: 'Error interno del servidor' });
+    }
+};
+
+// Actualizar el estado de isPremium
+exports.updatePremiumStatus = async (req, res) => {
+    const { username } = req.params;
+
+    try {
+        const usuario = await User.findOne({ username });
+        if (!usuario) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+
+        usuario.isPremium = true; // Actualizar a premium
+        await usuario.save();
+
+        res.status(200).json({ message: 'Estado de suscripción actualizado a premium', user: usuario });
+    } catch (err) {
+        console.error('Error al actualizar el estado de suscripción:', err);
+        res.status(500).json({ message: 'Error interno del servidor' });
+    }
+};
