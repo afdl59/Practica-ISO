@@ -33,6 +33,7 @@ function Home() {
           credentials: 'include',
         });
         const data = await response.json();
+        console.log("Estado de isPremium: ", data.isPremium);
         if (response.ok && data.isPremium !== undefined) {
           setIsPremium(data.isPremium);
         }
@@ -44,11 +45,9 @@ function Home() {
     checkSession();
   }, []);
 
-  console.log("Estado de isPremium: ", isPremium);
-
   return (
-    <div>
-      {isPremium === false && (
+    <div className="auth-page">
+      {!isPremium && (
         <div className="ads-section">
           {/* Contenedor de productos sugeridos */}
           <div className="product-carousel">

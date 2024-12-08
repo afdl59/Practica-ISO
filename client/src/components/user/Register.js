@@ -26,22 +26,23 @@ function Register() {
 
     useEffect(() => {
         const checkSession = async () => {
-            try {
-              const response = await fetch('/api/auth/check-session', {
-                method: 'GET',
-                credentials: 'include',
-              });
-              const data = await response.json();
-              if (response.ok && data.isPremium !== undefined) {
-                setIsPremium(data.isPremium);
-              }
-            } catch (err) {
-              console.error('Error verificando la sesión:', err);
+          try {
+            const response = await fetch('/api/auth/check-session', {
+              method: 'GET',
+              credentials: 'include',
+            });
+            const data = await response.json();
+            console.log("Estado de isPremium: ", data.isPremium);
+            if (response.ok && data.isPremium !== undefined) {
+              setIsPremium(data.isPremium);
             }
-          };
+          } catch (err) {
+            console.error('Error verificando la sesión:', err);
+          }
+        };
       
-          checkSession();
-        }, []);
+        checkSession();
+    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -103,11 +104,9 @@ function Register() {
         }
     };
 
-    console.log("Estado de isPremium: ", isPremium);
-    
     return (
         <div className="auth-page">
-            {isPremium === false && (
+            {!isPremium && (
                 <div className="ads-section">
                     {/* Contenedor de productos sugeridos */}
                     <div className="product-carousel">
