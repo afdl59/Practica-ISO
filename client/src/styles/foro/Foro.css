@@ -146,7 +146,7 @@
   flex-direction: column;
   gap: 10px;
   overflow-y: auto;
-  margin-bottom: 60px; /* Dejar espacio para el input y botón de enviar */
+  margin-bottom: 80px; /* Dejar espacio para el input y botón de enviar */
 }
 
 .grupo-fecha {
@@ -215,16 +215,15 @@
   gap: 10px;
   padding: 10px;
   background-color: rgba(0, 0, 0, 0.8);
-  border-radius: 6px;
-  position: absolute;
-  bottom: 10px;
-  width: 28%;
-  max-width: 100%;
+  position: fixed; /* Fijar posición */
+  bottom: 0;
+  left: 0;
+  width: 100%; /* Ocupa todo el ancho */
   box-sizing: border-box;
 }
 
 .enviar-mensaje input {
-  flex-grow: 1;
+  flex-grow: 1; /* El input ocupa el espacio restante */
   padding: 10px;
   border-radius: 6px;
   border: none;
@@ -234,7 +233,7 @@
 }
 
 .enviar-mensaje button {
-  padding: 0 30px;
+  padding: 0 20px;
   height: 40px;
   border: none;
   border-radius: 6px;
