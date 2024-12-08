@@ -103,9 +103,11 @@ function Register() {
         }
     };
 
+    console.log("Estado de isPremium: ", isPremium);
+    
     return (
         <div className="auth-page">
-            {!isPremium && (
+            {isPremium === false && (
                 <div className="ads-section">
                     {/* Contenedor de productos sugeridos */}
                     <div className="product-carousel">
