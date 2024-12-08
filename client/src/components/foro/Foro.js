@@ -203,7 +203,8 @@ function Foro() {
   // Función para buscar usuarios desde la base de datos
   const fetchUsers = async (query) => {
     try {
-      const response = await fetch(`/api/notificaciones/users?search=${encodeURIComponent(query)}`, {
+      console.log("Query de busqueda: ", query);
+      const response = await fetch(`/api/notificaciones/users?search=${query}`, {
         method: 'GET', // Especificar el método GET
         headers: { 'Content-Type': 'application/json' }, // Agregar encabezados si es necesario
       });
