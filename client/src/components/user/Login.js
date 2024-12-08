@@ -69,12 +69,11 @@ function Login() {
     };
 
     return (
-        <div>
+        <div className="auth-page">
           {!isPremium && (
             <div className="ads-section">
               {/* Contenedor de productos sugeridos */}
               <div className="product-carousel">
-                  <h3>Patrocinado · Productos sugeridos</h3>
                   <div className="carousel-container">
                       {/* Producto 1 */}
                       <div className="product">
@@ -113,7 +112,6 @@ function Login() {
 
               {/* Contenedor de videos promocionales */}
               <div className="prediction-panel">
-                  <h3>Patrocinado · Videos promocionales</h3>
                   <div className="video-container" onClick={() => window.open('https://www.cupraofficial.es/ofertas/formentor', '_blank')}>
                       <iframe
                           src="https://www.youtube.com/embed/eUaywO-fq0I?autoplay=1&mute=1&loop=1&playlist=eUaywO-fq0I"
@@ -142,7 +140,6 @@ function Login() {
 
               {/* Contenedor de videos destacados */}
               <div className="full-width-info-panel">
-                  <h3>Video destacado</h3>
                   <iframe
                       src="https://www.youtube.com/embed/Wbh8HMmU-Gs?autoplay=1&mute=1&loop=1&playlist=Wbh8HMmU-Gs"
                       title="Video destacado"
