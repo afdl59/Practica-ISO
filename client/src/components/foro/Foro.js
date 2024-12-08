@@ -346,14 +346,12 @@ function Foro() {
         </div>
         <div className="lista-salas">
           {sortedSalas
-            .filter((sala) =>
-              sala.title.toLowerCase().includes(search.toLowerCase())
-            )
+            .filter(filteredSalas)
             .map((sala) => (
               <div
                 key={sala._id}
                 className={`sala-item ${sala._id === currentSala ? 'sala-activa' : ''}`}
-                onClick={() => setCurrentSala(sala._id)}
+                onClick={handleSalaChange}
               >
                 <div className="sala-info">
                   <strong>{sala.title}</strong>
