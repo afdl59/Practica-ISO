@@ -101,7 +101,7 @@ function Predicciones() {
                 predictions.map((match, index) => {
                     // Encuentra la predicción del usuario para este partido
                     const userPrediction = predictions.find(
-                        (prediction) => prediction.matchId === match.fixture.id
+                        (prediction) => prediction.matchId === match.matchId
                     );
     
                     // Determina la etiqueta de predicción
