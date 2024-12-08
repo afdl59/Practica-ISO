@@ -7,6 +7,7 @@ import botanike4 from '../../assets/patrocinio/botanike4.jpeg';
 
 function Register() {
     const [isPremium, setIsPremium] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [formData, setFormData] = useState({
         username: '',
         firstName: '',
@@ -44,6 +45,8 @@ function Register() {
             console.log("Estado actual de isPremium", isPremium);
           } catch (err) {
             console.error('Error verificando la sesión:', err);
+          } finally {
+            setLoading(false);
           }
         };
     
@@ -109,6 +112,8 @@ function Register() {
             setError(err.message);
         }
     };
+
+    if (loading) return <div>Cargando...</div>;
 
     return (
         <div className="auth-page">

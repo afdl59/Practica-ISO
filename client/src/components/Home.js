@@ -4,11 +4,11 @@ import botanike1 from '../assets/patrocinio/botanike1.jpeg';
 import botanike2 from '../assets/patrocinio/botanike2.jpeg';
 import botanike3 from '../assets/patrocinio/botanike3.jpeg';
 import botanike4 from '../assets/patrocinio/botanike4.jpeg';
-import { METHODS } from 'http';
 
 function Home() {
   const [isPremium, setIsPremium] = useState(false);
   const [currentTime, setCurrentTime] = useState('');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const updateTime = () => {
@@ -46,11 +46,15 @@ function Home() {
         console.log("Estado actual de isPremium", isPremium);
       } catch (err) {
         console.error('Error verificando la sesión:', err);
+      } finally {
+        setLoading(false);
       }
     };
 
     checkSession();
   }, []);
+
+  if (loading) return <div>Cargando...</div>;
 
   return (
     <div className="auth-page">

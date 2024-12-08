@@ -15,6 +15,7 @@ function Login() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
   function handleChange(e) {
     setFormData({...formData, [e.target.name]: e.target.value});
@@ -40,6 +41,8 @@ function Login() {
         console.log("Estado actual de isPremium", isPremium);
       } catch (err) {
         console.error('Error verificando la sesión:', err);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -72,6 +75,8 @@ function Login() {
     }
   };
 
+  if (loading) return <div>Cargando...</div>;
+  
   return (
       <div className="auth-page">
         {!isPremium && (
