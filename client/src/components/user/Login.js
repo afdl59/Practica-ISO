@@ -29,7 +29,10 @@ function Login() {
         });
         const data = await response.json();
         let username = data.username;
-        const premiumResponse = await fetch(`/api/users/${username}/premium-status`);
+        const premiumResponse = await fetch(`/api/users/${username}/premium-status`, {
+          method: 'GET', // Especificar el método
+          credentials: 'include' // Incluir cookies de autenticación
+        });
         const premiumData = await premiumResponse.json();
         if (premiumResponse.ok && premiumData.isPremium !== undefined) {
           setIsPremium(premiumData.isPremium);

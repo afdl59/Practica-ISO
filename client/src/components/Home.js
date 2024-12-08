@@ -4,6 +4,7 @@ import botanike1 from '../assets/patrocinio/botanike1.jpeg';
 import botanike2 from '../assets/patrocinio/botanike2.jpeg';
 import botanike3 from '../assets/patrocinio/botanike3.jpeg';
 import botanike4 from '../assets/patrocinio/botanike4.jpeg';
+import { METHODS } from 'http';
 
 function Home() {
   const [isPremium, setIsPremium] = useState(false);
@@ -34,7 +35,10 @@ function Home() {
         });
         const data = await response.json();
         let username = data.username;
-        const premiumResponse = await fetch(`/api/users/${username}/premium-status`);
+        const premiumResponse = await fetch(`/api/users/${username}/premium-status`, {
+          method: 'GET', // Especificar el método
+          credentials: 'include' // Incluir cookies de autenticación
+        });
         const premiumData = await premiumResponse.json();
         if (premiumResponse.ok && premiumData.isPremium !== undefined) {
           setIsPremium(premiumData.isPremium);
