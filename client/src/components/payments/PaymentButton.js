@@ -12,6 +12,10 @@ export default function PaymentButton({ userEmail }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: userEmail }),
       });
+      if (!response.ok) {
+        throw new Error('Error en la creación de la sesión de pago');
+      }
+      
       const { sessionId } = await response.json();
 
       const stripe = await stripePromise;

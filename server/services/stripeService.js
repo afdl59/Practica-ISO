@@ -19,8 +19,8 @@ const createCheckoutSession = async (userEmail) => {
         },
       ],
       mode: 'payment',
-      success_url: `${process.env.CLIENT_URL}/success`,
-      cancel_url: `${process.env.CLIENT_URL}/cancel`,
+      success_url: `https://futbol360.ddns.net/perfil`,
+      cancel_url: `https://futbol360.ddns.net/cancel`,
     });
     return session;
   } catch (error) {

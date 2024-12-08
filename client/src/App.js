@@ -43,6 +43,9 @@ import Notificaciones from './components/notificaciones/Notificaciones';
 import Terms from './components/Terms';
 import Privacy from './components/Privacy';
 
+//Cancel pago
+import Cancel from './components/payments/Cancel';
+
 //CSS
 import './styles/App.css';
 import { UserProvider } from './context/UserContext';
@@ -100,6 +103,9 @@ function App() {
 
             {/* Ruta de Leaderboard*/}
             <Route path="/leaderboard" element={<Leaderboard />} />
+
+            {/* Ruta de Cancel*/}
+            <Route path="/cancel" element={<Cancel />} />
 
           </Routes>
         </div>
