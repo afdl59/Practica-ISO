@@ -4,7 +4,7 @@ import '../../styles/stats/Predicciones.css';
 
 function Predicciones() {
     const [predictions, setPredictions] = useState([]);
-    const [userData, setUserData] = useState(null);
+    const [originalPredictions, setOriginalPredictions] = useState([]); // Intermediario
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -30,10 +30,10 @@ function Predicciones() {
                 const predictionsData = await predictionsResponse.json();
                 console.log("Datos del usuario obtenidos:", predictionsData);
 
-                setUserData(predictionsData);
-                setPredictions(predictionsData.prediccionesActuales || []);
+                // Guardar predicciones originales
+                setOriginalPredictions(predictionsData.prediccionesActuales || []);
 
-                // Comprobar partidos terminados y actualizar predicciones
+                // Obtener detalles de partidos y calcular puntuaciones
                 const headers = new Headers({
                     'x-rapidapi-key': '00cb0f459f2d3b04f9dcc00ad403423d',
                     'x-rapidapi-host': 'v3.football.api-sports.io',
@@ -52,34 +52,40 @@ function Predicciones() {
                     const matchData = await matchResponse.json();
                     const matchDetails = matchData.response[0];
 
-                    if (matchDetails.fixture.status.long === 'Match Finished') {
-                        const homeWon = matchDetails.teams.home.winner;
-                        const awayWon = matchDetails.teams.away.winner;
+                    if (matchDetails) {
+                        // Lógica de puntuación si el partido ha terminado
+                        if (matchDetails.fixture.status.long === 'Match Finished') {
+                            const homeWon = matchDetails.teams.home.winner;
+                            const awayWon = matchDetails.teams.away.winner;
 
-                        const correct = (
-                            (prediction === 'home' && homeWon) ||
-                            (prediction === 'away' && awayWon) ||
-                            (prediction === 'draw' && !homeWon && !awayWon)
-                        );
+                            const correct = (
+                                (prediction === 'home' && homeWon) ||
+                                (prediction === 'away' && awayWon) ||
+                                (prediction === 'draw' && !homeWon && !awayWon)
+                            );
 
-                        if (correct) {
-                            const points = 3;
-                            await fetch(`/api/users/${sessionData.username}/update-predictionPoints`, {
-                                method: 'PUT',
+                            if (correct) {
+                                const points = 3;
+                                await fetch(`/api/users/${sessionData.username}/update-predictionPoints`, {
+                                    method: 'PUT',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ points }),
+                                });
+                            }
+
+                            // Eliminar predicción si el partido ha terminado
+                            await fetch(`/api/users/${sessionData.username}/remove-prediction`, {
+                                method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ points }),
+                                body: JSON.stringify({ matchId }),
+                            });
+                        } else {
+                            // Agregar los detalles del partido si no ha terminado
+                            updatedPredictions.push({
+                                ...matchDetails,
+                                matchId, // Incluye el ID para referencia
                             });
                         }
-
-                        // Eliminar predicción por partido terminado
-                        await fetch(`/api/users/${sessionData.username}/remove-prediction`, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ matchId }),
-                        });
-
-                    } else {
-                        updatedPredictions.push(matchDetails);
                     }
                 }
                 setPredictions(updatedPredictions);
@@ -93,17 +99,17 @@ function Predicciones() {
     }, [navigate]);
 
     console.log("Predicciones actuales formato: ", predictions);
-    
+
     return (
         <div className="predictions-container">
             <h1>Tus Predicciones</h1>
             {predictions.length > 0 ? (
                 predictions.map((match, index) => {
-                    // Encuentra la predicción del usuario para este partido
-                    const userPrediction = predictions.find(
+                    // Busca la predicción original del usuario
+                    const userPrediction = originalPredictions.find(
                         (prediction) => prediction.matchId === match.matchId
                     );
-    
+
                     // Determina la etiqueta de predicción
                     const predictionLabel =
                         userPrediction?.prediction === 'home'
@@ -113,7 +119,7 @@ function Predicciones() {
                             : userPrediction?.prediction === 'draw'
                             ? 'Empate'
                             : 'No definida';
-    
+
                     // Validar que los datos del partido están completos
                     if (
                         match?.teams?.home?.name &&
@@ -142,8 +148,8 @@ function Predicciones() {
             )}
         </div>
     );
-          
 }
 
 export default Predicciones;
+
 
