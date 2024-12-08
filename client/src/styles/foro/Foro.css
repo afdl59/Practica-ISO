@@ -209,8 +209,9 @@
 }
 
 /* Input de mensajes */
-.enviar-mensaje {
+.foro-contenedor .enviar-mensaje {
   display: flex;
+  flex-direction: row;
   align-items: center;
   gap: 10px;
   padding: 10px;
@@ -218,11 +219,12 @@
   position: fixed; /* Fijar posición */
   bottom: 0;
   left: 0;
-  width: 100%; /* Ocupa todo el ancho */
+  width: 80%; /* Ocupa todo el ancho */
+  margin-left: 450px;
   box-sizing: border-box;
 }
 
-.enviar-mensaje input {
+.foro-contenedor .enviar-mensaje input {
   flex-grow: 1; /* El input ocupa el espacio restante */
   padding: 10px;
   border-radius: 6px;
@@ -232,9 +234,10 @@
   height: 40px;
 }
 
-.enviar-mensaje button {
+.foro-contenedor .enviar-mensaje button {
   padding: 0 20px;
   height: 40px;
+  margin-bottom: 0;
   border: none;
   border-radius: 6px;
   background-color: #0077b6;
@@ -243,7 +246,7 @@
   font-weight: bold;
 }
 
-.enviar-mensaje button:hover {
+.foro-contenedor .enviar-mensaje button:hover {
   background-color: #005f8a;
 }
 
