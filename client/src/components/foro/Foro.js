@@ -198,14 +198,6 @@ function Foro() {
     }
   }, [username, mensajes, profilePictures]);  
 
-  const handleSalaChange = (sala) => {
-    console.log('Datos de la sala seleccionada:', sala);
-    setCurrentSala(sala._id);
-    setCurrentSalaName(sala.title);
-    setCurrentSalaDescription(sala.description);
-    setCurrentSalaCreatedBy(sala.createdBy);
-  };
-
   const handleCreateSala = async (e) => {
     e.preventDefault();
     if (newSalaTitle && newSalaDescription && newSalaCategory && username) {
@@ -340,12 +332,14 @@ function Foro() {
         </div>
         <div className="lista-salas">
           {sortedSalas
-            .filter((sala) => sala.title.toLowerCase().includes(search.toLowerCase()))
+            .filter((sala) =>
+              sala.title.toLowerCase().includes(search.toLowerCase())
+            )
             .map((sala) => (
               <div
                 key={sala._id}
                 className={`sala-item ${sala._id === currentSala ? 'sala-activa' : ''}`}
-                onClick={handleSalaChange}
+                onClick={() => setCurrentSala(sala._id)}
               >
                 <div className="sala-info">
                   <strong>{sala.title}</strong>
