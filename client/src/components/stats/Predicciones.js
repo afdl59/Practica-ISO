@@ -92,6 +92,8 @@ function Predicciones() {
         fetchPredictions();
     }, [navigate]);
 
+    console.log("Predicciones actuales formato: ", predictions);
+    
     return (
       <div className="predictions-container">
           <h1>Tus Predicciones</h1>

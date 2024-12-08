@@ -17,12 +17,17 @@ const userSchema = new mongoose.Schema({
     fotoPerfil: { type: String },
     googleId: { type: String, unique: true },
     twitterId: { type: String, unique: true},
-    equipoFavorito: { type: [String], default: [] }, // Nuevo campo para el equipo favorito
-    competicionesFavoritas: { type: [String], default: [] }, // Nuevo campo para competiciones favoritas
-    puntosTotales: { type: Number, default: 0 },
+    equipoFavorito: { type: [String], default: [] },
+    competicionesFavoritas: { type: [String], default: [] },
+    prediccionesActuales: { type: Array, default: [] },
+    puntos: {
+        bingo: { type: Number, default: 0 },
+        guessThePlayer: { type: Number, default: 0 },
+        tiroLibre: { type: Number, default: 0 },
+        wordle: { type: Number, default: 0 },
+        predicciones: { type: Number, default: 0 },
+    },
     createdAt: { type: Date, default: Date.now },
-    prediccionesActuales: { type: Array, default: [] }, // Nuevo campo para almacenar las predicciones del usuario
-    puntosPredicciones: { type: Number, default: 0 }, // Nuevo campo para almacenar los puntos de las predicciones del usuario
 });
 
 // Middleware para encriptar la contraseña antes de guardar
