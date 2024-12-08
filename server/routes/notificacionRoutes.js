@@ -11,9 +11,7 @@ router.get('/:username', getNotifications);
 // Marcar notificación como leída
 router.patch('/marcar-leida/:notificationId', markAsRead);
 
-router.get('/users', (req, res, next) => {
-    console.log('Se llamó al endpoint /users');
-    next();
-  }, searchUsers);  
+// Endpoint para buscar usuarios
+router.get('/users', searchUsers);
 
 module.exports = router;

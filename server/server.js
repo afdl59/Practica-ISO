@@ -68,10 +68,7 @@ app.use('/api/foro', chatRoutes);
 app.use('/api/users', userRoutes); 
 
 //Rutas de notificaciones
-app.use('/api/notificaciones', (req, res, next) => {
-    console.log(`Ruta solicitada: ${req.path}`);
-    next();
-  }, notificationRoutes);
+app.use('/api/notificaciones', notificationRoutes);
 
 //Rutas de Leaderboard
 app.use('/api/leaderboards', leaderboardRoutes);

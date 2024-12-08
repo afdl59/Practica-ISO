@@ -85,9 +85,11 @@ const searchUsers = async (req, res) => {
       return res.status(400).json({ message: 'El parámetro de búsqueda es obligatorio.' });
     }
   
+    console.log('Valor de búsqueda:', search); // Debe mostrar el texto de la query
+    
     try {
       const regexSearch = new RegExp(search, 'i'); // Genera un regex dinámico e insensible a mayúsculas
-      console.log('Valor de búsqueda:', search); // Debe mostrar el texto de la query
+      
       console.log('Regex generado:', new RegExp(search, 'i')); // Muestra la expresión regular que se usará
       const users = await User.find({
         username: { $regex: regexSearch },
