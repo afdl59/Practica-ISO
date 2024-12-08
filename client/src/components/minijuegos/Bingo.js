@@ -3,7 +3,7 @@ import '../../styles/minijuegos/Bingo.css';
 import { useLeaderboard } from '../../context/LeaderboardContext';
 
 // Define los jugadores
-const jugadores = [
+const jugadoresDefault = [
   { nombre: "Harry Kane", definicion: "Delantero estrella del bayern de munchen y la selección inglesa." },
   { nombre: "Sergio Ramos", definicion: "Defensa central, leyenda del Real Madrid y capitán de la selección española." },
   { nombre: "Cristiano Ronaldo", definicion: "Delantero legendario, ha jugado en varias ligas, incluyendo La Liga y la Premier." },
@@ -17,12 +17,11 @@ const jugadores = [
 
 // Función para calcular el puntaje
 function calculateBingoScore(inputs, jugadores) {
-  // CAMBIO: VALIDACIÓN DE ENTRADAS Y JUGADORES PARA EVITAR ERRORES
-  if (!jugadores || !inputs) return 0; // Si no existen jugadores o entradas, retornamos 0
-  
-  // Validación para evitar error de 'undefined' al acceder a jugadores[index]
+  // Validar que jugadores e inputs sean válidos
+  if (!Array.isArray(jugadores) || !Array.isArray(inputs)) return 0;
+
   const filledSquares = inputs.filter((input, index) => 
-      input.trim().toLowerCase() === jugadores[index]?.nombre.toLowerCase() // Usamos '?.' para evitar errores si jugadores[index] es undefined
+      input.trim().toLowerCase() === jugadores[index]?.nombre.toLowerCase()
   ).length;
 
   const isFullBoard = filledSquares === jugadores.length;
@@ -32,9 +31,9 @@ function calculateBingoScore(inputs, jugadores) {
 function BingoGame({ jugadores, playerName }) {
   const { updateLeaderboard } = useLeaderboard();
 
-  // CAMBIO: INICIALIZACIÓN DEL ESTADO 'inputs' CON UN FALLBACK VACÍO SI NO HAY JUGADORES
+  // Inicializar estado con un fallback
   const [inputs, setInputs] = useState(() => 
-      jugadores ? Array(jugadores.length).fill('') : [] // Usamos fallback vacío si jugadores está vacío o no definido
+      Array(jugadores?.length || 0).fill('')
   );
 
   const [score, setScore] = useState(0);
@@ -47,21 +46,20 @@ function BingoGame({ jugadores, playerName }) {
   };
 
   const validarGanador = () => {
-      // CAMBIO: VALIDACIÓN EN CASO DE QUE 'jugadores' O 'inputs' NO EXISTA
       const currentScore = calculateBingoScore(inputs, jugadores);
       setScore(currentScore);
-      
-      if (currentScore === jugadores.length + 1) { // Puntaje de tablero completo
+
+      if (currentScore === jugadores.length + 1) { // Full board score
           setMensaje('¡Ganaste! Has completado el bingo.');
           updateLeaderboard('bingo', playerName, currentScore);
       } else {
-          setMensaje(''); // Limpiar mensaje si no se completó el bingo
+          setMensaje('');
       }
   };
 
-  // CAMBIO: AGREGAR MANEJO DE ERRORES SI 'jugadores' ESTÁ VACÍO O NO ESTÁ DEFINIDO
+  // Mostrar mensaje si no hay jugadores disponibles
   if (!jugadores || jugadores.length === 0) {
-      return <div>No hay datos de jugadores disponibles.</div>; // Mostrar mensaje de error si no hay jugadores
+      return <div>No hay datos de jugadores disponibles.</div>;
   }
 
   return (
@@ -71,15 +69,15 @@ function BingoGame({ jugadores, playerName }) {
               {jugadores.map((jugador, index) => (
                   <div 
                       key={index} 
-                      className={`grid-item ${inputs[index]?.trim().toLowerCase() === jugador.nombre.toLowerCase() ? 'correct' : ''}`} 
+                      className={`grid-item ${inputs[index]?.trim().toLowerCase() === jugador.nombre.toLowerCase() ? 'correct' : ''}`}
                   >
                       <p>{jugador.definicion}</p>
                       <input
                           type="text"
-                          value={inputs[index] || ''} // CAMBIO: FALBACK VACÍO EN CASO DE QUE inputs[index] SEA undefined
+                          value={inputs[index] || ''}
                           onChange={(e) => handleInputChange(index, e.target.value)}
-                          onBlur={() => validarGanador()} // Validar al salir del input
-                          onKeyDown={(e) => e.key === 'Enter' && validarGanador()} // Validar al presionar Enter
+                          onBlur={() => validarGanador()}
+                          onKeyDown={(e) => e.key === 'Enter' && validarGanador()}
                       />
                   </div>
               ))}
@@ -90,11 +88,12 @@ function BingoGame({ jugadores, playerName }) {
   );
 }
 
-// CAMBIO: SE DEFINEN PROPS POR DEFECTO PARA EVITAR PROBLEMAS SI NO SE PASAN AL COMPONENTE
+// Props por defecto
 BingoGame.defaultProps = {
-  jugadores: [], // Fallback vacío en caso de que no se pase la lista de jugadores
-  playerName: 'Guest' // Fallback con nombre 'Guest' si no se pasa un nombre de jugador
+  jugadores: jugadoresDefault,
+  playerName: 'Guest'
 };
 
 export default BingoGame;
+
 
