@@ -15,13 +15,15 @@ function calculateScore(attemptsLeft) {
     return attemptsLeft * 5; // Cada intento restante vale 5 puntos
 }
 
-function GuessThePlayer({ isAuthenticated, username }) {
+function GuessThePlayer() {
     const [jugadorActual, setJugadorActual] = useState(jugadores[Math.floor(Math.random() * jugadores.length)]);
     const [intento, setIntento] = useState('');
     const [mensaje, setMensaje] = useState('');
     const [imagenBlur, setImagenBlur] = useState(10);
     const [attemptsLeft, setAttemptsLeft] = useState(6);
     const [score, setScore] = useState(null);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [username, setUsername] = useState('');
 
     useEffect(() => {
         // Reiniciar el estado del juego cuando cambia el jugador actual
@@ -31,6 +33,30 @@ function GuessThePlayer({ isAuthenticated, username }) {
         setAttemptsLeft(6);
         setScore(null);
     }, [jugadorActual]);
+
+    useEffect(() => {
+        // Llamada al endpoint para verificar la sesión
+        const checkSession = async () => {
+            try {
+                const response = await fetch('/api/auth/check-session', {
+                    method: 'GET',
+                    credentials: 'include', // Asegura que se incluyan cookies
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    setIsAuthenticated(true);
+                    setUsername(data.username); // Almacenar el username del usuario autenticado
+                } else {
+                    setIsAuthenticated(false);
+                }
+            } catch (error) {
+                console.error('Error al verificar la sesión:', error);
+                setIsAuthenticated(false);
+            }
+        };
+
+        checkSession();
+    }, []);
 
     const handleIntento = async (e) => {
         e.preventDefault();
