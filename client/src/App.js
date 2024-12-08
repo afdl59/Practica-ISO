@@ -15,6 +15,9 @@ import AnadirCompeticionFavorita from './components/user/AnadirCompeticionFavori
 //Foro
 import Foro from './components/foro/Foro';
 
+//Leaderboard
+import Leaderboard from './components/Leaderboard';
+
 // Minijuegos
 import Minijuegos from './components/minijuegos/Minijuegos';
 import Bingo from './components/minijuegos/Bingo';
@@ -94,6 +97,10 @@ function App() {
             {/* Rutas de Términos y Condiciones */}
             <Route path="/terms" element={<Terms />} />
             <Route path="/privacy" element={<Privacy />} />
+
+            {/* Ruta de Leaderboard*/}
+            <Route path="/leaderboard" element={<Leaderboard />} />
+
           </Routes>
         </div>
       </LeaderboardProvider>
