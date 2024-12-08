@@ -4,6 +4,7 @@ import { FavoritosContext } from '../../context/FavoritosContext';
 import LoadInitialFavorites from './LoadInitialFavoritos';
 import UpdateFavoritesOnChange from './UpdateFavoritosOnChange';
 import { FaTimes } from 'react-icons/fa'; // Icono para la "X"
+import PaymentButton from '../payments/PaymentButton';
 import '../../styles/user/Perfil.css';
 
 function Perfil() {
@@ -243,6 +244,11 @@ function Perfil() {
           <button onClick={handleHelpSubmit}>Enviar</button>
           <button onClick={() => setShowHelpForm(false)}>Cancelar</button>
         </div>  
+      )}
+
+      {/* Botón de Pago */}
+      {userData && !userData.isPremium && (
+        <PaymentButton userEmail={userData.email} />
       )}
     </div>
   );  
