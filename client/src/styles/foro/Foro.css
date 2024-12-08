@@ -220,7 +220,7 @@
   bottom: 0;
   left: 0;
   width: 80%; /* Ocupa todo el ancho */
-  margin-left: 450px;
+  margin-left: 510px;
   box-sizing: border-box;
 }
 
@@ -232,6 +232,7 @@
   background-color: #fff;
   color: #333;
   height: 40px;
+  width: 90%;
 }
 
 .foro-contenedor .enviar-mensaje button {
@@ -244,6 +245,7 @@
   color: #fff;
   cursor: pointer;
   font-weight: bold;
+  width: 10%;
 }
 
 .foro-contenedor .enviar-mensaje button:hover {
