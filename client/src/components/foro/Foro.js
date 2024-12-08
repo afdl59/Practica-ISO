@@ -201,17 +201,24 @@ function Foro() {
   }, [username, mensajes, profilePictures]);  
 
   // Función para buscar usuarios desde la base de datos
-  const fetchUsers = async () => {
+  const fetchUsers = async (query) => {
     try {
-      const response = await fetch(`/api/notificaciones/users`);
+      const response = await fetch(`/api/notificaciones/users?search=${encodeURIComponent(query)}`, {
+        method: 'GET', // Especificar el método GET
+        headers: { 'Content-Type': 'application/json' }, // Agregar encabezados si es necesario
+      });
+  
       if (response.ok) {
         const users = await response.json();
         setUserSuggestions(users);
+      } else {
+        console.error('Error al obtener usuarios:', response.statusText);
       }
     } catch (error) {
       console.error('Error al buscar usuarios:', error);
     }
   };
+  
 
   const handleCreateSala = async (e) => {
     e.preventDefault();
@@ -291,8 +298,9 @@ function Foro() {
 
     const mentionMatch = value.match(/@(\w*)$/); // Detectar menciones
     if (mentionMatch) {
-      fetchUsers();
+      const query = mentionMatch[1];
       setShowSuggestions(true);
+      fetchUsers(query);
     } else {
       setShowSuggestions(false);
     }
