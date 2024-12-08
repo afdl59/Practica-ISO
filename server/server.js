@@ -16,6 +16,7 @@ const userRoutes = require('./routes/userRoutes');
 const notificationRoutes = require('./routes/notificacionRoutes');
 const leaderboardRoutes = require('./routes/leaderboardRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
+const webhookRoutes = require('./routes/webhookRoutes');
 
 const socketHandler = require('./socket');
 
@@ -78,6 +79,9 @@ app.use('/api/leaderboards', leaderboardRoutes);
 
 //Rutas de pagos/Stripe
 app.use('/api/payments', paymentRoutes);
+
+//Ruta del webhook
+app.use('/api/webhooks', webhookRoutes);
 
 // Inicializar el manejador de Socket.IO
 socketHandler(io);

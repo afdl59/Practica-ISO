@@ -41,6 +41,6 @@ router.put('/:username/score', userController.updateUserScore);
 router.post('/help', userController.sendHelpRequest);
 
 router.get('/:username/premium-status', authMiddleware, userController.getPremiumStatus); // Obtener estado de premium
-router.put('/:username/premium-status', authMiddleware, userController.updatePremiumStatus); // Actualizar estado de premium
+router.put('/:username/premium-status', userController.updatePremiumStatus); // Actualizar estado de premium
 
 module.exports = router;

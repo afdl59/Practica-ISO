@@ -429,3 +429,19 @@ exports.updatePremiumStatus = async (req, res) => {
         res.status(500).json({ message: 'Error interno del servidor' });
     }
 };
+
+exports.updatePremiumStatusByEmail = async (email) => {
+    try {
+      const usuario = await User.findOne({ email });
+      if (!usuario) {
+        throw new Error('Usuario no encontrado');
+      }
+      usuario.isPremium = true; // Actualizar a premium
+      await usuario.save();
+      console.log(`Estado de isPremium actualizado para el usuario con email: ${email}`);
+    } catch (err) {
+      console.error('Error al actualizar el estado de isPremium:', err);
+      throw err;
+    }
+  };
+  
