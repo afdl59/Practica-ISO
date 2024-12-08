@@ -15,6 +15,8 @@ const chatRoutes = require('./routes/chatRoutes');
 const userRoutes = require('./routes/userRoutes');
 const notificationRoutes = require('./routes/notificacionRoutes');
 const leaderboardRoutes = require('./routes/leaderboardRoutes');
+const paymentRoutes = require('./routes/paymentRoutes');
+
 const socketHandler = require('./socket');
 
 // Conectar a la base de datos
@@ -73,6 +75,9 @@ app.use('/api/notificaciones', notificationRoutes);
 
 //Rutas de Leaderboard
 app.use('/api/leaderboards', leaderboardRoutes);
+
+//Rutas de pagos/Stripe
+app.use('/api/payments', paymentRoutes);
 
 // Inicializar el manejador de Socket.IO
 socketHandler(io);
