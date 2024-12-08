@@ -99,6 +99,21 @@ function Predicciones() {
             <h1>Tus Predicciones</h1>
             {predictions.length > 0 ? (
                 predictions.map((match, index) => {
+                    // Encuentra la predicción del usuario para este partido
+                    const userPrediction = predictions.find(
+                        (prediction) => prediction.matchId === match.fixture.id
+                    );
+    
+                    // Determina la etiqueta de predicción
+                    const predictionLabel =
+                        userPrediction?.prediction === 'home'
+                            ? 'Local'
+                            : userPrediction?.prediction === 'away'
+                            ? 'Visitante'
+                            : userPrediction?.prediction === 'draw'
+                            ? 'Empate'
+                            : 'No definida';
+    
                     // Validar que los datos del partido están completos
                     if (
                         match?.teams?.home?.name &&
@@ -107,12 +122,6 @@ function Predicciones() {
                         match?.teams?.away?.logo &&
                         match?.fixture?.date
                     ) {
-                        const userPrediction = match.userPrediction || 'Sin predicción'; // Asegurar que exista
-                        const predictionLabel = 
-                            userPrediction === 'home' ? 'Local' :
-                            userPrediction === 'away' ? 'Visitante' :
-                            userPrediction === 'draw' ? 'Empate' : 'No definida';
-      
                         return (
                             <div key={index} className="prediction-item">
                                 <img src={match.teams.home.logo} alt={match.teams.home.name} width="50" />
@@ -132,7 +141,8 @@ function Predicciones() {
                 <p>No tienes predicciones activas.</p>
             )}
         </div>
-      );      
+    );
+          
 }
 
 export default Predicciones;
