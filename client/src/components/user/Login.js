@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../../styles/index.css';
+import '../../styles/user/Login.css';
 import botanike1 from '../../assets/patrocinio/botanike1.jpeg';
 import botanike2 from '../../assets/patrocinio/botanike2.jpeg';
 import botanike3 from '../../assets/patrocinio/botanike3.jpeg';
 import botanike4 from '../../assets/patrocinio/botanike4.jpeg';
 
 function Login() {
-    const [formData, setFormData] = useS
-    const [isPremium, setIsPremium] = useState(false);tate({
-        identifier: '',
-        password: ''
+    const [isPremium, setIsPremium] = useState(false);
+    const [formData, setFormData] = useState({
+      identifier: '',
+      password: ''
     });
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
@@ -41,7 +41,7 @@ function Login() {
     
         checkSession();
       }, []);
-      
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');

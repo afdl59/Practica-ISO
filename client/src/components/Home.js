@@ -89,7 +89,6 @@ function Home() {
 
           {/* Contenedor de videos promocionales */}
           <div className="prediction-panel">
-              <h3>Patrocinado · Videos promocionales</h3>
               <div className="video-container" onClick={() => window.open('https://www.cupraofficial.es/ofertas/formentor', '_blank')}>
                   <iframe
                       src="https://www.youtube.com/embed/eUaywO-fq0I?autoplay=1&mute=1&loop=1&playlist=eUaywO-fq0I"
@@ -118,7 +117,6 @@ function Home() {
 
           {/* Contenedor de videos destacados */}
           <div className="full-width-info-panel">
-              <h3>Video destacado</h3>
               <iframe
                   src="https://www.youtube.com/embed/Wbh8HMmU-Gs?autoplay=1&mute=1&loop=1&playlist=Wbh8HMmU-Gs"
                   title="Video destacado"
@@ -145,6 +143,11 @@ function Home() {
             <a href="/login" className="btn primary">Iniciar Sesión</a>
             <a href="/register" className="btn secondary">Registrarse</a>
           </div>
+        </div>
+        {/* Botones de Términos y Privacidad */}
+        <div className="footer-links">
+          <a href="/terms" className="footer-link">Términos y Condiciones</a>
+          <a href="/privacy" className="footer-link">Privacidad</a>
         </div>
       </div>
     </div>

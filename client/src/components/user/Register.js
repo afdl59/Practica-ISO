@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import '../../styles/index.css';
+import React, { useEffect, useState } from 'react';
+import '../../styles/user/Register.css';
 import botanike1 from '../../assets/patrocinio/botanike1.jpeg';
 import botanike2 from '../../assets/patrocinio/botanike2.jpeg';
 import botanike3 from '../../assets/patrocinio/botanike3.jpeg';
