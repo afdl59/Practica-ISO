@@ -1,65 +1,81 @@
 import React, { useState, useEffect } from 'react';
 import '../../styles/minijuegos/GuessThePlayer.css';
-import { useLeaderboard } from '../../context/LeaderboardContext';
 
 import Messi from '../../assets/players/Messi.jpg';
 import Cristiano from '../../assets/players/Cristiano.jpg';
 import Neymar from '../../assets/players/Neymar.jpg';
 
 const jugadores = [
-  { nombres: ['Cristiano Ronaldo', 'Cristiano', 'Ronaldo'], imagen: Cristiano },
-  { nombres: ['Lionel Messi', 'Messi'], imagen: Messi },
-  { nombres: ['Neymar Jr', 'Neymar'], imagen: Neymar },
+    { nombres: ['Cristiano Ronaldo', 'Cristiano', 'Ronaldo'], imagen: Cristiano },
+    { nombres: ['Lionel Messi', 'Messi'], imagen: Messi },
+    { nombres: ['Neymar Jr', 'Neymar'], imagen: Neymar },
 ];
 
-function calculateGuessThePlayerScore(attempts) {
-    return Math.max(5 - attempts + 1, 0);
+function calculateScore(attemptsLeft) {
+    return attemptsLeft * 5; // Cada intento restante vale 5 puntos
 }
 
-function GuessThePlayer({ playerName }) {
-    const { updateLeaderboard } = useLeaderboard();
+function GuessThePlayer({ isAuthenticated, username }) {
     const [jugadorActual, setJugadorActual] = useState(jugadores[Math.floor(Math.random() * jugadores.length)]);
     const [intento, setIntento] = useState('');
-    const [pista, setPista] = useState(0);
     const [mensaje, setMensaje] = useState('');
     const [imagenBlur, setImagenBlur] = useState(10);
-    const [attempts, setAttempts] = useState(0);
+    const [attemptsLeft, setAttemptsLeft] = useState(6);
     const [score, setScore] = useState(null);
 
-    const handleIntento = (e) => {
+    useEffect(() => {
+        // Reiniciar el estado del juego cuando cambia el jugador actual
+        setIntento('');
+        setMensaje('');
+        setImagenBlur(10);
+        setAttemptsLeft(6);
+        setScore(null);
+    }, [jugadorActual]);
+
+    const handleIntento = async (e) => {
         e.preventDefault();
-        const intentoLowerCase = intento.toLowerCase();
-        const esCorrecto = jugadorActual.nombres.some((nombre) =>
-            nombre.toLowerCase() === intentoLowerCase
-        );
+        const intentoLowerCase = intento.trim().toLowerCase();
+        const esCorrecto = jugadorActual.nombres.some((nombre) => nombre.toLowerCase() === intentoLowerCase);
 
         if (esCorrecto) {
-            const calculatedScore = calculateGuessThePlayerScore(attempts);
+            const calculatedScore = calculateScore(attemptsLeft);
             setScore(calculatedScore);
             setMensaje('¡Correcto! Has adivinado el jugador.');
-            updateLeaderboard('guessThePlayer', playerName, calculatedScore);
+
+            if (isAuthenticated) {
+                // Enviar la puntuación al servidor
+                try {
+                    const response = await fetch(`/api/users/${username}/score`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ category: 'guessThePlayer', newScore: calculatedScore }),
+                    });
+                    if (!response.ok) throw new Error('Error al actualizar la puntuación');
+                } catch (error) {
+                    console.error(error);
+                }
+            } else {
+                setMensaje(`¡Has obtenido ${calculatedScore} puntos! Inicia sesión para guardar tu puntuación.`);
+            }
         } else {
-            setMensaje('Incorrecto. Intenta de nuevo.');
-            setPista(pista + 1);
-            setImagenBlur(Math.max(imagenBlur - 2, 0));
-            setAttempts(attempts + 1);
+            // Intento fallido
+            setAttemptsLeft((prev) => prev - 1);
+            setImagenBlur((prev) => Math.max(prev - 2, 0));
+            setMensaje(attemptsLeft > 1 ? 'Incorrecto. Intenta de nuevo.' : 'Se acabaron los intentos.');
         }
         setIntento('');
     };
 
     const siguienteJugador = () => {
         setJugadorActual(jugadores[Math.floor(Math.random() * jugadores.length)]);
-        setPista(0);
-        setMensaje('');
-        setImagenBlur(10);
-        setAttempts(0);
-        setScore(null);
     };
 
     return (
         <div className="guess-container">
             <h1>Guess the Player</h1>
-            <p>Try to guess the football player based on the blurred image.</p>
+            <p>Adivina quién es el jugador en la imagen. Tienes 6 intentos.</p>
             <div className="image-container">
                 <img
                     src={jugadorActual.imagen}
@@ -67,19 +83,23 @@ function GuessThePlayer({ playerName }) {
                     style={{ filter: `blur(${imagenBlur}px)` }}
                 />
             </div>
-            <form onSubmit={handleIntento}>
-                <input
-                    type="text"
-                    placeholder="Enter the player's name"
-                    value={intento}
-                    onChange={(e) => setIntento(e.target.value)}
-                    required
-                />
-                <button type="submit">Guess</button>
-            </form>
+            {score === null ? (
+                <form onSubmit={handleIntento}>
+                    <input
+                        type="text"
+                        placeholder="Introduce el nombre del jugador"
+                        value={intento}
+                        onChange={(e) => setIntento(e.target.value)}
+                        required
+                    />
+                    <button type="submit">Adivinar</button>
+                </form>
+            ) : (
+                <button onClick={siguienteJugador}>Siguiente Jugador</button>
+            )}
             <p>{mensaje}</p>
-            {score !== null && <h2>Your score: {score}</h2>}
-            <button onClick={siguienteJugador}>Next Player</button>
+            {score !== null && <h2>Puntuación: {score}</h2>}
+            <h3>Intentos restantes: {attemptsLeft}</h3>
         </div>
     );
 }
