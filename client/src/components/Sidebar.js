@@ -64,7 +64,7 @@ function Sidebar() {
       </div>
 
       {/* Sección Rankings */}
-      <Link to="/rankings" className="navbar-item">
+      <Link to="/leaderboard" className="navbar-item">
         <FaChartBar className="navbar-icon" />
         <span className="navbar-title">Rankings</span>
       </Link>

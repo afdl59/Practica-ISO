@@ -1,0 +1,43 @@
+.leaderboard-container {
+    margin: 20px auto;
+    max-width: 600px;
+    text-align: center;
+}
+
+.categories {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.categories button {
+    margin: 0 5px;
+    padding: 10px 20px;
+    border: none;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.categories button.active {
+    background-color: #007bff;
+    color: white;
+}
+
+.leaderboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 auto;
+}
+
+.leaderboard-table th,
+.leaderboard-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.leaderboard-table th {
+    background-color: #007bff;
+    color: white;
+}

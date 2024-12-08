@@ -15,6 +15,9 @@ import AnadirCompeticionFavorita from './components/user/AnadirCompeticionFavori
 //Foro
 import Foro from './components/foro/Foro';
 
+//Leaderboard
+import Leaderboard from './components/Leaderboard';
+
 // Minijuegos
 import Minijuegos from './components/minijuegos/Minijuegos';
 import Bingo from './components/minijuegos/Bingo';
@@ -44,9 +47,6 @@ import Privacy from './components/Privacy';
 import './styles/App.css';
 import { UserProvider } from './context/UserContext';
 import { LeaderboardProvider } from './context/LeaderboardContext';
-
-//Rankings
-import Rankings from './components/stats/Rankings';
 
 function App() {
   return (
@@ -98,8 +98,8 @@ function App() {
             <Route path="/terms" element={<Terms />} />
             <Route path="/privacy" element={<Privacy />} />
 
-            {/* Rutas de Rankings */}
-            <Route path="/rankings" element={<Rankings />} />
+            {/* Ruta de Leaderboard*/}
+            <Route path="/leaderboard" element={<Leaderboard />} />
 
           </Routes>
         </div>
