@@ -46,8 +46,8 @@ function Login() {
       }
     };
 
-    checkSession();
-  }, []);
+    if (isPremium === null || isPremium === undefined) checkSession();
+  }, [isPremium]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

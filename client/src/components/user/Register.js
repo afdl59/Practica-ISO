@@ -50,8 +50,8 @@ function Register() {
           }
         };
     
-        checkSession();
-    }, []);
+        if (isPremium === null || isPremium === undefined) checkSession();
+    }, [isPremium]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;

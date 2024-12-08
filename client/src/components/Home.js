@@ -51,8 +51,8 @@ function Home() {
       }
     };
 
-    checkSession();
-  }, []);
+    if (isPremium === null || isPremium === undefined) checkSession();
+  }, [isPremium]);
 
   if (loading) return <div>Cargando...</div>;
 
