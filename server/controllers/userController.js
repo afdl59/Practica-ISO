@@ -421,7 +421,7 @@ exports.updatePremiumStatus = async (req, res) => {
             return res.status(404).json({ message: 'Usuario no encontrado' });
         }
 
-        usuario.isPremium = true; // Actualizar a premium
+        usuario.isPremium = true;
         await usuario.save();
 
         res.status(200).json({ message: 'Estado de suscripción actualizado a premium', user: usuario });
@@ -437,7 +437,7 @@ exports.updatePremiumStatusByEmail = async (email) => {
       if (!usuario) {
         throw new Error('Usuario no encontrado');
       }
-      usuario.isPremium = true; // Actualizar a premium
+      usuario.isPremium = true;
       await usuario.save();
       console.log(`Estado de isPremium actualizado para el usuario con email: ${email}`);
     } catch (err) {

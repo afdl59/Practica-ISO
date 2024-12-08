@@ -36,6 +36,10 @@ app.use((req, res, next) => {
 // Middleware de configuración
 app.use(bodyParser.urlencoded({ limit: '20mb', extended: true }));
 app.use(bodyParser.json({ limit: '20mb' }));
+
+// Middleware específico para Stripe Webhooks (usar raw body)
+app.use('/api/webhooks', bodyParser.raw({ type: 'application/json' }));
+
 app.use(express.static(path.join(__dirname, '../client/build'))); // Servir archivos estáticos desde /build
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Servir archivos subidos desde /uploads
 app.use(cors({
@@ -54,13 +58,6 @@ app.use(getIpMiddleware);
 // Middleware de Passport
 app.use(passport.initialize());
 app.use(passport.session());
-
-//Debugging solicitudes entrantes y salientes
-app.use((req, res, next) => {
-    console.log("Encabezados recibidos:", req.headers);
-    console.log("Cookies recibidas en encabezado:", req.headers.cookie);
-    next();
-});
 
 // Rutas de autenticación pública
 app.use('/api/auth', authRoutes); 

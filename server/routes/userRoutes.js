@@ -33,14 +33,14 @@ router.put('/:username/update-predictionPoints', authMiddleware, userController.
 router.get('/:username/predictions', authMiddleware, userController.getUserPredictions);
 router.post('/:username/remove-prediction', authMiddleware, userController.deleteUserPrediction);
 
-router.put('/update-points/:username', authMiddleware, userController.updateUserPoints); // Actualizar puntos
-router.get('/ranking', userController.getRanking); // Obtener ranking
+router.put('/update-points/:username', authMiddleware, userController.updateUserPoints);
+router.get('/ranking', userController.getRanking);
 
 router.put('/:username/score', userController.updateUserScore);
 
 router.post('/help', userController.sendHelpRequest);
 
-router.get('/:username/premium-status', authMiddleware, userController.getPremiumStatus); // Obtener estado de premium
-router.put('/:username/premium-status', userController.updatePremiumStatus); // Actualizar estado de premium
+router.get('/:username/premium-status', authMiddleware, userController.getPremiumStatus);
+router.put('/:username/premium-status', userController.updatePremiumStatus);
 
 module.exports = router;
