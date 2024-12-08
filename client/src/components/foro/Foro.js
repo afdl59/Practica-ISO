@@ -201,9 +201,9 @@ function Foro() {
   }, [username, mensajes, profilePictures]);  
 
   // Función para buscar usuarios desde la base de datos
-  const fetchUsers = async (query) => {
+  const fetchUsers = async () => {
     try {
-      const response = await fetch(`/api/users?search=${query}`);
+      const response = await fetch(`/api/notificaciones/users`);
       if (response.ok) {
         const users = await response.json();
         setUserSuggestions(users);
@@ -291,9 +291,8 @@ function Foro() {
 
     const mentionMatch = value.match(/@(\w*)$/); // Detectar menciones
     if (mentionMatch) {
-      const query = mentionMatch[1];
+      fetchUsers();
       setShowSuggestions(true);
-      fetchUsers(query);
     } else {
       setShowSuggestions(false);
     }
