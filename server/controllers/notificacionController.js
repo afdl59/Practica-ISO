@@ -81,21 +81,24 @@ const markAsRead = async (req, res) => {
 const searchUsers = async (req, res) => {
     const { search } = req.query;
   
-    if (!search) {
-      return res.status(400).json({ message: 'El parámetro de búsqueda es obligatorio.' });
+    if (!search || typeof search !== 'string') {
+      return res.status(400).json({ message: 'El parámetro de búsqueda es obligatorio y debe ser una cadena.' });
     }
   
-    console.log('Valor de búsqueda:', search); // Debe mostrar el texto de la query
-    
     try {
-      const regexSearch = new RegExp(search, 'i'); // Genera un regex dinámico e insensible a mayúsculas
-      
-      console.log('Regex generado:', new RegExp(search, 'i')); // Muestra la expresión regular que se usará
+      const sanitizedSearch = search.trim();
+      const regexSearch = new RegExp(sanitizedSearch, 'i'); // Crear regex dinámico
+  
+      console.log('Parámetro recibido:', sanitizedSearch);
+      console.log('Regex generado:', regexSearch);
+  
       const users = await User.find({
         username: { $regex: regexSearch },
       })
-        .limit(10) // Limitar resultados
-        .select('username'); // Solo devuelve los nombres de usuario
+        .limit(10)
+        .select('username');
+  
+      console.log('Usuarios encontrados:', users);
   
       if (users.length === 0) {
         return res.status(404).json({ message: 'Usuario no encontrado' });
@@ -107,6 +110,7 @@ const searchUsers = async (req, res) => {
       res.status(500).json({ message: 'Error al buscar usuarios' });
     }
 };
+  
 
 module.exports = { sendNotificationEmail, getNotifications, markAsRead, searchUsers };
 
