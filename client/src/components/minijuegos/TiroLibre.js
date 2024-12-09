@@ -8,187 +8,161 @@ import messi2012 from '../../assets/players/messi2012.jpg';
 import griezmann2016 from '../../assets/players/griezmann2016.jpg';
 import ferran2022 from '../../assets/players/ferran2022.jpg';
 
-// Mapeo de jugadores con probabilidades y rutas de imágenes
 const players = {
-  falcao: { leftNear: 0.9, leftFar: 0.7, rightNear: 0.6, rightFar: 0.4, image: falcao2012 },
-  cristiano: { leftNear: 0.95, leftFar: 0.95, rightNear: 0.95, rightFar: 0.95, image: cristiano2012 },
-  messi: { leftNear: 0.9, leftFar: 0.85, rightNear: 0.9, rightFar: 0.85, image: messi2012 },
-  griezmann: { leftNear: 0.6, leftFar: 0.8, rightNear: 0.8, rightFar: 0.9, image: griezmann2016 },
-  ferran: { leftNear: 0.4, leftFar: 0.3, rightNear: 0.3, rightFar: 0.2, image: ferran2022 }
+  falcao: { image: falcao2012, skill: 0.85 },
+  cristiano: { image: cristiano2012, skill: 0.95 },
+  messi: { image: messi2012, skill: 0.90 },
+  griezmann: { image: griezmann2016, skill: 0.80 },
+  ferran: { image: ferran2022, skill: 0.70 },
 };
 
-const sides = ['izquierda', 'derecha'];
-const distances = ['cerca', 'lejos'];
-
 function TiroLibre() {
+  const { leaderboards, updateLeaderboard } = useLeaderboard();
+  const leaderboard = leaderboards['tiroLibre'] || [];
+
   const [selectedPlayer, setSelectedPlayer] = useState(null);
-  const [result, setResult] = useState('');
-  const [side, setSide] = useState('');
-  const [distance, setDistance] = useState('');
-  const [ballPosition, setBallPosition] = useState({ x: 200, y: 200 });
-  const [shooting, setShooting] = useState(false);
-  const [power, setPower] = useState(50); // Potencia del disparo
-  const [targetPosition, setTargetPosition] = useState({ x: 0, y: 0 }); // Posición seleccionada en la portería
-  const [keeperPosition, setKeeperPosition] = useState({ x: 220, y: 10 }); // Posición inicial del portero
-  const { updateLeaderboard } = useLeaderboard();
   const [score, setScore] = useState(0);
-  const [attempts, setAttempts] = useState(0);
   const [message, setMessage] = useState('');
+  const [goalkeeperPosition, setGoalkeeperPosition] = useState({ x: 100, y: 50 });
+  const [targetPosition, setTargetPosition] = useState({ x: 0, y: 0 });
+  const [username, setUsername] = useState('');
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    const randomSide = sides[Math.floor(Math.random() * sides.length)];
-    const randomDistance = distances[Math.floor(Math.random() * distances.length)];
-    setSide(randomSide);
-    setDistance(randomDistance);
+    // Mover el portero aleatoriamente cada 2 segundos
+    const interval = setInterval(() => {
+      const randomX = Math.random() * 200;
+      const randomY = Math.random() * 100;
+      setGoalkeeperPosition({ x: randomX, y: randomY });
+    }, 2000);
+    return () => clearInterval(interval);
+  }, []);
 
-    const newBallPosition = randomSide === 'izquierda'
-      ? randomDistance === 'cerca'
-        ? { x: 100, y: 200 }
-        : { x: 100, y: 100 }
-      : randomDistance === 'cerca'
-      ? { x: 300, y: 200 }
-      : { x: 300, y: 100 };
-    setBallPosition(newBallPosition);
+  useEffect(() => {
+    // Verificar la sesión del usuario
+    const checkSession = async () => {
+      try {
+        const response = await fetch('/api/auth/check-session', {
+          method: 'GET',
+          credentials: 'include',
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setUsername(data.username);
+          setIsAuthenticated(true);
+        }
+      } catch {
+        setIsAuthenticated(false);
+      }
+    };
+    checkSession();
   }, []);
 
   const handleGoalClick = (e) => {
-    // Calcula las coordenadas relativas a la portería
+    if (!selectedPlayer) {
+      setMessage('Por favor selecciona un jugador antes de disparar.');
+      return;
+    }
+
     const goal = e.target.getBoundingClientRect();
     const x = e.clientX - goal.left;
     const y = e.clientY - goal.top;
 
-    // Limita el balón dentro del área de la portería (200px ancho x 100px alto)
-    const limitedX = Math.min(Math.max(x, 0), 200);
-    const limitedY = Math.min(Math.max(y, 0), 100);
+    setTargetPosition({ x, y });
 
-    setTargetPosition({ x: limitedX, y: limitedY });
-  };
-
-  const shoot = () => {
-    if (!selectedPlayer) return;
-
-    // Calcula la probabilidad base de éxito según el jugador, la distancia y el lado
-    const successProbability = players[selectedPlayer][`${side}${distance.charAt(0).toUpperCase() + distance.slice(1)}`];
-
-    // Ajusta la probabilidad con la potencia (a mayor potencia, más fácil es hacer gol)
-    const adjustedProbability = successProbability * (power / 100);
-
-    // Casillas se mueve aleatoriamente a un lado o a otro
-    const randomKeeperMovement = Math.random() < 0.5 ? 'left' : 'right'; // Simulación del movimiento de Casillas
-    if (randomKeeperMovement === 'left') {
-      setKeeperPosition({ x: 180, y: 20 });
-    } else {
-      setKeeperPosition({ x: 260, y: 20 });
-    }
-
-    // Probabilidad ajustada: Si el valor es mayor que un valor aleatorio, es gol; sino es parada
-    const isGoal = Math.random() < adjustedProbability;
-
-    // Ahora si el portero está en la dirección correcta (izquierda o derecha), tiene una probabilidad de detener el tiro
-    const keeperInterventionProbability = randomKeeperMovement === side ? 0.7 : 0.3; // Casillas tiene más probabilidad de parar si está en el lado correcto
-
-    // Si el portero interviene y la probabilidad de intervención es mayor que la probabilidad ajustada, es una parada
-    const isStop = Math.random() < keeperInterventionProbability && !isGoal;
-
-    // Definir el resultado: Si es gol, es gol, si no, Casillas ha parado
-    setResult(isStop ? '¡Parada de Casillas!' : '¡Gol!');
-
-    setShooting(true);
-    setTimeout(() => {
-      setShooting(false);
-    }, 1000);
-  };
-
-  const handleGoalAttempt = (isGoal) => {
-    setAttempts(prevAttempts => prevAttempts + 1);
+    // Calcular probabilidad de éxito basada en la habilidad del jugador
+    const playerSkill = players[selectedPlayer].skill;
+    const isGoal =
+      (x > goalkeeperPosition.x + 20 ||
+        x < goalkeeperPosition.x - 20 ||
+        y > goalkeeperPosition.y + 20 ||
+        y < goalkeeperPosition.y - 20) &&
+      Math.random() < playerSkill;
 
     if (isGoal) {
-        setScore(prevScore => prevScore + 1); // 1 punto por goal
-        setMessage('Goal!');
-    } else {
-        setMessage('Miss!');
-    }
-};
-
-  function calculateTiroLibreScore(goals) {
-    return goals; // Cada goal vale 1 punto
-}
-
-function TiroLibre({ goals, playerName }) {
-  const { updateLeaderboard } = useLeaderboard();
-  const [score, setScore] = useState(calculateTiroLibreScore(goals));
-
-  useEffect(() => {
-      if (score) {
-          updateLeaderboard('tiroLibre', playerName, score);
+      setScore(score + 10);
+      setMessage('¡Gol!');
+      if (isAuthenticated) {
+        updateLeaderboard('tiroLibre', username, score + 10);
       }
-  }, [score, playerName, updateLeaderboard]);
+    } else {
+      setMessage('¡Parada del portero!');
+    }
+  };
 
   return (
-      <div>
-          {/* Game UI de Tiro Libre */}
-          <h2>Your score: {score}</h2>
-      </div>
-  );
-}
-
-  return (
-    <div className="game-container">
+    <div className="tirolibre-container">
       <h1>Tiro Libre</h1>
+      <p>{message}</p>
+      <h2>Puntuación: {score}</h2>
 
-      <div className="info">
-        <p>El tiro será desde el lado: <strong>{side}</strong></p>
-        <p>La distancia es: <strong>{distance}</strong></p>
-      </div>
-
+      {/* Selección de jugadores */}
       <div className="players">
+        <h3>Selecciona un jugador:</h3>
         {Object.keys(players).map((player) => (
           <button
             key={player}
             className={selectedPlayer === player ? 'selected' : ''}
             onClick={() => setSelectedPlayer(player)}
           >
-            <img src={players[player].image} alt={player} />
+            <img
+              src={`/assets/players/${players[player].image}`}
+              alt={player}
+              style={{ width: '50px', height: '50px' }}
+            />
           </button>
         ))}
       </div>
 
-      <div className="power-bar">
-        <label htmlFor="power">Potencia del disparo: {power}</label>
-        <input
-          id="power"
-          type="range"
-          min="1"
-          max="100"
-          value={power}
-          onChange={(e) => setPower(e.target.value)}
-        />
-      </div>
-
-      <button onClick={shoot} className="shoot-btn">Lanzar</button>
-      <div className="result">{result}</div>
-
+      {/* Campo de juego */}
       <div className="field">
-        <div className={`ball ${shooting ? 'shooting' : ''}`}
-          style={{ left: `${targetPosition.x + 150}px`, top: `${targetPosition.y}px` }}>
-          ⚽
-        </div>
-        <div className="goal" onClick={handleGoalClick}></div>
-        <div className="goalkeeper"
-          style={{ left: `${keeperPosition.x}px`, bottom: `${keeperPosition.y}px` }}>
+        <div
+          className="goal"
+          onClick={handleGoalClick}
+          style={{
+            position: 'relative',
+            width: '200px',
+            height: '100px',
+            border: '2px solid black',
+          }}
+        >
+          <div
+            className="goalkeeper"
+            style={{
+              position: 'absolute',
+              left: `${goalkeeperPosition.x}px`,
+              top: `${goalkeeperPosition.y}px`,
+              width: '40px',
+              height: '40px',
+              backgroundColor: 'blue',
+            }}
+          />
         </div>
       </div>
-      
-      <div className="tirolibre-container">
-            <h1>Tiro Libre</h1>
-            <p>{message}</p>
-            <button onClick={() => handleGoalAttempt(true)}>Attempt Goal (Success)</button>
-            <button onClick={() => handleGoalAttempt(false)}>Attempt Goal (Fail)</button>
-            <h2>Score: {score}</h2>
-            {/*<button onClick={endGame}>End Game</button>*/}
-        </div>
+
+      {/* Leaderboard */}
+      <div className="leaderboard-section">
+        <h2>Leaderboard</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Posición</th>
+              <th>Jugador</th>
+              <th>Puntuación</th>
+            </tr>
+          </thead>
+          <tbody>
+            {leaderboard.map((entry, index) => (
+              <tr key={index}>
+                <td>{index + 1}</td>
+                <td>{entry.playerName}</td>
+                <td>{entry.score}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
-    
   );
 }
 

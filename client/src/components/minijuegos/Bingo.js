@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../styles/minijuegos/Bingo.css';
 import { useLeaderboard } from '../../context/LeaderboardContext';
 
@@ -15,7 +15,6 @@ const jugadores = [
   { nombre: "Santiago Cazorla", definicion: "Centrocampista con gran visión de juego, ha jugado en La Liga y Premier League." }
 ];
 
-// Función para calcular el puntaje
 function calculateBingoScore(inputs) {
   const filledSquares = inputs.filter((input, index) =>
     input.trim().toLowerCase() === jugadores[index].nombre.toLowerCase()
@@ -26,29 +25,70 @@ function calculateBingoScore(inputs) {
 }
 
 function BingoGame() {
-  const { updateLeaderboard } = useLeaderboard();
-
-  // Estado para los inputs, puntaje y mensaje
+  const { leaderboards, updateLeaderboard } = useLeaderboard();
   const [inputs, setInputs] = useState(Array(jugadores.length).fill(''));
   const [score, setScore] = useState(0);
   const [mensaje, setMensaje] = useState('');
+  const [username, setUsername] = useState('');
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const leaderboard = leaderboards['bingo'] || [];
+
+  useEffect(() => {
+    const checkSession = async () => {
+      try {
+        const response = await fetch('/api/auth/check-session', {
+          method: 'GET',
+          credentials: 'include',
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setIsAuthenticated(true);
+          setUsername(data.username);
+        } else {
+          setIsAuthenticated(false);
+        }
+      } catch (error) {
+        console.error('Error al verificar la sesión:', error);
+        setIsAuthenticated(false);
+      }
+    };
+
+    checkSession();
+  }, []);
+
+  const validarGanador = async () => {
+    const currentScore = calculateBingoScore(inputs);
+    setScore(currentScore);
+
+    if (currentScore > 0) {
+      if (isAuthenticated) {
+        try {
+          const response = await fetch(`/api/users/${username}/score`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ category: 'bingo', newScore: currentScore }),
+          });
+          if (!response.ok) throw new Error('Error al actualizar la puntuación');
+          setMensaje('¡Puntuación guardada!');
+        } catch (error) {
+          console.error('Error al guardar la puntuación:', error);
+          setMensaje('Error al guardar la puntuación.');
+        }
+      } else {
+        setMensaje(`¡Has obtenido ${currentScore} puntos! Inicia sesión para guardar tu puntuación.`);
+      }
+    } else {
+      setMensaje('Aún no has completado ninguna casilla correctamente.');
+    }
+  };
 
   const handleInputChange = (index, value) => {
     const newInputs = [...inputs];
     newInputs[index] = value;
     setInputs(newInputs);
-  };
-
-  const validarGanador = () => {
-    const currentScore = calculateBingoScore(inputs);
-    setScore(currentScore);
-
-    if (currentScore === jugadores.length + 1) { // Full board score
-      setMensaje('¡Ganaste! Has completado el bingo.');
-      updateLeaderboard('bingo', 'Jugador', currentScore); // Usa un nombre predeterminado para el jugador
-    } else {
-      setMensaje('');
-    }
   };
 
   return (
@@ -73,8 +113,31 @@ function BingoGame() {
       </div>
       {mensaje && <div className="win-message">{mensaje}</div>}
       <h2>Your score: {score}</h2>
+
+      <div className="leaderboard-section">
+        <h2>Leaderboard</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Posición</th>
+              <th>Jugador</th>
+              <th>Puntuación</th>
+            </tr>
+          </thead>
+          <tbody>
+            {leaderboard.map((entry, index) => (
+              <tr key={index}>
+                <td>{index + 1}</td>
+                <td>{entry.playerName}</td>
+                <td>{entry.score}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
 
 export default BingoGame;
+
