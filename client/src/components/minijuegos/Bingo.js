@@ -26,7 +26,8 @@ function calculateBingoScore(inputs) {
 }
 
 function BingoGame() {
-  const { updateLeaderboard } = useLeaderboard();
+  const { leaderboards, updateLeaderboard } = useLeaderboard();
+  const leaderboard = leaderboards['bingo'] || [];
 
   // Estado para los inputs, puntaje y mensaje
   const [inputs, setInputs] = useState(Array(jugadores.length).fill(''));
