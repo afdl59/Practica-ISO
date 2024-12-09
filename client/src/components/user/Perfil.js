@@ -27,7 +27,8 @@ function Perfil() {
   const [showHelpForm, setShowHelpForm] = useState(false);
   const [helpSubject, setHelpSubject] = useState('');
   const [helpMessage, setHelpMessage] = useState('');
-  //estilos
+  const [isPremium, setIsPremium] = useState(false);
+  
   useEffect(() => {
     const checkAuth = async () => {
       try {
@@ -47,6 +48,15 @@ function Perfil() {
       
         if (!userResponse.ok) throw new Error('Error al obtener datos del usuario');
 
+        const premiumResponse = await fetch(`/api/users/${data.username}/premium-status`, {
+          method: 'GET',
+          credentials: 'include',
+        });
+
+        if (!premiumResponse.ok) throw new Error('Error al obtener el estado de isPremium del usuario');
+
+        const premiumData = await premiumResponse.json();
+        setIsPremium(premiumData);
         const userData = await userResponse.json();
         setUserData(userData);
         setEditedData({
@@ -247,7 +257,7 @@ function Perfil() {
       )}
 
       {/* Botón de Pago */}
-      {userData && !userData.isPremium && (
+      {userData && !isPremium && (
         <PaymentButton userEmail={userData.email} />
       )}
     </div>

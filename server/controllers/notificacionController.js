@@ -80,6 +80,7 @@ const markAsRead = async (req, res) => {
 
 const searchUsers = async (req, res) => {
     const { search } = req.query;
+    console.log('Query recibida:', req.query);
   
     if (!search || typeof search !== 'string') {
       return res.status(400).json({ message: 'El parámetro de búsqueda es obligatorio y debe ser una cadena.' });
