@@ -72,7 +72,7 @@ function Foro() {
         setSalas(salasData);
 
         // Cargar lista de usuarios
-        const usersResponse = await fetch('/api/users/getall', { 
+        const usersResponse = await fetch('/api/users/findS/getall', { 
           method: 'GET', 
           credentials: 'include', 
         });
