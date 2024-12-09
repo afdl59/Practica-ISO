@@ -105,29 +105,38 @@ function Predicciones() {
             <h1>Tus Predicciones</h1>
             {predictions.length > 0 ? (
                 predictions.map((match, index) => {
-                    // Busca la predicción original del usuario
-                    const userPrediction = originalPredictions.find(
+                    // Busca todas las predicciones únicas para este partido
+                    const userPredictions = originalPredictions.filter(
                         (prediction) => prediction.matchId === match.matchId
                     );
-
-                    // Determina la etiqueta de predicción
-                    const predictionLabel =
-                        userPrediction?.prediction === 'home'
-                            ? 'Local'
-                            : userPrediction?.prediction === 'away'
-                            ? 'Visitante'
-                            : userPrediction?.prediction === 'draw'
-                            ? 'Empate'
-                            : 'No definida';
-
-                    // Validar que los datos del partido están completos
-                    if (
-                        match?.teams?.home?.name &&
-                        match?.teams?.away?.name &&
-                        match?.teams?.home?.logo &&
-                        match?.teams?.away?.logo &&
-                        match?.fixture?.date
-                    ) {
+    
+                    // Si hay múltiples predicciones para el mismo partido
+                    if (userPredictions.length > 0) {
+                        return userPredictions.map((userPrediction, subIndex) => {
+                            // Determina la etiqueta de predicción
+                            const predictionLabel =
+                                userPrediction?.prediction === 'home'
+                                    ? 'Local'
+                                    : userPrediction?.prediction === 'away'
+                                    ? 'Visitante'
+                                    : userPrediction?.prediction === 'draw'
+                                    ? 'Empate'
+                                    : 'No definida';
+    
+                            // Renderiza cada predicción como un elemento único
+                            return (
+                                <div key={`${index}-${subIndex}`} className="prediction-item">
+                                    <img src={match.teams.home.logo} alt={match.teams.home.name} width="50" />
+                                    <span>{match.teams.home.name} {match.goals.home} - {match.goals.away} {match.teams.away.name}</span>
+                                    <img src={match.teams.away.logo} alt={match.teams.away.name} width="50" />
+                                    <div>{new Date(match.fixture.date).toLocaleDateString()}</div>
+                                    <div>Competición: {match.league.name}</div>
+                                    <div>Tu Predicción: <strong>{predictionLabel}</strong></div>
+                                </div>
+                            );
+                        });
+                    } else {
+                        // Si no hay predicciones para este partido
                         return (
                             <div key={index} className="prediction-item">
                                 <img src={match.teams.home.logo} alt={match.teams.home.name} width="50" />
@@ -135,19 +144,16 @@ function Predicciones() {
                                 <img src={match.teams.away.logo} alt={match.teams.away.name} width="50" />
                                 <div>{new Date(match.fixture.date).toLocaleDateString()}</div>
                                 <div>Competición: {match.league.name}</div>
-                                <div>Tu Predicción: <strong>{predictionLabel}</strong></div>
+                                <div>Tu Predicción: <strong>No definida</strong></div>
                             </div>
                         );
-                    } else {
-                        console.warn("Datos incompletos para la predicción:", match);
-                        return null; // No renderizar si faltan datos
                     }
                 })
             ) : (
                 <p>No tienes predicciones activas.</p>
             )}
         </div>
-    );
+    );    
 }
 
 export default Predicciones;
