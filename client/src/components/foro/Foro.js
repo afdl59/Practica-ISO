@@ -278,10 +278,19 @@ function Foro() {
         for (const mention of mentions) {
           const mentionedUser = mention.substring(1); // Elimina el '@'
           try {
-            await fetch(`/api/notificaciones/${mentionedUser}`, { method: 'POST', type: 'foro' });
-          } catch (error) {
+            await fetch('/api/notificaciones/enviar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    username: mentionedUser,
+                    type: 'foro',
+                }),
+            });
+        } catch (error) {
             console.error(`Error al enviar notificación a ${mentionedUser}:`, error);
-          }
+        }
         }
       }
 

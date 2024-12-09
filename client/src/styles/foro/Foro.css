@@ -312,25 +312,39 @@
   opacity: 0.9;
 }
 
+/* Estilo general para la lista */
 .user-suggestions {
   position: absolute;
-  background-color: white;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  max-height: 200px;
-  overflow-y: auto;
-  list-style: none;
-  padding: 10px;
-  margin: 0;
-  width: 100%;
+  background-color: #fff; /* Fondo blanco para destacar */
+  border: 1px solid #ccc; /* Borde para separar visualmente */
+  border-radius: 4px; /* Bordes redondeados */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+  width: calc(100% - 20px); /* Ancho dinámico basado en el input */
+  max-height: 200px; /* Altura máxima */
+  overflow-y: auto; /* Scroll si hay demasiados usuarios */
+  z-index: 10; /* Asegurar que quede encima de otros elementos */
+  margin-top: 4px; /* Separación del input */
+  font-size: 14px; /* Tamaño de texto */
+  list-style: none; /* Quitar los puntos de las listas */
+  padding: 0;
 }
 
+/* Elementos individuales de la lista */
 .user-suggestions li {
-  padding: 5px 10px;
-  cursor: pointer;
+  padding: 8px 12px; /* Espaciado interno */
+  cursor: pointer; /* Indicador de interactividad */
+  transition: background-color 0.2s; /* Suavidad al interactuar */
 }
 
+/* Estilo al pasar el cursor */
 .user-suggestions li:hover {
-  background-color: #f0f0f0;
+  background-color: #f0f0f0; /* Color al resaltar */
 }
+
+/* Texto destacado */
+.user-suggestions li strong {
+  font-weight: bold; /* Negrita para resaltar partes importantes */
+  color: #007bff; /* Azul para destacar */
+}
+
 
