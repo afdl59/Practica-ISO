@@ -19,6 +19,8 @@ function Foro() {
   const [search, setSearch] = useState('');
   const [showCreateSalaPopup, setCreateSalaPopup] = useState(false);
   const [showSettingsPopup, setShowSettingsPopup] = useState(false);
+  const [userSuggestions, setUserSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
   const navigate = useNavigate();
 
   const socket = useRef(null);
@@ -198,13 +200,26 @@ function Foro() {
     }
   }, [username, mensajes, profilePictures]);  
 
-  const handleSalaChange = (sala) => {
-    console.log('Datos de la sala seleccionada:', sala);
-    setCurrentSala(sala._id);
-    setCurrentSalaName(sala.title);
-    setCurrentSalaDescription(sala.description);
-    setCurrentSalaCreatedBy(sala.createdBy);
+  // Función para buscar usuarios desde la base de datos
+  const fetchUsers = async (query) => {
+    try {
+      console.log("Query de busqueda: ", query);
+      const response = await fetch(`/api/notificaciones/users?search=${query}`, {
+        method: 'GET', // Especificar el método GET
+        headers: { 'Content-Type': 'application/json' }, // Agregar encabezados si es necesario
+      });
+  
+      if (response.ok) {
+        const users = await response.json();
+        setUserSuggestions(users);
+      } else {
+        console.error('Error al obtener usuarios:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error al buscar usuarios:', error);
+    }
   };
+  
 
   const handleCreateSala = async (e) => {
     e.preventDefault();
@@ -277,7 +292,28 @@ function Foro() {
     }
   };
 
-  const handleSubmit = (e) => {
+  // Manejar la entrada del usuario
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    setContent(value);
+
+    const mentionMatch = value.match(/@(\w*)$/); // Detectar menciones
+    if (mentionMatch) {
+      const query = mentionMatch[1];
+      setShowSuggestions(true);
+      fetchUsers(query);
+    } else {
+      setShowSuggestions(false);
+    }
+  };
+
+  // Insertar la mención en el mensaje
+  const handleUserSelect = (username) => {
+    setContent((prev) => prev.replace(/@\w*$/, `@${username} `));
+    setShowSuggestions(false);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (username && content && currentSala) {
       const nuevoMensaje = {
@@ -285,17 +321,33 @@ function Foro() {
         content,
         chatRoom: currentSala,
       };
-
+  
+      // Emitir mensaje al socket
       socket.current.emit('nuevoMensaje', nuevoMensaje);
+  
+      // Detectar menciones y enviar notificaciones
+      const mentions = content.match(/@(\w+)/g);
+      if (mentions) {
+        for (const mention of mentions) {
+          const mentionedUser = mention.substring(1);
+          try {
+            await fetch('/api/notificaciones/enviar', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                username: mentionedUser,
+                type: 'foro',
+              }),
+            });
+          } catch (error) {
+            console.error(`Error al enviar notificación a ${mentionedUser}:`, error);
+          }
+        }
+      }
+  
       setContent('');
     }
-  };
-
-  const filteredSalas = salas.filter((sala) =>
-    sala.title.toLowerCase().includes(search.toLowerCase()) ||
-    sala.description.toLowerCase().includes(search.toLowerCase()) ||
-    sala.createdBy.toLowerCase().includes(search.toLowerCase())
-  );
+  };  
 
   const groupMessagesByDateAndUser = () => {
     const groupedByDate = mensajes.reduce((acc, mensaje) => {
@@ -427,7 +479,7 @@ function Foro() {
                 type="text"
                 placeholder="Escribe un mensaje..."
                 value={content}
-                onChange={(e) => setContent(e.target.value)}
+                onChange={handleInputChange}
                 required
               />
               <button type="submit">Enviar</button>
@@ -458,6 +510,16 @@ function Foro() {
             <button onClick={() => setShowSettingsPopup(false)}>Cerrar</button>
           </div>
         </div>
+      )}
+
+      {showSuggestions && (
+        <ul className="user-suggestions">
+          {userSuggestions.map((user) => (
+            <li key={user.username} onClick={() => handleUserSelect(user.username)}>
+              {user.username}
+            </li>
+          ))}
+        </ul>
       )}
 
       {showCreateSalaPopup && (
