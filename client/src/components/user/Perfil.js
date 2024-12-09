@@ -257,7 +257,7 @@ function Perfil() {
       )}
 
       {/* Botón de Pago */}
-      {userData && !isPremium && (
+      {isPremium === false && (
         <PaymentButton userEmail={userData.email} />
       )}
     </div>

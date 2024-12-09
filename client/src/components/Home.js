@@ -54,7 +54,6 @@ function Home() {
     checkSession();
   }, []);
 
-  console.log("Estado isPremium: ", isPremium);
   
   if (loading) return <div>Cargando...</div>;
 
