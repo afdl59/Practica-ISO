@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import '../../styles/minijuegos/WordleDiario.css';  // Importa la hoja de estilos
+import '../../styles/minijuegos/WordleDiario.css';
+import { useLeaderboard } from '../../context/LeaderboardContext';
 
 const jugadores = [
   'Pele', 'Maradona', 'Zidane', 'Ronaldo', 'Ronaldinho', 'Messi', 'Cristiano Ronaldo', 'Johan Cruyff', 
@@ -56,132 +57,158 @@ const jugadores = [
   'Rafa Marquez', 'Wesley Sneijder'
 ];
 
-// Función para obtener el jugador del día
+// Componente principal
 function WordleDiario() {
+  const { leaderboards, updateLeaderboard } = useLeaderboard();
+  const leaderboard = leaderboards['wordle'] || [];
 
   const [jugadorDelDia, setJugadorDelDia] = useState('');
   const [inputUsuario, setInputUsuario] = useState('');
   const [intentos, setIntentos] = useState([]);
+  const [mensaje, setMensaje] = useState('');
+  const [score, setScore] = useState(0);
+
+  const maxIntentos = 6;
 
   useEffect(() => {
-    // Calcular el día del año para seleccionar un jugador basado en la fecha actual
     const diaDelAno = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
-    setJugadorDelDia(jugadores[diaDelAno % jugadores.length]); // Rotar entre los jugadores disponibles
+    setJugadorDelDia(jugadores[diaDelAno % jugadores.length]);
   }, []);
 
   const handleInputChange = (e) => {
-    setInputUsuario(e.target.value.toUpperCase()); // Asegurarse de que todo sea mayúscula
+    setInputUsuario(e.target.value.toUpperCase());
   };
 
   const handleSubmit = () => {
-    if (!jugadorDelDia) {
-      alert('El jugador del día aún no está disponible. Por favor, espera un momento.');
+    if (!jugadorDelDia) return;
+
+    const inputSinEspacios = inputUsuario.trim().replace(/\s+/g, '').toUpperCase();
+    const jugadorSinEspacios = jugadorDelDia.replace(/\s+/g, '').toUpperCase();
+
+    if (inputSinEspacios.length !== jugadorSinEspacios.length) {
+      setMensaje('¡Asegúrate de que la longitud coincida!');
       return;
     }
 
-    // Limpiar espacios en blanco del input del usuario y del jugador del día
-    const inputUsuarioConMayusculas = inputUsuario.replace(/\s+/g, '').toUpperCase();
-    const jugadorDelDiaSinEspacios = jugadorDelDia.replace(/\s+/g, '').toUpperCase();
-
-    // Comprobar si la longitud del input del usuario coincide con la del jugador del día sin contar espacios
-    if (inputUsuarioConMayusculas.length !== jugadorDelDiaSinEspacios.length) {
-      alert('La longitud del nombre debe coincidir con la del jugador (sin contar espacios).');
-      return;
-    }
-
-    const nuevoIntento = validarIntento(inputUsuarioConMayusculas, jugadorDelDiaSinEspacios);
-    setIntentos([...intentos, nuevoIntento]);
+    const nuevoIntento = validarIntento(inputSinEspacios, jugadorSinEspacios);
+    setIntentos((prev) => [...prev, nuevoIntento]);
     setInputUsuario('');
+
+    if (inputSinEspacios === jugadorSinEspacios) {
+      const calculatedScore = (maxIntentos - intentos.length) * 10; // Puntos según intentos restantes
+      setScore(calculatedScore);
+      setMensaje('¡Felicidades! Has adivinado el jugador.');
+
+      // Actualizar Leaderboard
+      updateLeaderboard('wordle', 'Jugador', calculatedScore);
+    } else if (intentos.length + 1 >= maxIntentos) {
+      setMensaje(`¡Fin del juego! El jugador era: ${jugadorDelDia}`);
+    } else {
+      setMensaje('¡Sigue intentando!');
+    }
   };
 
-  const validarIntento = (input, nombreJugador) => {
+  const validarIntento = (input, jugador) => {
     const resultado = [];
-    const nombreJugadorArray = nombreJugador.split('');
+    const jugadorArray = jugador.split('');
     const inputArray = input.split('');
 
-    // Paso 1: Marcar las letras que están en la posición correcta (verde)
-    for (let i = 0; i < inputArray.length; i++) {
-      if (inputArray[i] === nombreJugadorArray[i]) {
-        resultado.push({ letra: inputArray[i], estado: 'verde' });
+    // Validación de letras en la posición correcta
+    jugadorArray.forEach((letra, index) => {
+      if (inputArray[index] === letra) {
+        resultado.push({ letra: inputArray[index], estado: 'verde' });
+        jugadorArray[index] = null; // Marcar como usada
       } else {
-        resultado.push({ letra: inputArray[i], estado: 'gris' });
+        resultado.push({ letra: inputArray[index], estado: 'gris' });
       }
-    }
+    });
 
-    // Paso 2: Marcar las letras que están en el nombre pero en una posición incorrecta (amarillo)
-    for (let i = 0; i < inputArray.length; i++) {
-      if (resultado[i].estado === 'gris' && inputArray[i] !== ' ') {
-        for (let j = 0; j < nombreJugadorArray.length; j++) {
-          if (
-            inputArray[i] === nombreJugadorArray[j] &&
-            resultado[j]?.estado !== 'verde' &&
-            !resultado.some((r, index) => r.letra === nombreJugadorArray[j] && r.estado === 'amarillo' && index !== i)
-          ) {
-            resultado[i].estado = 'amarillo';
-            break;
-          }
-        }
+    // Validación de letras en posiciones incorrectas
+    resultado.forEach((item, index) => {
+      if (item.estado === 'gris' && jugadorArray.includes(inputArray[index])) {
+        item.estado = 'amarillo';
+        jugadorArray[jugadorArray.indexOf(inputArray[index])] = null; // Marcar como usada
       }
-    }
+    });
 
     return resultado;
   };
 
-  // Mostrar casillas vacías para el nombre del jugador antes de adivinar
   const mostrarCasillasIniciales = () => {
-    if (!jugadorDelDia) return null; // Si jugadorDelDia aún no está listo, no renderizamos casillas
-    console.log(jugadorDelDia);
+    if (!jugadorDelDia) return null;
 
-    const casillas = [];
-    for (let i = 0; i < jugadorDelDia.length; i++) {
-      if (jugadorDelDia[i] === ' ') {
-        casillas.push(<div key={i} className="casilla espacio">{'\u00A0'}</div>); // Mostrar espacio
-      } else {
-        casillas.push(<div key={i} className="casilla vacia">{'\u00A0'}</div>); // Mostrar casilla vacía
-      }
-    }
-    return casillas;
+    return jugadorDelDia.split('').map((char, index) => (
+      <div key={index} className={char === ' ' ? 'casilla espacio' : 'casilla vacia'}>
+        {char === ' ' ? '\u00A0' : ''}
+      </div>
+    ));
   };
 
   return (
     <div className="wordle-container">
       <h1>Wordle Diario - Adivina el Jugador</h1>
+      <div className="game-section">
+        <div className="game-content">
+          <p>{mensaje}</p>
 
-      <div className="intentos">
-        {intentos.length === 0 && (
-          <div className="fila-intento">
-            {mostrarCasillasIniciales()}
-          </div>
-        )}
-
-        {intentos.map((intento, index) => (
-          <div key={index} className="fila-intento">
-            {intento.map((letra, idx) => (
-              <div key={idx} className={`casilla ${letra.estado}`}>
-                {letra.letra === ' ' ? '\u00A0' : letra.letra}
+          <div className="intentos">
+            {intentos.length === 0 && (
+              <div className="fila-intento">{mostrarCasillasIniciales()}</div>
+            )}
+            {intentos.map((intento, index) => (
+              <div key={index} className="fila-intento">
+                {intento.map((letra, idx) => (
+                  <div key={idx} className={`casilla ${letra.estado}`}>
+                    {letra.letra}
+                  </div>
+                ))}
               </div>
             ))}
           </div>
-        ))}
+
+          {intentos.length < maxIntentos && mensaje !== `¡Fin del juego! El jugador era: ${jugadorDelDia}` && (
+            <div className="input-container">
+              <input
+                type="text"
+                value={inputUsuario}
+                onChange={handleInputChange}
+                maxLength={jugadorDelDia.replace(/\s+/g, '').length}
+              />
+              <button onClick={handleSubmit}>Enviar</button>
+            </div>
+          )}
+
+          {intentos.length >= maxIntentos && (
+            <div className="resultado">
+              <p>¡Se acabaron los intentos! El jugador era: <strong>{jugadorDelDia}</strong></p>
+            </div>
+          )}
+
+          <h2>Puntuación: {score}</h2>
+        </div>
+
+        <div className="leaderboard-section">
+          <h2>Leaderboard</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Posición</th>
+                <th>Jugador</th>
+                <th>Puntuación</th>
+              </tr>
+            </thead>
+            <tbody>
+              {leaderboard.map((entry, index) => (
+                <tr key={index}>
+                  <td>{index + 1}</td>
+                  <td>{entry.playerName}</td>
+                  <td>{entry.score}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
-
-      {jugadorDelDia && intentos.length < 6 && (
-        <div className="input-container">
-          <input
-            type="text"
-            value={inputUsuario}
-            onChange={handleInputChange}
-            maxLength={jugadorDelDia.length}
-          />
-          <button onClick={handleSubmit}>Enviar</button>
-        </div>
-      )}
-
-      {intentos.length >= 6 && (
-        <div className="resultado">
-          <p>¡Se acabaron los intentos! El jugador era: {jugadorDelDia}</p>
-        </div>
-      )}
     </div>
   );
 }

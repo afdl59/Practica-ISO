@@ -2,33 +2,28 @@ import React, { useState } from 'react';
 import '../../styles/minijuegos/Bingo.css';
 import { useLeaderboard } from '../../context/LeaderboardContext';
 
-// Datos de los jugadores definidos directamente en el componente
 const jugadores = [
   { nombre: "Harry Kane", definicion: "Delantero estrella del Bayern de Múnich y la selección inglesa." },
   { nombre: "Sergio Ramos", definicion: "Defensa central, leyenda del Real Madrid y capitán de la selección española." },
   { nombre: "Cristiano Ronaldo", definicion: "Delantero legendario, ha jugado en varias ligas, incluyendo La Liga y la Premier." },
   { nombre: "Mohamed Salah", definicion: "Delantero egipcio que brilla en la Premier League con el Liverpool." },
-  { nombre: "Isco Alarcon", definicion: "Centrocampista español, conocido por su creatividad y juego en el Real Madrid." },
-  { nombre: "Francesco Totti", definicion: "Delantero que dedicó toda su carrera a la AS Roma en la Serie A." },
-  { nombre: "Antoine Griezmann", definicion: "Delantero que ha jugado en La Liga y la selección francesa." },
-  { nombre: "Iker Casillas", definicion: "Portero icónico del Real Madrid y la selección española." },
-  { nombre: "Santiago Cazorla", definicion: "Centrocampista con gran visión de juego, ha jugado en La Liga y Premier League." }
+  { nombre: "Lionel Messi", definicion: "Considerado uno de los mejores futbolistas de todos los tiempos." },
 ];
 
 // Función para calcular el puntaje
 function calculateBingoScore(inputs) {
-  const filledSquares = inputs.filter((input, index) =>
+  const correctAnswers = inputs.filter((input, index) =>
     input.trim().toLowerCase() === jugadores[index].nombre.toLowerCase()
   ).length;
 
-  const isFullBoard = filledSquares === jugadores.length;
-  return isFullBoard ? filledSquares + 1 : filledSquares;
+  const isFullBoard = correctAnswers === jugadores.length;
+  return isFullBoard ? correctAnswers + 5 : correctAnswers; // Bonus por completar el tablero
 }
 
 function BingoGame() {
-  const { updateLeaderboard } = useLeaderboard();
+  const { leaderboards, updateLeaderboard } = useLeaderboard();
+  const leaderboard = leaderboards['bingo'] || [];
 
-  // Estado para los inputs, puntaje y mensaje
   const [inputs, setInputs] = useState(Array(jugadores.length).fill(''));
   const [score, setScore] = useState(0);
   const [mensaje, setMensaje] = useState('');
@@ -43,41 +38,67 @@ function BingoGame() {
     const currentScore = calculateBingoScore(inputs);
     setScore(currentScore);
 
-    if (currentScore === jugadores.length + 1) { // Full board score
+    if (currentScore === jugadores.length + 5) { // Puntaje máximo con bonus
       setMensaje('¡Ganaste! Has completado el bingo.');
-      updateLeaderboard('bingo', 'Jugador', currentScore); // Usa un nombre predeterminado para el jugador
+    } else if (currentScore > 0) {
+      setMensaje('¡Sigue jugando! Estás avanzando.');
     } else {
-      setMensaje('');
+      setMensaje('Intenta completar más cuadros.');
     }
+
+    // Actualizar leaderboard
+    updateLeaderboard('bingo', 'Jugador', currentScore);
   };
 
   return (
     <div className="bingo-container">
       <h1>Bingo de Futbolistas</h1>
-      <div className="grid">
-        {jugadores.map((jugador, index) => (
-          <div
-            key={index}
-            className={`grid-item ${inputs[index]?.trim().toLowerCase() === jugador.nombre.toLowerCase() ? 'correct' : ''}`}
-          >
-            <p>{jugador.definicion}</p>
-            <input
-              type="text"
-              value={inputs[index] || ''}
-              onChange={(e) => handleInputChange(index, e.target.value)}
-              onBlur={() => validarGanador()}
-              onKeyDown={(e) => e.key === 'Enter' && validarGanador()}
-            />
+      <div className="game-section">
+        <div className="game-content">
+          <div className="grid">
+            {jugadores.map((jugador, index) => (
+              <div
+                key={index}
+                className={`grid-item ${inputs[index]?.trim().toLowerCase() === jugador.nombre.toLowerCase() ? 'correct' : ''}`}
+              >
+                <p>{jugador.definicion}</p>
+                <input
+                  type="text"
+                  value={inputs[index] || ''}
+                  onChange={(e) => handleInputChange(index, e.target.value)}
+                  onBlur={validarGanador}
+                />
+              </div>
+            ))}
           </div>
-        ))}
+          <h2>Puntuación actual: {score}</h2>
+          <p>{mensaje}</p>
+        </div>
+
+        <div className="leaderboard-section">
+          <h2>Leaderboard</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Posición</th>
+                <th>Jugador</th>
+                <th>Puntuación</th>
+              </tr>
+            </thead>
+            <tbody>
+              {leaderboard.map((entry, index) => (
+                <tr key={index}>
+                  <td>{index + 1}</td>
+                  <td>{entry.playerName}</td>
+                  <td>{entry.score}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
-      {mensaje && <div className="win-message">{mensaje}</div>}
-      <h2>Your score: {score}</h2>
     </div>
   );
 }
 
 export default BingoGame;
-
-
-
