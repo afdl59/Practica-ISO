@@ -52,7 +52,7 @@ function Perfil() {
           method: 'GET',
           credentials: 'include',
         });
-
+        console.log('Estado isPremium en Perfil: ', isPremium);
         if (!premiumResponse.ok) throw new Error('Error al obtener el estado de isPremium del usuario');
 
         const premiumData = await premiumResponse.json();
