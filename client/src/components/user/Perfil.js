@@ -232,9 +232,13 @@ function Perfil() {
   
       {/* Botones en la parte inferior */}
       <div className="perfil-actions">
-          <button onClick={handleSaveChanges}>Guardar Cambios</button>
-          <button onClick={handleLogout}>Cerrar Sesión</button>
-          <button onClick={() => setShowHelpForm(true)}>Ayuda</button>
+        <button onClick={handleSaveChanges}>Guardar Cambios</button>
+        <button onClick={handleLogout}>Cerrar Sesión</button>
+        <button onClick={() => setShowHelpForm(true)}>Ayuda</button>
+        {/* Botón de Pago */}
+        {isPremium === false && (
+          <PaymentButton userEmail={userData.email} />
+        )}
       </div>
 
       {showHelpForm && (
@@ -254,11 +258,6 @@ function Perfil() {
           <button onClick={handleHelpSubmit}>Enviar</button>
           <button onClick={() => setShowHelpForm(false)}>Cancelar</button>
         </div>  
-      )}
-
-      {/* Botón de Pago */}
-      {isPremium === false && (
-        <PaymentButton userEmail={userData.email} />
       )}
     </div>
   );  
