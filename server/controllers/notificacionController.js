@@ -7,7 +7,6 @@ const sendNotificationEmail = async (req, res) => {
 
     try {
         // Busca al usuario en la base de datos
-        console.log(username);
         const user = await User.findOne({ username });
         if (!user) {
             return res.status(404).json({ message: 'Usuario no encontrado' });
@@ -79,6 +78,39 @@ const markAsRead = async (req, res) => {
     }
 };
 
+const searchUsers = async (req, res) => {
+    const { search } = req.query;
+  
+    if (!search || typeof search !== 'string') {
+      return res.status(400).json({ message: 'El parámetro de búsqueda es obligatorio y debe ser una cadena.' });
+    }
+  
+    try {
+      const sanitizedSearch = search.trim();
+      const regexSearch = new RegExp(sanitizedSearch, 'i'); // Crear regex dinámico
+  
+      console.log('Parámetro recibido:', sanitizedSearch);
+      console.log('Regex generado:', regexSearch);
+  
+      const users = await User.find({
+        username: { $regex: regexSearch },
+      })
+        .limit(10)
+        .select('username');
+  
+      console.log('Usuarios encontrados:', users);
+  
+      if (users.length === 0) {
+        return res.status(404).json({ message: 'Usuario no encontrado' });
+      }
+  
+      res.status(200).json(users);
+    } catch (error) {
+      console.error('Error al buscar usuarios:', error);
+      res.status(500).json({ message: 'Error al buscar usuarios' });
+    }
+};
+  
 
-module.exports = { sendNotificationEmail, getNotifications, markAsRead };
+module.exports = { sendNotificationEmail, getNotifications, markAsRead, searchUsers };
 

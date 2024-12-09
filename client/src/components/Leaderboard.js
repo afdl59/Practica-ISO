@@ -46,7 +46,6 @@ function Leaderboard() {
                             <td>{index + 1}</td>
                             <td>{entry.playerName}</td>
                             <td>{entry.score}</td>
-                            <td>{new Date(entry.date).toLocaleDateString()}</td>
                         </tr>
                     ))}
                 </tbody>

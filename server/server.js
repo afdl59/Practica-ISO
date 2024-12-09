@@ -15,6 +15,9 @@ const chatRoutes = require('./routes/chatRoutes');
 const userRoutes = require('./routes/userRoutes');
 const notificationRoutes = require('./routes/notificacionRoutes');
 const leaderboardRoutes = require('./routes/leaderboardRoutes');
+const paymentRoutes = require('./routes/paymentRoutes');
+const webhookRoutes = require('./routes/webhookRoutes');
+
 const socketHandler = require('./socket');
 
 // Conectar a la base de datos
@@ -29,6 +32,9 @@ app.use((req, res, next) => {
     req.io = io;
     next();
 });
+
+//Ruta del webhook para que bodyParser no sobreescriba el middleware de urlencoded
+app.use('/api/webhooks', webhookRoutes);
 
 // Middleware de configuración
 app.use(bodyParser.urlencoded({ limit: '20mb', extended: true }));
@@ -52,13 +58,6 @@ app.use(getIpMiddleware);
 app.use(passport.initialize());
 app.use(passport.session());
 
-//Debugging solicitudes entrantes y salientes
-app.use((req, res, next) => {
-    console.log("Encabezados recibidos:", req.headers);
-    console.log("Cookies recibidas en encabezado:", req.headers.cookie);
-    next();
-});
-
 // Rutas de autenticación pública
 app.use('/api/auth', authRoutes); 
 
@@ -73,6 +72,9 @@ app.use('/api/notificaciones', notificationRoutes);
 
 //Rutas de Leaderboard
 app.use('/api/leaderboards', leaderboardRoutes);
+
+//Rutas de pagos/Stripe
+app.use('/api/payments', paymentRoutes);
 
 // Inicializar el manejador de Socket.IO
 socketHandler(io);

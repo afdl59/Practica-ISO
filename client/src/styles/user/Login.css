@@ -1,0 +1,234 @@
+/* Login.css */
+/* Contenedor principal */
+.main-container {
+    margin-top: 70px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    z-index: 2;
+}
+  
+/* Productos Patrocinados */
+.product-carousel {
+    width: calc(100% - 600px); /* Ajusta al espacio entre las columnas */
+    margin: 20px auto;
+    padding: 10px 0;
+    text-align: center;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Añade una sombra ligera */
+    position: relative;
+    z-index: 2;
+}
+  
+.product-carousel h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #212529;
+}
+  
+.carousel-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+  
+.product {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+  
+.product img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    margin-bottom: 10px;
+    border-radius: 8px; /* Bordes redondeados */
+}
+  
+.product p {
+    font-size: 14px;
+    margin: 5px 0;
+    color: #333;
+}
+  
+.product span {
+    font-size: 14px;
+    font-weight: bold;
+    color: #007bff;
+}
+  
+/* Panel de predicciones (columna izquierda) */
+.prediction-panel {
+    width: 300px;
+    height: calc(100vh - 50px);
+    background: #1a1a1a;
+    color: #ffffff;
+    padding: 20px 0; /* Espaciado vertical interno */
+    border-radius: 0 0 12px 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: fixed;
+    top: 50px;
+    left: 0;
+    z-index: 3;
+    overflow-y: auto;
+}
+  
+/* Contenedor de los videos */
+.prediction-panel a {
+    display: block;
+    width: 100%;
+    margin: 0;
+}
+  
+.prediction-panel iframe {
+    width: 100%;
+    height: 200px;
+    border: none;
+    border-radius: 8px;
+    display: block;
+    margin: 0;
+}
+  
+/* Panel derecho ocupando toda la columna */
+.full-width-info-panel {
+    width: 300px; /* Ocupa toda la columna */
+    height: calc(100vh - 50px); /* Altura completa menos el navbar */
+    background: #1a1a1a; /* Fondo negro */
+    padding: 0; /* Sin relleno */
+    border-radius: 0 0 12px 12px; /* Bordes redondeados inferiores */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Sombra suave */
+    display: flex;
+    justify-content: center; /* Centrado horizontal */
+    align-items: center; /* Centrado vertical */
+    position: fixed; /* Fija el panel */
+    top: 50px; /* Justo debajo de la barra de navegación */
+    right: 0; /* Pegado al borde derecho */
+    z-index: 3; /* Sobre otros elementos */
+}
+  
+.full-width-info-panel iframe {
+    width: 100%; /* Ancho completo */
+    height: 100%; /* Altura completa */
+    border: none; /* Sin bordes */
+    border-radius: 0 0 12px 12px; /* Bordes redondeados inferiores */
+}
+/* Contenedor del formulario */
+/* Contenedor principal */
+.auth-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 80px; /* Espaciado desde el carousel */
+}
+  
+/* Contenedor de anuncios */
+.ads-section {
+    width: 100%;
+    margin-bottom: 100px;
+    display: flex !important;
+    padding: 10px;
+    z-index: 2;
+}
+  
+/* Auth-container */
+.auth-container {
+    width: 60%;
+    max-width: 500px;
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    margin-top: 100px;
+    text-align: center;
+}
+  
+  
+.auth-container h1 {
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #333333;
+}
+  
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+}
+  
+form input[type="text"],
+form input[type="email"],
+form input[type="password"] {
+    font-size: 16px;
+    width: 90%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+  
+form button[type="submit"] {
+    font-size: 16px;
+    padding: 12px;
+    width: 90%;
+    background: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+  
+  /* Botón de Google */
+.google-login-button {
+    font-size: 16px;
+    padding: 12px;
+    width: 90%;
+    background: #db4437;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+  
+.google-login-button:hover {
+    background: #c23321;
+}
+
+/* Botón de Google */
+.twitter-login-button {
+    font-size: 16px;
+    padding: 12px;
+    width: 90%;
+    background: #1da1f2;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+  
+.twitter-login-button:hover {
+    background: #1a91da;
+}
+  

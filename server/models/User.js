@@ -27,6 +27,7 @@ const userSchema = new mongoose.Schema({
         wordle: { type: Number, default: 0 },
         predicciones: { type: Number, default: 0 },
     },
+    isPremium: { type: Boolean, default: false},
     createdAt: { type: Date, default: Date.now },
 });
 
