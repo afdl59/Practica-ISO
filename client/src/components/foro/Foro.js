@@ -458,16 +458,6 @@ function Foro() {
         </div>
       )}
 
-      {showSuggestions && (
-        <ul className="user-suggestions">
-          {userSuggestions.map((user) => (
-            <li key={user.username} onClick={() => handleUserSelect(user.username)}>
-              {user.username}
-            </li>
-          ))}
-        </ul>
-      )}
-
       {showCreateSalaPopup && (
         <div className="popup-crear-sala">
           <div className="popup-contenido">
