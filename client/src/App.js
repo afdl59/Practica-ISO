@@ -11,6 +11,7 @@ import Register from './components/user/Register';
 import Perfil from './components/user/Perfil';
 import AnadirEquipoFavorito from './components/user/AnadirEquipoFavorito';
 import AnadirCompeticionFavorita from './components/user/AnadirCompeticionFavorita';
+import ChangePassword from './components/user/ChangePassword';
 
 //Foro
 import Foro from './components/foro/Foro';
@@ -106,6 +107,8 @@ function App() {
 
             {/* Ruta de Cancel*/}
             <Route path="/cancel" element={<Cancel />} />
+
+            <Route path="/:username/changepass" element={<ChangePassword />} />
 
           </Routes>
         </div>

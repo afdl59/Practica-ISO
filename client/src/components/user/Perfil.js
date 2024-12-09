@@ -263,6 +263,12 @@ function Perfil() {
       {(isPremium === false || isPremium === undefined) && (
         <PaymentButton userEmail={userData.email} />
       )}
+
+      {userData && !userData.googleId && !userData.twitterId && (
+          <Link to={`/${userData.username}/changepass`}>
+              <button>Cambiar Contraseña</button>
+          </Link>
+      )}
     </div>
   );  
 }

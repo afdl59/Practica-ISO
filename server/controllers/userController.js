@@ -141,6 +141,8 @@ exports.getUserProfile = async (req, res) => {
             prediccionesActuales: usuario.prediccionesActuales || [],
             puntosPredicciones: usuario.puntosPredicciones || 0,
             ultimoLogin: usuario.createdAt,
+            googleId: usuario.googleId || null,
+            twitterId: usuario.twitterId || null,
         });
     } catch (err) {
         res.status(500).json({ message: 'Error al obtener los datos del usuario: ' + err.message });
@@ -177,6 +179,44 @@ exports.updateUserProfile = async (req, res) => {
     } catch (err) {
         console.error('Error al actualizar los datos del usuario:', err);
         res.status(500).json({ message: 'Error al actualizar los datos del usuario' });
+    }
+};
+
+// Cambiar contraseña del usuario
+exports.changePassword = async (req, res) => {
+    const { username } = req.params;
+    const { newPassword } = req.body;
+
+    if (!newPassword) {
+        return res.status(400).json({ message: 'La nueva contraseña es requerida' });
+    }
+
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+
+    if (!passwordRegex.test(newPassword)) {
+        return res.status(400).json({ message: 'La contraseña no cumple con los requisitos mínimos' });
+    }
+
+    try {
+        const usuario = await User.findOne({ username });
+
+        if (!usuario) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+
+        if (usuario.googleId || usuario.twitterId) {
+            return res.status(403).json({ message: 'Los usuarios de OAuth no pueden cambiar contraseña' });
+        }
+
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        usuario.password = hashedPassword;
+
+        await usuario.save();
+
+        res.status(200).json({ message: 'Contraseña actualizada correctamente' });
+    } catch (error) {
+        console.error('Error al cambiar la contraseña:', error);
+        res.status(500).json({ message: 'Error al cambiar la contraseña' });
     }
 };
 

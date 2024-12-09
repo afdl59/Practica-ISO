@@ -43,7 +43,6 @@ function Home() {
         if (premiumResponse.ok && premiumData.isPremium !== undefined) {
           setIsPremium(premiumData.isPremium);
         }
-        console.log("Estado actual de isPremium", isPremium);
       } catch (err) {
         console.error('Error verificando la sesión:', err);
       } finally {
