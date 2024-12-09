@@ -67,12 +67,19 @@ function WordleDiario() {
   const [intentos, setIntentos] = useState([]);
   const [mensaje, setMensaje] = useState('');
   const [score, setScore] = useState(0);
+  const [username, setUsername] = useState('');
 
   const maxIntentos = 6;
 
   useEffect(() => {
     const diaDelAno = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
     setJugadorDelDia(jugadores[diaDelAno % jugadores.length]);
+    const fetchUsername = async () => {
+      const sessionResponse = await fetch('/api/auth/check-session');
+      const sessionData = await sessionResponse.json();
+      setUsername(sessionData.username);
+    };
+    fetchUsername();
   }, []);
 
   const handleInputChange = (e) => {
@@ -98,6 +105,30 @@ function WordleDiario() {
       const calculatedScore = (maxIntentos - intentos.length) * 10; // Puntos según intentos restantes
       setScore(calculatedScore);
       setMensaje('¡Felicidades! Has adivinado el jugador.');
+      const updateScore = async (username, category, newScore) => {
+        try {
+            const response = await fetch(`/api/users/${username}/score`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ category, newScore }),
+            });
+    
+            if (!response.ok) {
+                const error = await response.json();
+                console.error('Error al actualizar puntuación:', error);
+                return;
+            }
+    
+            const data = await response.json();
+            console.log('Puntuación actualizada:', data);
+        } catch (error) {
+            console.error('Error de red al actualizar la puntuación:', error);
+        }
+    };
+
+    updateScore(username, 'wordle', calculatedScore);
 
       // Actualizar Leaderboard
       updateLeaderboard('wordle', 'Jugador', calculatedScore);
@@ -181,6 +212,12 @@ function WordleDiario() {
           {intentos.length >= maxIntentos && (
             <div className="resultado">
               <p>¡Se acabaron los intentos! El jugador era: <strong>{jugadorDelDia}</strong></p>
+            </div>
+          )}
+
+          {inputUsuario.toLocaleLowerCase() === jugadorDelDia.toLocaleLowerCase() && (
+            <div className="resultado">
+              <p>¡Felicidades! Has adivinado el jugador: <strong>{jugadorDelDia}</strong></p>
             </div>
           )}
 
