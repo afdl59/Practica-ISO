@@ -43,6 +43,6 @@ router.post('/help', userController.sendHelpRequest);
 router.get('/:username/premium-status', authMiddleware, userController.getPremiumStatus);
 router.put('/:username/premium-status', userController.updatePremiumStatus);
 
-router.post('/:username/change-password', authMiddleware, userController.changePassword);
+router.post('/:username/change-password', userController.changePassword);
 
 module.exports = router;

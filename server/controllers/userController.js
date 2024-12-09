@@ -192,14 +192,12 @@ exports.changePassword = async (req, res) => {
     }
 
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
-
     if (!passwordRegex.test(newPassword)) {
         return res.status(400).json({ message: 'La contraseña no cumple con los requisitos mínimos' });
     }
 
     try {
         const usuario = await User.findOne({ username });
-
         if (!usuario) {
             return res.status(404).json({ message: 'Usuario no encontrado' });
         }
@@ -211,7 +209,8 @@ exports.changePassword = async (req, res) => {
         const hashedPassword = await bcrypt.hash(newPassword, 10);
         usuario.password = hashedPassword;
 
-        await usuario.save();
+        // Guardar sin volver a validar
+        await usuario.save({ validateBeforeSave: false });
 
         res.status(200).json({ message: 'Contraseña actualizada correctamente' });
     } catch (error) {
