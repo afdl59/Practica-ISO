@@ -316,6 +316,7 @@
 .user-suggestions {
   position: absolute;
   background-color: #fff; /* Fondo blanco para destacar */
+  color: black;
   border: 1px solid #ccc; /* Borde para separar visualmente */
   border-radius: 4px; /* Bordes redondeados */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra ligera */
