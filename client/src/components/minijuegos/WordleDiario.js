@@ -215,12 +215,6 @@ function WordleDiario() {
             </div>
           )}
 
-          {inputUsuario.toLocaleLowerCase() === jugadorDelDia.toLocaleLowerCase() && (
-            <div className="resultado">
-              <p>¡Felicidades! Has adivinado el jugador: <strong>{jugadorDelDia}</strong></p>
-            </div>
-          )}
-
           <h2>Puntuación: {score}</h2>
         </div>
 
