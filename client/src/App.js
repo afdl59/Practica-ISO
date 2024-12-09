@@ -49,71 +49,69 @@ import Cancel from './components/payments/Cancel';
 
 //CSS
 import './styles/App.css';
-import { UserProvider } from './context/UserContext';
+
 import { LeaderboardProvider } from './context/LeaderboardContext';
 
 function App() {
   return (
-    <UserProvider>
-      <LeaderboardProvider>
-        <div className="app-container">
-          {/* Sidebar */}
-          <Sidebar />
+    <LeaderboardProvider>
+      <div className="app-container">
+        {/* Sidebar */}
+        <Sidebar />
 
-          {/* Barra animada */}
-          <div className="animated-bar">
-            <span className="animated-bar-text">
-              ¡Bienvenido a Futbol360! Consulta estadísticas, participa en predicciones, juega minijuegos y más.
-            </span>
-          </div>
-
-          {/* Rutas principales */}
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/foro" element={<Foro />} />
-            <Route path="/notificaciones" element={<Notificaciones />} />
-
-            {/* Rutas de Perfil */}
-            <Route path="/perfil" element={<Perfil />} />
-            <Route path="/perfil/anadir-equipo-favorito" element={<AnadirEquipoFavorito />} />
-            <Route path="/perfil/anadir-competicion-favorita" element={<AnadirCompeticionFavorita />} />
-
-            {/* Rutas de Minijuegos */}
-            <Route path="/minijuegos" element={<Minijuegos />} />
-            <Route path="/minijuegos/bingo" element={<Bingo />} />
-            <Route path="/minijuegos/tiro-libre" element={<TiroLibre />} />
-            <Route path="/minijuegos/wordle-diario" element={<WordleDiario />} />
-            <Route path="/minijuegos/guess-the-player" element={<GuessThePlayer />} />
-
-            {/* Rutas de Estadísticas y Partidos */}
-            <Route path="/partidos" element={<Partidos />} />
-            <Route path="/player-selector" element={<PlayerSelector />} />
-            <Route path="/partido/:idPartido" element={<PartidoDetalle />} />
-            <Route path="/partidos-directo" element={<PartidosDirecto />} />
-            <Route path="/proximos-partidos" element={<ProximosPartidos />} />
-            <Route path="/proximos-partidos/:idPartido" element={<ProximoPartidoDetalle />} />
-            <Route path="/predicciones" element={<Predicciones />} />
-            <Route path="/partido-prueba1" element={<PartidoPrueba1 />} />
-            <Route path="/partido-prueba2" element={<PartidoPrueba2 />} />
-
-            {/* Rutas de Términos y Condiciones */}
-            <Route path="/terms" element={<Terms />} />
-            <Route path="/privacy" element={<Privacy />} />
-
-            {/* Ruta de Leaderboard*/}
-            <Route path="/leaderboard" element={<Leaderboard />} />
-
-            {/* Ruta de Cancel*/}
-            <Route path="/cancel" element={<Cancel />} />
-
-            <Route path="/:username/changepass" element={<ChangePassword />} />
-
-          </Routes>
+        {/* Barra animada */}
+        <div className="animated-bar">
+          <span className="animated-bar-text">
+            ¡Bienvenido a Futbol360! Consulta estadísticas, participa en predicciones, juega minijuegos y más.
+          </span>
         </div>
-      </LeaderboardProvider>
-    </UserProvider>
+
+        {/* Rutas principales */}
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/foro" element={<Foro />} />
+          <Route path="/notificaciones" element={<Notificaciones />} />
+
+          {/* Rutas de Perfil */}
+          <Route path="/perfil" element={<Perfil />} />
+          <Route path="/perfil/anadir-equipo-favorito" element={<AnadirEquipoFavorito />} />
+          <Route path="/perfil/anadir-competicion-favorita" element={<AnadirCompeticionFavorita />} />
+
+          {/* Rutas de Minijuegos */}
+          <Route path="/minijuegos" element={<Minijuegos />} />
+          <Route path="/minijuegos/bingo" element={<Bingo />} />
+          <Route path="/minijuegos/tiro-libre" element={<TiroLibre />} />
+          <Route path="/minijuegos/wordle-diario" element={<WordleDiario />} />
+          <Route path="/minijuegos/guess-the-player" element={<GuessThePlayer />} />
+
+          {/* Rutas de Estadísticas y Partidos */}
+          <Route path="/partidos" element={<Partidos />} />
+          <Route path="/player-selector" element={<PlayerSelector />} />
+          <Route path="/partido/:idPartido" element={<PartidoDetalle />} />
+          <Route path="/partidos-directo" element={<PartidosDirecto />} />
+          <Route path="/proximos-partidos" element={<ProximosPartidos />} />
+          <Route path="/proximos-partidos/:idPartido" element={<ProximoPartidoDetalle />} />
+          <Route path="/predicciones" element={<Predicciones />} />
+          <Route path="/partido-prueba1" element={<PartidoPrueba1 />} />
+          <Route path="/partido-prueba2" element={<PartidoPrueba2 />} />
+
+          {/* Rutas de Términos y Condiciones */}
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/privacy" element={<Privacy />} />
+
+          {/* Ruta de Leaderboard*/}
+          <Route path="/leaderboard" element={<Leaderboard />} />
+
+          {/* Ruta de Cancel*/}
+          <Route path="/cancel" element={<Cancel />} />
+
+          <Route path="/:username/changepass" element={<ChangePassword />} />
+
+        </Routes>
+      </div>
+    </LeaderboardProvider>
   );
 }
 
