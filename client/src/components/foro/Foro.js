@@ -6,8 +6,10 @@ import { useNavigate } from 'react-router-dom';
 function Foro() {
   const [mensajes, setMensajes] = useState([]);
   const [content, setContent] = useState('');
+
   const [username, setUsername] = useState('');
   const [profilePictures, setProfilePictures] = useState({});
+
   const [salas, setSalas] = useState([]);
   const [currentSala, setCurrentSala] = useState('');
   const [currentSalaName, setCurrentSalaName] = useState('');
@@ -16,11 +18,16 @@ function Foro() {
   const [newSalaTitle, setNewSalaTitle] = useState('');
   const [newSalaDescription, setNewSalaDescription] = useState('');
   const [newSalaCategory, setNewSalaCategory] = useState('');
+
   const [search, setSearch] = useState('');
+
   const [showCreateSalaPopup, setCreateSalaPopup] = useState(false);
   const [showSettingsPopup, setShowSettingsPopup] = useState(false);
-  const [userSuggestions, setUserSuggestions] = useState([]);
+
+  const [userList, setUserList] = useState([]); // Lista de usuarios cargados
+  const [filteredUsers, setFilteredUsers] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+
   const navigate = useNavigate();
 
   const socket = useRef(null);
@@ -63,6 +70,11 @@ function Foro() {
         });
         const salasData = await salasResponse.json();
         setSalas(salasData);
+
+        // Cargar lista de usuarios
+        const usersResponse = await fetch('/api/users/getall', { method: 'GET' });
+        setUserList(await usersResponse.json());
+
       } catch (error) {
         console.error('Error al verificar sesión:', error);
         navigate('/login');
@@ -141,27 +153,6 @@ function Foro() {
     };
   }, [currentSala]);
 
-  // Función para buscar usuarios desde la base de datos
-  const fetchUsers = async (query) => {
-    try {
-      console.log("Query de busqueda: ", query);
-      const response = await fetch(`/api/notificaciones/users?search=${query}`, {
-        method: 'GET', // Especificar el método GET
-        headers: { 'Content-Type': 'application/json' }, // Agregar encabezados si es necesario
-      });
-  
-      if (response.ok) {
-        const users = await response.json();
-        setUserSuggestions(users);
-      } else {
-        console.error('Error al obtener usuarios:', response.statusText);
-      }
-    } catch (error) {
-      console.error('Error al buscar usuarios:', error);
-    }
-  };
-  
-
   const handleCreateSala = async (e) => {
     e.preventDefault();
     if (newSalaTitle && newSalaDescription && newSalaCategory && username) {
@@ -233,16 +224,19 @@ function Foro() {
     }
   };
 
-  // Manejar la entrada del usuario
+  // Filtrar usuarios al escribir menciones
   const handleInputChange = (e) => {
     const value = e.target.value;
     setContent(value);
 
-    const mentionMatch = value.match(/@(\w*)$/); // Detectar menciones
+    const mentionMatch = value.match(/@(\w*)$/);
     if (mentionMatch) {
-      const query = mentionMatch[1];
+      const query = mentionMatch[1].toLowerCase();
+      const matches = userList.filter((user) =>
+        user.username.toLowerCase().startsWith(query)
+      );
+      setFilteredUsers(matches);
       setShowSuggestions(true);
-      fetchUsers(query);
     } else {
       setShowSuggestions(false);
     }
@@ -254,38 +248,40 @@ function Foro() {
     setShowSuggestions(false);
   };
 
-  const handleSubmit = async (e) => {
+   // Manejar envío de mensajes
+   const handleSubmit = async (e) => {
     e.preventDefault();
     if (username && content && currentSala) {
+      let messageContent = content;
+
+      // Si hay una mención incompleta, selecciona automáticamente la primera coincidencia
+      const mentionMatch = content.match(/@(\w*)$/);
+      if (mentionMatch && filteredUsers.length > 0) {
+        const firstMatch = filteredUsers[0].username;
+        messageContent = content.replace(/@\w*$/, `@${firstMatch}`);
+      }
+
       const nuevoMensaje = {
         username,
-        content,
+        content: messageContent,
         chatRoom: currentSala,
       };
-  
-      // Emitir mensaje al socket
+
       socket.current.emit('nuevoMensaje', nuevoMensaje);
-  
-      // Detectar menciones y enviar notificaciones
-      const mentions = content.match(/@(\w+)/g);
+
+      // Enviar notificaciones a usuarios mencionados
+      const mentions = messageContent.match(/@(\w+)/g);
       if (mentions) {
         for (const mention of mentions) {
-          const mentionedUser = mention.substring(1);
+          const mentionedUser = mention.substring(1); // Elimina el '@'
           try {
-            await fetch('/api/notificaciones/enviar', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                username: mentionedUser,
-                type: 'foro',
-              }),
-            });
+            await fetch(`/api/notificaciones/${mentionedUser}`, { method: 'POST', type: 'foro' });
           } catch (error) {
             console.error(`Error al enviar notificación a ${mentionedUser}:`, error);
           }
         }
       }
-  
+
       setContent('');
     }
   };  
@@ -425,6 +421,15 @@ function Foro() {
               />
               <button type="submit">Enviar</button>
             </form>
+            {showSuggestions && (
+              <ul className="user-suggestions">
+                {filteredUsers.map((user) => (
+                  <li key={user.username} onClick={() => handleUserSelect(user.username)}>
+                    {user.username}
+                  </li>
+                ))}
+              </ul>
+            )}
           </>
         )}
       </div>

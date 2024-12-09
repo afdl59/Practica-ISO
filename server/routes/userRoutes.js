@@ -45,4 +45,6 @@ router.put('/:username/premium-status', userController.updatePremiumStatus);
 
 router.post('/:username/change-password', userController.changePassword);
 
+router.get('/getall', getAllUsers);
+
 module.exports = router;
