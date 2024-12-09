@@ -486,7 +486,7 @@ exports.updatePremiumStatusByEmail = async (email) => {
 
   exports.getAllUsers = async (req, res) => {
     try {
-      const users = await User.find({}, 'username'); // Obtiene solo los nombres de usuario
+      const users = await User.find({}, 'username');
       res.status(200).json(users);
     } catch (error) {
       console.error('Error al obtener usuarios:', error);
