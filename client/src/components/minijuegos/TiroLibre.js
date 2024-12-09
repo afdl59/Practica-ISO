@@ -35,8 +35,6 @@ function TiroLibre() {
   const [attempts, setAttempts] = useState(0);
   const [message, setMessage] = useState('');
 
-
-
   useEffect(() => {
     const randomSide = sides[Math.floor(Math.random() * sides.length)];
     const randomDistance = distances[Math.floor(Math.random() * distances.length)];
@@ -110,13 +108,6 @@ function TiroLibre() {
     } else {
         setMessage('Miss!');
     }
-};
-
-const endGame = () => {
-  if (username) {
-    updateLeaderboard('TiroLibre', score);
-    setMessage(`Game Over! Final Score: ${score}`);
-  }
 };
 
   function calculateTiroLibreScore(goals) {
