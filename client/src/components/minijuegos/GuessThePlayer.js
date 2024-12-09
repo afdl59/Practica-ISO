@@ -27,7 +27,7 @@ function GuessThePlayer() {
   const [username, setUsername] = useState('');
 
   const { leaderboards, updateLeaderboard } = useLeaderboard();
-  const leaderboard = leaderboards['wordle'] || [];
+  const leaderboard = leaderboards['guessThePlayer'] || [];
 
   useEffect(() => {
     // Reiniciar el estado del juego cuando cambia el jugador actual
