@@ -103,51 +103,46 @@ function Predicciones() {
     return (
         <div className="predictions-container">
             <h1>Tus Predicciones</h1>
-            {predictions.length > 0 ? (
-                predictions.map((match, index) => {
-                    // Busca todas las predicciones del usuario para este partido
-                    const userPredictions = originalPredictions.filter(
-                        (prediction) => prediction.matchId === match.matchId
+            {originalPredictions.length > 0 ? (
+                originalPredictions.map((userPrediction, index) => {
+                    // Encuentra los datos del partido asociados a esta predicción
+                    const match = predictions.find(
+                        (match) => match.matchId === userPrediction.matchId
                     );
     
-                    // Renderiza todas las predicciones relevantes para el partido
-                    return (
-                        <div key={index} className="prediction-item">
-                            <img src={match.teams.home.logo} alt={match.teams.home.name} width="50" />
-                            <span>
-                                {match.teams.home.name} {match.goals.home} - {match.goals.away} {match.teams.away.name}
-                            </span>
-                            <img src={match.teams.away.logo} alt={match.teams.away.name} width="50" />
-                            <div>{new Date(match.fixture.date).toLocaleDateString()}</div>
-                            <div>Competición: {match.league.name}</div>
-                            {userPredictions.length > 0 ? (
-                                userPredictions.map((userPrediction, subIndex) => {
-                                    const predictionLabel =
-                                        userPrediction.prediction === 'home'
-                                            ? 'Local'
-                                            : userPrediction.prediction === 'away'
-                                            ? 'Visitante'
-                                            : userPrediction.prediction === 'draw'
-                                            ? 'Empate'
-                                            : 'No definida';
+                    if (match) {
+                        const predictionLabel =
+                            userPrediction.prediction === 'home'
+                                ? 'Local'
+                                : userPrediction.prediction === 'away'
+                                ? 'Visitante'
+                                : userPrediction.prediction === 'draw'
+                                ? 'Empate'
+                                : 'No definida';
     
-                                    return (
-                                        <div key={`${index}-${subIndex}`}>
-                                            Tu Predicción: <strong>{predictionLabel}</strong>
-                                        </div>
-                                    );
-                                })
-                            ) : (
-                                <div>Tu Predicción: <strong>No definida</strong></div>
-                            )}
-                        </div>
-                    );
+                        // Renderiza cada predicción como una línea única
+                        return (
+                            <div key={index} className="prediction-item">
+                                <img src={match.teams.home.logo} alt={match.teams.home.name} width="50" />
+                                <span>
+                                    {match.teams.home.name} {match.goals.home} - {match.goals.away} {match.teams.away.name}
+                                </span>
+                                <img src={match.teams.away.logo} alt={match.teams.away.name} width="50" />
+                                <div>{new Date(match.fixture.date).toLocaleDateString()}</div>
+                                <div>Competición: {match.league.name}</div>
+                                <div>Tu Predicción: <strong>{predictionLabel}</strong></div>
+                            </div>
+                        );
+                    } else {
+                        console.warn("No se encontraron datos del partido para esta predicción:", userPrediction);
+                        return null; // Ignorar predicciones sin datos del partido
+                    }
                 })
             ) : (
                 <p>No tienes predicciones activas.</p>
             )}
         </div>
-    );      
+    );          
 }
 
 export default Predicciones;
