@@ -90,7 +90,7 @@ function TiroLibre() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ category: 'guessThePlayer', newScore: calculatedScore }),
+                body: JSON.stringify({ category: 'tiroLibre', newScore: score }),
             });
             if (!response.ok) throw new Error('Error al actualizar la puntuación');
         } catch (error) {
