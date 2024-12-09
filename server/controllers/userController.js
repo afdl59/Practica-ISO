@@ -206,8 +206,7 @@ exports.changePassword = async (req, res) => {
             return res.status(403).json({ message: 'Los usuarios de OAuth no pueden cambiar contraseña' });
         }
 
-        const hashedPassword = await bcrypt.hash(newPassword, 10);
-        usuario.password = hashedPassword;
+        usuario.password = newPassword;
 
         // Guardar sin volver a validar
         await usuario.save({ validateBeforeSave: false });
