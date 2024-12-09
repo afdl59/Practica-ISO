@@ -52,11 +52,14 @@ function Perfil() {
           method: 'GET',
           credentials: 'include',
         });
-        console.log('Estado isPremium en Perfil: ', isPremium);
+        
         if (!premiumResponse.ok) throw new Error('Error al obtener el estado de isPremium del usuario');
 
         const premiumData = await premiumResponse.json();
-        setIsPremium(premiumData);
+        setIsPremium(premiumData.isPremium);
+
+        console.log('Estado isPremium en Perfil: ', isPremium);
+
         const userData = await userResponse.json();
         setUserData(userData);
         setEditedData({
@@ -235,10 +238,6 @@ function Perfil() {
         <button onClick={handleSaveChanges}>Guardar Cambios</button>
         <button onClick={handleLogout}>Cerrar Sesión</button>
         <button onClick={() => setShowHelpForm(true)}>Ayuda</button>
-        {/* Botón de Pago */}
-        {isPremium === false && (
-          <PaymentButton userEmail={userData.email} />
-        )}
       </div>
 
       {showHelpForm && (
@@ -258,6 +257,11 @@ function Perfil() {
           <button onClick={handleHelpSubmit}>Enviar</button>
           <button onClick={() => setShowHelpForm(false)}>Cancelar</button>
         </div>  
+      )}
+
+      {/* Botón de Pago */}
+      {(isPremium === false || isPremium === undefined) && (
+        <PaymentButton userEmail={userData.email} />
       )}
     </div>
   );  
