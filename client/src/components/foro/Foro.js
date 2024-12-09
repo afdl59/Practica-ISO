@@ -40,6 +40,94 @@ function Foro() {
   }, []);
 
   useEffect(() => {
+    const checkAuthAndLoadData = async () => {
+      try {
+        // Verificar sesión del usuario
+        const response = await fetch('/api/auth/check-session', {
+          method: 'GET', // Método GET para verificar sesión
+          headers: { 'Cache-Control': 'no-cache' },
+        });
+        const sessionData = await response.json();
+  
+        if (!sessionData.isAuthenticated) {
+          navigate('/login');
+          return;
+        }
+  
+        setUsername(sessionData.username);
+  
+        // Obtener la lista de salas
+        const salasResponse = await fetch('/api/foro/salas', {
+          method: 'GET', // Método GET para obtener todas las salas
+          headers: { 'Cache-Control': 'no-cache' },
+        });
+        const salasData = await salasResponse.json();
+        setSalas(salasData);
+      } catch (error) {
+        console.error('Error al verificar sesión:', error);
+        navigate('/login');
+      }
+    };
+  
+    checkAuthAndLoadData();
+  }, [navigate]);
+  
+  useEffect(() => {
+    if (currentSala) {
+      const fetchSalaData = async () => {
+        try {
+          // Obtener mensajes y datos de la sala de manera paralela
+          const [mensajesRes, salaRes] = await Promise.all([
+            fetch(`/api/foro/salas/${currentSala}/mensajes`, {
+              method: 'GET', // Método GET para obtener los mensajes de la sala actual
+            }),
+            fetch(`/api/foro/salas/${currentSala}`, {
+              method: 'GET', // Método GET para obtener los detalles de la sala actual
+            }),
+          ]);
+  
+          if (mensajesRes.ok && salaRes.ok) {
+            const mensajesData = await mensajesRes.json();
+            const salaData = await salaRes.json();
+  
+            setMensajes(mensajesData);
+            setCurrentSalaName(salaData.title);
+            setCurrentSalaDescription(salaData.description);
+            setCurrentSalaCreatedBy(salaData.createdBy);
+  
+            // Cargar fotos de perfil de los usuarios en los mensajes
+            const uniqueUsernames = [...new Set(mensajesData.map((msg) => msg.username))];
+            const missingProfiles = uniqueUsernames.filter((user) => !profilePictures[user]);
+  
+            if (missingProfiles.length > 0) {
+              const profileResponses = await Promise.all(
+                missingProfiles.map((user) =>
+                  fetch(`/api/users/${user}`, {
+                    method: 'GET', // Método GET para obtener fotos de perfil de usuarios
+                  })
+                )
+              );
+  
+              const profileData = await Promise.all(profileResponses.map((res) => res.json()));
+              const newProfiles = profileData.reduce((acc, profile, index) => {
+                acc[missingProfiles[index]] = profile.fotoPerfil || '/uploads/default-profile.png';
+                return acc;
+              }, {});
+  
+              setProfilePictures((prev) => ({ ...prev, ...newProfiles }));
+            }
+          }
+        } catch (error) {
+          console.error('Error al cargar datos de la sala:', error);
+        }
+      };
+  
+      socket.current.emit('unirseASala', currentSala);
+      fetchSalaData();
+    }
+  }, [currentSala, profilePictures]);  
+
+  /*useEffect(() => {
     const handleMensajeRecibido = (mensaje) => {
       if (mensaje.chatRoom === currentSala) {
         setMensajes((prevMensajes) => [...prevMensajes, mensaje]);
@@ -198,7 +286,7 @@ function Foro() {
     if (username && mensajes.length > 0) {
       loadProfilePictures();
     }
-  }, [username, mensajes, profilePictures]);  
+  }, [username, mensajes, profilePictures]);   */
 
   // Función para buscar usuarios desde la base de datos
   const fetchUsers = async (query) => {

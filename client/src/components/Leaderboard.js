@@ -37,7 +37,6 @@ function Leaderboard() {
                         <th>Posición</th>
                         <th>Jugador</th>
                         <th>Puntuación</th>
-                        <th>Fecha</th>
                     </tr>
                 </thead>
                 <tbody>
