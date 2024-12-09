@@ -58,7 +58,7 @@ function TiroLibre() {
     checkSession();
   }, []);
 
-  const handleGoalClick = (e) => {
+  const handleGoalClick = async (e) => {
     if (!selectedPlayer) {
       setMessage('Por favor selecciona un jugador antes de disparar.');
       return;
@@ -83,8 +83,22 @@ function TiroLibre() {
       setScore(score + 10);
       setMessage('¡Gol!');
       if (isAuthenticated) {
-        updateLeaderboard('tiroLibre', username, score + 10);
-      }
+        // Enviar la puntuación al servidor
+        try {
+            const response = await fetch(`/api/users/${username}/score`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ category: 'guessThePlayer', newScore: calculatedScore }),
+            });
+            if (!response.ok) throw new Error('Error al actualizar la puntuación');
+        } catch (error) {
+            console.error(error);
+        }
+    } else {
+        alert(`¡Has obtenido ${calculatedScore} puntos! Inicia sesión para guardar tu puntuación.`);
+    }
     } else {
       setMessage('¡Parada del portero!');
     }
@@ -105,11 +119,7 @@ function TiroLibre() {
             className={selectedPlayer === player ? 'selected' : ''}
             onClick={() => setSelectedPlayer(player)}
           >
-            <img
-              src={`/assets/players/${players[player].image}`}
-              alt={player}
-              style={{ width: '50px', height: '50px' }}
-            />
+            <img src={players[player].image} alt={player} style={{ width: '50px', height: '50px' }} />
           </button>
         ))}
       </div>
