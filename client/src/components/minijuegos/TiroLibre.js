@@ -97,7 +97,7 @@ function TiroLibre() {
             console.error(error);
         }
     } else {
-        alert(`¡Has obtenido ${calculatedScore} puntos! Inicia sesión para guardar tu puntuación.`);
+        alert(`¡Has obtenido ${score} puntos! Inicia sesión para guardar tu puntuación.`);
     }
     } else {
       setMessage('¡Parada del portero!');
