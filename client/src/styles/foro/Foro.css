@@ -146,7 +146,7 @@
   flex-direction: column;
   gap: 10px;
   overflow-y: auto;
-  margin-bottom: 60px; /* Dejar espacio para el input y botón de enviar */
+  margin-bottom: 80px; /* Dejar espacio para el input y botón de enviar */
 }
 
 .grupo-fecha {
@@ -209,42 +209,46 @@
 }
 
 /* Input de mensajes */
-.enviar-mensaje {
+.foro-contenedor .enviar-mensaje {
   display: flex;
+  flex-direction: row;
   align-items: center;
   gap: 10px;
   padding: 10px;
   background-color: rgba(0, 0, 0, 0.8);
-  border-radius: 6px;
-  position: absolute;
-  bottom: 10px;
-  width: 28%;
-  max-width: 100%;
+  position: fixed; /* Fijar posición */
+  bottom: 0;
+  left: 0;
+  width: 80%; /* Ocupa todo el ancho */
+  margin-left: 510px;
   box-sizing: border-box;
 }
 
-.enviar-mensaje input {
-  flex-grow: 1;
+.foro-contenedor .enviar-mensaje input {
+  flex-grow: 1; /* El input ocupa el espacio restante */
   padding: 10px;
   border-radius: 6px;
   border: none;
   background-color: #fff;
   color: #333;
   height: 40px;
+  width: 90%;
 }
 
-.enviar-mensaje button {
-  padding: 0 30px;
+.foro-contenedor .enviar-mensaje button {
+  padding: 0 20px;
   height: 40px;
+  margin-bottom: 0;
   border: none;
   border-radius: 6px;
   background-color: #0077b6;
   color: #fff;
   cursor: pointer;
   font-weight: bold;
+  width: 10%;
 }
 
-.enviar-mensaje button:hover {
+.foro-contenedor .enviar-mensaje button:hover {
   background-color: #005f8a;
 }
 
@@ -307,3 +311,26 @@
 .popup-contenido form button:hover {
   opacity: 0.9;
 }
+
+.user-suggestions {
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  max-height: 200px;
+  overflow-y: auto;
+  list-style: none;
+  padding: 10px;
+  margin: 0;
+  width: 100%;
+}
+
+.user-suggestions li {
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.user-suggestions li:hover {
+  background-color: #f0f0f0;
+}
+

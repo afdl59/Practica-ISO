@@ -134,6 +134,7 @@ exports.getUserProfile = async (req, res) => {
             username: usuario.username,
             firstName: usuario.firstName,
             lastName: usuario.lastName,
+            email: usuario.email,
             fotoPerfil: usuario.fotoPerfil || null,
             equipoFavorito: usuario.equipoFavorito || [],
             competicionesFavoritas: usuario.competicionesFavoritas || [],
@@ -392,3 +393,56 @@ exports.updateUserScore = async (req, res) => {
         res.status(500).json({ error: 'Error interno del servidor' });
     }
 };
+
+// Obtener el estado actual de isPremium
+exports.getPremiumStatus = async (req, res) => {
+    const { username } = req.params;
+
+    try {
+        const usuario = await User.findOne({ username });
+        if (!usuario) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+
+        res.status(200).json({ isPremium: usuario.isPremium });
+    } catch (err) {
+        console.error('Error al obtener el estado de suscripción:', err);
+        res.status(500).json({ message: 'Error interno del servidor' });
+    }
+};
+
+// Actualizar el estado de isPremium
+exports.updatePremiumStatus = async (req, res) => {
+    const { username } = req.params;
+
+    try {
+        const usuario = await User.findOne({ username });
+        if (!usuario) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+
+        usuario.isPremium = true;
+        await usuario.save();
+
+        res.status(200).json({ message: 'Estado de suscripción actualizado a premium', user: usuario });
+    } catch (err) {
+        console.error('Error al actualizar el estado de suscripción:', err);
+        res.status(500).json({ message: 'Error interno del servidor' });
+    }
+};
+
+exports.updatePremiumStatusByEmail = async (email) => {
+    try {
+      const usuario = await User.findOne({ email });
+      if (!usuario) {
+        throw new Error('Usuario no encontrado');
+      }
+      usuario.isPremium = true;
+      await usuario.save();
+      console.log(`Estado de isPremium actualizado para el usuario con email: ${email}`);
+    } catch (err) {
+      console.error('Error al actualizar el estado de isPremium:', err);
+      throw err;
+    }
+  };
+  
