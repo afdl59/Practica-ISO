@@ -25,6 +25,9 @@ function GuessThePlayer() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [username, setUsername] = useState('');
 
+  const { leaderboards, updateLeaderboard } = useLeaderboard();
+  const leaderboard = leaderboards['wordle'] || [];
+
   useEffect(() => {
     // Reiniciar el estado del juego cuando cambia el jugador actual
       setIntento('');
@@ -126,6 +129,28 @@ function GuessThePlayer() {
         <p>{mensaje}</p>
         {score !== null && <h2>Puntuación: {score}</h2>}
         <h3>Intentos restantes: {attemptsLeft}</h3>
+
+        <div className="leaderboard-section">
+          <h2>Leaderboard</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Posición</th>
+                <th>Jugador</th>
+                <th>Puntuación</th>
+              </tr>
+            </thead>
+            <tbody>
+              {leaderboard.map((entry, index) => (
+                <tr key={index}>
+                  <td>{index + 1}</td>
+                  <td>{entry.playerName}</td>
+                  <td>{entry.score}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
     </div>
   );
 }
