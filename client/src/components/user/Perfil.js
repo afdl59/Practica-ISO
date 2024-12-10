@@ -145,7 +145,7 @@ function Perfil() {
 
   const handleHelpSubmit = async () => {
     try {
-        const response = await fetch('/api/users/help', {
+        const response = await fetch('/api/users/send/help', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
