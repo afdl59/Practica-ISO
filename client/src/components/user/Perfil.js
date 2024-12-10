@@ -151,6 +151,7 @@ function Perfil() {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ subject: helpSubject, message: helpMessage }),
+            credentials: 'include',
         });
         if (response.ok) {
             alert('Tu mensaje ha sido enviado correctamente.');

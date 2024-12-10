@@ -38,7 +38,7 @@ router.get('/ranking', userController.getRanking);
 
 router.put('/:username/score', userController.updateUserScore);
 
-router.post('/send/help', userController.sendHelpRequest);
+router.post('/send/help', authMiddleware, userController.sendHelpRequest);
 
 router.get('/:username/premium-status', authMiddleware, userController.getPremiumStatus);
 router.put('/:username/premium-status', userController.updatePremiumStatus);
