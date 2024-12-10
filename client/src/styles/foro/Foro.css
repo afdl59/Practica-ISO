@@ -232,7 +232,8 @@
   background-color: #fff;
   color: #333;
   height: 40px;
-  width: 90%;
+  width: 50%;
+  max-width: 700px;
 }
 
 .foro-contenedor .enviar-mensaje button {
