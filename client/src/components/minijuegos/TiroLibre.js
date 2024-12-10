@@ -120,7 +120,7 @@ function TiroLibre() {
             onClick={() => setSelectedPlayer(player)}
           >
             <img
-              src={`/assets/players/${players[player].image}`}
+              src={`${players[player].image}`}
               alt={player}
               style={{ width: '50px', height: '50px' }}
             />
